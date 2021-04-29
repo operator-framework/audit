@@ -1,0 +1,42 @@
+{
+	"columns": [
+		{
+			"packageName": "alcide-kaudit-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true,
+			"errors": null
+		},
+		{
+			"packageName": "anaconda-team-edition",
+			"channelName": "beta",
+			"foundAllReplaces": true,
+			"errors": null
+		},
+		{
+			"packageName": "appdynamics-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true,
+			"errors": null
+		},
+		{
+			"packageName": "anchore-engine",
+			"channelName": "alpha",
+			"foundAllReplaces": true,
+			"errors": null
+		},
+		{
+			"packageName": "anzo-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true,
+			"errors": null
+		}
+	],
+	"flags": {
+		"index-image": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+		"limit": 5,
+		"filter": "",
+		"outputPath": "/Users/camilamacedo/go/src/github.com/operator-framework/audit-1/testdata/samples/channels/json",
+		"outputFormat": "json"
+	}
+}

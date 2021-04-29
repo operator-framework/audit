@@ -1,0 +1,16 @@
+.idea/
+.vscode/
+.DS_Store
+
+# Editor temp files
+*~
+\#*#
+
+# skip dirs
+**/output
+**/bin
+**/tmp
+
+# skip .out files (coverage tests)
+*.out
+
