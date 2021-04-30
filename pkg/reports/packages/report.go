@@ -58,9 +58,14 @@ func (r *Report) writeXls() error {
 		"K": "Has Dependency",
 		"L": "Is Multiple Channel",
 		"M": "Has Support for All Namespaces",
-		"N": "Has Infrastructure Support",
-		"O": "Has possible performance issues",
-		"P": "Issues (To process this report)",
+		"N": "Has Support for Single Namespaces",
+		"O": "Has Support for Own Namespaces",
+		"P": "Has Support for Multi Namespaces",
+		"Q": "Has Infrastructure Support",
+		"R": "Has possible performance issues",
+		"S": "Creation Dates (by author)",
+		"T": "OCP Labels",
+		"U": "Issues (To process this report)",
 	}
 
 	// Header
@@ -164,21 +169,46 @@ func (r *Report) writeXls() error {
 		}
 
 		if err := f.SetCellValue(sheetName, fmt.Sprintf("N%d", line),
+			pkg.GetYesOrNo(v.HasSupportForSingleNamespace)); err != nil {
+			log.Errorf("to add HasSupportForMultiNamespaces cell value: %s", err)
+		}
+
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("O%d", line),
+			pkg.GetYesOrNo(v.HasSupportForOwnNamespaces)); err != nil {
+			log.Errorf("to add HasSupportForMultiNamespaces cell value: %s", err)
+		}
+
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("P%d", line),
+			pkg.GetYesOrNo(v.HasSupportForMultiNamespaces)); err != nil {
+			log.Errorf("to add HasSupportForMultiNamespaces cell value: %s", err)
+		}
+
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("Q%d", line),
 			pkg.GetYesOrNo(v.HasInfraSupport)); err != nil {
 			log.Errorf("to add HasInfraSupport cell value: %s", err)
 		}
 
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("O%d", line),
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("R%d", line),
 			pkg.GetYesOrNo(v.HasPossiblePerformIssues)); err != nil {
 			log.Errorf("to add HasPossiblePerformIssues cell value: %s", err)
 		}
 
 		if v.HasPossiblePerformIssues {
-			_ = f.SetCellStyle(sheetName, fmt.Sprintf("O%d", line),
+			_ = f.SetCellStyle(sheetName, fmt.Sprintf("R%d", line),
 				fmt.Sprintf("N%d", line), styleOrange)
 		}
 
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("P%d", line), v.AuditErrors); err != nil {
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("S%d", line),
+			pkg.GetFormatArrayWithBreakLine(v.CreationDates)); err != nil {
+			log.Errorf("to add CreationDates cell value : %s", err)
+		}
+
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("T%d", line),
+			pkg.GetFormatArrayWithBreakLine(v.OCPLabel)); err != nil {
+			log.Errorf("to add OCPLabel cell value : %s", err)
+		}
+
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("U%d", line), v.AuditErrors); err != nil {
 			log.Errorf("to add AuditErrors cell value: %s", err)
 		}
 
@@ -204,7 +234,7 @@ func (r *Report) writeXls() error {
 		}
 	}
 
-	if err := f.AddTable(sheetName, "A3", "P3", pkg.TableFormat); err != nil {
+	if err := f.AddTable(sheetName, "A3", "U3", pkg.TableFormat); err != nil {
 		log.Errorf("to set table format : %s", err)
 	}
 

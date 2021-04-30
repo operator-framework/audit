@@ -87,7 +87,6 @@ func main() {
 		command = exec.Command(binPath, "bundles",
 			fmt.Sprintf("--index-image=%s", v),
 			fmt.Sprintf("--output-path=%s", reportPathName),
-			"--limit=1",
 		)
 		_, err = pkg.RunCommand(command)
 		if err != nil {
@@ -98,7 +97,6 @@ func main() {
 		command = exec.Command(binPath, "packages",
 			fmt.Sprintf("--index-image=%s", v),
 			fmt.Sprintf("--output-path=%s", reportPathName),
-			"--limit=1",
 		)
 		_, err = pkg.RunCommand(command)
 		if err != nil {

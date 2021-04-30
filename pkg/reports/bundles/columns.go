@@ -36,44 +36,48 @@ const sdkProjectLayoutAnnotation = "operators.operatorframework.io/project_layou
 const infrastructureAnnotation = "operators.openshift.io/infrastructure-features"
 
 type Columns struct {
-	PackageName               string   `json:"packageName"`
-	OperatorBundleName        string   `json:"operatorBundleName"`
-	OperatorBundleVersion     string   `json:"operatorBundleVersion,omitempty"`
-	Certified                 bool     `json:"certified"`
-	BundlePath                string   `json:"bundlePath,omitempty"`
-	HasWebhook                bool     `json:"hasWebhook"`
-	HasV1beta1CRDs            string   `json:"hasV1beta1CRDs,omitempty"`
-	CreatedAt                 string   `json:"createdAt,omitempty"`
-	Company                   string   `json:"company,omitempty"`
-	Repository                string   `json:"repository,omitempty"`
-	BundleChannel             string   `json:"bundleChannel,omitempty"`
-	DefaultChannel            string   `json:"defaultChannel,omitempty"`
-	Maturity                  string   `json:"maturity,omitempty"`
-	EmailMaintainers          []string `json:"emailMaintainers,omitempty"`
-	NameMaintainers           []string `json:"nameMaintainers,omitempty"`
-	Links                     []string `json:"links,omitempty"`
-	Capabilities              string   `json:"capabilities,omitempty"`
-	Categories                string   `json:"categories,omitempty"`
-	MultipleArchitectures     []string `json:"multipleArchitectures,omitempty"`
-	Builder                   string   `json:"builder,omitempty"`
-	SDKVersion                string   `json:"sdkVersion,omitempty"`
-	ProjectLayout             string   `json:"projectLayout,omitempty"`
-	ValidatorErrors           []string `json:"validatorErrors,omitempty"`
-	ValidatorWarnings         []string `json:"validatorWarnings,omitempty"`
-	ScorecardErrors           []string `json:"scorecardErrors,omitempty"`
-	ScorecardSuggestions      []string `json:"scorecardSuggestions,omitempty"`
-	ScorecardFailingTests     []string `json:"scorecardFailingTests,omitempty"`
-	InvalidVersioning         string   `json:"invalidVersioning,omitempty"`
-	InvalidSkipRange          string   `json:"invalidSkipRange,omitempty"`
-	FoundReplace              string   `json:"foundReplace,omitempty"`
-	HasDependency             bool     `json:"HasDependency,omitempty"`
-	SkipRange                 string   `json:"skipRange,omitempty"`
-	Skips                     []string `json:"skips,omitempty"`
-	Replace                   string   `json:"replace,omitempty"`
-	IsSupportingAllNamespaces bool     `json:"isSupportingAllNamespaces,omitempty"`
-	Infrastructure            string   `json:"infrastructure,omitempty"`
-	HasPossiblePerformIssues  bool     `json:"hasPossiblePerformIssues,omitempty"`
-	AuditErrors               []error  `json:"auditErrors,omitempty"`
+	PackageName                 string   `json:"packageName"`
+	OperatorBundleName          string   `json:"operatorBundleName"`
+	OperatorBundleVersion       string   `json:"operatorBundleVersion,omitempty"`
+	Certified                   bool     `json:"certified"`
+	BundlePath                  string   `json:"bundlePath,omitempty"`
+	HasWebhook                  bool     `json:"hasWebhook"`
+	HasV1beta1CRDs              string   `json:"hasV1beta1CRDs,omitempty"`
+	CreatedAt                   string   `json:"createdAt,omitempty"`
+	Company                     string   `json:"company,omitempty"`
+	Repository                  string   `json:"repository,omitempty"`
+	BundleChannel               string   `json:"bundleChannel,omitempty"`
+	DefaultChannel              string   `json:"defaultChannel,omitempty"`
+	Maturity                    string   `json:"maturity,omitempty"`
+	EmailMaintainers            []string `json:"emailMaintainers,omitempty"`
+	NameMaintainers             []string `json:"nameMaintainers,omitempty"`
+	Links                       []string `json:"links,omitempty"`
+	Capabilities                string   `json:"capabilities,omitempty"`
+	Categories                  string   `json:"categories,omitempty"`
+	MultipleArchitectures       []string `json:"multipleArchitectures,omitempty"`
+	Builder                     string   `json:"builder,omitempty"`
+	SDKVersion                  string   `json:"sdkVersion,omitempty"`
+	ProjectLayout               string   `json:"projectLayout,omitempty"`
+	ValidatorErrors             []string `json:"validatorErrors,omitempty"`
+	ValidatorWarnings           []string `json:"validatorWarnings,omitempty"`
+	ScorecardErrors             []string `json:"scorecardErrors,omitempty"`
+	ScorecardSuggestions        []string `json:"scorecardSuggestions,omitempty"`
+	ScorecardFailingTests       []string `json:"scorecardFailingTests,omitempty"`
+	InvalidVersioning           string   `json:"invalidVersioning,omitempty"`
+	InvalidSkipRange            string   `json:"invalidSkipRange,omitempty"`
+	FoundReplace                string   `json:"foundReplace,omitempty"`
+	HasDependency               bool     `json:"HasDependency,omitempty"`
+	SkipRange                   string   `json:"skipRange,omitempty"`
+	Skips                       []string `json:"skips,omitempty"`
+	Replace                     string   `json:"replace,omitempty"`
+	IsSupportingAllNamespaces   bool     `json:"supportsAllNamespaces,omitempty"`
+	IsSupportingMultiNamespaces bool     `json:"supportsMultiNamespaces,omitempty"`
+	IsSupportingSingleNamespace bool     `json:"supportSingleNamespaces,omitempty"`
+	IsSupportingOwnNamespaces   bool     `json:"supportsOwnNamespaces,omitempty"`
+	Infrastructure              string   `json:"infrastructure,omitempty"`
+	HasPossiblePerformIssues    bool     `json:"hasPossiblePerformIssues,omitempty"`
+	OCPLabel                    string   `json:"ocpLabel,omitempty"`
+	AuditErrors                 []error  `json:"auditErrors,omitempty"`
 }
 
 func (c *Columns) AddDataFromCSV(csv *v1alpha1.ClusterServiceVersion) {
@@ -146,8 +150,12 @@ func (c *Columns) AddDataFromCSV(csv *v1alpha1.ClusterServiceVersion) {
 			switch v.Type {
 			case v1alpha1.InstallModeTypeAllNamespaces:
 				c.IsSupportingAllNamespaces = true
-			default:
-				c.IsSupportingAllNamespaces = false
+			case v1alpha1.InstallModeTypeMultiNamespace:
+				c.IsSupportingMultiNamespaces = true
+			case v1alpha1.InstallModeTypeOwnNamespace:
+				c.IsSupportingOwnNamespaces = true
+			case v1alpha1.InstallModeTypeSingleNamespace:
+				c.IsSupportingSingleNamespace = true
 			}
 		}
 	}

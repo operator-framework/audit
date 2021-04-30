@@ -38,29 +38,7 @@ func (d *Data) PrepareReport() Report {
 		col := Columns{}
 		col.PackageName = auditPkg.PackageName
 
-		var allBundles []bundles.Columns
-		for _, v := range auditPkg.AuditBundle {
-			// do not add bundle which has not the label
-			if len(d.Flags.Label) > 0 && !v.FoundLabel {
-				continue
-			}
-
-			bundles := bundles.Columns{}
-
-			var csv *v1alpha1.ClusterServiceVersion
-			if v.Bundle != nil && v.Bundle.CSV != nil {
-				csv = v.Bundle.CSV
-			} else if v.CSVFromIndexDB != nil {
-				csv = v.CSVFromIndexDB
-			}
-
-			bundles.AddDataFromCSV(csv)
-			bundles.AddDataFromBundle(v.Bundle)
-			bundles.AddDataFromScorecard(v.ScorecardResults)
-			bundles.AddDataFromValidators(v.ValidatorsResults)
-
-			allBundles = append(allBundles, bundles)
-		}
+		allBundles := d.getAllBundles(auditPkg)
 
 		var auditErrors []error
 		var validatorErrors []string
@@ -69,6 +47,8 @@ func (d *Data) PrepareReport() Report {
 		var scorecardSuggestions []string
 		var scorecardFailingTests []string
 		var muiltArchSupport []string
+		var ocpLabel []string
+		var creationDates []string
 
 		foundDeprecatedAPI := false
 		foundWebhooks := false
@@ -80,12 +60,16 @@ func (d *Data) PrepareReport() Report {
 		foundInvalidVersioning := false
 		foundDependency := false
 		foundSupportingAllNamespaces := false
+		foundSupportingSingleNamespaces := false
+		foundSupportingOwnNamespaces := false
+		foundSupportingMultiNamespaces := false
 		foundInfraSupport := false
 		foundPossiblePerformIssues := false
+		foundDiffChannel := false
 
 		qtUnknown := 0
 		channelFound := ""
-		foundDiffChannel := false
+
 		for _, v := range allBundles {
 			auditErrors = append(auditErrors, v.AuditErrors...)
 			validatorErrors = append(validatorErrors, v.ValidatorErrors...)
@@ -94,6 +78,8 @@ func (d *Data) PrepareReport() Report {
 			scorecardSuggestions = append(scorecardSuggestions, v.ScorecardSuggestions...)
 			scorecardFailingTests = append(scorecardFailingTests, v.ScorecardFailingTests...)
 			muiltArchSupport = append(muiltArchSupport, v.MultipleArchitectures...)
+			ocpLabel = append(ocpLabel, v.OCPLabel)
+			creationDates = append(creationDates, v.CreatedAt)
 
 			if !foundDeprecatedAPI {
 				switch v.HasV1beta1CRDs {
@@ -137,6 +123,15 @@ func (d *Data) PrepareReport() Report {
 			if !foundSupportingAllNamespaces {
 				foundSupportingAllNamespaces = v.IsSupportingAllNamespaces
 			}
+			if !foundSupportingOwnNamespaces {
+				foundSupportingOwnNamespaces = v.IsSupportingOwnNamespaces
+			}
+			if !foundSupportingMultiNamespaces {
+				foundSupportingMultiNamespaces = v.IsSupportingMultiNamespaces
+			}
+			if !foundSupportingSingleNamespaces {
+				foundSupportingSingleNamespaces = v.IsSupportingSingleNamespace
+			}
 			if !foundInfraSupport {
 				foundInfraSupport = len(v.Infrastructure) > 0
 			}
@@ -160,9 +155,14 @@ func (d *Data) PrepareReport() Report {
 		col.HasInvalidSkipRange = foundInvalidSkipRange
 		col.HasInvalidVersioning = foundInvalidVersioning
 		col.HasSupportForAllNamespaces = foundSupportingAllNamespaces
+		col.HasSupportForMultiNamespaces = foundSupportingMultiNamespaces
+		col.HasSupportForOwnNamespaces = foundSupportingOwnNamespaces
+		col.HasSupportForSingleNamespace = foundSupportingSingleNamespaces
 		col.HasInfraSupport = foundInfraSupport
 		col.HasPossiblePerformIssues = foundPossiblePerformIssues
 		col.HasDependency = foundDependency
+		col.CreationDates = creationDates
+		col.OCPLabel = ocpLabel
 
 		// If was not possible get any bundle then needs to be Unknown
 		col.HasV1beta1CRD = pkg.GetYesOrNo(foundDeprecatedAPI)
@@ -177,6 +177,33 @@ func (d *Data) PrepareReport() Report {
 	finalReport.Flags = d.Flags
 	finalReport.Columns = allColumns
 	return finalReport
+}
+
+func (d *Data) getAllBundles(auditPkg models.AuditPackage) []bundles.Columns {
+	var allBundles []bundles.Columns
+	for _, v := range auditPkg.AuditBundle {
+		// do not add bundle which has not the label
+		if len(d.Flags.Label) > 0 && !v.FoundLabel {
+			continue
+		}
+
+		bundles := bundles.Columns{}
+
+		var csv *v1alpha1.ClusterServiceVersion
+		if v.Bundle != nil && v.Bundle.CSV != nil {
+			csv = v.Bundle.CSV
+		} else if v.CSVFromIndexDB != nil {
+			csv = v.CSVFromIndexDB
+		}
+
+		bundles.AddDataFromCSV(csv)
+		bundles.AddDataFromBundle(v.Bundle)
+		bundles.AddDataFromScorecard(v.ScorecardResults)
+		bundles.AddDataFromValidators(v.ValidatorsResults)
+
+		allBundles = append(allBundles, bundles)
+	}
+	return allBundles
 }
 
 func (d *Data) OutputReport() error {

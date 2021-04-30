@@ -30,7 +30,10 @@
 			],
 			"invalidVersioning": "NO",
 			"invalidSkipRange": "NOT USED",
-			"isSupportingAllNamespaces": true
+			"supportsAllNamespaces": true,
+			"supportSingleNamespaces": true,
+			"supportsOwnNamespaces": true,
+			"ocpLabel": "v4.5,v4.6"
 		},
 		{
 			"packageName": "appranix-cps",
@@ -65,21 +68,24 @@
 				"apiextensions.k8s.io/v1beta1, kind=CustomResourceDefinitions was deprecated in Kubernetes v1.16 and will be removed in v1.22 in favor of v1: [\"backupstoragelocations.aps.appranix.com\" \"volumesnapshotlocations.aps.appranix.com\"] should be migrated"
 			],
 			"scorecardErrors": [
+				"objectStorage does not have a spec descriptor",
 				"backupstoragelocations.aps.appranix.com does not have a status descriptor",
-				"volumesnapshotlocations.aps.appranix.com does not have a status descriptor",
-				"objectStorage does not have a spec descriptor"
+				"volumesnapshotlocations.aps.appranix.com does not have a status descriptor"
 			],
 			"scorecardSuggestions": [
+				"Add a spec descriptor for objectStorage",
 				"Add CRD validation for BackupStorageLocation/v1",
-				"Add CRD validation for VolumeSnapshotLocation/v1",
-				"Add a spec descriptor for objectStorage"
+				"Add CRD validation for VolumeSnapshotLocation/v1"
 			],
 			"scorecardFailingTests": [
-				"olm-status-descriptors",
-				"olm-spec-descriptors"
+				"olm-spec-descriptors",
+				"olm-status-descriptors"
 			],
 			"invalidVersioning": "NO",
-			"invalidSkipRange": "NOT USED"
+			"invalidSkipRange": "NOT USED",
+			"supportSingleNamespaces": true,
+			"supportsOwnNamespaces": true,
+			"ocpLabel": "v4.5,v4.6"
 		},
 		{
 			"packageName": "appranix-cps",
@@ -129,7 +135,10 @@
 			],
 			"invalidVersioning": "NO",
 			"invalidSkipRange": "NOT USED",
-			"replace": "appranix.v2.3.0"
+			"replace": "appranix.v2.3.0",
+			"supportSingleNamespaces": true,
+			"supportsOwnNamespaces": true,
+			"ocpLabel": "v4.5,v4.6"
 		},
 		{
 			"packageName": "anzo-operator",
@@ -160,7 +169,10 @@
 				"apiextensions.k8s.io/v1beta1, kind=CustomResourceDefinitions was deprecated in Kubernetes v1.16 and will be removed in v1.22 in favor of v1: [\"anzos.anzo.cambridgesemantics.com\"] should be migrated"
 			],
 			"invalidVersioning": "NO",
-			"invalidSkipRange": "NOT USED"
+			"invalidSkipRange": "NOT USED",
+			"supportSingleNamespaces": true,
+			"supportsOwnNamespaces": true,
+			"ocpLabel": "v4.5,v4.6"
 		},
 		{
 			"packageName": "akka-cluster-operator-certified",
@@ -199,7 +211,10 @@
 			],
 			"invalidVersioning": "NO",
 			"invalidSkipRange": "NOT USED",
-			"isSupportingAllNamespaces": true
+			"supportsAllNamespaces": true,
+			"supportSingleNamespaces": true,
+			"supportsOwnNamespaces": true,
+			"ocpLabel": "v4.5,v4.6"
 		}
 	],
 	"Flags": {
@@ -208,6 +223,8 @@
 		"headOnly": true,
 		"disableScorecard": false,
 		"disableValidators": false,
+		"label": "",
+		"labelValue": "",
 		"filter": "",
 		"outputPath": "/Users/camilamacedo/go/src/github.com/operator-framework/audit-1/testdata/samples/bundles/json",
 		"outputFormat": "json"
