@@ -16,9 +16,10 @@ package packages
 
 import (
 	"encoding/json"
-	log "github.com/sirupsen/logrus"
 	"os"
 	"os/exec"
+
+	log "github.com/sirupsen/logrus"
 
 	"database/sql"
 	"fmt"

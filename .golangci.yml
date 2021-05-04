@@ -1,0 +1,32 @@
+linters:
+  disable-all: true
+  enable:
+    - deadcode
+    - dupl
+    - errcheck
+    - goconst
+    - gocyclo
+    - gofmt
+    - goimports
+    - golint
+    - gosimple
+    - govet
+    - ineffassign
+    - interfacer
+    - lll
+    - misspell
+    - nakedret
+    - scopelint
+    - staticcheck
+    - structcheck
+    - typecheck
+    - unconvert
+    - unparam
+    - unused
+    - varcheck
+
+run:
+  deadline: 5m
+
+  # include test files or not, default is true
+  tests: false

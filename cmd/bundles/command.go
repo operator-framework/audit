@@ -202,7 +202,7 @@ func getDataFromIndexDB(report index.Data) (index.Data, error) {
 		if err == nil {
 			auditBundle.CSVFromIndexDB = csvStruct
 		} else {
-			auditBundle.Errors = append(auditBundle.Errors, fmt.Errorf("not found csv stored or" +
+			auditBundle.Errors = append(auditBundle.Errors, fmt.Errorf("not found csv stored or"+
 				" unable to unmarshal data from the index.db: %s", err))
 		}
 

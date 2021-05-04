@@ -22,10 +22,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/operator-framework/audit/pkg/models"
-
 	apimanifests "github.com/operator-framework/api/pkg/manifests"
 	"github.com/operator-framework/audit/pkg"
+	"github.com/operator-framework/audit/pkg/models"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -35,15 +34,32 @@ type Manifest struct {
 	Layers []string
 }
 
+type DockerConfigManifest struct {
+	DockerConfig DockerConfig `json:"Config"`
+}
+
+type DockerConfig struct {
+	Labels map[string]string `json:"Labels"`
+}
+
 // GetDataFromBundleImage returns the bundle from the image
 func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 	disableScorecard, disableValidators bool, label, labelValue string) *models.AuditBundle {
 
 	downloadBundleImage(auditBundle)
 	bundleDir := createBundleDir(auditBundle)
-	extractBundleFromImage(auditBundle, bundleDir, label, labelValue)
+	dockerConfigManifest := extractBundleFromImage(auditBundle, bundleDir)
 
-	// Read the bundle.
+	if len(label) > 0 {
+		value := dockerConfigManifest.DockerConfig.Labels[label]
+		if value == labelValue {
+			auditBundle.FoundLabel = true
+		}
+	}
+
+	auditBundle.OCPLabel = dockerConfigManifest.DockerConfig.Labels["com.redhat.openshift.versions"]
+
+	// Read the bundle
 	var err error
 	auditBundle.Bundle, err = apimanifests.GetBundleFromDir(filepath.Join(bundleDir, "bundle"))
 	if err != nil {
@@ -89,9 +105,7 @@ func downloadBundleImage(auditBundle *models.AuditBundle) {
 	}
 }
 
-// todo: the label and label value ought to be extract to another method
-// and then we also need to extract the cleanup actions
-func extractBundleFromImage(auditBundle *models.AuditBundle, bundleDir, label, labelValue string) {
+func extractBundleFromImage(auditBundle *models.AuditBundle, bundleDir string) DockerConfigManifest {
 	imageName := strings.Split(auditBundle.OperatorBundleImagePath, "@")[0]
 	tarPath := fmt.Sprintf("%s/%s.tar", bundleDir, auditBundle.OperatorBundleName)
 	cmd := exec.Command("docker", "save", imageName, "-o", tarPath)
@@ -118,6 +132,7 @@ func extractBundleFromImage(auditBundle *models.AuditBundle, bundleDir, label, l
 			fmt.Errorf("error to create the bundle bundleDir : %s", err))
 	}
 
+	var dockerConfig DockerConfigManifest
 	bundleConfigFilePath := filepath.Join(bundleDir, "manifest.json")
 	existingFile, err := ioutil.ReadFile(bundleConfigFilePath)
 	if err == nil {
@@ -133,18 +148,13 @@ func extractBundleFromImage(auditBundle *models.AuditBundle, bundleDir, label, l
 				fmt.Errorf("error to untar layers: %s", err))
 		}
 
-		// todo: we should unmarshal the json that is dirty and return all labels used
-		// see that its dirty was done just to address an urgent need
 		bundleConfigFilePath := filepath.Join(bundleDir, bundleLayerConfig[0].Config)
 		existingFile, err := ioutil.ReadFile(bundleConfigFilePath)
 		if err == nil {
-			file := string(existingFile)
-			labelSearch := label
-			if len(labelValue) > 0 {
-				labelSearch = fmt.Sprintf(`"%s":"%s"`, label, labelValue)
-			}
-			if strings.Contains(file, labelSearch) {
-				auditBundle.FoundLabel = true
+			if err := json.Unmarshal(existingFile, &dockerConfig); err != nil {
+				log.Errorf("unable to Unmarshal manifest.json: %s", err)
+				auditBundle.Errors = append(auditBundle.Errors,
+					fmt.Errorf("unable to Unmarshal manifest.json: %s", err))
 			}
 		}
 
@@ -177,6 +187,8 @@ func extractBundleFromImage(auditBundle *models.AuditBundle, bundleDir, label, l
 
 	cmd = exec.Command("rm", "-rf", fmt.Sprintf("%s/bundle/root/", bundleDir))
 	_, _ = pkg.RunCommand(cmd)
+
+	return dockerConfig
 }
 
 func cleanupBundleDir(auditBundle *models.AuditBundle, dir string) {
