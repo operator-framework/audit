@@ -107,7 +107,6 @@ func main() {
 		command = exec.Command(binPath, "channels",
 			fmt.Sprintf("--index-image=%s", v),
 			fmt.Sprintf("--output-path=%s", reportPathName),
-			"--limit=1",
 		)
 		_, err = pkg.RunCommand(command)
 		if err != nil {
