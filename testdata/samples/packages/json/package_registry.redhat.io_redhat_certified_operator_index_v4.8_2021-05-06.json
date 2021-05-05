@@ -11,75 +11,75 @@
 				"apiextensions.k8s.io/v1beta1, kind=CustomResourceDefinitions was deprecated in Kubernetes v1.16 and will be removed in v1.22 in favor of v1: [\"kaudits.kaudit.alcide.com\"] should be migrated"
 			],
 			"scorecardErrors": [
-				"Owned CRDs do not have resources specified",
-				"kaudits.kaudit.alcide.com does not have a status descriptor",
-				"k8s does not have a spec descriptor",
-				"kauditPolicyFile does not have a spec descriptor",
-				"prometheus does not have a spec descriptor",
-				"resources does not have a spec descriptor",
-				"vault does not have a spec descriptor",
-				"alcide does not have a spec descriptor",
+				"aks does not have a spec descriptor",
 				"gke does not have a spec descriptor",
 				"namespace does not have a spec descriptor",
-				"runOptions does not have a spec descriptor",
+				"resources does not have a spec descriptor",
 				"aws does not have a spec descriptor",
-				"tls does not have a spec descriptor",
-				"storage does not have a spec descriptor",
-				"clusterName does not have a spec descriptor",
-				"image does not have a spec descriptor",
 				"ingress does not have a spec descriptor",
+				"kauditPolicyFile does not have a spec descriptor",
+				"storage does not have a spec descriptor",
+				"vault does not have a spec descriptor",
+				"alcide does not have a spec descriptor",
+				"clusterName does not have a spec descriptor",
+				"k8s does not have a spec descriptor",
+				"runOptions does not have a spec descriptor",
+				"tls does not have a spec descriptor",
+				"image does not have a spec descriptor",
 				"k8sAuditEnvironment does not have a spec descriptor",
-				"aks does not have a spec descriptor"
+				"prometheus does not have a spec descriptor",
+				"kaudits.kaudit.alcide.com does not have a status descriptor",
+				"Owned CRDs do not have resources specified"
 			],
 			"scorecardSuggestions": [
-				"Add CRD validation for spec field `kauditPolicyFile` in Kaudit/v1alpha1",
+				"Add CRD validation for spec field `aws` in Kaudit/v1alpha1",
+				"Add CRD validation for spec field `clusterName` in Kaudit/v1alpha1",
+				"Add CRD validation for spec field `tls` in Kaudit/v1alpha1",
+				"Add CRD validation for spec field `vault` in Kaudit/v1alpha1",
+				"Add CRD validation for spec field `image` in Kaudit/v1alpha1",
+				"Add CRD validation for spec field `k8sAuditEnvironment` in Kaudit/v1alpha1",
+				"Add CRD validation for spec field `namespace` in Kaudit/v1alpha1",
 				"Add CRD validation for spec field `runOptions` in Kaudit/v1alpha1",
 				"Add CRD validation for spec field `storage` in Kaudit/v1alpha1",
-				"Add CRD validation for spec field `vault` in Kaudit/v1alpha1",
-				"Add CRD validation for spec field `aws` in Kaudit/v1alpha1",
-				"Add CRD validation for spec field `k8s` in Kaudit/v1alpha1",
-				"Add CRD validation for spec field `clusterName` in Kaudit/v1alpha1",
-				"Add CRD validation for spec field `prometheus` in Kaudit/v1alpha1",
-				"Add CRD validation for spec field `ingress` in Kaudit/v1alpha1",
-				"Add CRD validation for spec field `namespace` in Kaudit/v1alpha1",
 				"Add CRD validation for spec field `alcide` in Kaudit/v1alpha1",
 				"Add CRD validation for spec field `gke` in Kaudit/v1alpha1",
-				"Add CRD validation for spec field `k8sAuditEnvironment` in Kaudit/v1alpha1",
+				"Add CRD validation for spec field `prometheus` in Kaudit/v1alpha1",
+				"Add CRD validation for spec field `kauditPolicyFile` in Kaudit/v1alpha1",
 				"Add CRD validation for spec field `resources` in Kaudit/v1alpha1",
-				"Add CRD validation for spec field `tls` in Kaudit/v1alpha1",
 				"Add CRD validation for spec field `aks` in Kaudit/v1alpha1",
-				"Add CRD validation for spec field `image` in Kaudit/v1alpha1",
-				"Add a spec descriptor for k8s",
-				"Add a spec descriptor for kauditPolicyFile",
-				"Add a spec descriptor for prometheus",
-				"Add a spec descriptor for resources",
-				"Add a spec descriptor for vault",
-				"Add a spec descriptor for alcide",
+				"Add CRD validation for spec field `ingress` in Kaudit/v1alpha1",
+				"Add CRD validation for spec field `k8s` in Kaudit/v1alpha1",
+				"Add a spec descriptor for aks",
 				"Add a spec descriptor for gke",
 				"Add a spec descriptor for namespace",
-				"Add a spec descriptor for runOptions",
+				"Add a spec descriptor for resources",
 				"Add a spec descriptor for aws",
-				"Add a spec descriptor for tls",
-				"Add a spec descriptor for storage",
-				"Add a spec descriptor for clusterName",
-				"Add a spec descriptor for image",
 				"Add a spec descriptor for ingress",
+				"Add a spec descriptor for kauditPolicyFile",
+				"Add a spec descriptor for storage",
+				"Add a spec descriptor for vault",
+				"Add a spec descriptor for alcide",
+				"Add a spec descriptor for clusterName",
+				"Add a spec descriptor for k8s",
+				"Add a spec descriptor for runOptions",
+				"Add a spec descriptor for tls",
+				"Add a spec descriptor for image",
 				"Add a spec descriptor for k8sAuditEnvironment",
-				"Add a spec descriptor for aks"
+				"Add a spec descriptor for prometheus"
 			],
 			"scorecardFailingTests": [
-				"olm-crds-have-resources",
+				"olm-spec-descriptors",
 				"olm-status-descriptors",
-				"olm-spec-descriptors"
+				"olm-crds-have-resources"
 			],
 			"hasSupportForAllNamespaces": true,
 			"hasSupportForSingleNamespaces": true,
 			"hasSupportForOwnNamespaces": true,
-			"creationDates": [
-				"2020-04-07 12:59:59"
+			"buildAtDates": [
+				"2020-09-09T15:40:17.804777864Z"
 			],
 			"ocpLabel": [
-				""
+				"v4.5,v4.6"
 			],
 			"errors": null
 		},
@@ -99,26 +99,19 @@
 				"apiextensions.k8s.io/v1beta1, kind=CustomResourceDefinitions was deprecated in Kubernetes v1.16 and will be removed in v1.22 in favor of v1: [\"anacondateameditions.anaconda.com\"] should be migrated"
 			],
 			"scorecardErrors": [
+				"anacondateameditions.anaconda.com does not have a status descriptor",
 				"Owned CRDs do not have resources specified",
-				"proxy does not have a spec descriptor",
-				"redis does not have a spec descriptor",
 				"storage does not have a spec descriptor",
 				"worker does not have a spec descriptor",
 				"api does not have a spec descriptor",
 				"dispatcher does not have a spec descriptor",
 				"route does not have a spec descriptor",
 				"postgres does not have a spec descriptor",
-				"anacondateameditions.anaconda.com does not have a status descriptor"
+				"proxy does not have a spec descriptor",
+				"redis does not have a spec descriptor"
 			],
 			"scorecardSuggestions": [
-				"Add a spec descriptor for proxy",
-				"Add a spec descriptor for redis",
-				"Add a spec descriptor for storage",
-				"Add a spec descriptor for worker",
-				"Add a spec descriptor for api",
-				"Add a spec descriptor for dispatcher",
-				"Add a spec descriptor for route",
-				"Add a spec descriptor for postgres",
+				"Add CRD validation for spec field `dispatcher` in AnacondaTeamEdition/v1beta1",
 				"Add CRD validation for spec field `route` in AnacondaTeamEdition/v1beta1",
 				"Add CRD validation for spec field `postgres` in AnacondaTeamEdition/v1beta1",
 				"Add CRD validation for spec field `proxy` in AnacondaTeamEdition/v1beta1",
@@ -126,21 +119,28 @@
 				"Add CRD validation for spec field `storage` in AnacondaTeamEdition/v1beta1",
 				"Add CRD validation for spec field `worker` in AnacondaTeamEdition/v1beta1",
 				"Add CRD validation for spec field `api` in AnacondaTeamEdition/v1beta1",
-				"Add CRD validation for spec field `dispatcher` in AnacondaTeamEdition/v1beta1"
+				"Add a spec descriptor for storage",
+				"Add a spec descriptor for worker",
+				"Add a spec descriptor for api",
+				"Add a spec descriptor for dispatcher",
+				"Add a spec descriptor for route",
+				"Add a spec descriptor for postgres",
+				"Add a spec descriptor for proxy",
+				"Add a spec descriptor for redis"
 			],
 			"scorecardFailingTests": [
+				"olm-status-descriptors",
 				"olm-crds-have-resources",
-				"olm-spec-descriptors",
-				"olm-status-descriptors"
+				"olm-spec-descriptors"
 			],
 			"hasSupportForAllNamespaces": true,
 			"hasSupportForSingleNamespaces": true,
 			"hasSupportForOwnNamespaces": true,
-			"creationDates": [
-				"2020-08-27T04:49:49Z"
+			"buildAtDates": [
+				"2020-09-24T13:57:07.140350464Z"
 			],
 			"ocpLabel": [
-				""
+				"v4.5,v4.6"
 			],
 			"errors": null
 		},
@@ -155,32 +155,32 @@
 				"apiextensions.k8s.io/v1beta1, kind=CustomResourceDefinitions was deprecated in Kubernetes v1.16 and will be removed in v1.22 in favor of v1: [\"adams.appdynamics.com\" \"clusteragents.appdynamics.com\" \"infravizs.appdynamics.com\"] should be migrated"
 			],
 			"scorecardErrors": [
-				"enableDockerViz does not have a spec descriptor",
-				"enableMasters does not have a spec descriptor",
-				"netVizPort does not have a spec descriptor",
-				"stdoutLogging does not have a spec descriptor",
 				"adams.appdynamics.com does not have a status descriptor",
 				"clusteragents.appdynamics.com does not have a status descriptor",
-				"infravizs.appdynamics.com does not have a status descriptor"
+				"infravizs.appdynamics.com does not have a status descriptor",
+				"netVizPort does not have a spec descriptor",
+				"stdoutLogging does not have a spec descriptor",
+				"enableDockerViz does not have a spec descriptor",
+				"enableMasters does not have a spec descriptor"
 			],
 			"scorecardSuggestions": [
-				"Add a spec descriptor for enableDockerViz",
-				"Add a spec descriptor for enableMasters",
 				"Add a spec descriptor for netVizPort",
-				"Add a spec descriptor for stdoutLogging"
+				"Add a spec descriptor for stdoutLogging",
+				"Add a spec descriptor for enableDockerViz",
+				"Add a spec descriptor for enableMasters"
 			],
 			"scorecardFailingTests": [
-				"olm-spec-descriptors",
-				"olm-status-descriptors"
+				"olm-status-descriptors",
+				"olm-spec-descriptors"
 			],
 			"hasSupportForAllNamespaces": true,
 			"hasSupportForSingleNamespaces": true,
 			"hasSupportForOwnNamespaces": true,
-			"creationDates": [
-				"2020-10-30 12:00:00"
+			"buildAtDates": [
+				"2020-11-04T10:19:30.592282909Z"
 			],
 			"ocpLabel": [
-				""
+				"v4.5,v4.6"
 			],
 			"errors": null
 		},
@@ -196,40 +196,40 @@
 			],
 			"scorecardErrors": [
 				"Owned CRDs do not have resources specified",
-				"anchoreengines.anchore.com does not have a status descriptor",
-				"ingress does not have a spec descriptor",
-				"postgresql does not have a spec descriptor",
-				"anchoreAnalyzer does not have a spec descriptor",
 				"anchoreApi does not have a spec descriptor",
 				"anchoreCatalog does not have a spec descriptor",
 				"anchoreGlobal does not have a spec descriptor",
 				"anchorePolicyEngine does not have a spec descriptor",
-				"anchoreSimpleQueue does not have a spec descriptor"
+				"anchoreSimpleQueue does not have a spec descriptor",
+				"ingress does not have a spec descriptor",
+				"postgresql does not have a spec descriptor",
+				"anchoreAnalyzer does not have a spec descriptor",
+				"anchoreengines.anchore.com does not have a status descriptor"
 			],
 			"scorecardSuggestions": [
-				"Add a spec descriptor for ingress",
-				"Add a spec descriptor for postgresql",
-				"Add a spec descriptor for anchoreAnalyzer",
 				"Add a spec descriptor for anchoreApi",
 				"Add a spec descriptor for anchoreCatalog",
 				"Add a spec descriptor for anchoreGlobal",
 				"Add a spec descriptor for anchorePolicyEngine",
 				"Add a spec descriptor for anchoreSimpleQueue",
+				"Add a spec descriptor for ingress",
+				"Add a spec descriptor for postgresql",
+				"Add a spec descriptor for anchoreAnalyzer",
 				"Add CRD validation for AnchoreEngine/v1alpha1"
 			],
 			"scorecardFailingTests": [
 				"olm-crds-have-resources",
-				"olm-status-descriptors",
-				"olm-spec-descriptors"
+				"olm-spec-descriptors",
+				"olm-status-descriptors"
 			],
 			"hasSupportForAllNamespaces": true,
 			"hasSupportForSingleNamespaces": true,
 			"hasSupportForOwnNamespaces": true,
-			"creationDates": [
-				"2019-12-13T07:00:00Z"
+			"buildAtDates": [
+				"2020-10-26T14:41:37.141641576Z"
 			],
 			"ocpLabel": [
-				""
+				"v4.5,v4.6"
 			],
 			"errors": null
 		},
@@ -245,11 +245,11 @@
 			],
 			"hasSupportForSingleNamespaces": true,
 			"hasSupportForOwnNamespaces": true,
-			"creationDates": [
-				"2020-12-15"
+			"buildAtDates": [
+				"2021-01-22T12:25:07.977460331Z"
 			],
 			"ocpLabel": [
-				""
+				"v4.5,v4.6"
 			],
 			"errors": null
 		}

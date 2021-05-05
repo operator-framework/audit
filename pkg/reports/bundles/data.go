@@ -53,6 +53,7 @@ func (d *Data) PrepareReport() Report {
 		col.Replace = v.ReplacesDB
 		col.OperatorBundleVersion = v.VersionDB
 		col.OCPLabel = v.OCPLabel
+		col.BuildAt = v.BuildAt
 
 		var csv *v1alpha1.ClusterServiceVersion
 		if v.Bundle != nil && v.Bundle.CSV != nil {

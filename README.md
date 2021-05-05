@@ -68,9 +68,46 @@ Note that you can also output the results in JSON format:
     --head-only \
     --output=json \  
     --output-path=testdata/json
+``` 
+
+### Options
+
+Use the `--help` flag to check the options and the further information about its commands. Following an example:
+
+```sh
+$ ./bin/audit bundles --help
+Provides reports with the details of all bundles operators ship in the index image informed according to the criteria defined via the flags.
+
+ **When this report is useful?** 
+
+This report is useful when is required to check the operator bundles details.
+
+Usage:
+  audit bundles [flags]
+
+Flags:
+      --disable-scorecard    if set, will disable the scorecard tests
+      --disable-validators   if set, will disable the validators tests
+      --filter string        filter by operator bundle names which are *filter*
+      --head-only            if set, will just check the operator bundle which are head of the channels
+  -h, --help                 help for bundles
+      --index-image string   index image and tag which will be audit
+      --label string         filter by bundles which has index images where contains *label*
+      --label-value string   filter by bundles which has index images where contains *label=label-value*. This option can only be used with the --label flag.
+      --limit int32          limit the num of operator bundles to be audit
+      --output string        inform the output format. [Flags: xls, json]. (Default: xls) (default "xls")
+      --output-path string   inform the path of the directory to output the report. (Default: current directory) (default "/Users/camilamacedo/go/src/github.com/operator-framework/audit-1")
 ```
 
-NOTE: Use the `--help` flag to check the options and the further information about its commands.
+### Filtering results by names
+
+See that you can use the `--filter` --flag to filter the results by the name of the kind of item audited. By using this option to create a report for the packages that means that the results will be filtered by its name which would like the `%value%` informed, see an example:
+
+```sh
+./bin/audit audit bundles --index-image=registry.redhat.io/redhat/redhat-operator-index:v4.5 --filter="mybundlename"
+```
+
+That would only return the bundles which contains `mybundlename` as part of its name.
 
 ## Reports
 
@@ -113,9 +150,9 @@ If you see a column with this information than that means that the specific crit
 - OCP images: See [Understanding Operator catalogs](https://github.com/openshift/openshift-docs/blob/master/modules/olm-understanding-operator-catalog-images.adoc#understanding-operator-catalogs)
 - Community operator image (`quay.io/operatorhubio/catalog:latest`): Its source is from [upstream-community-operators](https://github.com/operator-framework/community-operators/tree/master/upstream-community-operators)
 
-### What are the reports in the testdata/reports/backport? 
+### What are the reports in the testdata/backport? 
 
-These reports were generated for we are able to identify the projects which are using the index image label `com.redhat.delivery.backport=true`. 
+These reports were generated for we are able to identify the projects which are using the index image label `com.redhat.delivery.backport=true` and are distributed on 4.5. 
 
 [of-api]: https://github.com/operator-framework/api
 [scorecard-config]: https://github.com/operator-framework/operator-sdk/blob/v1.5.0/testdata/go/v3/memcached-operator/bundle/tests/scorecard/config.yaml

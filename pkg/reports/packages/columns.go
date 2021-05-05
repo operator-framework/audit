@@ -38,7 +38,7 @@ type Columns struct {
 	HasSupportForOwnNamespaces   bool     `json:"hasSupportForOwnNamespaces,omitempty"`
 	HasInfraSupport              bool     `json:"hasInfraSupport,omitempty"`
 	HasPossiblePerformIssues     bool     `json:"hasPossiblePerformIssues,omitempty"`
-	CreationDates                []string `json:"creationDates,omitempty"`
+	BuildAtDates                 []string `json:"buildAtDates,omitempty"`
 	OCPLabel                     []string `json:"ocpLabel,omitempty"`
 	AuditErrors                  []error  `json:"errors"`
 }

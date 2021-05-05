@@ -27,7 +27,6 @@ import (
 
 const certifiedAnnotation = "certified"
 const repositoryAnnotation = "repository"
-const createAtAnnotation = "createdAt"
 const archLabels = "operatorframework.io/arch."
 const osLabel = "operatorframework.io/os."
 const sdkBuilderAnnotation = "operators.operatorframework.io/builder"
@@ -43,7 +42,7 @@ type Columns struct {
 	BundlePath                  string   `json:"bundlePath,omitempty"`
 	HasWebhook                  bool     `json:"hasWebhook"`
 	HasV1beta1CRDs              string   `json:"hasV1beta1CRDs,omitempty"`
-	CreatedAt                   string   `json:"createdAt,omitempty"`
+	BuildAt                     string   `json:"buildAt,omitempty"`
 	Company                     string   `json:"company,omitempty"`
 	Repository                  string   `json:"repository,omitempty"`
 	BundleChannel               string   `json:"bundleChannel,omitempty"`
@@ -89,7 +88,6 @@ func (c *Columns) AddDataFromCSV(csv *v1alpha1.ClusterServiceVersion) {
 	certified := csv.ObjectMeta.Annotations[certifiedAnnotation]
 	c.Certified = len(certified) > 0 && certified == "true"
 	c.Repository = csv.ObjectMeta.Annotations[repositoryAnnotation]
-	c.CreatedAt = csv.ObjectMeta.Annotations[createAtAnnotation]
 	if len(csv.Spec.Version.String()) > 0 {
 		c.OperatorBundleVersion = csv.Spec.Version.String()
 	}

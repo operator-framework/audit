@@ -59,10 +59,10 @@ func main() {
 	}
 
 	allimages := []string{
-		"registry.redhat.io/redhat/certified-operator-index:v4.8",
-		"registry.redhat.io/redhat/community-operator-index:v4.8",
-		"registry.redhat.io/redhat/redhat-marketplace-index:v4.8",
-		"registry.redhat.io/redhat/redhat-operator-index:v4.8",
+		"registry.redhat.io/redhat/certified-operator-index:v4.7",
+		"registry.redhat.io/redhat/community-operator-index:v4.7",
+		"registry.redhat.io/redhat/redhat-marketplace-index:v4.7",
+		"registry.redhat.io/redhat/redhat-operator-index:v4.7",
 		"quay.io/operatorhubio/catalog:latest",
 	}
 

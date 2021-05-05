@@ -26,6 +26,7 @@ type AuditBundle struct {
 	Bundle                  *apimanifests.Bundle
 	FoundLabel              bool
 	OCPLabel                string
+	BuildAt                 string
 	SkipRangeDB             string
 	VersionDB               string
 	SkipsDB                 string

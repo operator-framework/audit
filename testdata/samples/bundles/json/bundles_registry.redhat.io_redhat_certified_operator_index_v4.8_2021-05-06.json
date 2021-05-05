@@ -8,7 +8,7 @@
 			"bundlePath": "registry.connect.redhat.com/cambridgesemantics/anzograph-operator-bundle@sha256:3d140982e5972dbcef2ce9d280ef8f578cc8f052e86807f8cad6a5b884e76a56",
 			"hasWebhook": false,
 			"hasV1beta1CRDs": "YES",
-			"createdAt": "2020-10-15",
+			"buildAt": "2021-01-22T12:18:49.312327583Z",
 			"company": "Cambridge Semantics",
 			"bundleChannel": "stable",
 			"defaultChannel": "stable",
@@ -43,7 +43,7 @@
 			"bundlePath": "registry.connect.redhat.com/appranix/apx-operator-bundle@sha256:0722fe603686fa004bc0047f4535435ab9005ef4e9fd96820d330c1c17908259",
 			"hasWebhook": false,
 			"hasV1beta1CRDs": "YES",
-			"createdAt": "2020-02-18 10:47:57",
+			"buildAt": "2020-09-22T16:19:56.755841311Z",
 			"company": "Appranix, Inc",
 			"repository": "https://github.com/operator-framework/community-operators/tree/master/upstream-community-operators/appranix",
 			"bundleChannel": "stable",
@@ -68,18 +68,18 @@
 				"apiextensions.k8s.io/v1beta1, kind=CustomResourceDefinitions was deprecated in Kubernetes v1.16 and will be removed in v1.22 in favor of v1: [\"backupstoragelocations.aps.appranix.com\" \"volumesnapshotlocations.aps.appranix.com\"] should be migrated"
 			],
 			"scorecardErrors": [
-				"objectStorage does not have a spec descriptor",
 				"backupstoragelocations.aps.appranix.com does not have a status descriptor",
-				"volumesnapshotlocations.aps.appranix.com does not have a status descriptor"
+				"volumesnapshotlocations.aps.appranix.com does not have a status descriptor",
+				"objectStorage does not have a spec descriptor"
 			],
 			"scorecardSuggestions": [
-				"Add a spec descriptor for objectStorage",
 				"Add CRD validation for BackupStorageLocation/v1",
-				"Add CRD validation for VolumeSnapshotLocation/v1"
+				"Add CRD validation for VolumeSnapshotLocation/v1",
+				"Add a spec descriptor for objectStorage"
 			],
 			"scorecardFailingTests": [
-				"olm-spec-descriptors",
-				"olm-status-descriptors"
+				"olm-status-descriptors",
+				"olm-spec-descriptors"
 			],
 			"invalidVersioning": "NO",
 			"invalidSkipRange": "NOT USED",
@@ -95,7 +95,7 @@
 			"bundlePath": "registry.connect.redhat.com/appranix/apx-operator-bundle@sha256:98c5049335f381af9db41ca86d479ed66cfc3c661b50670722b863d6502f1d1c",
 			"hasWebhook": false,
 			"hasV1beta1CRDs": "YES",
-			"createdAt": "2020-03-04 12:34:42",
+			"buildAt": "2020-09-22T19:05:04.137956552Z",
 			"company": "Appranix, Inc",
 			"repository": "https://github.com/operator-framework/community-operators/tree/master/upstream-community-operators/appranix",
 			"bundleChannel": "stable",
@@ -120,9 +120,9 @@
 				"apiextensions.k8s.io/v1beta1, kind=CustomResourceDefinitions was deprecated in Kubernetes v1.16 and will be removed in v1.22 in favor of v1: [\"backupstoragelocations.aps.appranix.com\" \"volumesnapshotlocations.aps.appranix.com\"] should be migrated"
 			],
 			"scorecardErrors": [
-				"objectStorage does not have a spec descriptor",
 				"backupstoragelocations.aps.appranix.com does not have a status descriptor",
-				"volumesnapshotlocations.aps.appranix.com does not have a status descriptor"
+				"volumesnapshotlocations.aps.appranix.com does not have a status descriptor",
+				"objectStorage does not have a spec descriptor"
 			],
 			"scorecardSuggestions": [
 				"Add a spec descriptor for objectStorage",
@@ -130,8 +130,8 @@
 				"Add CRD validation for VolumeSnapshotLocation/v1"
 			],
 			"scorecardFailingTests": [
-				"olm-spec-descriptors",
-				"olm-status-descriptors"
+				"olm-status-descriptors",
+				"olm-spec-descriptors"
 			],
 			"invalidVersioning": "NO",
 			"invalidSkipRange": "NOT USED",
@@ -148,7 +148,7 @@
 			"bundlePath": "registry.connect.redhat.com/cambridgesemantics/anzo-operator-bundle@sha256:61d445e6076ea7206ed00900d9bf388d5e15691910e923a2312a8706be5a759f",
 			"hasWebhook": false,
 			"hasV1beta1CRDs": "YES",
-			"createdAt": "2020-12-15",
+			"buildAt": "2021-01-22T12:25:07.977460331Z",
 			"company": "Cambridge Semantics",
 			"bundleChannel": "stable",
 			"defaultChannel": "stable",
@@ -182,7 +182,7 @@
 			"bundlePath": "registry.connect.redhat.com/lightbend/akka-cluster-operator-certified-bundle@sha256:e7dc6a53e75a9416f0619998cb1ab12aef98f2e4cbd8f10bc4f60bfefa553e82",
 			"hasWebhook": false,
 			"hasV1beta1CRDs": "YES",
-			"createdAt": "2019-06-28T15:23:00Z",
+			"buildAt": "2020-09-05T22:52:10.481848677Z",
 			"company": "Lightbend, Inc.",
 			"repository": "https://github.com/lightbend/akka-cluster-operator",
 			"bundleChannel": "beta",
