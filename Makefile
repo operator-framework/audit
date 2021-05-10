@@ -28,7 +28,8 @@ help: ## Display this help
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
 ##@ Build
-
+GO_ASMFLAGS = -asmflags "all=-trimpath=$(shell dirname $(PWD))"
+GO_GCFLAGS = -gcflags "all=-trimpath=$(shell dirname $(PWD))"
 LD_FLAGS=-ldflags " \
     -X main.goos=$(shell go env GOOS) \
     -X main.goarch=$(shell go env GOARCH) \
@@ -37,10 +38,13 @@ LD_FLAGS=-ldflags " \
     "
 .PHONY: build
 build: ## Build the project locally
-	go build $(LD_FLAGS) -o bin/audit ./cmd
+	go build $(GO_GCFLAGS) $(GO_ASMFLAGS) $(LD_FLAGS) -o bin/audit-tool ./cmd
+	cp ./bin/audit-tool $(GOBIN)/audit-tool
 
-install: build ## Build and install the binary with the current source code. Use it to test your changes locally.
-	cp ./bin/audit $(GOBIN)/audit
+.PHONY: install
+install: ## Build the project locally
+	make build
+	cp ./bin/audit-tool $(GOBIN)/audit-tool
 
 ##@ Development
 
