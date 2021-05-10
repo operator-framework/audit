@@ -63,6 +63,18 @@ func main() {
 		"registry.redhat.io/redhat/certified-operator-index:v4.5",
 	}
 
+	command = exec.Command("docker", "login", "https://registry.connect.redhat.com")
+	_, err = pkg.RunCommand(command)
+	if err != nil {
+		log.Errorf("running command :%s", err)
+	}
+
+	command = exec.Command("docker", "login", "https://registry.redhat.io")
+	_, err = pkg.RunCommand(command)
+	if err != nil {
+		log.Errorf("running command :%s", err)
+	}
+
 	for _, v := range allimages {
 
 		// create dir name with the image name only
