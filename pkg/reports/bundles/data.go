@@ -132,21 +132,23 @@ func (d *Data) OutputReport() error {
 }
 
 func (d *Data) BuildBundlesQuery() (string, error) {
-	query := sq.Select("name, csv, bundlepath, version, skiprange, replaces, skips").From("operatorbundle")
+	query := sq.Select("o.name, o.csv, o.bundlepath, o.version, o.skiprange, o.replaces, o.skips").From(
+		"operatorbundle o")
 
-	// todo: we need to use the head_operator data from db instead
 	if d.Flags.HeadOnly {
-		query = query.Where("csv is not null")
+		query = sq.Select("o.name, o.csv, o.bundlepath, o.version, o.skiprange, o.replaces, o.skips").From(
+			"operatorbundle o, channel c")
+		query = query.Where("c.head_operatorbundle_name == o.name")
 	}
 	if d.Flags.Limit > 0 {
 		query = query.Limit(uint64(d.Flags.Limit))
 	}
 	if len(d.Flags.Filter) > 0 {
 		like := "'%" + d.Flags.Filter + "%'"
-		query = query.Where(fmt.Sprintf("name like %s", like))
+		query = query.Where(fmt.Sprintf("o.name like %s", like))
 	}
 
-	query.OrderBy("name")
+	query.OrderBy("o.name")
 
 	sql, _, err := query.ToSql()
 	if err != nil {
