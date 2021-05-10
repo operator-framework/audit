@@ -34,7 +34,8 @@ type Manifest struct {
 	Layers []string
 }
 
-type DockerConfigManifest struct {
+type DockerInspectManifest struct {
+	Created      string       `json:"Created"`
 	DockerConfig DockerConfig `json:"Config"`
 }
 
@@ -48,16 +49,24 @@ func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 
 	downloadBundleImage(auditBundle)
 	bundleDir := createBundleDir(auditBundle)
-	dockerConfigManifest := extractBundleFromImage(auditBundle, bundleDir)
+	extractBundleFromImage(auditBundle, bundleDir)
+	inspectManifest := dockerInspect(auditBundle)
 
 	if len(label) > 0 {
-		value := dockerConfigManifest.DockerConfig.Labels[label]
+		value := inspectManifest.DockerConfig.Labels[label]
 		if value == labelValue {
 			auditBundle.FoundLabel = true
 		}
 	}
 
-	auditBundle.OCPLabel = dockerConfigManifest.DockerConfig.Labels["com.redhat.openshift.versions"]
+	// 4.8 images has note the build-date in the label
+	if len(inspectManifest.Created) > 0 {
+		auditBundle.BuildAt = inspectManifest.Created
+	} else {
+		auditBundle.BuildAt = inspectManifest.DockerConfig.Labels["build-date"]
+	}
+
+	auditBundle.OCPLabel = inspectManifest.DockerConfig.Labels["com.redhat.openshift.versions"]
 
 	// Read the bundle
 	var err error
@@ -105,7 +114,27 @@ func downloadBundleImage(auditBundle *models.AuditBundle) {
 	}
 }
 
-func extractBundleFromImage(auditBundle *models.AuditBundle, bundleDir string) DockerConfigManifest {
+func dockerInspect(auditBundle *models.AuditBundle) DockerInspectManifest {
+	cmd := exec.Command("docker", "inspect", auditBundle.OperatorBundleImagePath)
+	output, err := pkg.RunCommand(cmd)
+	if err != nil || len(output) < 1 {
+		log.Errorf("unable to inspect the bundle image: %s", err)
+		auditBundle.Errors = append(auditBundle.Errors,
+			fmt.Errorf("unable to inspect the bundle image : %s", err))
+		return DockerInspectManifest{}
+	}
+
+	var dockerInspect []DockerInspectManifest
+	if err := json.Unmarshal(output, &dockerInspect); err != nil {
+		log.Errorf("unable to Unmarshal docker inspect result: %s", err)
+		auditBundle.Errors = append(auditBundle.Errors,
+			fmt.Errorf("unable to Unmarshal docker inspect result: %s", err))
+		return DockerInspectManifest{}
+	}
+	return dockerInspect[0]
+}
+
+func extractBundleFromImage(auditBundle *models.AuditBundle, bundleDir string) {
 	imageName := strings.Split(auditBundle.OperatorBundleImagePath, "@")[0]
 	tarPath := fmt.Sprintf("%s/%s.tar", bundleDir, auditBundle.OperatorBundleName)
 	cmd := exec.Command("docker", "save", imageName, "-o", tarPath)
@@ -132,7 +161,6 @@ func extractBundleFromImage(auditBundle *models.AuditBundle, bundleDir string) D
 			fmt.Errorf("error to create the bundle bundleDir : %s", err))
 	}
 
-	var dockerConfig DockerConfigManifest
 	bundleConfigFilePath := filepath.Join(bundleDir, "manifest.json")
 	existingFile, err := ioutil.ReadFile(bundleConfigFilePath)
 	if err == nil {
@@ -146,16 +174,6 @@ func extractBundleFromImage(auditBundle *models.AuditBundle, bundleDir string) D
 			log.Errorf("error to untar layers")
 			auditBundle.Errors = append(auditBundle.Errors,
 				fmt.Errorf("error to untar layers: %s", err))
-		}
-
-		bundleConfigFilePath := filepath.Join(bundleDir, bundleLayerConfig[0].Config)
-		existingFile, err := ioutil.ReadFile(bundleConfigFilePath)
-		if err == nil {
-			if err := json.Unmarshal(existingFile, &dockerConfig); err != nil {
-				log.Errorf("unable to Unmarshal manifest.json: %s", err)
-				auditBundle.Errors = append(auditBundle.Errors,
-					fmt.Errorf("unable to Unmarshal manifest.json: %s", err))
-			}
 		}
 
 		for _, layer := range bundleLayerConfig[0].Layers {
@@ -187,8 +205,6 @@ func extractBundleFromImage(auditBundle *models.AuditBundle, bundleDir string) D
 
 	cmd = exec.Command("rm", "-rf", fmt.Sprintf("%s/bundle/root/", bundleDir))
 	_, _ = pkg.RunCommand(cmd)
-
-	return dockerConfig
 }
 
 func cleanupBundleDir(auditBundle *models.AuditBundle, dir string) {

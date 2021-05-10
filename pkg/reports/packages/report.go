@@ -63,7 +63,7 @@ func (r *Report) writeXls() error {
 		"P": "Has Support for Multi Namespaces",
 		"Q": "Has Infrastructure Support",
 		"R": "Has possible performance issues",
-		"S": "Creation Dates (by author)",
+		"S": "Build Dates (from index image)",
 		"T": "OCP Labels",
 		"U": "Issues (To process this report)",
 	}
@@ -199,8 +199,8 @@ func (r *Report) writeXls() error {
 		}
 
 		if err := f.SetCellValue(sheetName, fmt.Sprintf("S%d", line),
-			pkg.GetFormatArrayWithBreakLine(v.CreationDates)); err != nil {
-			log.Errorf("to add CreationDates cell value : %s", err)
+			pkg.GetFormatArrayWithBreakLine(v.BuildAtDates)); err != nil {
+			log.Errorf("to add BuildAtDates cell value : %s", err)
 		}
 
 		if err := f.SetCellValue(sheetName, fmt.Sprintf("T%d", line),

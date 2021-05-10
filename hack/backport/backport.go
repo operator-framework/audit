@@ -43,7 +43,7 @@ func main() {
 	// testdata is the path where all samples should be generate
 	const testdataPath = "/testdata/"
 
-	reportPath := filepath.Join(currentPath, testdataPath, "reports", "backport")
+	reportPath := filepath.Join(currentPath, testdataPath, "backport")
 	binPath := filepath.Join(currentPath, "bin", "audit")
 
 	command = exec.Command("rm", "-rf", reportPath)

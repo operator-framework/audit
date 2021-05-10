@@ -79,7 +79,7 @@ func (d *Data) PrepareReport() Report {
 			scorecardFailingTests = append(scorecardFailingTests, v.ScorecardFailingTests...)
 			muiltArchSupport = append(muiltArchSupport, v.MultipleArchitectures...)
 			ocpLabel = append(ocpLabel, v.OCPLabel)
-			creationDates = append(creationDates, v.CreatedAt)
+			creationDates = append(creationDates, v.BuildAt)
 
 			if !foundDeprecatedAPI {
 				switch v.HasV1beta1CRDs {
@@ -161,7 +161,7 @@ func (d *Data) PrepareReport() Report {
 		col.HasInfraSupport = foundInfraSupport
 		col.HasPossiblePerformIssues = foundPossiblePerformIssues
 		col.HasDependency = foundDependency
-		col.CreationDates = creationDates
+		col.BuildAtDates = creationDates
 		col.OCPLabel = ocpLabel
 
 		// If was not possible get any bundle then needs to be Unknown
@@ -200,6 +200,9 @@ func (d *Data) getAllBundles(auditPkg models.AuditPackage) []bundles.Columns {
 		bundles.AddDataFromBundle(v.Bundle)
 		bundles.AddDataFromScorecard(v.ScorecardResults)
 		bundles.AddDataFromValidators(v.ValidatorsResults)
+
+		bundles.BuildAt = v.BuildAt
+		bundles.OCPLabel = v.OCPLabel
 
 		allBundles = append(allBundles, bundles)
 	}

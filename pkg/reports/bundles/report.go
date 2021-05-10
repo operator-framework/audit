@@ -66,7 +66,7 @@ func (r *Report) writeXls() error {
 		"N":  "Operator Bundle Version",
 		"O":  "Default Channel",
 		"P":  "Bundle Channel",
-		"Q":  "Create At",
+		"Q":  "Build At",
 		"R":  "Bundle Path",
 		"S":  "Has webhooks?",
 		"T":  "Builder",
@@ -164,8 +164,8 @@ func (r *Report) writeXls() error {
 		if err := f.SetCellValue(sheetName, fmt.Sprintf("P%d", line), v.BundleChannel); err != nil {
 			log.Errorf("to add BundleChannel cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("Q%d", line), v.CreatedAt); err != nil {
-			log.Errorf("to add CreatedAt cell value : %s", err)
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("Q%d", line), v.BuildAt); err != nil {
+			log.Errorf("to add BuildAt cell value : %s", err)
 		}
 		if err := f.SetCellValue(sheetName, fmt.Sprintf("R%d", line), v.BundlePath); err != nil {
 			log.Errorf("to add BundlePath cell value : %s", err)
