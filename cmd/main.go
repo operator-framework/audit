@@ -27,7 +27,7 @@ import (
 func main() {
 
 	rootCmd := &cobra.Command{
-		Use:   "audit",
+		Use:   "audit-tool",
 		Short: "An analytic tool to audit operator bundles and index catalogs",
 		Long: "The audit is an analytic tool which uses the Operator Framework solutions. " +
 			"More info: https://github.com/operator-framework/audit",

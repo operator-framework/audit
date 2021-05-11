@@ -137,6 +137,10 @@ func indexRun(cmd *cobra.Command, args []string) error {
 	command = exec.Command("rm", "-rf", "tmp")
 	_, _ = pkg.RunCommand(command)
 
+	// Cleanup
+	command = exec.Command("rm", "-rf", "output")
+	_, _ = pkg.RunCommand(command)
+
 	log.Infof("Start to generate the reportData")
 	if err := reportData.OutputReport(); err != nil {
 		return err
@@ -156,6 +160,12 @@ func extractIndexDB() error {
 	_, err := pkg.RunCommand(command)
 	if err != nil {
 		return fmt.Errorf("unable to create container image %s : %s", flags.IndexImage, err)
+	}
+
+	command = exec.Command("mkdir", "output")
+	_, err = pkg.RunCommand(command)
+	if err != nil {
+		return fmt.Errorf("unable to extract the image for index.db %s : %s", flags.IndexImage, err)
 	}
 
 	// Extract
