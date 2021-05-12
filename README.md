@@ -88,7 +88,7 @@ Usage:
 Flags:
       --disable-scorecard    if set, will disable the scorecard tests
       --disable-validators   if set, will disable the validators tests
-      --filter string        filter by operator bundle names which are *filter*
+      --filter string        filter by the packages names which are like *filter*
       --head-only            if set, will just check the operator bundle which are head of the channels
   -h, --help                 help for bundles
       --index-image string   index image and tag which will be audit
@@ -101,13 +101,11 @@ Flags:
 
 ### Filtering results by names
 
-See that you can use the `--filter` --flag to filter the results by the name of the kind of item audited. By using this option to create a report for the packages that means that the results will be filtered by its name which would like the `%value%` informed, see an example:
+See that you can use the `--filter` --flag to filter the results by the package name:
 
 ```sh
-./bin/audit audit bundles --index-image=registry.redhat.io/redhat/redhat-operator-index:v4.5 --filter="mybundlename"
+./bin/audit audit [bundles|packages|channels] --index-image=registry.redhat.io/redhat/redhat-operator-index:v4.5 --filter="mypackagename"
 ```
-
-That would only return the bundles which contains `mybundlename` as part of its name.
 
 ## Reports
 

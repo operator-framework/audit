@@ -63,7 +63,7 @@ func NewBundlesCmd() *cobra.Command {
 	}
 
 	bundlesCmd.Flags().StringVar(&flags.Filter, "filter", "",
-		"filter by operator bundle names which are *filter*")
+		"filter by the packages names which are like *filter*")
 	bundlesCmd.Flags().StringVar(&flags.OutputFormat, "output", pkg.Xls,
 		"inform the output format. [Flags: xls, json]. (Default: xls)")
 	bundlesCmd.Flags().StringVar(&flags.OutputPath, "output-path", currentPath,

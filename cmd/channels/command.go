@@ -65,7 +65,7 @@ func NewChannelCmd() *cobra.Command {
 	}
 
 	pkgCmd.Flags().StringVar(&flags.Filter, "filter", "",
-		"filter by channel names which are *filter*")
+		"filter by the packages names which are like *filter*")
 	pkgCmd.Flags().Int32Var(&flags.Limit, "limit", 0,
 		"limit the num of packages to be audit")
 	pkgCmd.Flags().StringVar(&flags.OutputFormat, "output", pkg.Xls,
