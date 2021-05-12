@@ -82,9 +82,15 @@ test-license: ## Check if all files has the license
 
 .PHONY: generate-samples ## Generate the samples in the testdata
 generate-samples:
+	make install
 	go run ./hack/samples/generate_samples.go
 
-.PHONY: full-report ## Generate the full report for all images in the the testdata
-full-report:
+.PHONY: generate-testdata ## Generate the full testdata directory
+generate-testdata:
+	make install
 	go run ./hack/report/full.go
+	go run ./hack/samples/generate_samples.go
+	go run ./hack/report/full.go
+
+
 

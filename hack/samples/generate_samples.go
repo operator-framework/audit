@@ -27,12 +27,6 @@ import (
 
 func main() {
 
-	command := exec.Command("make", "install")
-	_, err := pkg.RunCommand(command)
-	if err != nil {
-		log.Errorf("running command :%s", err)
-	}
-
 	currentPath, err := os.Getwd()
 	if err != nil {
 		log.Error(err)
@@ -43,12 +37,12 @@ func main() {
 	const testdataPath = "/testdata/samples/"
 
 	samplesDir := filepath.Join(currentPath, testdataPath)
-	binPath := filepath.Join(currentPath, "bin", "audit")
+	binPath := filepath.Join(currentPath, "bin", "audit-tool")
 
 	log.Infof("using the path: (%v)", samplesDir)
 	log.Infof("using the bin: (%v)", binPath)
 
-	command = exec.Command("rm", "-rf", filepath.Join(samplesDir))
+	command := exec.Command("rm", "-rf", filepath.Join(samplesDir))
 	_, err = pkg.RunCommand(command)
 	if err != nil {
 		log.Errorf("running command :%s", err)
@@ -129,7 +123,7 @@ func main() {
 	log.Infof("creating bundles testdata Sample json")
 	command = exec.Command(binPath, "bundles",
 		"--index-image=registry.redhat.io/redhat/certified-operator-index:v4.8",
-		"--limit=5",
+		"--limit=2",
 		"--output=json",
 		"--head-only",
 		fmt.Sprintf("--output-path=%s", filepath.Join(samplesDir, "bundles", "json")),
@@ -142,7 +136,7 @@ func main() {
 	log.Infof("creating packages testdata Sample XLS")
 	command = exec.Command(binPath, "packages",
 		"--index-image=registry.redhat.io/redhat/certified-operator-index:v4.8",
-		"--limit=5",
+		"--limit=2",
 		fmt.Sprintf("--output-path=%s", filepath.Join(samplesDir, "packages", "xls")),
 	)
 	_, err = pkg.RunCommand(command)
@@ -153,7 +147,7 @@ func main() {
 	log.Infof("creating packages testdata Sample json")
 	command = exec.Command(binPath, "packages",
 		"--index-image=registry.redhat.io/redhat/certified-operator-index:v4.8",
-		"--limit=5",
+		"--limit=2",
 		"--output=json",
 		fmt.Sprintf("--output-path=%s", filepath.Join(samplesDir, "packages", "json")),
 	)
