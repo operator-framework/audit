@@ -28,12 +28,6 @@ import (
 
 func main() {
 
-	command := exec.Command("make", "install")
-	_, err := pkg.RunCommand(command)
-	if err != nil {
-		log.Errorf("running command :%s", err)
-	}
-
 	currentPath, err := os.Getwd()
 	if err != nil {
 		log.Error(err)
@@ -44,9 +38,9 @@ func main() {
 	const testdataPath = "/testdata/"
 
 	reportPath := filepath.Join(currentPath, testdataPath, "reports")
-	binPath := filepath.Join(currentPath, "bin", "audit")
+	binPath := filepath.Join(currentPath, "bin", "audit-tool")
 
-	command = exec.Command("rm", "-rf", reportPath)
+	command := exec.Command("rm", "-rf", reportPath)
 	_, err = pkg.RunCommand(command)
 	if err != nil {
 		log.Errorf("running command :%s", err)

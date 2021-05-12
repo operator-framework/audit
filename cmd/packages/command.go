@@ -65,7 +65,7 @@ func NewPackageCmd() *cobra.Command {
 	}
 
 	pkgCmd.Flags().StringVar(&flags.Filter, "filter", "",
-		"filter by package names which are *filter*")
+		"filter by the packages names which are like *filter*")
 	pkgCmd.Flags().Int32Var(&flags.Limit, "limit", 0,
 		"limit the num of packages to be audit")
 	pkgCmd.Flags().StringVar(&flags.OutputFormat, "output", pkg.Xls,
@@ -114,34 +114,23 @@ func indexRun(cmd *cobra.Command, args []string) error {
 	log.Info("Starting audit...")
 	reportData := packages.Data{}
 	reportData.Flags = flags
-
-	// Create tmp dir to process the report
-	// Cleanup
-	command := exec.Command("rm", "-rf", "tmp")
-	_, _ = pkg.RunCommand(command)
-	command = exec.Command("mkdir", "tmp")
-	_, err := pkg.RunCommand(command)
-	if err != nil {
-		return err
-	}
+	pkg.GenerateTemporaryDirs()
 
 	if err := extractIndexDB(); err != nil {
 		return err
 	}
 
-	reportData, err = getDataFromIndexDB(reportData)
+	reportData, err := getDataFromIndexDB(reportData)
 	if err != nil {
 		return err
 	}
-
-	// Cleanup
-	command = exec.Command("rm", "-rf", "tmp")
-	_, _ = pkg.RunCommand(command)
 
 	log.Infof("Start to generate the report")
 	if err := reportData.OutputReport(); err != nil {
 		return err
 	}
+
+	pkg.CleanupTemporaryDirs()
 	log.Infof("Operation completed.")
 
 	return nil
