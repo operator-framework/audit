@@ -116,7 +116,7 @@ func (d *Data) BuildChannelsQuery() (string, error) {
 	}
 
 	if len(d.Flags.Filter) > 0 {
-		like := "%" + d.Flags.Filter + "%"
+		like := "'%" + d.Flags.Filter + "%'"
 		query = query.Where(fmt.Sprintf("package_name like %s", like))
 	}
 

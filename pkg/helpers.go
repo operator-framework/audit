@@ -109,3 +109,31 @@ func GetReportName(imageName, typeName, typeFile string) string {
 
 	return fmt.Sprintf("%s_%s_%s.%s", typeName, name, dt, typeFile)
 }
+
+func GenerateTemporaryDirs() {
+	command := exec.Command("rm", "-rf", "tmp")
+	_, _ = RunCommand(command)
+
+	command = exec.Command("rm", "-rf", "./output/")
+	_, _ = RunCommand(command)
+
+	command = exec.Command("mkdir", "./output/")
+	_, err := RunCommand(command)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	command = exec.Command("mkdir", "tmp")
+	_, err = RunCommand(command)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func CleanupTemporaryDirs() {
+	command := exec.Command("rm", "-rf", "tmp")
+	_, _ = RunCommand(command)
+
+	command = exec.Command("rm", "-rf", "./output/")
+	_, _ = RunCommand(command)
+}

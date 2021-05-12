@@ -113,34 +113,23 @@ func indexRun(cmd *cobra.Command, args []string) error {
 	log.Info("Starting audit...")
 	reportData := index.Data{}
 	reportData.Flags = flags
-
-	// Create tmp dir to process the reportData
-	// Cleanup
-	command := exec.Command("rm", "-rf", "tmp")
-	_, _ = pkg.RunCommand(command)
-	command = exec.Command("mkdir", "tmp")
-	_, err := pkg.RunCommand(command)
-	if err != nil {
-		return err
-	}
+	pkg.GenerateTemporaryDirs()
 
 	if err := extractIndexDB(); err != nil {
 		return err
 	}
 
-	reportData, err = getDataFromIndexDB(reportData)
+	reportData, err := getDataFromIndexDB(reportData)
 	if err != nil {
 		return err
 	}
-
-	// Cleanup
-	command = exec.Command("rm", "-rf", "tmp")
-	_, _ = pkg.RunCommand(command)
 
 	log.Infof("Start to generate the reportData")
 	if err := reportData.OutputReport(); err != nil {
 		return err
 	}
+
+	pkg.CleanupTemporaryDirs()
 	log.Infof("Operation completed.")
 
 	return nil
