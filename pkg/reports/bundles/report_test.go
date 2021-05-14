@@ -31,22 +31,22 @@ func TestBuildQuery(t *testing.T) {
 		{
 			name: "should build only the select when has not flags values",
 			args: args{report: Data{Flags: BindFlags{}}},
-			want: "SELECT name, csv, bundlepath, version, skiprange, replaces, skips FROM operatorbundle",
+			want: "SELECT o.name, o.csv, o.bundlepath, o.version, o.skiprange, o.replaces, o.skips FROM operatorbundle o",
 		},
 		{
 			name: "should build sql for head only",
 			args: args{report: Data{Flags: BindFlags{HeadOnly: true}}},
-			want: "SELECT name, csv, bundlepath, version, skiprange, replaces, skips FROM operatorbundle WHERE csv is not null",
+			want: "SELECT o.name, o.csv, o.bundlepath, o.version, o.skiprange, o.replaces, o.skips FROM operatorbundle o, channel c WHERE c.head_operatorbundle_name == o.name",
 		},
 		{
-			name: "should build sql for head only with limmit",
+			name: "should build sql for head only with limit",
 			args: args{report: Data{Flags: BindFlags{
 				IndexImage: "registry.redhat.io/redhat/redhat-operator-index:v4.7",
 				HeadOnly:   true,
 				OutputPath: "../testdata/xls",
 				Limit:      int32(3),
 			}}},
-			want: "SELECT name, csv, bundlepath, version, skiprange, replaces, skips FROM operatorbundle WHERE csv is not null LIMIT 3",
+			want: "SELECT o.name, o.csv, o.bundlepath, o.version, o.skiprange, o.replaces, o.skips FROM operatorbundle o, channel c WHERE c.head_operatorbundle_name == o.name LIMIT 3",
 		},
 	}
 	for _, tt := range tests {
