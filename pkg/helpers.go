@@ -161,3 +161,20 @@ func RunDockerInspect(image string) (DockerInspectManifest, error) {
 	}
 	return dockerInspect[0], nil
 }
+
+// HasClusterRunning will return true when is possible to check that the env has a cluster running
+func HasClusterRunning() bool {
+	command := exec.Command("kubectl", "cluster-info")
+	output, err := RunCommand(command)
+	if err != nil || !strings.Contains(string(output), "is running at") {
+		return false
+	}
+	return true
+}
+
+// HasSDKInstalled will return true when find an SDK version installed
+func HasSDKInstalled() bool {
+	command := exec.Command("operator-sdk", "version")
+	_, err := RunCommand(command)
+	return err == nil
+}
