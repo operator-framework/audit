@@ -16,6 +16,7 @@ package actions
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os/exec"
@@ -37,6 +38,12 @@ type Manifest struct {
 // GetDataFromBundleImage returns the bundle from the image
 func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 	disableScorecard, disableValidators bool, label, labelValue string) *models.AuditBundle {
+
+	if len(auditBundle.OperatorBundleImagePath) < 1 {
+		auditBundle.Errors = append(auditBundle.Errors,
+			errors.New("not found bundle path stored in the index.db"))
+		return auditBundle
+	}
 
 	downloadBundleImage(auditBundle)
 	bundleDir := createBundleDir(auditBundle)

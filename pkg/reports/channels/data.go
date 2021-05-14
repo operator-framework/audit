@@ -20,9 +20,9 @@ import (
 	"sort"
 	"strings"
 
-	sq "github.com/Masterminds/squirrel"
-	"github.com/operator-framework/api/pkg/operators/v1alpha1"
+	"github.com/blang/semver"
 
+	sq "github.com/Masterminds/squirrel"
 	"github.com/operator-framework/audit/pkg"
 	"github.com/operator-framework/audit/pkg/models"
 	"github.com/operator-framework/audit/pkg/reports/bundles"
@@ -45,19 +45,43 @@ func (d *Data) PrepareReport() Report {
 
 		var allBundles []bundles.Columns
 		for _, v := range auditCha.AuditBundles {
-
 			bundles := bundles.Columns{}
-
-			var csv *v1alpha1.ClusterServiceVersion
-			if v.Bundle != nil && v.Bundle.CSV != nil {
-				csv = v.Bundle.CSV
-			} else if v.CSVFromIndexDB != nil {
-				csv = v.CSVFromIndexDB
+			bundles.Replace = v.ReplacesDB
+			bundles.SkipRange = v.SkipRangeDB
+			bundles.PackageName = v.PackageName
+			bundles.Channels = v.Channels
+			if len(v.SkipsDB) > 0 {
+				bundles.Skips = strings.Split(v.SkipsDB, ",")
 			}
 
-			bundles.AddDataFromCSV(csv)
-			bundles.AddDataFromBundle(v.Bundle)
-			allBundles = append(allBundles, bundles)
+			if len(v.VersionDB) > 0 {
+				_, err := semver.Parse(v.VersionDB)
+				if err != nil {
+					bundles.InvalidVersioning = pkg.GetYesOrNo(true)
+				} else {
+					bundles.InvalidVersioning = pkg.GetYesOrNo(false)
+				}
+			}
+
+			if len(v.SkipRangeDB) > 0 {
+				_, err := semver.ParseRange(v.SkipRangeDB)
+				if err != nil {
+					bundles.InvalidSkipRange = pkg.GetYesOrNo(true)
+				} else {
+					bundles.InvalidSkipRange = pkg.GetYesOrNo(false)
+				}
+			}
+
+			if len(v.ReplacesDB) > 0 {
+				// check if found replace
+				bundles.FoundReplace = pkg.GetYesOrNo(false)
+				for _, b := range auditCha.AuditBundles {
+					if b.OperatorBundleName == bundles.Replace {
+						bundles.FoundReplace = pkg.GetYesOrNo(true)
+						break
+					}
+				}
+			}
 		}
 
 		var auditErrors []error

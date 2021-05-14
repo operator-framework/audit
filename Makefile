@@ -90,7 +90,7 @@ generate-testdata:
 	make install
 	go run ./hack/report/full.go
 	go run ./hack/samples/generate_samples.go
-	go run ./hack/report/full.go
+	go run ./hack/backport/backport.go
 
 
 
