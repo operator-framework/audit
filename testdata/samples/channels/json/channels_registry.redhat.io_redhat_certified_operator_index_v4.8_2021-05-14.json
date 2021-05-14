@@ -1,0 +1,79 @@
+{
+	"columns": [
+		{
+			"packageName": "alcide-kaudit-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true,
+			"errors": null
+		},
+		{
+			"packageName": "anaconda-team-edition",
+			"channelName": "beta",
+			"foundAllReplaces": true,
+			"errors": null
+		},
+		{
+			"packageName": "appdynamics-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true,
+			"errors": null
+		},
+		{
+			"packageName": "anchore-engine",
+			"channelName": "alpha",
+			"foundAllReplaces": true,
+			"errors": null
+		},
+		{
+			"packageName": "anzo-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true,
+			"errors": null
+		}
+	],
+	"flags": {
+		"index-image": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+		"limit": 5,
+		"filter": "",
+		"outputPath": "/Users/camilamacedo/go/src/github.com/operator-framework/audit-1/testdata/samples/channels/json",
+		"outputFormat": "json"
+	},
+	"IndexImageInspect": {
+		"Id": "sha256:414ec051c4eec31a9f8e0e51eb4e0aa92653ca6b1d1c3da6cef92cb4bd21d0ed",
+		"Created": "2021-04-27T21:39:54.614373596Z",
+		"Config": {
+			"Labels": {
+				"License": "GPLv2+",
+				"architecture": "x86_64",
+				"build-date": "2021-03-27T03:46:48.681338",
+				"com.redhat.build-host": "cpt-1004.osbs.prod.upshift.rdu2.redhat.com",
+				"com.redhat.component": "operator-registry-container",
+				"com.redhat.index.delivery.distribution_scope": "prod",
+				"com.redhat.index.delivery.version": "v4.8",
+				"com.redhat.license_terms": "https://www.redhat.com/agreements",
+				"description": "This is a component of OpenShift Operator Lifecycle Manager and is the base for operator catalog API containers.",
+				"distribution-scope": "public",
+				"io.buildah.version": "1.16.7",
+				"io.k8s.description": "This is a component of OpenShift Operator Lifecycle Manager and is the base for operator catalog API containers.",
+				"io.k8s.display-name": "OpenShift Operator Registry",
+				"io.openshift.build.commit.id": "bc4c9f8f967736a6ff774c52845e8a3ed28e7072",
+				"io.openshift.build.commit.url": "https://github.com/operator-framework/operator-registry/commit/bc4c9f8f967736a6ff774c52845e8a3ed28e7072",
+				"io.openshift.build.source-location": "https://github.com/operator-framework/operator-registry",
+				"io.openshift.maintainer.component": "OLM",
+				"io.openshift.maintainer.product": "OpenShift Container Platform",
+				"io.openshift.tags": "openshift,base",
+				"maintainer": "Odin Team \u003caos-odin@redhat.com\u003e",
+				"name": "openshift/ose-operator-registry",
+				"operators.operatorframework.io.index.database.v1": "/database/index.db",
+				"release": "202103270246.p0",
+				"summary": "Operator Registry runs in a Kubernetes or OpenShift cluster to provide operator catalog data to Operator Lifecycle Manager.",
+				"url": "https://access.redhat.com/containers/#/registry.access.redhat.com/openshift/ose-operator-registry/images/v4.5.0-202103270246.p0",
+				"vcs-ref": "35e04a390e2ca45f9ef267a5ab9e7bec47cb331a",
+				"vcs-type": "git",
+				"vendor": "Red Hat, Inc.",
+				"version": "v4.5.0"
+			}
+		}
+	}
+}

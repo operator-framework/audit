@@ -27,8 +27,9 @@ import (
 )
 
 type Report struct {
-	Columns []Columns `json:"columns"`
-	Flags   BindFlags `json:"flags"`
+	Columns           []Columns `json:"columns"`
+	Flags             BindFlags `json:"flags"`
+	IndexImageInspect pkg.DockerInspectManifest
 }
 
 //todo: fix the complexity
@@ -59,16 +60,20 @@ func (r *Report) writeXls() error {
 	// Header
 	dt := time.Now().Format("2006-01-02")
 	_ = f.SetCellValue(sheetName, "A1",
-		fmt.Sprintf("Audit Channels Report (%s)", dt))
+		fmt.Sprintf("Audit Channels Report (Generated at %s)", dt))
 	_ = f.SetCellValue(sheetName, "A2", "Image used")
 	_ = f.SetCellValue(sheetName, "B2", r.Flags.IndexImage)
+	_ = f.SetCellValue(sheetName, "A3", "Image Index Create Date:")
+	_ = f.SetCellValue(sheetName, "B3", r.IndexImageInspect.Created)
+	_ = f.SetCellValue(sheetName, "A4", "Image Index ID:")
+	_ = f.SetCellValue(sheetName, "B4", r.IndexImageInspect.ID)
 
 	for k, v := range columns {
-		_ = f.SetCellValue(sheetName, fmt.Sprintf("%s3", k), v)
+		_ = f.SetCellValue(sheetName, fmt.Sprintf("%s5", k), v)
 	}
 
 	for k, v := range r.Columns {
-		line := k + 4
+		line := k + 6
 
 		if err := f.SetCellValue(sheetName, fmt.Sprintf("A%d", line), v.PackageName); err != nil {
 			log.Errorf("to add packageName cell value: %s", err)
@@ -120,7 +125,7 @@ func (r *Report) writeXls() error {
 
 	}
 
-	if err := f.AddTable(sheetName, "A3", "J3", pkg.TableFormat); err != nil {
+	if err := f.AddTable(sheetName, "A5", "J5", pkg.TableFormat); err != nil {
 		log.Errorf("to set table format : %s", err)
 	}
 

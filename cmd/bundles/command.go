@@ -119,7 +119,14 @@ func indexRun(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	reportData, err := getDataFromIndexDB(reportData)
+	// Inspect the OLM index image
+	var err error
+	reportData.IndexImageInspect, err = pkg.RunDockerInspect(flags.IndexImage)
+	if err != nil {
+		log.Errorf("unable to inspect the index image: %s", err)
+	}
+
+	reportData, err = getDataFromIndexDB(reportData)
 	if err != nil {
 		return err
 	}

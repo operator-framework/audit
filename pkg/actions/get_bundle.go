@@ -34,15 +34,6 @@ type Manifest struct {
 	Layers []string
 }
 
-type DockerInspectManifest struct {
-	Created      string       `json:"Created"`
-	DockerConfig DockerConfig `json:"Config"`
-}
-
-type DockerConfig struct {
-	Labels map[string]string `json:"Labels"`
-}
-
 // GetDataFromBundleImage returns the bundle from the image
 func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 	disableScorecard, disableValidators bool, label, labelValue string) *models.AuditBundle {
@@ -50,26 +41,30 @@ func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 	downloadBundleImage(auditBundle)
 	bundleDir := createBundleDir(auditBundle)
 	extractBundleFromImage(auditBundle, bundleDir)
-	inspectManifest := dockerInspect(auditBundle)
 
-	if len(label) > 0 {
-		value := inspectManifest.DockerConfig.Labels[label]
-		if value == labelValue {
-			auditBundle.FoundLabel = true
-		}
-	}
-
-	// 4.8 images has note the build-date in the label
-	if len(inspectManifest.Created) > 0 {
-		auditBundle.BuildAt = inspectManifest.Created
+	inspectManifest, err := pkg.RunDockerInspect(auditBundle.OperatorBundleImagePath)
+	if err != nil {
+		auditBundle.Errors = append(auditBundle.Errors, err)
 	} else {
-		auditBundle.BuildAt = inspectManifest.DockerConfig.Labels["build-date"]
-	}
+		// Gathering data by inspecting the operator bundle image
+		if len(label) > 0 {
+			value := inspectManifest.DockerConfig.Labels[label]
+			if value == labelValue {
+				auditBundle.FoundLabel = true
+			}
+		}
 
-	auditBundle.OCPLabel = inspectManifest.DockerConfig.Labels["com.redhat.openshift.versions"]
+		// 4.8 images has note the build-date in the label
+		if len(inspectManifest.Created) > 0 {
+			auditBundle.BuildAt = inspectManifest.Created
+		} else {
+			auditBundle.BuildAt = inspectManifest.DockerConfig.Labels["build-date"]
+		}
+
+		auditBundle.OCPLabel = inspectManifest.DockerConfig.Labels["com.redhat.openshift.versions"]
+	}
 
 	// Read the bundle
-	var err error
 	auditBundle.Bundle, err = apimanifests.GetBundleFromDir(filepath.Join(bundleDir, "bundle"))
 	if err != nil {
 		auditBundle.Errors = append(auditBundle.Errors, fmt.Errorf("unable to get the bundle: %s", err))
@@ -84,11 +79,11 @@ func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 		}
 	}
 
+	// Run validators
 	if !disableValidators {
 		auditBundle = RunValidators(auditBundle)
 	}
 
-	// Cleanup
 	cleanupBundleDir(auditBundle, bundleDir)
 
 	return auditBundle
@@ -112,26 +107,6 @@ func downloadBundleImage(auditBundle *models.AuditBundle) {
 		auditBundle.Errors = append(auditBundle.Errors,
 			fmt.Errorf("unable to create container image : %s", err))
 	}
-}
-
-func dockerInspect(auditBundle *models.AuditBundle) DockerInspectManifest {
-	cmd := exec.Command("docker", "inspect", auditBundle.OperatorBundleImagePath)
-	output, err := pkg.RunCommand(cmd)
-	if err != nil || len(output) < 1 {
-		log.Errorf("unable to inspect the bundle image: %s", err)
-		auditBundle.Errors = append(auditBundle.Errors,
-			fmt.Errorf("unable to inspect the bundle image : %s", err))
-		return DockerInspectManifest{}
-	}
-
-	var dockerInspect []DockerInspectManifest
-	if err := json.Unmarshal(output, &dockerInspect); err != nil {
-		log.Errorf("unable to Unmarshal docker inspect result: %s", err)
-		auditBundle.Errors = append(auditBundle.Errors,
-			fmt.Errorf("unable to Unmarshal docker inspect result: %s", err))
-		return DockerInspectManifest{}
-	}
-	return dockerInspect[0]
 }
 
 func extractBundleFromImage(auditBundle *models.AuditBundle, bundleDir string) {
