@@ -45,7 +45,7 @@ type Columns struct {
 	BuildAt                     string   `json:"buildAt,omitempty"`
 	Company                     string   `json:"company,omitempty"`
 	Repository                  string   `json:"repository,omitempty"`
-	BundleChannel               string   `json:"bundleChannel,omitempty"`
+	Channels                    []string `json:"bundleChannel,omitempty"`
 	DefaultChannel              string   `json:"defaultChannel,omitempty"`
 	Maturity                    string   `json:"maturity,omitempty"`
 	EmailMaintainers            []string `json:"emailMaintainers,omitempty"`
