@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strings"
 
 	log "github.com/sirupsen/logrus"
 	// To allow create connection to query the index database
@@ -102,6 +103,9 @@ func indexRun(cmd *cobra.Command, args []string) error {
 	reportData := channels.Data{}
 	reportData.Flags = flags
 	pkg.GenerateTemporaryDirs()
+
+	// to fix common possible typo issue
+	reportData.Flags.Filter = strings.ReplaceAll(reportData.Flags.Filter, "”", "")
 
 	if err := extractIndexDB(); err != nil {
 		return err

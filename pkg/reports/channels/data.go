@@ -16,6 +16,7 @@ package channels
 
 import (
 	"fmt"
+	"log"
 	"strings"
 
 	sq "github.com/Masterminds/squirrel"
@@ -89,6 +90,12 @@ func (d *Data) PrepareReport() Report {
 	finalReport.Flags = d.Flags
 	finalReport.Columns = allColumns
 	finalReport.IndexImageInspect = d.IndexImageInspect
+
+	if len(allColumns) == 0 {
+		log.Fatal("No data was found for the criteria informed. " +
+			"Please, ensure that you provide valid information.")
+	}
+
 	return finalReport
 }
 

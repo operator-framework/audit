@@ -21,8 +21,10 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/spf13/cobra"
+
 	// To allow create connection to query the index database
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/operator-framework/api/pkg/operators/v1alpha1"
@@ -124,9 +126,13 @@ func validation(cmd *cobra.Command, args []string) error {
 
 func indexRun(cmd *cobra.Command, args []string) error {
 	log.Info("Starting audit...")
+
 	reportData := index.Data{}
 	reportData.Flags = flags
 	pkg.GenerateTemporaryDirs()
+
+	// to fix common possible typo issue
+	reportData.Flags.Filter = strings.ReplaceAll(reportData.Flags.Filter, "”", "")
 
 	if err := extractIndexDB(); err != nil {
 		return err
