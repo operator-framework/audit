@@ -141,7 +141,7 @@ For some detailed information about its implementation check [here](docs/steps.m
 
 ### What means UNKNOWN ?
 
-If is not possible gathering the information, for example, when the Operator Bundle Path info is not in the index db then, audit will set the data as `UNKNOWN`. 
+The UNKNOWN status means that was not possible gathering the information, usually because was not possible to download the operator bundle to check it.
 
 ### What means NOT USED ?
 
