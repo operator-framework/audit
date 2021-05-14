@@ -17,6 +17,8 @@ package bundles
 import (
 	"fmt"
 
+	log "github.com/sirupsen/logrus"
+
 	sq "github.com/Masterminds/squirrel"
 	"github.com/blang/semver"
 	"github.com/operator-framework/api/pkg/operators/v1alpha1"
@@ -111,6 +113,12 @@ func (d *Data) PrepareReport() Report {
 	finalReport.Flags = d.Flags
 	finalReport.Columns = allColumns
 	finalReport.IndexImageInspect = d.IndexImageInspect
+
+	if len(allColumns) == 0 {
+		log.Fatal("No data was found for the criteria informed. " +
+			"Please, ensure that you provide valid information.")
+	}
+
 	return finalReport
 }
 

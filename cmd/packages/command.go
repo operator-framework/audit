@@ -19,6 +19,7 @@ import (
 	"errors"
 	"os"
 	"os/exec"
+	"strings"
 
 	log "github.com/sirupsen/logrus"
 
@@ -140,6 +141,9 @@ func indexRun(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		log.Errorf("unable to inspect the index image: %s", err)
 	}
+
+	// to fix common possible typo issue
+	reportData.Flags.Filter = strings.ReplaceAll(reportData.Flags.Filter, "”", "")
 
 	reportData, err = getDataFromIndexDB(reportData)
 	if err != nil {
