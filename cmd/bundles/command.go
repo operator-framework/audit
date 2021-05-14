@@ -221,7 +221,7 @@ func getDataFromIndexDB(report index.Data) (index.Data, error) {
 		var packageName string
 		for row.Next() { // Iterate and fetch the records from result cursor
 			_ = row.Scan(&channelName, &packageName)
-			auditBundle.BundleChannel = channelName
+			auditBundle.Channels = append(auditBundle.Channels, channelName)
 			auditBundle.PackageName = packageName
 		}
 

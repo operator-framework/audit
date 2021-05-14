@@ -65,10 +65,9 @@ func (d *Data) PrepareReport() Report {
 		foundSupportingMultiNamespaces := false
 		foundInfraSupport := false
 		foundPossiblePerformIssues := false
-		foundDiffChannel := false
 
 		qtUnknown := 0
-		channelFound := ""
+		var uniqueChannelsFound []string
 
 		for _, v := range allBundles {
 			auditErrors = append(auditErrors, v.AuditErrors...)
@@ -80,6 +79,7 @@ func (d *Data) PrepareReport() Report {
 			muiltArchSupport = append(muiltArchSupport, v.MultipleArchitectures...)
 			ocpLabel = append(ocpLabel, v.OCPLabel)
 			creationDates = append(creationDates, v.BuildAt)
+			uniqueChannelsFound = append(uniqueChannelsFound, v.Channels...)
 
 			if !foundDeprecatedAPI {
 				switch v.HasV1beta1CRDs {
@@ -113,13 +113,6 @@ func (d *Data) PrepareReport() Report {
 			if !foundDependency {
 				foundDependency = v.HasDependency
 			}
-			if !foundDiffChannel {
-				if len(channelFound) < 1 {
-					channelFound = v.BundleChannel
-				} else if channelFound != v.BundleChannel {
-					foundDiffChannel = true
-				}
-			}
 			if !foundSupportingAllNamespaces {
 				foundSupportingAllNamespaces = v.IsSupportingAllNamespaces
 			}
@@ -140,6 +133,8 @@ func (d *Data) PrepareReport() Report {
 			}
 		}
 
+		uniqueChannelsFound = pkg.GetUniqueValues(uniqueChannelsFound)
+		col.IsMultiChannel = len(uniqueChannelsFound) > 0
 		col.AuditErrors = auditErrors
 		col.ScorecardFailingTests = scorecardFailingTests
 		col.ScorecardSuggestions = scorecardSuggestions

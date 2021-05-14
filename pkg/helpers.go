@@ -82,6 +82,20 @@ func GetFormatArrayWithBreakLine(array []string) string {
 	return result
 }
 
+// GetUniqueValues return the values without duplicates
+func GetUniqueValues(array []string) []string {
+	var result []string
+	for _, n := range array {
+		for _, v := range result {
+			if n != v {
+				result = append(result, n)
+				break
+			}
+		}
+	}
+	return result
+}
+
 func WriteJSON(data []byte, imageName, outputPath, typeName string) error {
 	var prettyJSON bytes.Buffer
 	err := json.Indent(&prettyJSON, data, "", "\t")

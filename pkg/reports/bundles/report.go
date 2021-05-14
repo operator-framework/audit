@@ -161,8 +161,9 @@ func (r *Report) writeXls() error {
 		if err := f.SetCellValue(sheetName, fmt.Sprintf("O%d", line), v.DefaultChannel); err != nil {
 			log.Errorf("to add DefaultChannel cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("P%d", line), v.BundleChannel); err != nil {
-			log.Errorf("to add BundleChannel cell value : %s", err)
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("P%d", line),
+			pkg.GetFormatArrayWithBreakLine(v.Channels)); err != nil {
+			log.Errorf("to add Channels cell value : %s", err)
 		}
 		if err := f.SetCellValue(sheetName, fmt.Sprintf("Q%d", line), v.BuildAt); err != nil {
 			log.Errorf("to add BuildAt cell value : %s", err)
@@ -288,9 +289,7 @@ func (r *Report) writeXls() error {
 		}
 		if v.HasPossiblePerformIssues {
 			if err := f.AddComment(sheetName, fmt.Sprintf("AN%d", line),
-				fmt.Sprintf(`{"author":"Audit: ","text":"Project using different infracsture (%s) 
-				for disconnected scenarios and supporting multi-arch(s) (%s)"}`,
-					v.Infrastructure, v.MultipleArchitectures)); err != nil {
+				`{"author":"Audit: ","text":"Project supports Disconnected Mode and Multiple Architectures"}`); err != nil {
 				log.Errorf("to add comment for HasPossiblePerformIssues: %s", err)
 			}
 

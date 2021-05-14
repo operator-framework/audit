@@ -36,7 +36,7 @@ type AuditBundle struct {
 	OperatorBundleName      string
 	OperatorBundleImagePath string
 	CSVFromIndexDB          *v1alpha1.ClusterServiceVersion
-	BundleChannel           string
+	Channels                []string
 	PackageName             string
 	DefaultChannel          string
 	Errors                  []error

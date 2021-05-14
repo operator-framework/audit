@@ -47,7 +47,7 @@ func (d *Data) PrepareReport() Report {
 		col.BundlePath = v.OperatorBundleImagePath
 		col.OperatorBundleName = v.OperatorBundleName
 		col.DefaultChannel = v.DefaultChannel
-		col.BundleChannel = v.BundleChannel
+		col.Channels = v.Channels
 		col.AuditErrors = v.Errors
 		col.SkipRange = v.SkipRangeDB
 		col.Replace = v.ReplacesDB
