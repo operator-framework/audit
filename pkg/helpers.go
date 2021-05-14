@@ -138,6 +138,30 @@ func CleanupTemporaryDirs() {
 	_, _ = RunCommand(command)
 }
 
+type DockerInspectManifest struct {
+	ID           string       `json:"ID"`
+	Created      string       `json:"Created"`
+	DockerConfig DockerConfig `json:"Config"`
+}
+
+type DockerConfig struct {
+	Labels map[string]string `json:"Labels"`
+}
+
+func RunDockerInspect(image string) (DockerInspectManifest, error) {
+	cmd := exec.Command("docker", "inspect", image)
+	output, err := RunCommand(cmd)
+	if err != nil || len(output) < 1 {
+		return DockerInspectManifest{}, err
+	}
+
+	var dockerInspect []DockerInspectManifest
+	if err := json.Unmarshal(output, &dockerInspect); err != nil {
+		return DockerInspectManifest{}, err
+	}
+	return dockerInspect[0], nil
+}
+
 // HasClusterRunning will return true when is possible to check that the env has a cluster running
 func HasClusterRunning() bool {
 	command := exec.Command("kubectl", "cluster-info")

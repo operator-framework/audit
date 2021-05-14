@@ -26,8 +26,9 @@ import (
 )
 
 type Data struct {
-	AuditBundle []models.AuditBundle
-	Flags       BindFlags
+	AuditBundle       []models.AuditBundle
+	Flags             BindFlags
+	IndexImageInspect pkg.DockerInspectManifest
 }
 
 func (d *Data) PrepareReport() Report {
@@ -109,6 +110,7 @@ func (d *Data) PrepareReport() Report {
 	finalReport := Report{}
 	finalReport.Flags = d.Flags
 	finalReport.Columns = allColumns
+	finalReport.IndexImageInspect = d.IndexImageInspect
 	return finalReport
 }
 
