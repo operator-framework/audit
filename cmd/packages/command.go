@@ -16,6 +16,7 @@ package packages
 
 import (
 	"encoding/json"
+	"errors"
 	"os"
 	"os/exec"
 
@@ -105,6 +106,19 @@ func validation(cmd *cobra.Command, args []string) error {
 
 	if len(flags.LabelValue) > 0 && len(flags.Label) < 0 {
 		return fmt.Errorf("inform the label via the --label flag")
+	}
+
+	if !flags.DisableScorecard {
+		if !pkg.HasClusterRunning() {
+			return errors.New("this report is configured to run the Scorecard tests which requires a cluster up " +
+				"and running. Please, startup your cluster or use the flag --disable-scorecard")
+		}
+		if !pkg.HasSDKInstalled() {
+			return errors.New("this report is configured to run the Scorecard tests which requires the " +
+				"SDK CLI version >= 1.5 installed locally.\n" +
+				"Please, see ensure that you have SDK installed or use the flag --disable-scorecard.\n" +
+				"More info: https://github.com/operator-framework/operator-sdk")
+		}
 	}
 
 	return nil

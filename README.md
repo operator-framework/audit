@@ -24,7 +24,7 @@ For further information about its motivation see the [EP Audit command operation
 - docker 
 - access to the registry where the index catalog and operator bundle images are distribute
 - access to a Kubernetes cluster
-- [operator-sdk][operator-sdk] installed
+- [operator-sdk][operator-sdk] installed >= `1.5.0
 
 NOTE that you can run the reports without SDK and the cluster running with by using the flag `--disable-scorecard`. That is only required for the scorecard results.  
 
@@ -40,12 +40,16 @@ $ make install
 
 ## Usage
 
-You need first use docker login to have access to the images. Following the example for the OCP downstream catalog to audit the image `registry.redhat.io/redhat/certified-operator-index:v4.7`
+### Ensure that you have access to pull the images
+
+You need first use docker login to have access to the images. Following the example for the OCP downstream catalog to audit the image `registry.redhat.io/redhat/certified-operator-index:v4.7`.
 
 ```sh
 docker login https://registry.connect.redhat.com
 docker login https://registry.redhat.io
 ```
+
+### Generating the reports
 
 Now, you can audit all operator bundles of an image catalog with: 
 
