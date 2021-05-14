@@ -16,6 +16,7 @@ package bundles
 
 import (
 	"fmt"
+	"sort"
 
 	log "github.com/sirupsen/logrus"
 
@@ -108,6 +109,10 @@ func (d *Data) PrepareReport() Report {
 
 		allColumns = append(allColumns, col)
 	}
+
+	sort.Slice(allColumns[:], func(i, j int) bool {
+		return allColumns[i].PackageName < allColumns[j].PackageName
+	})
 
 	finalReport := Report{}
 	finalReport.Flags = d.Flags

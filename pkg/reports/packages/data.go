@@ -17,6 +17,7 @@ package packages
 import (
 	"fmt"
 	"log"
+	"sort"
 
 	sq "github.com/Masterminds/squirrel"
 	"github.com/operator-framework/api/pkg/operators/v1alpha1"
@@ -169,6 +170,10 @@ func (d *Data) PrepareReport() Report {
 
 		allColumns = append(allColumns, col)
 	}
+
+	sort.Slice(allColumns[:], func(i, j int) bool {
+		return allColumns[i].PackageName < allColumns[j].PackageName
+	})
 
 	finalReport := Report{}
 	finalReport.Flags = d.Flags

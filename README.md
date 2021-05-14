@@ -4,6 +4,8 @@
 ---
 # Audit
 
+**IMPORTANT** This project still at the POC level since its first release did not get done so far. Before running the reports, ensure that you have its latest version by running `git pull` and `git status`.
+
 ## Overview
 
 The audit is an analytic tool which uses the Operator Framework solutions. Its purpose is to obtain and report and aggregate data provided by checks and analyses done in the operator bundles, packages and channels from an index catalog image.

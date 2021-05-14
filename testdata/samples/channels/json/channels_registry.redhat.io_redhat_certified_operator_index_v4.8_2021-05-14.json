@@ -13,12 +13,6 @@
 			"errors": null
 		},
 		{
-			"packageName": "appdynamics-operator",
-			"channelName": "alpha",
-			"foundAllReplaces": true,
-			"errors": null
-		},
-		{
 			"packageName": "anchore-engine",
 			"channelName": "alpha",
 			"foundAllReplaces": true,
@@ -28,6 +22,12 @@
 			"packageName": "anzo-operator",
 			"channelName": "stable",
 			"isFollowingNameConvention": true,
+			"foundAllReplaces": true,
+			"errors": null
+		},
+		{
+			"packageName": "appdynamics-operator",
+			"channelName": "alpha",
 			"foundAllReplaces": true,
 			"errors": null
 		}
@@ -40,7 +40,7 @@
 		"outputFormat": "json"
 	},
 	"IndexImageInspect": {
-		"Id": "sha256:414ec051c4eec31a9f8e0e51eb4e0aa92653ca6b1d1c3da6cef92cb4bd21d0ed",
+		"ID": "sha256:414ec051c4eec31a9f8e0e51eb4e0aa92653ca6b1d1c3da6cef92cb4bd21d0ed",
 		"Created": "2021-04-27T21:39:54.614373596Z",
 		"Config": {
 			"Labels": {

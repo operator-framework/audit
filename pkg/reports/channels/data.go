@@ -17,6 +17,7 @@ package channels
 import (
 	"fmt"
 	"log"
+	"sort"
 	"strings"
 
 	sq "github.com/Masterminds/squirrel"
@@ -85,6 +86,10 @@ func (d *Data) PrepareReport() Report {
 		col.AuditErrors = auditErrors
 		allColumns = append(allColumns, col)
 	}
+
+	sort.Slice(allColumns[:], func(i, j int) bool {
+		return allColumns[i].PackageName < allColumns[j].PackageName
+	})
 
 	finalReport := Report{}
 	finalReport.Flags = d.Flags
