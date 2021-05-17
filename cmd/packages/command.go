@@ -21,6 +21,8 @@ import (
 	"os/exec"
 	"strings"
 
+	"github.com/operator-framework/audit/pkg/actions"
+
 	log "github.com/sirupsen/logrus"
 
 	"database/sql"
@@ -32,7 +34,6 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/operator-framework/audit/pkg"
-	"github.com/operator-framework/audit/pkg/actions"
 	"github.com/operator-framework/audit/pkg/models"
 	"github.com/operator-framework/audit/pkg/reports/packages"
 )
@@ -250,7 +251,7 @@ func getDataFromIndexDB(report packages.Data) (packages.Data, error) {
 		defer row.Close()
 		for row.Next() {
 			var bundleName string
-			var csv string
+			var csv *string
 			var bundlePath string
 			var csvStruct *v1alpha1.ClusterServiceVersion
 			if err := row.Scan(&bundleName, &csv, &bundlePath); err != nil {
@@ -258,20 +259,22 @@ func getDataFromIndexDB(report packages.Data) (packages.Data, error) {
 			}
 
 			auditBundle := models.NewAuditBundle(bundleName, bundlePath)
-			err = json.Unmarshal([]byte(csv), csvStruct)
-			if err == nil {
-				auditBundle.CSVFromIndexDB = csvStruct
+			// the csv is pruned from the database to save space.
+			// See that is store only what is needed to populate the package manifest on cluster, all the extra
+			// manifests are pruned to save storage space
+			if csv != nil {
+				err = json.Unmarshal([]byte(*csv), &csvStruct)
+				if err == nil {
+					auditBundle.CSVFromIndexDB = csvStruct
+				} else {
+					auditBundle.Errors = append(auditBundle.Errors, fmt.Errorf("unable to parse the csv from the index.db: %s", err))
+				}
 			}
 
-			if len(bundlePath) > 0 {
-				// todo: improve labels rfe. That is done in this way just to address urgent need
-				auditBundle = actions.GetDataFromBundleImage(auditBundle,
-					report.Flags.DisableScorecard, report.Flags.DisableValidators,
-					report.Flags.Label, report.Flags.LabelValue)
-			} else {
-				auditBundle.Errors = append(auditBundle.Errors,
-					fmt.Errorf("not found bundle path for the bundle %s stored in the index.db", bundleName))
-			}
+			auditBundle = actions.GetDataFromBundleImage(auditBundle,
+				report.Flags.DisableScorecard, report.Flags.DisableValidators,
+				report.Flags.Label, report.Flags.LabelValue)
+
 			report.AuditPackage[k].AuditBundle = append(report.AuditPackage[k].AuditBundle, *auditBundle)
 		}
 	}

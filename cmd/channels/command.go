@@ -16,8 +16,6 @@ package channels
 
 import (
 	"database/sql"
-	"encoding/json"
-	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -26,11 +24,9 @@ import (
 	log "github.com/sirupsen/logrus"
 	// To allow create connection to query the index database
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/spf13/cobra"
 
 	"github.com/operator-framework/audit/pkg"
-	"github.com/operator-framework/audit/pkg/actions"
 	"github.com/operator-framework/audit/pkg/models"
 	"github.com/operator-framework/audit/pkg/reports/channels"
 )
@@ -176,18 +172,18 @@ func getDataFromIndexDB(report channels.Data) (channels.Data, error) {
 	for row.Next() {
 		var name string
 		var packageName string
-		var headOperatorBudle string
+		var headOperatorBundle string
 
-		if err := row.Scan(&name, &packageName, &headOperatorBudle); err != nil {
+		if err := row.Scan(&name, &packageName, &headOperatorBundle); err != nil {
 			log.Errorf("unable to scan data from index %s\n", err.Error())
 		}
 
-		col := models.NewAuditChannels(packageName, name, headOperatorBudle)
+		col := models.NewAuditChannels(packageName, name, headOperatorBundle)
 		report.AuditChannel = append(report.AuditChannel, *col)
 	}
 
 	for k, v := range report.AuditChannel {
-		sqlString := fmt.Sprintf("SELECT o.name, o.csv, o.bundlepath, o.version, o.skiprange, o.replaces, "+
+		sqlString := fmt.Sprintf("SELECT o.name, o.version, o.skiprange, o.replaces, "+
 			"o.skips from channel_entry ce, operatorbundle o "+
 			"WHERE ce.operatorbundle_name = o.name AND ce.channel_name = \"%s\"", v.ChannelName)
 
@@ -200,37 +196,21 @@ func getDataFromIndexDB(report channels.Data) (channels.Data, error) {
 
 		for row.Next() {
 			var bundleName string
-			var csv string
-			var bundlePath string
 			var skipRange string
 			var version string
 			var replaces string
 			var skips string
-			var csvStruct *v1alpha1.ClusterServiceVersion
 
-			_ = row.Scan(&bundleName, &csv, &bundlePath, &version, &skipRange, &replaces, &skips)
-
-			auditBundle := models.NewAuditBundle(bundleName, bundlePath)
-			err = json.Unmarshal([]byte(csv), &csvStruct)
-			if err == nil {
-				auditBundle.CSVFromIndexDB = csvStruct
-			} else {
-				auditBundle.Errors = append(auditBundle.Errors, errors.New("not found csv stored in the index.db"))
+			err = row.Scan(&bundleName, &version, &skipRange, &replaces, &skips)
+			if err != nil {
+				log.Errorf("unable to scan data from index %s\n", err.Error())
 			}
 
+			auditBundle := models.NewAuditBundle(bundleName, "")
 			auditBundle.VersionDB = version
 			auditBundle.SkipRangeDB = skipRange
 			auditBundle.ReplacesDB = replaces
 			auditBundle.SkipsDB = skips
-
-			// just check the bundle if we have not the csv from the db
-			if len(bundlePath) > 0 && auditBundle.CSVFromIndexDB == nil {
-				auditBundle = actions.GetDataFromBundleImage(auditBundle, true, true, "", "")
-			} else {
-				auditBundle.Errors = append(auditBundle.Errors,
-					errors.New("not found bundle path or csv stored in the index.db"))
-			}
-
 			report.AuditChannel[k].AuditBundles = append(report.AuditChannel[k].AuditBundles, *auditBundle)
 		}
 	}

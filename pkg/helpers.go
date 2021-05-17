@@ -62,7 +62,7 @@ func RunCommand(cmd *exec.Cmd) ([]byte, error) {
 		return output, fmt.Errorf("%s failed with error: (%v) %s", command, err, string(output))
 	}
 	if len(output) > 0 {
-		log.Infof("command output :%s", output)
+		log.Debugf("command output :%s", output)
 	}
 	return output, nil
 }

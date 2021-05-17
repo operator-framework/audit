@@ -23,6 +23,8 @@ import (
 	"os/exec"
 	"strings"
 
+	"github.com/operator-framework/audit/pkg/actions"
+
 	"github.com/spf13/cobra"
 
 	// To allow create connection to query the index database
@@ -31,7 +33,6 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/operator-framework/audit/pkg"
-	"github.com/operator-framework/audit/pkg/actions"
 	"github.com/operator-framework/audit/pkg/models"
 	index "github.com/operator-framework/audit/pkg/reports/bundles"
 )
@@ -202,7 +203,7 @@ func getDataFromIndexDB(report index.Data) (index.Data, error) {
 	defer row.Close()
 	for row.Next() {
 		var bundleName string
-		var csv string
+		var csv *string
 		var bundlePath string
 		var skipRange string
 		var version string
@@ -210,15 +211,23 @@ func getDataFromIndexDB(report index.Data) (index.Data, error) {
 		var skips string
 		var csvStruct *v1alpha1.ClusterServiceVersion
 
-		_ = row.Scan(&bundleName, &csv, &bundlePath, &version, &skipRange, &replaces, &skips)
+		err = row.Scan(&bundleName, &csv, &bundlePath, &version, &skipRange, &replaces, &skips)
+		if err != nil {
+			log.Errorf("unable to scan data from index %s\n", err.Error())
+		}
 
 		auditBundle := models.NewAuditBundle(bundleName, bundlePath)
-		err = json.Unmarshal([]byte(csv), &csvStruct)
-		if err == nil {
-			auditBundle.CSVFromIndexDB = csvStruct
-		} else {
-			auditBundle.Errors = append(auditBundle.Errors, fmt.Errorf("not found csv stored or"+
-				" unable to unmarshal data from the index.db: %s", err))
+
+		// the csv is pruned from the database to save space.
+		// See that is store only what is needed to populate the package manifest on cluster, all the extra
+		// manifests are pruned to save storage space
+		if csv != nil {
+			err = json.Unmarshal([]byte(*csv), &csvStruct)
+			if err == nil {
+				auditBundle.CSVFromIndexDB = csvStruct
+			} else {
+				auditBundle.Errors = append(auditBundle.Errors, fmt.Errorf("unable to parse the csv from the index.db: %s", err))
+			}
 		}
 
 		auditBundle.VersionDB = version
@@ -226,14 +235,8 @@ func getDataFromIndexDB(report index.Data) (index.Data, error) {
 		auditBundle.ReplacesDB = replaces
 		auditBundle.SkipsDB = skips
 
-		if len(bundlePath) > 0 {
-			// todo: improve the labels filter by implementing it in another way
-			auditBundle = actions.GetDataFromBundleImage(auditBundle, report.Flags.DisableScorecard,
-				report.Flags.DisableValidators, report.Flags.Label, report.Flags.LabelValue)
-		} else {
-			auditBundle.Errors = append(auditBundle.Errors,
-				errors.New("not found bundle path stored in the index.db"))
-		}
+		auditBundle = actions.GetDataFromBundleImage(auditBundle, report.Flags.DisableScorecard,
+			report.Flags.DisableValidators, report.Flags.Label, report.Flags.LabelValue)
 
 		sqlString := fmt.Sprintf("SELECT c.channel_name, c.package_name FROM channel_entry c "+
 			"where c.operatorbundle_name = '%s'", auditBundle.OperatorBundleName)
