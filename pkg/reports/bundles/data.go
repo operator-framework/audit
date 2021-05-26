@@ -48,16 +48,17 @@ func (d *Data) PrepareReport() Report {
 		col.InvalidSkipRange = pkg.NotUsed
 		col.InvalidVersioning = pkg.Unknown
 		col.PackageName = v.PackageName
-		col.BundlePath = v.OperatorBundleImagePath
-		col.OperatorBundleName = v.OperatorBundleName
+		col.BundleImagePath = v.OperatorBundleImagePath
+		col.BundleName = v.OperatorBundleName
 		col.DefaultChannel = v.DefaultChannel
 		col.Channels = v.Channels
 		col.AuditErrors = v.Errors
 		col.SkipRange = v.SkipRangeDB
 		col.Replace = v.ReplacesDB
-		col.OperatorBundleVersion = v.VersionDB
+		col.BundleVersion = v.VersionDB
 		col.OCPLabel = v.OCPLabel
-		col.BuildAt = v.BuildAt
+		col.BundleImageBuildDate = v.BuildAt
+		col.HasCustomScorecardTests = v.HasCustomScorecardTests
 
 		var csv *v1alpha1.ClusterServiceVersion
 		if v.Bundle != nil && v.Bundle.CSV != nil {
@@ -70,13 +71,14 @@ func (d *Data) PrepareReport() Report {
 		col.AddDataFromBundle(v.Bundle)
 		col.AddDataFromScorecard(v.ScorecardResults)
 		col.AddDataFromValidators(v.ValidatorsResults)
+		col.SetMaxOpenshiftVersion(csv, v.PropertiesDB)
 
-		if len(col.OperatorBundleVersion) < 1 && len(v.VersionDB) > 0 {
-			col.OperatorBundleVersion = v.VersionDB
+		if len(col.BundleVersion) < 1 && len(v.VersionDB) > 0 {
+			col.BundleVersion = v.VersionDB
 		}
 
-		if len(col.OperatorBundleVersion) > 0 {
-			_, err := semver.Parse(col.OperatorBundleVersion)
+		if len(col.BundleVersion) > 0 {
+			_, err := semver.Parse(col.BundleVersion)
 			if err != nil {
 				col.InvalidVersioning = pkg.GetYesOrNo(true)
 			} else {
@@ -94,7 +96,7 @@ func (d *Data) PrepareReport() Report {
 		}
 
 		// Ignore this check if the head-only flag was used
-		if !d.Flags.HeadOnly {
+		if !d.Flags.HeadOnly && d.Flags.Limit == 0 {
 			if len(col.Replace) > 0 {
 				// check if found replace
 				col.FoundReplace = pkg.GetYesOrNo(false)
@@ -105,6 +107,14 @@ func (d *Data) PrepareReport() Report {
 					}
 				}
 			}
+		}
+
+		// Check if the bundle comply with the deprecated criteria
+		if len(col.KindsDeprecateAPIs) > 0 {
+			col.IsDeprecationAPIsSuggestionsSet = pkg.GetYesOrNo(
+				pkg.IsComplyingWithDeprecatedCriteria(col.MaxOCPVersion, col.OCPLabel))
+		} else {
+			col.IsDeprecationAPIsSuggestionsSet = pkg.NotRequired
 		}
 
 		allColumns = append(allColumns, col)
@@ -137,6 +147,13 @@ func (d *Data) OutputReport() error {
 			return err
 		}
 	case pkg.JSON:
+		if err := report.writeJSON(); err != nil {
+			return err
+		}
+	case pkg.All:
+		if err := report.writeXls(); err != nil {
+			return err
+		}
 		if err := report.writeJSON(); err != nil {
 			return err
 		}

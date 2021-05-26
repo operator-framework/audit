@@ -15,6 +15,8 @@
 package bundles
 
 import (
+	"encoding/json"
+	"fmt"
 	"strings"
 
 	"github.com/operator-framework/api/pkg/apis/scorecard/v1alpha3"
@@ -33,50 +35,83 @@ const sdkBuilderAnnotation = "operators.operatorframework.io/builder"
 const skipRangeAnnotation = "olm.skipRange"
 const sdkProjectLayoutAnnotation = "operators.operatorframework.io/project_layout"
 const infrastructureAnnotation = "operators.openshift.io/infrastructure-features"
+const olmproperties = "olm.properties"
+const olmmaxOpenShiftVersion = "olm.maxOpenShiftVersion"
 
 type Columns struct {
-	PackageName                 string   `json:"packageName"`
-	OperatorBundleName          string   `json:"operatorBundleName"`
-	OperatorBundleVersion       string   `json:"operatorBundleVersion,omitempty"`
-	Certified                   bool     `json:"certified"`
-	BundlePath                  string   `json:"bundlePath,omitempty"`
-	HasWebhook                  bool     `json:"hasWebhook"`
-	HasV1beta1CRDs              string   `json:"hasV1beta1CRDs,omitempty"`
-	BuildAt                     string   `json:"buildAt,omitempty"`
-	Company                     string   `json:"company,omitempty"`
-	Repository                  string   `json:"repository,omitempty"`
-	Channels                    []string `json:"bundleChannel,omitempty"`
-	DefaultChannel              string   `json:"defaultChannel,omitempty"`
-	Maturity                    string   `json:"maturity,omitempty"`
-	EmailMaintainers            []string `json:"emailMaintainers,omitempty"`
-	NameMaintainers             []string `json:"nameMaintainers,omitempty"`
-	Links                       []string `json:"links,omitempty"`
-	Capabilities                string   `json:"capabilities,omitempty"`
-	Categories                  string   `json:"categories,omitempty"`
-	MultipleArchitectures       []string `json:"multipleArchitectures,omitempty"`
-	Builder                     string   `json:"builder,omitempty"`
-	SDKVersion                  string   `json:"sdkVersion,omitempty"`
-	ProjectLayout               string   `json:"projectLayout,omitempty"`
-	ValidatorErrors             []string `json:"validatorErrors,omitempty"`
-	ValidatorWarnings           []string `json:"validatorWarnings,omitempty"`
-	ScorecardErrors             []string `json:"scorecardErrors,omitempty"`
-	ScorecardSuggestions        []string `json:"scorecardSuggestions,omitempty"`
-	ScorecardFailingTests       []string `json:"scorecardFailingTests,omitempty"`
-	InvalidVersioning           string   `json:"invalidVersioning,omitempty"`
-	InvalidSkipRange            string   `json:"invalidSkipRange,omitempty"`
-	FoundReplace                string   `json:"foundReplace,omitempty"`
-	HasDependency               bool     `json:"HasDependency,omitempty"`
-	SkipRange                   string   `json:"skipRange,omitempty"`
-	Skips                       []string `json:"skips,omitempty"`
-	Replace                     string   `json:"replace,omitempty"`
-	IsSupportingAllNamespaces   bool     `json:"supportsAllNamespaces,omitempty"`
-	IsSupportingMultiNamespaces bool     `json:"supportsMultiNamespaces,omitempty"`
-	IsSupportingSingleNamespace bool     `json:"supportSingleNamespaces,omitempty"`
-	IsSupportingOwnNamespaces   bool     `json:"supportsOwnNamespaces,omitempty"`
-	Infrastructure              string   `json:"infrastructure,omitempty"`
-	HasPossiblePerformIssues    bool     `json:"hasPossiblePerformIssues,omitempty"`
-	OCPLabel                    string   `json:"ocpLabel,omitempty"`
-	AuditErrors                 []error  `json:"auditErrors,omitempty"`
+	PackageName                     string              `json:"packageName"`
+	BundleName                      string              `json:"bundleName"`
+	BundleVersion                   string              `json:"bundleVersion,omitempty"`
+	Certified                       bool                `json:"certified"`
+	BundleImagePath                 string              `json:"bundleImagePath,omitempty"`
+	HasWebhook                      bool                `json:"hasWebhook"`
+	KindsDeprecateAPIs              []string            `json:"kindsDeprecateAPIs,omitempty"`
+	DeprecateAPIsManifests          map[string][]string `json:"deprecateAPIsManifests,omitempty"`
+	BundleImageBuildDate            string              `json:"bundleImageBuildDate,omitempty"`
+	Repository                      string              `json:"repository,omitempty"`
+	Channels                        []string            `json:"bundleChannel,omitempty"`
+	DefaultChannel                  string              `json:"defaultChannel,omitempty"`
+	Maturity                        string              `json:"maturity,omitempty"`
+	Capabilities                    string              `json:"capabilities,omitempty"`
+	Categories                      string              `json:"categories,omitempty"`
+	MultipleArchitectures           []string            `json:"multipleArchitectures,omitempty"`
+	Builder                         string              `json:"builder,omitempty"`
+	SDKVersion                      string              `json:"sdkVersion,omitempty"`
+	ProjectLayout                   string              `json:"projectLayout,omitempty"`
+	ValidatorErrors                 []string            `json:"validatorErrors,omitempty"`
+	ValidatorWarnings               []string            `json:"validatorWarnings,omitempty"`
+	ScorecardErrors                 []string            `json:"scorecardErrors,omitempty"`
+	ScorecardSuggestions            []string            `json:"scorecardSuggestions,omitempty"`
+	ScorecardFailingTests           []string            `json:"scorecardFailingTests,omitempty"`
+	InvalidVersioning               string              `json:"invalidVersioning,omitempty"`
+	InvalidSkipRange                string              `json:"invalidSkipRange,omitempty"`
+	FoundReplace                    string              `json:"foundReplace,omitempty"`
+	HasDependency                   bool                `json:"HasDependency,omitempty"`
+	SkipRange                       string              `json:"skipRange,omitempty"`
+	Skips                           []string            `json:"skips,omitempty"`
+	Replace                         string              `json:"replace,omitempty"`
+	IsSupportingAllNamespaces       bool                `json:"supportsAllNamespaces,omitempty"`
+	IsSupportingMultiNamespaces     bool                `json:"supportsMultiNamespaces,omitempty"`
+	IsSupportingSingleNamespace     bool                `json:"supportSingleNamespaces,omitempty"`
+	IsSupportingOwnNamespaces       bool                `json:"supportsOwnNamespaces,omitempty"`
+	Infrastructure                  string              `json:"infrastructure,omitempty"`
+	HasPossiblePerformIssues        bool                `json:"hasPossiblePerformIssues,omitempty"`
+	OCPLabel                        string              `json:"ocpLabel,omitempty"`
+	MaxOCPVersion                   string              `json:"maxOCPVersion,omitempty"`
+	IsDeprecationAPIsSuggestionsSet string              `json:"isDeprecationAPIsSuggestionsSet,omitempty"`
+	HasCustomScorecardTests         bool                `json:"hasCustomScorecardTests,omitempty"`
+	AuditErrors                     []string            `json:"errors,omitempty"`
+}
+
+func (c *Columns) SetMaxOpenshiftVersion(csv *v1alpha1.ClusterServiceVersion, propertiesDB []pkg.PropertiesAnnotation) {
+
+	if csv == nil {
+		return
+	}
+
+	cvsProperties := csv.Annotations[olmproperties]
+	if len(cvsProperties) > 0 {
+		var properList []pkg.PropertiesAnnotation
+		err := json.Unmarshal([]byte(cvsProperties), &properList)
+		if err != nil {
+			c.AuditErrors = append(c.AuditErrors, fmt.Errorf("csv.Annotations has an invalid value specified "+
+				"for %s", olmproperties).Error())
+		} else {
+			for _, v := range properList {
+				if v.Type == olmmaxOpenShiftVersion {
+					c.MaxOCPVersion = v.Value
+					break
+				}
+			}
+		}
+	}
+
+	for _, v := range propertiesDB {
+		if v.Type == olmmaxOpenShiftVersion {
+			c.MaxOCPVersion = v.Value
+			break
+		}
+	}
 }
 
 func (c *Columns) AddDataFromCSV(csv *v1alpha1.ClusterServiceVersion) {
@@ -89,22 +124,12 @@ func (c *Columns) AddDataFromCSV(csv *v1alpha1.ClusterServiceVersion) {
 	c.Certified = len(certified) > 0 && certified == "true"
 	c.Repository = csv.ObjectMeta.Annotations[repositoryAnnotation]
 	if len(csv.Spec.Version.String()) > 0 {
-		c.OperatorBundleVersion = csv.Spec.Version.String()
+		c.BundleVersion = csv.Spec.Version.String()
 	}
-	c.Company = csv.Spec.Provider.Name
 	c.HasWebhook = len(csv.Spec.WebhookDefinitions) > 0
 	c.Maturity = csv.Spec.Maturity
 	c.Capabilities = csv.ObjectMeta.Annotations["capabilities"]
 	c.Categories = csv.ObjectMeta.Annotations["categories"]
-	for _, v := range csv.Spec.Links {
-		c.Links = append(c.Links, v.URL)
-	}
-	for _, v := range csv.Spec.Maintainers {
-		c.NameMaintainers = append(c.NameMaintainers, v.Name)
-	}
-	for _, v := range csv.Spec.Maintainers {
-		c.EmailMaintainers = append(c.EmailMaintainers, v.Email)
-	}
 
 	for k, v := range csv.ObjectMeta.Labels {
 		if strings.Contains(k, archLabels) && v == "supported" {
@@ -161,11 +186,15 @@ func (c *Columns) AddDataFromCSV(csv *v1alpha1.ClusterServiceVersion) {
 
 func (c *Columns) AddDataFromBundle(bundle *apimanifests.Bundle) {
 	if bundle == nil {
-		c.HasV1beta1CRDs = pkg.Unknown
+		c.KindsDeprecateAPIs = []string{pkg.Unknown}
 		return
 	}
-	c.HasV1beta1CRDs = pkg.GetYesOrNo(len(bundle.V1beta1CRDs) > 0)
+
 	c.HasDependency = bundle.Dependencies != nil && len(bundle.Dependencies) > 0
+	removedAPIs := pkg.GetRemovedAPIsOn1_22From(bundle)
+	c.KindsDeprecateAPIs = pkg.RemovedAPIsKind(removedAPIs)
+	c.DeprecateAPIsManifests = removedAPIs
+
 }
 
 func (c *Columns) AddDataFromScorecard(scorecardResults v1alpha3.TestList) {

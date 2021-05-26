@@ -18,9 +18,9 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"strings"
-
 	"path/filepath"
+
+	"github.com/operator-framework/audit/hack"
 
 	"github.com/operator-framework/audit/pkg"
 	log "github.com/sirupsen/logrus"
@@ -52,71 +52,99 @@ func main() {
 		log.Errorf("running command :%s", err)
 	}
 
-	allimages := []string{
+	// Gen all Kinds for the latest
+	images := []string{
+		"registry.redhat.io/redhat/certified-operator-index:v4.8",
+		"registry.redhat.io/redhat/community-operator-index:v4.8",
+		"registry.redhat.io/redhat/redhat-marketplace-index:v4.8",
+		"registry.redhat.io/redhat/redhat-operator-index:v4.8",
+		"quay.io/operatorhubio/catalog:latest",
+	}
+
+	indexReportKinds := []string{"bundles", "channels", "packages"}
+	for _, v := range images {
+		reportPathName := filepath.Join(reportPath, hack.GetImageNameToCreateDir(v))
+		command := exec.Command("mkdir", reportPathName)
+		_, err = pkg.RunCommand(command)
+		if err != nil {
+			log.Errorf("running command :%s", err)
+		}
+
+		for _, report := range indexReportKinds {
+			// run report
+			command := exec.Command(binPath, "index", report,
+				fmt.Sprintf("--index-image=%s", v),
+				"--output=all",
+				fmt.Sprintf("--output-path=%s", reportPathName),
+			)
+			_, err = pkg.RunCommand(command)
+			if err != nil {
+				log.Errorf("running command :%s", err)
+			}
+		}
+
+		customPath := filepath.Join(reportPathName, "dashboards")
+		command = exec.Command("mkdir", customPath)
+		_, err = pkg.RunCommand(command)
+		if err != nil {
+			log.Errorf("running command :%s", err)
+		}
+
+		jsonBundlesReport := filepath.Join(filepath.Join(reportPathName,
+			pkg.GetReportName(v, "bundles", "json")))
+
+		// run report
+		command = exec.Command(binPath, "dashboard", "deprecate-apis",
+			fmt.Sprintf("--file=%s", jsonBundlesReport),
+			fmt.Sprintf("--output-path=%s", customPath),
+		)
+		_, err = pkg.RunCommand(command)
+		if err != nil {
+			log.Errorf("running command :%s", err)
+		}
+	}
+
+	// Gen only bundles for the previous ones >= 4.6+ for we have the deprecated API(s) dashs
+	images = []string{
 		"registry.redhat.io/redhat/certified-operator-index:v4.7",
 		"registry.redhat.io/redhat/community-operator-index:v4.7",
 		"registry.redhat.io/redhat/redhat-marketplace-index:v4.7",
 		"registry.redhat.io/redhat/redhat-operator-index:v4.7",
-		"quay.io/operatorhubio/catalog:latest",
+		"registry.redhat.io/redhat/certified-operator-index:v4.6",
+		"registry.redhat.io/redhat/community-operator-index:v4.6",
+		"registry.redhat.io/redhat/redhat-marketplace-index:v4.6",
+		"registry.redhat.io/redhat/redhat-operator-index:v4.6",
 	}
 
-	command = exec.Command("docker", "login", "https://registry.connect.redhat.com")
-	_, err = pkg.RunCommand(command)
-	if err != nil {
-		log.Errorf("running command :%s", err)
-	}
-
-	command = exec.Command("docker", "login", "https://registry.redhat.io")
-	_, err = pkg.RunCommand(command)
-	if err != nil {
-		log.Errorf("running command :%s", err)
-	}
-
-	for _, v := range allimages {
-
-		// create dir name with the image name only
-		name := strings.Split(v, ":")[0]
-		name = strings.ReplaceAll(name, "registry.redhat.io/redhat/", "redhat_")
-		name = strings.ReplaceAll(name, "quay.io/operatorhubio/", "operatorhubio_")
-		name = strings.ReplaceAll(name, "/", "_")
-		name = strings.ReplaceAll(name, ":", "_")
-		name = strings.ReplaceAll(name, "-", "_")
-
-		reportPathName := filepath.Join(reportPath, name)
-		command = exec.Command("mkdir", reportPathName)
-		_, err = pkg.RunCommand(command)
-		if err != nil {
-			log.Errorf("running command :%s", err)
+	indexReportKinds = []string{"bundles"}
+	for _, v := range images {
+		reportPathName := filepath.Join(reportPath, hack.GetImageNameToCreateDir(v))
+		for _, report := range indexReportKinds {
+			// run report
+			command := exec.Command(binPath, "index", report,
+				fmt.Sprintf("--index-image=%s", v),
+				"--output=all",
+				fmt.Sprintf("--output-path=%s", reportPathName),
+			)
+			_, err = pkg.RunCommand(command)
+			if err != nil {
+				log.Errorf("running command :%s", err)
+			}
 		}
 
-		log.Infof("creating report bundles with XLS format for %s", v)
-		command = exec.Command(binPath, "bundles",
-			fmt.Sprintf("--index-image=%s", v),
-			fmt.Sprintf("--output-path=%s", reportPathName),
-		)
-		_, err = pkg.RunCommand(command)
-		if err != nil {
-			log.Errorf("running command :%s", err)
-		}
+		customPath := filepath.Join(reportPathName, "dashboards")
+		jsonBundlesReport := filepath.Join(filepath.Join(reportPathName,
+			pkg.GetReportName(v, "bundles", "json")))
 
-		log.Infof("creating report packages with XLS format for %s", v)
-		command = exec.Command(binPath, "packages",
-			fmt.Sprintf("--index-image=%s", v),
-			fmt.Sprintf("--output-path=%s", reportPathName),
-		)
-		_, err = pkg.RunCommand(command)
-		if err != nil {
-			log.Errorf("running command :%s", err)
-		}
-
-		log.Infof("creating report channels with XLS format for %s", v)
-		command = exec.Command(binPath, "channels",
-			fmt.Sprintf("--index-image=%s", v),
-			fmt.Sprintf("--output-path=%s", reportPathName),
+		// run report
+		command := exec.Command(binPath, "dashboard", "deprecate-apis",
+			fmt.Sprintf("--file=%s", jsonBundlesReport),
+			fmt.Sprintf("--output-path=%s", customPath),
 		)
 		_, err = pkg.RunCommand(command)
 		if err != nil {
 			log.Errorf("running command :%s", err)
 		}
 	}
+
 }

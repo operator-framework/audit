@@ -86,11 +86,17 @@ generate-samples:
 	go run ./hack/samples/generate_samples.go
 
 .PHONY: generate-testdata ## Generate the full testdata directory
-generate-testdata:
+generate-testdata: docker-login
 	make install
-	go run ./hack/report/full.go
 	go run ./hack/samples/generate_samples.go
-	go run ./hack/backport/backport.go
+	go run ./hack/report/full.go
+	make generate-index
 
+.PHONY: docker-login ## Login to redhat registries to get the latest versions
+docker-login:
+	docker login https://registry.connect.redhat.com
+	docker login https://registry.redhat.io
 
-
+.PHONY: generate-index ## Generate index.html
+generate-index:
+	go run ./hack/index/generate.go

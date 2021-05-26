@@ -31,10 +31,12 @@ import (
 
 const JSON = "json"
 const Xls = "xls"
+const All = "all"
 const Yes = "YES"
 const No = "NO"
 const Unknown = "UNKNOWN"
 const NotUsed = "NOT USED"
+const NotRequired = "NOT REQUIRED"
 
 const TableFormat = `{
     "table_name": "table",
@@ -44,6 +46,16 @@ const TableFormat = `{
     "show_row_stripes": false,
     "show_column_stripes": false
 }`
+
+// PropertiesAnnotation used to Unmarshal the JSON in the CSV annotation
+type PropertiesAnnotation struct {
+	Type  string
+	Value string
+}
+
+func (p PropertiesAnnotation) String() string {
+	return fmt.Sprintf("{\"type\": \"%s\", \"value\": \"%s\"}", p.Type, p.Value)
+}
 
 // GetYesOrNo return the text yes for true values and No for false one.
 func GetYesOrNo(value bool) string {
@@ -86,12 +98,21 @@ func GetFormatArrayWithBreakLine(array []string) string {
 func GetUniqueValues(array []string) []string {
 	var result []string
 	for _, n := range array {
+		if len(result) == 0 {
+			result = append(result, n)
+			continue
+		}
+		found := false
 		for _, v := range result {
-			if n != v {
-				result = append(result, n)
+			if strings.TrimSpace(n) == strings.TrimSpace(v) {
+				found = true
 				break
 			}
 		}
+		if !found {
+			result = append(result, n)
+		}
+
 	}
 	return result
 }
@@ -191,4 +212,20 @@ func HasSDKInstalled() bool {
 	command := exec.Command("operator-sdk", "version")
 	_, err := RunCommand(command)
 	return err == nil
+}
+
+// ReadFile will return the bites of file
+func ReadFile(file string) ([]byte, error) {
+	jsonFile, err := os.Open(file)
+	if err != nil {
+		return []byte{}, err
+	}
+	defer jsonFile.Close()
+
+	var byteValue []byte
+	byteValue, err = ioutil.ReadAll(jsonFile)
+	if err != nil {
+		return []byte{}, err
+	}
+	return byteValue, err
 }

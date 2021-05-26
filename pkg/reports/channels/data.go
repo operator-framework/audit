@@ -84,7 +84,7 @@ func (d *Data) PrepareReport() Report {
 			}
 		}
 
-		var auditErrors []error
+		var auditErrors []string
 
 		foundInvalidSkipRange := false
 		foundInvalidVersioning := false
@@ -136,6 +136,13 @@ func (d *Data) OutputReport() error {
 			return err
 		}
 	case pkg.JSON:
+		if err := report.writeJSON(); err != nil {
+			return err
+		}
+	case pkg.All:
+		if err := report.writeXls(); err != nil {
+			return err
+		}
 		if err := report.writeJSON(); err != nil {
 			return err
 		}

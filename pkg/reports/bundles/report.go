@@ -44,6 +44,18 @@ func (r *Report) writeXls() error {
 		},
 	})
 
+	styleRed, _ := f.NewStyle(&excelize.Style{
+		Font: &excelize.Font{
+			Color: "#EC1C1C",
+		},
+	})
+
+	styleGreen, _ := f.NewStyle(&excelize.Style{
+		Font: &excelize.Font{
+			Color: "#3FA91E",
+		},
+	})
+
 	styleWrapText, _ := f.NewStyle(&excelize.Style{
 		Alignment: &excelize.Alignment{
 			WrapText: true,
@@ -53,46 +65,45 @@ func (r *Report) writeXls() error {
 	columns := map[string]string{
 		"A":  "Package Name",
 		"B":  "Repository",
-		"C":  "Links",
+		"C":  "OCP Labels Version",
 		"D":  "Maturity",
 		"E":  "Capabilities",
 		"F":  "Categories",
 		"G":  "Multiple Architectures",
 		"H":  "Certified",
-		"I":  "Has v1beta1 CRD?",
-		"J":  "Company",
-		"K":  "Maintainer Name(s)",
-		"L":  "Maintainer Email(s)",
-		"M":  "Operator Bundle Name",
-		"N":  "Operator Bundle Version",
-		"O":  "Default Channel",
-		"P":  "Bundle Channel",
-		"Q":  "Build At",
-		"R":  "Bundle Path",
-		"S":  "Has webhooks?",
-		"T":  "Builder",
-		"U":  "SDK Version",
-		"V":  "Project Layout",
-		"W":  "Scorecard Failing Tests",
-		"X":  "Scorecard Suggestions",
-		"Y":  "Scorecard Errors",
-		"Z":  "Validator Errors",
-		"AA": "Validator Warnings",
-		"AB": "Invalid Versioning",
-		"AC": "Invalid SkipRange",
-		"AD": "Found Replace",
-		"AE": "Has Dependency",
-		"AF": "Skip Range",
-		"AG": "Skips",
-		"AH": "Replace",
-		"AI": "Supports All Namespaces",
-		"AJ": "Supports Single Namespaces",
-		"AK": "Supports Own Namespaces",
-		"AL": "Supports Multi Namespaces",
-		"AM": "Infrastructure",
-		"AN": "Has possible performance issues",
-		"AO": "OCP Labels Version",
-		"AP": "Issues (To process this report)",
+		"I":  "Kinds (Deprecated APIs on 1.22)",
+		"J":  "Operator Bundle Name",
+		"K":  "Operator Bundle Version",
+		"L":  "Default Channel",
+		"M":  "Bundle Channel",
+		"N":  "Build Date (from index image)",
+		"O":  "Bundle Path",
+		"P":  "Has webhooks",
+		"Q":  "Builder",
+		"R":  "SDK Version",
+		"S":  "Project Layout",
+		"T":  "Scorecard Failing Tests",
+		"U":  "Scorecard Suggestions",
+		"V":  "Scorecard Errors",
+		"W":  "Validator Errors",
+		"X":  "Validator Warnings",
+		"Y":  "Invalid Versioning",
+		"Z":  "Invalid SkipRange",
+		"AA": "Found Replace",
+		"AB": "Has deprecate API(s) suggestions set",
+		"AC": "Skip Range",
+		"AD": "Skips",
+		"AE": "Replace",
+		"AF": "Supports All Namespaces",
+		"AG": "Supports Single Namespaces",
+		"AH": "Supports Own Namespaces",
+		"AI": "Supports Multi Namespaces",
+		"AJ": "Infrastructure Annotations",
+		"AK": "Has possible performance issues",
+		"AL": "Suggestion API(s) manifests",
+		"AM": "Max OCP Version",
+		"AN": "Has custom Scorecards",
+		"AO": "Issues (To process this report)",
 	}
 
 	// Header
@@ -120,7 +131,7 @@ func (r *Report) writeXls() error {
 			log.Errorf("to add repository cell value : %s", err)
 		}
 		if err := f.SetCellValue(sheetName, fmt.Sprintf("C%d", line),
-			pkg.GetFormatArrayWithBreakLine(v.Links)); err != nil {
+			v.OCPLabel); err != nil {
 			log.Errorf("to add links cell value : %s", err)
 		}
 		if err := f.SetCellValue(sheetName, fmt.Sprintf("D%d", line), v.Maturity); err != nil {
@@ -139,211 +150,240 @@ func (r *Report) writeXls() error {
 		if err := f.SetCellValue(sheetName, fmt.Sprintf("H%d", line), pkg.GetYesOrNo(v.Certified)); err != nil {
 			log.Errorf("to add Certified cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("I%d", line), v.HasV1beta1CRDs); err != nil {
-			log.Errorf("to add HasV1beta1CRDs cell value : %s", err)
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("I%d", line), v.KindsDeprecateAPIs); err != nil {
+			log.Errorf("to add v cell value : %s", err)
 		}
-		if v.HasV1beta1CRDs == pkg.GetYesOrNo(true) {
+		if len(v.KindsDeprecateAPIs) > 0 {
 			_ = f.SetCellStyle(sheetName, fmt.Sprintf("I%d", line),
 				fmt.Sprintf("I%d", line), styleOrange)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("J%d", line), v.Company); err != nil {
-			log.Errorf("to add Company cell value : %s", err)
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("J%d", line), v.BundleName); err != nil {
+			log.Errorf("to add BundleName cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("K%d", line),
-			pkg.GetFormatArrayWithBreakLine(v.NameMaintainers)); err != nil {
-			log.Errorf("to add NameMaintainers cell value : %s", err)
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("K%d", line), v.BundleVersion); err != nil {
+			log.Errorf("to add BundleVersion cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("L%d", line),
-			pkg.GetFormatArrayWithBreakLine(v.EmailMaintainers)); err != nil {
-			log.Errorf("to add EmailMaintainers cell value : %s", err)
-		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("M%d", line), v.OperatorBundleName); err != nil {
-			log.Errorf("to add OperatorBundleName cell value : %s", err)
-		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("N%d", line), v.OperatorBundleVersion); err != nil {
-			log.Errorf("to add OperatorBundleVersion cell value : %s", err)
-		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("O%d", line), v.DefaultChannel); err != nil {
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("L%d", line), v.DefaultChannel); err != nil {
 			log.Errorf("to add DefaultChannel cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("P%d", line),
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("M%d", line),
 			pkg.GetFormatArrayWithBreakLine(v.Channels)); err != nil {
 			log.Errorf("to add Channels cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("Q%d", line), v.BuildAt); err != nil {
-			log.Errorf("to add BuildAt cell value : %s", err)
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("N%d", line), v.BundleImageBuildDate); err != nil {
+			log.Errorf("to add BundleImageBuildDate cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("R%d", line), v.BundlePath); err != nil {
-			log.Errorf("to add BundlePath cell value : %s", err)
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("O%d", line), v.BundleImagePath); err != nil {
+			log.Errorf("to add BundleImagePath cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("S%d", line),
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("P%d", line),
 			pkg.GetYesOrNo(v.HasWebhook)); err != nil {
 			log.Errorf("to add HasWebhook cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("T%d", line), v.Builder); err != nil {
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("Q%d", line), v.Builder); err != nil {
 			log.Errorf("to add Builder cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("U%d", line), v.SDKVersion); err != nil {
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("R%d", line), v.SDKVersion); err != nil {
 			log.Errorf("to add SDKVersion cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("V%d", line), v.ProjectLayout); err != nil {
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("S%d", line), v.ProjectLayout); err != nil {
 			log.Errorf("to add ProjectLayout cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("W%d", line),
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("T%d", line),
 			pkg.GetFormatArrayWithBreakLine(v.ScorecardFailingTests)); err != nil {
 			log.Errorf("to add ScorecardFailingTests cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("X%d", line),
+		if len(v.ScorecardFailingTests) > 0 {
+			_ = f.SetCellStyle(sheetName, fmt.Sprintf("T%d", line),
+				fmt.Sprintf("T%d", line), styleOrange)
+		}
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("U%d", line),
 			pkg.GetFormatArrayWithBreakLine(v.ScorecardSuggestions)); err != nil {
 			log.Errorf("to add ScorecardSuggestions cell value : %s", err)
 		}
 		if len(v.ScorecardSuggestions) > 0 {
-			_ = f.SetCellStyle(sheetName, fmt.Sprintf("X%d", line),
-				fmt.Sprintf("X%d", line), styleOrange)
+			_ = f.SetCellStyle(sheetName, fmt.Sprintf("U%d", line),
+				fmt.Sprintf("U%d", line), styleOrange)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("Y%d", line),
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("V%d", line),
 			pkg.GetFormatArrayWithBreakLine(v.ScorecardErrors)); err != nil {
 			log.Errorf("to add ScorecardErrors cell value : %s", err)
 		}
 		if len(v.ScorecardErrors) > 0 {
-			_ = f.SetCellStyle(sheetName, fmt.Sprintf("Y%d", line),
-				fmt.Sprintf("Y%d", line), styleOrange)
+			_ = f.SetCellStyle(sheetName, fmt.Sprintf("V%d", line),
+				fmt.Sprintf("V%d", line), styleRed)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("Z%d", line),
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("W%d", line),
 			pkg.GetFormatArrayWithBreakLine(v.ValidatorErrors)); err != nil {
 			log.Errorf("to add ValidatorErrors cell value : %s", err)
 		}
-		if len(v.ValidatorErrors) > 0 {
-			_ = f.SetCellStyle(sheetName, fmt.Sprintf("Z%d", line),
-				fmt.Sprintf("Z%d", line), styleOrange)
-		}
-		if err := f.SetCellStyle(sheetName, fmt.Sprintf("W%d", line), fmt.Sprintf("Z%d", line), styleWrapText); err != nil {
+		if err := f.SetCellStyle(sheetName, fmt.Sprintf("W%d", line), fmt.Sprintf("W%d", line), styleWrapText); err != nil {
 			log.Errorf("unable to set style : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AA%d", line),
+		if len(v.ValidatorErrors) > 0 {
+			_ = f.SetCellStyle(sheetName, fmt.Sprintf("W%d", line),
+				fmt.Sprintf("W%d", line), styleRed)
+		}
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("X%d", line),
 			pkg.GetFormatArrayWithBreakLine(v.ValidatorWarnings)); err != nil {
 			log.Errorf("to add ValidatorWarnings cell value : %s", err)
 		}
 		// format for the list of issues
-		if err := f.SetCellStyle(sheetName, fmt.Sprintf("X%d", line), fmt.Sprintf("AA%d", line), styleWrapText); err != nil {
+		if err := f.SetCellStyle(sheetName, fmt.Sprintf("X%d", line), fmt.Sprintf("X%d", line), styleWrapText); err != nil {
 			log.Errorf("unable to set style : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AB%d", line),
+		if len(v.ValidatorWarnings) > 0 {
+			_ = f.SetCellStyle(sheetName, fmt.Sprintf("X%d", line),
+				fmt.Sprintf("X%d", line), styleOrange)
+		}
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("Y%d", line),
 			v.InvalidVersioning); err != nil {
 			log.Errorf("to add InvalidVersioning cell value : %s", err)
 		}
 		if v.InvalidVersioning == pkg.GetYesOrNo(true) {
-			_ = f.SetCellStyle(sheetName, fmt.Sprintf("AB%d", line),
-				fmt.Sprintf("AB%d", line), styleOrange)
+			_ = f.SetCellStyle(sheetName, fmt.Sprintf("Y%d", line),
+				fmt.Sprintf("Y%d", line), styleOrange)
+		} else {
+			_ = f.SetCellStyle(sheetName, fmt.Sprintf("Y%d", line),
+				fmt.Sprintf("Y%d", line), styleGreen)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AC%d", line),
+
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("Z%d", line),
 			v.InvalidSkipRange); err != nil {
 			log.Errorf("to add GetYesOrNo cell value : %s", err)
 		}
 		if v.InvalidSkipRange == pkg.GetYesOrNo(true) {
-			_ = f.SetCellStyle(sheetName, fmt.Sprintf("AC%d", line),
-				fmt.Sprintf("AC%d", line), styleOrange)
+			_ = f.SetCellStyle(sheetName, fmt.Sprintf("Z%d", line),
+				fmt.Sprintf("AC%d", line), styleRed)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AD%d", line),
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AA%d", line),
 			v.FoundReplace); err != nil {
 			log.Errorf("to add FoundReplace cell value : %s", err)
 		}
 		if v.FoundReplace == pkg.GetYesOrNo(false) {
-			_ = f.SetCellStyle(sheetName, fmt.Sprintf("AD%d", line),
-				fmt.Sprintf("AD%d", line), styleOrange)
+			_ = f.SetCellStyle(sheetName, fmt.Sprintf("AA%d", line),
+				fmt.Sprintf("AA%d", line), styleRed)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AE%d", line),
-			pkg.GetYesOrNo(v.HasDependency)); err != nil {
-			log.Errorf("to add HasDependency cell value : %s", err)
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AB%d", line),
+			v.IsDeprecationAPIsSuggestionsSet); err != nil {
+			log.Errorf("to add HasDeprecateAPIsSuggestionsSet cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AF%d", line),
+
+		if v.IsDeprecationAPIsSuggestionsSet == pkg.GetYesOrNo(false) {
+			_ = f.SetCellStyle(sheetName, fmt.Sprintf("AB%d", line),
+				fmt.Sprintf("AB%d", line), styleRed)
+		} else {
+			_ = f.SetCellStyle(sheetName, fmt.Sprintf("AB%d", line),
+				fmt.Sprintf("AB%d", line), styleGreen)
+		}
+
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AC%d", line),
 			v.SkipRange); err != nil {
 			log.Errorf("to add SkipRange cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AG%d", line),
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AD%d", line),
 			pkg.GetFormatArrayWithBreakLine(v.Skips)); err != nil {
 			log.Errorf("to add HasGKVDependency cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AH%d", line),
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AE%d", line),
 			v.Replace); err != nil {
 			log.Errorf("to add Replace cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AI%d", line),
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AF%d", line),
 			pkg.GetYesOrNo(v.IsSupportingAllNamespaces)); err != nil {
 			log.Errorf("to add HasSupportForAllNamespaces cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AJ%d", line),
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AG%d", line),
 			pkg.GetYesOrNo(v.IsSupportingSingleNamespace)); err != nil {
 			log.Errorf("to add HasSupportForAllNamespaces cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AK%d", line),
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AH%d", line),
 			pkg.GetYesOrNo(v.IsSupportingOwnNamespaces)); err != nil {
 			log.Errorf("to add HasSupportForAllNamespaces cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AL%d", line),
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AI%d", line),
 			pkg.GetYesOrNo(v.IsSupportingMultiNamespaces)); err != nil {
 			log.Errorf("to add HasSupportForAllNamespaces cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AM%d", line),
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AJ%d", line),
 			v.Infrastructure); err != nil {
-			log.Errorf("to add HasInfraSupport cell value : %s", err)
+			log.Errorf("to add HasInfraAnnotation cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AN%d", line),
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AK%d", line),
 			pkg.GetYesOrNo(v.HasPossiblePerformIssues)); err != nil {
 			log.Errorf("to add HasPossiblePerformIssues cell value : %s", err)
 		}
 		if v.HasPossiblePerformIssues {
-			if err := f.AddComment(sheetName, fmt.Sprintf("AN%d", line),
+			if err := f.AddComment(sheetName, fmt.Sprintf("AK%d", line),
 				`{"author":"Audit: ","text":"Project supports Disconnected Mode and Multiple Architectures"}`); err != nil {
 				log.Errorf("to add comment for HasPossiblePerformIssues: %s", err)
 			}
 
-			_ = f.SetCellStyle(sheetName, fmt.Sprintf("AN%d", line),
+			_ = f.SetCellStyle(sheetName, fmt.Sprintf("AK%d", line),
 				fmt.Sprintf("AK%d", line), styleOrange)
 		}
-
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AO%d", line), v.OCPLabel); err != nil {
-			log.Errorf("to add OCPLabel cell value : %s", err)
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AL%d", line),
+			pkg.GenerateMessageWithDeprecatedAPIs(v.DeprecateAPIsManifests)); err != nil {
+			log.Errorf("to add DeprecateAPIsManifests cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AP%d", line), v.AuditErrors); err != nil {
+		if len(v.DeprecateAPIsManifests) > 0 {
+			_ = f.SetCellStyle(sheetName, fmt.Sprintf("AL%d", line),
+				fmt.Sprintf("AL%d", line), styleOrange)
+		}
+
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AM%d", line), v.MaxOCPVersion); err != nil {
+			log.Errorf("to add MaxOCPVersion cell value : %s", err)
+		}
+
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AN%d", line),
+			pkg.GetYesOrNo(v.HasCustomScorecardTests)); err != nil {
+			log.Errorf("to add HasCustomScorecardTests cell value: %s", err)
+		}
+
+		if v.HasCustomScorecardTests {
+			_ = f.SetCellStyle(sheetName, fmt.Sprintf("AN%d", line),
+				fmt.Sprintf("AN%d", line), styleGreen)
+		}
+
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AO%d", line), v.AuditErrors); err != nil {
 			log.Errorf("to add AuditErrors cell value : %s", err)
 		}
 	}
 
 	// Remove the scorecard columns when that is disable
 	if r.Flags.DisableScorecard {
-		if err := f.SetColVisible(sheetName, "W", false); err != nil {
+		if err := f.SetColVisible(sheetName, "T", false); err != nil {
 			log.Errorf("unable to remove scorecard columns : %s", err)
 		}
-		if err := f.SetColVisible(sheetName, "X", false); err != nil {
+		if err := f.SetColVisible(sheetName, "U", false); err != nil {
 			log.Errorf("unable to remove scorecard columns : %s", err)
 		}
-		if err := f.SetColVisible(sheetName, "Y", false); err != nil {
+		if err := f.SetColVisible(sheetName, "V", false); err != nil {
+			log.Errorf("unable to remove scorecard columns : %s", err)
+		}
+		if err := f.SetColVisible(sheetName, "AN", false); err != nil {
 			log.Errorf("unable to remove scorecard columns : %s", err)
 		}
 	}
 
 	// Found replace when it is not looking all bundles
 	if r.Flags.HeadOnly || r.Flags.Limit > 0 {
-		if err := f.SetColVisible(sheetName, "AD", false); err != nil {
+		if err := f.SetColVisible(sheetName, "AA", false); err != nil {
 			log.Errorf("unable to remove found Replace columns : %s", err)
 		}
 	}
 
 	// Remove the validators columns when that is disable
 	if r.Flags.DisableValidators {
-		if err := f.SetColVisible(sheetName, "Z", false); err != nil {
+		if err := f.SetColVisible(sheetName, "W", false); err != nil {
 			log.Errorf("unable to remove validator columns : %s", err)
 		}
-		if err := f.SetColVisible(sheetName, "AA", false); err != nil {
-			log.Errorf("unable to remove validator columns : %s", err)
-		}
-		if err := f.SetColVisible(sheetName, "AB", false); err != nil {
+		if err := f.SetColVisible(sheetName, "X", false); err != nil {
 			log.Errorf("unable to remove validator columns : %s", err)
 		}
 	}
 
-	if err := f.AddTable(sheetName, "A5", "AP5", pkg.TableFormat); err != nil {
+	if err := f.AddTable(sheetName, "A5", "AO5", pkg.TableFormat); err != nil {
 		log.Errorf("unable to add table format : %s", err)
 	}
 

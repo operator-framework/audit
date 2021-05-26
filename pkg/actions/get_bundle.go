@@ -41,7 +41,7 @@ func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 
 	if len(auditBundle.OperatorBundleImagePath) < 1 {
 		auditBundle.Errors = append(auditBundle.Errors,
-			errors.New("not found bundle path stored in the index.db"))
+			errors.New("not found bundle path stored in the index.db").Error())
 		return auditBundle
 	}
 
@@ -51,7 +51,7 @@ func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 
 	inspectManifest, err := pkg.RunDockerInspect(auditBundle.OperatorBundleImagePath)
 	if err != nil {
-		auditBundle.Errors = append(auditBundle.Errors, err)
+		auditBundle.Errors = append(auditBundle.Errors, err.Error())
 	} else {
 		// Gathering data by inspecting the operator bundle image
 		if len(label) > 0 {
@@ -74,21 +74,19 @@ func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 	// Read the bundle
 	auditBundle.Bundle, err = apimanifests.GetBundleFromDir(filepath.Join(bundleDir, "bundle"))
 	if err != nil {
-		auditBundle.Errors = append(auditBundle.Errors, fmt.Errorf("unable to get the bundle: %s", err))
+		auditBundle.Errors = append(auditBundle.Errors, fmt.Errorf("unable to get the bundle: %s", err).Error())
 		return auditBundle
 	}
 
 	// Gathering data from scorecard
 	if !disableScorecard {
-		auditBundle.ScorecardResults, err = RunScorecard(filepath.Join(bundleDir, "bundle"))
-		if err != nil {
-			auditBundle.Errors = append(auditBundle.Errors, fmt.Errorf("unable to run scorecard: %s", err))
-		}
+		auditBundle = RunScorecard(filepath.Join(bundleDir, "bundle"), auditBundle)
 	}
 
 	// Run validators
 	if !disableValidators {
 		auditBundle = RunValidators(auditBundle)
+
 	}
 
 	cleanupBundleDir(auditBundle, bundleDir)
@@ -102,7 +100,7 @@ func createBundleDir(auditBundle *models.AuditBundle) string {
 	_, err := pkg.RunCommand(cmd)
 	if err != nil {
 		auditBundle.Errors = append(auditBundle.Errors,
-			fmt.Errorf("unable to create the dir for the bundle: %s", err))
+			fmt.Errorf("unable to create the dir for the bundle: %s", err).Error())
 	}
 	return dir
 }
@@ -112,7 +110,7 @@ func downloadBundleImage(auditBundle *models.AuditBundle) {
 	_, err := pkg.RunCommand(cmd)
 	if err != nil {
 		auditBundle.Errors = append(auditBundle.Errors,
-			fmt.Errorf("unable to create container image : %s", err))
+			fmt.Errorf("unable to create container image : %s", err).Error())
 	}
 }
 
@@ -124,7 +122,7 @@ func extractBundleFromImage(auditBundle *models.AuditBundle, bundleDir string) {
 	if err != nil {
 		log.Errorf("unable to save the bundle image : %s", err)
 		auditBundle.Errors = append(auditBundle.Errors,
-			fmt.Errorf("unable to save the bundle image : %s", err))
+			fmt.Errorf("unable to save the bundle image : %s", err).Error())
 	}
 
 	cmd = exec.Command("tar", "-xvf", tarPath, "-C", bundleDir)
@@ -132,7 +130,7 @@ func extractBundleFromImage(auditBundle *models.AuditBundle, bundleDir string) {
 	if err != nil {
 		log.Errorf("unable to untar the bundle image: %s", err)
 		auditBundle.Errors = append(auditBundle.Errors,
-			fmt.Errorf("unable to untar the bundle image : %s", err))
+			fmt.Errorf("unable to untar the bundle image : %s", err).Error())
 	}
 
 	cmd = exec.Command("mkdir", filepath.Join(bundleDir, "bundle"))
@@ -140,7 +138,7 @@ func extractBundleFromImage(auditBundle *models.AuditBundle, bundleDir string) {
 	if err != nil {
 		log.Errorf("error to create the bundle bundleDir: %s", err)
 		auditBundle.Errors = append(auditBundle.Errors,
-			fmt.Errorf("error to create the bundle bundleDir : %s", err))
+			fmt.Errorf("error to create the bundle bundleDir : %s", err).Error())
 	}
 
 	bundleConfigFilePath := filepath.Join(bundleDir, "manifest.json")
@@ -150,12 +148,12 @@ func extractBundleFromImage(auditBundle *models.AuditBundle, bundleDir string) {
 		if err := json.Unmarshal(existingFile, &bundleLayerConfig); err != nil {
 			log.Errorf("unable to Unmarshal manifest.json: %s", err)
 			auditBundle.Errors = append(auditBundle.Errors,
-				fmt.Errorf("unable to Unmarshal manifest.json: %s", err))
+				fmt.Errorf("unable to Unmarshal manifest.json: %s", err).Error())
 		}
 		if bundleLayerConfig == nil {
 			log.Errorf("error to untar layers")
 			auditBundle.Errors = append(auditBundle.Errors,
-				fmt.Errorf("error to untar layers: %s", err))
+				fmt.Errorf("error to untar layers: %s", err).Error())
 		}
 
 		for _, layer := range bundleLayerConfig[0].Layers {
@@ -164,7 +162,7 @@ func extractBundleFromImage(auditBundle *models.AuditBundle, bundleDir string) {
 			if err != nil {
 				log.Errorf("unable to untar layer : %s", err)
 				auditBundle.Errors = append(auditBundle.Errors,
-					fmt.Errorf("error to untar layers : %s", err))
+					fmt.Errorf("error to untar layers : %s", err).Error())
 			}
 		}
 	} else {
@@ -174,7 +172,7 @@ func extractBundleFromImage(auditBundle *models.AuditBundle, bundleDir string) {
 		if err != nil {
 			log.Errorf("unable to untar layer : %s", err)
 			auditBundle.Errors = append(auditBundle.Errors,
-				fmt.Errorf("unable to untar layer: %s", err))
+				fmt.Errorf("unable to untar layer: %s", err).Error())
 		}
 	}
 

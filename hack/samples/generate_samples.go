@@ -26,7 +26,6 @@ import (
 )
 
 func main() {
-
 	currentPath, err := os.Getwd()
 	if err != nil {
 		log.Error(err)
@@ -54,128 +53,47 @@ func main() {
 		log.Errorf("running command :%s", err)
 	}
 
-	command = exec.Command("mkdir", filepath.Join(samplesDir, "bundles"))
+	indexReportKinds := []string{"bundles", "channels", "packages"}
+	indexImage := "registry.redhat.io/redhat/redhat-operator-index:v4.7"
+
+	for _, v := range indexReportKinds {
+		// create dir
+		command = exec.Command("mkdir", filepath.Join(samplesDir, v))
+		_, err = pkg.RunCommand(command)
+		if err != nil {
+			log.Errorf("running command :%s", err)
+		}
+		// run report
+		command = exec.Command(binPath, "index", v,
+			fmt.Sprintf("--index-image=%s", indexImage),
+			"--limit=5",
+			"--output=all",
+			fmt.Sprintf("--output-path=%s", filepath.Join(samplesDir, v)),
+		)
+		_, err = pkg.RunCommand(command)
+		if err != nil {
+			log.Errorf("running command :%s", err)
+		}
+	}
+
+	customPath := filepath.Join(samplesDir, "dashboard")
+	command = exec.Command("mkdir", customPath)
 	_, err = pkg.RunCommand(command)
 	if err != nil {
 		log.Errorf("running command :%s", err)
 	}
 
-	command = exec.Command("mkdir", filepath.Join(samplesDir, "bundles", "xls"))
-	_, err = pkg.RunCommand(command)
-	if err != nil {
-		log.Errorf("running command :%s", err)
-	}
+	jsonBundlesReport := filepath.Join(filepath.Join(samplesDir, "bundles"),
+		pkg.GetReportName(indexImage, "bundles", "json"))
 
-	command = exec.Command("mkdir", filepath.Join(samplesDir, "bundles", "json"))
-	_, err = pkg.RunCommand(command)
-	if err != nil {
-		log.Errorf("running command :%s", err)
-	}
-
-	command = exec.Command("mkdir", filepath.Join(samplesDir, "channels"))
-	_, err = pkg.RunCommand(command)
-	if err != nil {
-		log.Errorf("running command :%s", err)
-	}
-
-	command = exec.Command("mkdir", filepath.Join(samplesDir, "channels", "xls"))
-	_, err = pkg.RunCommand(command)
-	if err != nil {
-		log.Errorf("running command :%s", err)
-	}
-
-	command = exec.Command("mkdir", filepath.Join(samplesDir, "channels", "json"))
-	_, err = pkg.RunCommand(command)
-	if err != nil {
-		log.Errorf("running command :%s", err)
-	}
-
-	command = exec.Command("mkdir", filepath.Join(samplesDir, "packages"))
-	_, err = pkg.RunCommand(command)
-	if err != nil {
-		log.Errorf("running command :%s", err)
-	}
-
-	command = exec.Command("mkdir", filepath.Join(samplesDir, "packages", "xls"))
-	_, err = pkg.RunCommand(command)
-	if err != nil {
-		log.Errorf("running command :%s", err)
-	}
-
-	command = exec.Command("mkdir", filepath.Join(samplesDir, "packages", "json"))
-	_, err = pkg.RunCommand(command)
-	if err != nil {
-		log.Errorf("running command :%s", err)
-	}
-
-	log.Infof("creating bundles testdata Sample XLS")
-	command = exec.Command(binPath, "bundles",
-		"--index-image=registry.redhat.io/redhat/certified-operator-index:v4.8",
-		"--limit=5",
-		"--head-only",
-		fmt.Sprintf("--output-path=%s", filepath.Join(samplesDir, "bundles", "xls")),
+	// run report
+	command = exec.Command(binPath, "dashboard", "deprecate-apis",
+		fmt.Sprintf("--file=%s", jsonBundlesReport),
+		fmt.Sprintf("--output-path=%s", customPath),
 	)
 	_, err = pkg.RunCommand(command)
 	if err != nil {
 		log.Errorf("running command :%s", err)
 	}
 
-	log.Infof("creating bundles testdata Sample json")
-	command = exec.Command(binPath, "bundles",
-		"--index-image=registry.redhat.io/redhat/certified-operator-index:v4.8",
-		"--limit=2",
-		"--output=json",
-		"--head-only",
-		fmt.Sprintf("--output-path=%s", filepath.Join(samplesDir, "bundles", "json")),
-	)
-	_, err = pkg.RunCommand(command)
-	if err != nil {
-		log.Errorf("running command :%s", err)
-	}
-
-	log.Infof("creating packages testdata Sample XLS")
-	command = exec.Command(binPath, "packages",
-		"--index-image=registry.redhat.io/redhat/certified-operator-index:v4.8",
-		"--limit=2",
-		fmt.Sprintf("--output-path=%s", filepath.Join(samplesDir, "packages", "xls")),
-	)
-	_, err = pkg.RunCommand(command)
-	if err != nil {
-		log.Errorf("running command :%s", err)
-	}
-
-	log.Infof("creating packages testdata Sample json")
-	command = exec.Command(binPath, "packages",
-		"--index-image=registry.redhat.io/redhat/certified-operator-index:v4.8",
-		"--limit=2",
-		"--output=json",
-		fmt.Sprintf("--output-path=%s", filepath.Join(samplesDir, "packages", "json")),
-	)
-	_, err = pkg.RunCommand(command)
-	if err != nil {
-		log.Errorf("running command :%s", err)
-	}
-
-	log.Infof("creating channels testdata Sample XLS")
-	command = exec.Command(binPath, "channels",
-		"--index-image=registry.redhat.io/redhat/certified-operator-index:v4.8",
-		"--limit=5",
-		fmt.Sprintf("--output-path=%s", filepath.Join(samplesDir, "channels", "xls")),
-	)
-	_, err = pkg.RunCommand(command)
-	if err != nil {
-		log.Errorf("running command :%s", err)
-	}
-
-	log.Infof("creating channels testdata Sample json")
-	command = exec.Command(binPath, "channels",
-		"--index-image=registry.redhat.io/redhat/certified-operator-index:v4.8",
-		"--limit=5",
-		"--output=json",
-		fmt.Sprintf("--output-path=%s", filepath.Join(samplesDir, "channels", "json")),
-	)
-	_, err = pkg.RunCommand(command)
-	if err != nil {
-		log.Errorf("running command :%s", err)
-	}
 }

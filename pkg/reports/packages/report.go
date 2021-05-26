@@ -45,34 +45,45 @@ func (r *Report) writeXls() error {
 		},
 	})
 
+	styleRed, _ := f.NewStyle(&excelize.Style{
+		Font: &excelize.Font{
+			Color: "#EC1C1C",
+		},
+	})
+
+	styleGreen, _ := f.NewStyle(&excelize.Style{
+		Font: &excelize.Font{
+			Color: "#3FA91E",
+		},
+	})
 	columns := map[string]string{
 		"A": "Package Name",
-		"B": "Has v1beta1 CRD?",
-		"C": "Has webhooks?",
-		"D": "Has Multiple Architectures",
+		"B": "Kinds \n (Suggestion API(s) usage)",
+		"C": "Is using Webhooks",
+		"D": "Multiple Architectures used",
 		"E": "Has Scorecard Suggestions",
 		"F": "Has Scorecard Falling Tests",
 		"G": "Has Validator Errors",
-		"H": "Has Scorecard Warnings",
+		"H": "Has Validator Warnings",
 		"I": "Has Invalid Versioning",
 		"J": "Has Invalid SkipRange",
-		"K": "Has Dependency",
-		"L": "Is Multiple Channel",
+		"K": "Has deprecate API(s) suggestions set",
+		"L": "Is multi-channel",
 		"M": "Has Support for All Namespaces",
 		"N": "Has Support for Single Namespaces",
 		"O": "Has Support for Own Namespaces",
 		"P": "Has Support for Multi Namespaces",
 		"Q": "Has Infrastructure Support",
 		"R": "Has possible performance issues",
-		"S": "Build Dates (from index image)",
-		"T": "OCP Labels",
-		"U": "Issues (To process this report)",
+		"S": "Has custom Scorecards",
+		"T": "Issues (To process this report)",
 	}
 
 	// Header
 	dt := time.Now().Format("2006-01-02")
 	_ = f.SetCellValue(sheetName, "A1",
-		fmt.Sprintf("Audit Packages Report (Generated at %s)", dt))
+		fmt.Sprintf("Audit Packages Report (Generated at %s). IMPORTANT: This report only checks the head "+
+			"operators of the channels. Use the bundles report to check all bundles", dt))
 	_ = f.SetCellValue(sheetName, "A2", "Image used")
 	_ = f.SetCellValue(sheetName, "B2", r.Flags.IndexImage)
 	_ = f.SetCellValue(sheetName, "A3", "Image Index Create Date:")
@@ -90,10 +101,10 @@ func (r *Report) writeXls() error {
 		if err := f.SetCellValue(sheetName, fmt.Sprintf("A%d", line), v.PackageName); err != nil {
 			log.Errorf("to add packageName cell value: %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("B%d", line), v.HasV1beta1CRD); err != nil {
-			log.Errorf("to add HasV1beta1CRD cell value: %s", err)
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("B%d", line), v.KindsDeprecateAPIs); err != nil {
+			log.Errorf("to add KindsDeprecateAPIs cell value: %s", err)
 		}
-		if v.HasV1beta1CRD == pkg.GetYesOrNo(true) {
+		if len(v.KindsDeprecateAPIs) > 0 {
 			_ = f.SetCellStyle(sheetName, fmt.Sprintf("B%d", line),
 				fmt.Sprintf("B%d", line), styleOrange)
 		}
@@ -111,6 +122,11 @@ func (r *Report) writeXls() error {
 			log.Errorf("to add HasScorecardSuggestions cell value: %s", err)
 		}
 
+		if v.HasScorecardSuggestions {
+			_ = f.SetCellStyle(sheetName, fmt.Sprintf("E%d", line),
+				fmt.Sprintf("E%d", line), styleOrange)
+		}
+
 		if err := f.SetCellValue(sheetName, fmt.Sprintf("F%d", line),
 			pkg.GetYesOrNo(v.HasScorecardFailingTests)); err != nil {
 			log.Errorf("to add HasScorecardFailingTests cell value: %s", err)
@@ -122,7 +138,10 @@ func (r *Report) writeXls() error {
 				log.Errorf("to add comment for ScorecardFailingTests: %s", err)
 			}
 			_ = f.SetCellStyle(sheetName, fmt.Sprintf("F%d", line),
-				fmt.Sprintf("F%d", line), styleOrange)
+				fmt.Sprintf("F%d", line), styleRed)
+		} else {
+			_ = f.SetCellStyle(sheetName, fmt.Sprintf("F%d", line),
+				fmt.Sprintf("F%d", line), styleGreen)
 		}
 
 		if err := f.SetCellValue(sheetName, fmt.Sprintf("G%d", line),
@@ -132,12 +151,23 @@ func (r *Report) writeXls() error {
 
 		if v.HasValidatorErrors {
 			_ = f.SetCellStyle(sheetName, fmt.Sprintf("G%d", line),
-				fmt.Sprintf("G%d", line), styleOrange)
+				fmt.Sprintf("G%d", line), styleRed)
+		} else {
+			_ = f.SetCellStyle(sheetName, fmt.Sprintf("G%d", line),
+				fmt.Sprintf("G%d", line), styleGreen)
 		}
 
 		if err := f.SetCellValue(sheetName, fmt.Sprintf("H%d", line),
 			pkg.GetYesOrNo(v.HasValidatorWarnings)); err != nil {
 			log.Errorf("to add HasValidatorWarnings cell value: %s", err)
+		}
+
+		if v.HasValidatorWarnings {
+			_ = f.SetCellStyle(sheetName, fmt.Sprintf("H%d", line),
+				fmt.Sprintf("H%d", line), styleOrange)
+		} else {
+			_ = f.SetCellStyle(sheetName, fmt.Sprintf("H%d", line),
+				fmt.Sprintf("H%d", line), styleGreen)
 		}
 
 		if err := f.SetCellValue(sheetName, fmt.Sprintf("I%d", line),
@@ -148,6 +178,9 @@ func (r *Report) writeXls() error {
 		if v.HasInvalidVersioning {
 			_ = f.SetCellStyle(sheetName, fmt.Sprintf("I%d", line),
 				fmt.Sprintf("I%d", line), styleOrange)
+		} else {
+			_ = f.SetCellStyle(sheetName, fmt.Sprintf("I%d", line),
+				fmt.Sprintf("I%d", line), styleGreen)
 		}
 
 		if err := f.SetCellValue(sheetName, fmt.Sprintf("J%d", line),
@@ -159,8 +192,15 @@ func (r *Report) writeXls() error {
 				fmt.Sprintf("J%d", line), styleOrange)
 		}
 		if err := f.SetCellValue(sheetName, fmt.Sprintf("K%d", line),
-			pkg.GetYesOrNo(v.HasDependency)); err != nil {
-			log.Errorf("to add HasPackageDependency cell value: %s", err)
+			v.HasDeprecateAPIsSuggestionsSet); err != nil {
+			log.Errorf("to add HasDeprecateAPIsSuggestionsSet cell value: %s", err)
+		}
+		if v.HasDeprecateAPIsSuggestionsSet == pkg.GetYesOrNo(false) {
+			_ = f.SetCellStyle(sheetName, fmt.Sprintf("K%d", line),
+				fmt.Sprintf("K%d", line), styleRed)
+		} else {
+			_ = f.SetCellStyle(sheetName, fmt.Sprintf("K%d", line),
+				fmt.Sprintf("K%d", line), styleGreen)
 		}
 
 		if err := f.SetCellValue(sheetName, fmt.Sprintf("L%d", line),
@@ -189,8 +229,8 @@ func (r *Report) writeXls() error {
 		}
 
 		if err := f.SetCellValue(sheetName, fmt.Sprintf("Q%d", line),
-			pkg.GetYesOrNo(v.HasInfraSupport)); err != nil {
-			log.Errorf("to add HasInfraSupport cell value: %s", err)
+			pkg.GetYesOrNo(v.HasInfraAnnotation)); err != nil {
+			log.Errorf("to add HasInfraAnnotation cell value: %s", err)
 		}
 
 		if err := f.SetCellValue(sheetName, fmt.Sprintf("R%d", line),
@@ -204,16 +244,16 @@ func (r *Report) writeXls() error {
 		}
 
 		if err := f.SetCellValue(sheetName, fmt.Sprintf("S%d", line),
-			pkg.GetFormatArrayWithBreakLine(v.BuildAtDates)); err != nil {
-			log.Errorf("to add BuildAtDates cell value : %s", err)
+			pkg.GetYesOrNo(v.HasCustomScorecardTests)); err != nil {
+			log.Errorf("to add HasCustomScorecardTests cell value: %s", err)
 		}
 
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("T%d", line),
-			pkg.GetFormatArrayWithBreakLine(v.OCPLabel)); err != nil {
-			log.Errorf("to add OCPLabel cell value : %s", err)
+		if v.HasCustomScorecardTests {
+			_ = f.SetCellStyle(sheetName, fmt.Sprintf("S%d", line),
+				fmt.Sprintf("S%d", line), styleGreen)
 		}
 
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("U%d", line), v.AuditErrors); err != nil {
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("T%d", line), v.AuditErrors); err != nil {
 			log.Errorf("to add AuditErrors cell value: %s", err)
 		}
 
@@ -225,6 +265,9 @@ func (r *Report) writeXls() error {
 			log.Errorf("unable to remove scorecard columns : %s", err)
 		}
 		if err := f.SetColVisible(sheetName, "F", false); err != nil {
+			log.Errorf("unable to remove scorecard columns : %s", err)
+		}
+		if err := f.SetColVisible(sheetName, "S", false); err != nil {
 			log.Errorf("unable to remove scorecard columns : %s", err)
 		}
 	}
@@ -239,7 +282,7 @@ func (r *Report) writeXls() error {
 		}
 	}
 
-	if err := f.AddTable(sheetName, "A5", "U5", pkg.TableFormat); err != nil {
+	if err := f.AddTable(sheetName, "A5", "T5", pkg.TableFormat); err != nil {
 		log.Errorf("to set table format : %s", err)
 	}
 

@@ -24,5 +24,5 @@ type Columns struct {
 	HasInvalidSkipRange       bool     `json:"HasInvalidSkipRange,omitempty"`
 	HasInvalidVersioning      bool     `json:"HasInvalidVersioning,omitempty"`
 	MissingReplaces           []string `json:"missingReplaces,omitempty"`
-	AuditErrors               []error  `json:"errors"`
+	AuditErrors               []string `json:"errors,omitempty"`
 }

@@ -1,0 +1,2382 @@
+{
+	"columns": [
+		{
+			"packageName": "3scale-operator",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(3scale-operator.v0.3.0) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"apimanagers.apps.3scale.net\" \"apis.capabilities.3scale.net\" \"bindings.capabilities.3scale.net\" \"limits.capabilities.3scale.net\" \"mappingrules.capabilities.3scale.net\" \"metrics.capabilities.3scale.net\" \"plans.capabilities.3scale.net\" \"tenants.capabilities.3scale.net\"])"
+			],
+			"scorecardErrors": [
+				"apis.capabilities.3scale.net does not have a status descriptor",
+				"bindings.capabilities.3scale.net does not have a status descriptor",
+				"limits.capabilities.3scale.net does not have a status descriptor",
+				"mappingrules.capabilities.3scale.net does not have a status descriptor",
+				"metrics.capabilities.3scale.net does not have a status descriptor",
+				"plans.capabilities.3scale.net does not have a status descriptor",
+				"tenants.capabilities.3scale.net does not have a status descriptor",
+				"Owned CRDs do not have resources specified",
+				"highAvailability does not have a spec descriptor",
+				"system does not have a spec descriptor",
+				"description does not have a spec descriptor",
+				"integrationMethod does not have a spec descriptor",
+				"APISelector does not have a spec descriptor",
+				"credentialsRef does not have a spec descriptor",
+				"description does not have a spec descriptor",
+				"maxValue does not have a spec descriptor",
+				"metricRef does not have a spec descriptor",
+				"period does not have a spec descriptor",
+				"path does not have a spec descriptor",
+				"increment does not have a spec descriptor",
+				"method does not have a spec descriptor",
+				"metricRef does not have a spec descriptor",
+				"description does not have a spec descriptor",
+				"incrementHits does not have a spec descriptor",
+				"unit does not have a spec descriptor",
+				"approvalRequired does not have a spec descriptor",
+				"costs does not have a spec descriptor",
+				"default does not have a spec descriptor",
+				"limitSelector does not have a spec descriptor",
+				"trialPeriod does not have a spec descriptor",
+				"passwordCredentialsRef does not have a spec descriptor",
+				"systemMasterUrl does not have a spec descriptor",
+				"tenantSecretRef does not have a spec descriptor",
+				"username does not have a spec descriptor",
+				"email does not have a spec descriptor",
+				"masterCredentialsRef does not have a spec descriptor",
+				"organizationName does not have a spec descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add CRD validation for spec field `APISelector` in Binding/v1alpha1",
+				"Add CRD validation for spec field `description` in Limit/v1alpha1",
+				"Add a spec descriptor for highAvailability",
+				"Add a spec descriptor for system",
+				"Add a spec descriptor for description",
+				"Add a spec descriptor for integrationMethod",
+				"Add a spec descriptor for APISelector",
+				"Add a spec descriptor for credentialsRef",
+				"Add a spec descriptor for description",
+				"Add a spec descriptor for maxValue",
+				"Add a spec descriptor for metricRef",
+				"Add a spec descriptor for period",
+				"Add a spec descriptor for path",
+				"Add a spec descriptor for increment",
+				"Add a spec descriptor for method",
+				"Add a spec descriptor for metricRef",
+				"Add a spec descriptor for description",
+				"Add a spec descriptor for incrementHits",
+				"Add a spec descriptor for unit",
+				"Add a spec descriptor for approvalRequired",
+				"Add a spec descriptor for costs",
+				"Add a spec descriptor for default",
+				"Add a spec descriptor for limitSelector",
+				"Add a spec descriptor for trialPeriod",
+				"Add a spec descriptor for passwordCredentialsRef",
+				"Add a spec descriptor for systemMasterUrl",
+				"Add a spec descriptor for tenantSecretRef",
+				"Add a spec descriptor for username",
+				"Add a spec descriptor for email",
+				"Add a spec descriptor for masterCredentialsRef",
+				"Add a spec descriptor for organizationName"
+			],
+			"scorecardFailingTests": [
+				"olm-status-descriptors",
+				"olm-crds-have-resources",
+				"olm-spec-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "advanced-cluster-management",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(advanced-cluster-management.v2.1.6) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"clustermanagers.operator.open-cluster-management.io\" \"applications.app.k8s.io\" \"channels.apps.open-cluster-management.io\" \"deployables.apps.open-cluster-management.io\" \"helmreleases.apps.open-cluster-management.io\" \"placementrules.apps.open-cluster-management.io\" \"subscriptions.apps.open-cluster-management.io\" \"observatoria.core.observatorium.io\" \"checkpoints.hive.openshift.io\" \"clusterclaims.hive.openshift.io\" \"clusterdeployments.hive.openshift.io\" \"clusterdeprovisions.hive.openshift.io\" \"clusterimagesets.hive.openshift.io\" \"clusterpools.hive.openshift.io\" \"clusterprovisions.hive.openshift.io\" \"clusterrelocates.hive.openshift.io\" \"clusterstates.hive.openshift.io\" \"dnszones.hive.openshift.io\" \"hiveconfigs.hive.openshift.io\" \"machinepoolnameleases.hive.openshift.io\" \"machinepools.hive.openshift.io\" \"selectorsyncidentityproviders.hive.openshift.io\" \"selectorsyncsets.hive.openshift.io\" \"syncidentityproviders.hive.openshift.io\" \"syncsets.hive.openshift.io\" \"clustersyncleases.hiveinternal.openshift.io\" \"clustersyncs.hiveinternal.openshift.io\" \"multiclusterobservabilities.observability.open-cluster-management.io\" \"observabilityaddons.observability.open-cluster-management.io\" \"multiclusterhubs.operator.open-cluster-management.io\"])",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation"
+			],
+			"scorecardErrors": [
+				"registrationImagePullSpec does not have a spec descriptor",
+				"workImagePullSpec does not have a spec descriptor",
+				"storageConfigObject does not have a spec descriptor",
+				"managedDomains does not have a spec descriptor",
+				"type does not have a spec descriptor",
+				"pathname does not have a spec descriptor",
+				"packageFilter does not have a spec descriptor",
+				"packageOverrides does not have a spec descriptor",
+				"placement does not have a spec descriptor",
+				"Owned CRDs do not have resources specified",
+				"multiclusterhubs.operator.open-cluster-management.io does not have a status descriptor",
+				"clustermanagers.operator.open-cluster-management.io does not have a status descriptor",
+				"multiclusterobservabilities.observability.open-cluster-management.io does not have a status descriptor",
+				"hiveconfigs.hive.openshift.io does not have a status descriptor",
+				"channels.apps.open-cluster-management.io does not have a status descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for registrationImagePullSpec",
+				"Add a spec descriptor for workImagePullSpec",
+				"Add a spec descriptor for storageConfigObject",
+				"Add a spec descriptor for managedDomains",
+				"Add a spec descriptor for type",
+				"Add a spec descriptor for pathname",
+				"Add a spec descriptor for packageFilter",
+				"Add a spec descriptor for packageOverrides",
+				"Add a spec descriptor for placement",
+				"Add CRD validation for status field `state` in Channel/v1",
+				"Warning: Value hive.openshift.io/v1, Kind=ClusterImageSet: provided API should have an example annotation",
+				"Warning: Value apps.open-cluster-management.io/v1, Kind=Deployable: provided API should have an example annotation",
+				"Warning: Value hive.openshift.io/v1, Kind=ClusterPool: provided API should have an example annotation",
+				"Warning: Value hive.openshift.io/v1, Kind=Checkpoint: provided API should have an example annotation",
+				"Warning: Value hiveinternal.openshift.io/v1alpha1, Kind=ClusterSyncLease: provided API should have an example annotation",
+				"Warning: Value app.k8s.io/v1beta1, Kind=Application: provided API should have an example annotation",
+				"Warning: Value apps.open-cluster-management.io/v1, Kind=HelmRelease: provided API should have an example annotation",
+				"Warning: Value hive.openshift.io/v1, Kind=ClusterDeployment: provided API should have an example annotation",
+				"Warning: Value hive.openshift.io/v1, Kind=ClusterRelocate: provided API should have an example annotation",
+				"Warning: Value hiveinternal.openshift.io/v1alpha1, Kind=ClusterSync: provided API should have an example annotation",
+				"Warning: Value hive.openshift.io/v1, Kind=SyncIdentityProvider: provided API should have an example annotation",
+				"Warning: Value hive.openshift.io/v1, Kind=ClusterState: provided API should have an example annotation",
+				"Warning: Value hive.openshift.io/v1, Kind=ClusterDeprovision: provided API should have an example annotation",
+				"Warning: Value hive.openshift.io/v1, Kind=SyncSet: provided API should have an example annotation",
+				"Warning: Value hive.openshift.io/v1, Kind=SelectorSyncIdentityProvider: provided API should have an example annotation",
+				"Warning: Value apps.open-cluster-management.io/v1, Kind=PlacementRule: provided API should have an example annotation",
+				"Warning: Value core.observatorium.io/v1alpha1, Kind=Observatorium: provided API should have an example annotation",
+				"Warning: Value hive.openshift.io/v1, Kind=ClusterProvision: provided API should have an example annotation",
+				"Warning: Value hive.openshift.io/v1, Kind=MachinePoolNameLease: provided API should have an example annotation",
+				"Warning: Value hive.openshift.io/v1, Kind=DNSZone: provided API should have an example annotation",
+				"Warning: Value hive.openshift.io/v1, Kind=ClusterClaim: provided API should have an example annotation",
+				"Warning: Value hive.openshift.io/v1, Kind=SelectorSyncSet: provided API should have an example annotation",
+				"Warning: Value hive.openshift.io/v1, Kind=MachinePool: provided API should have an example annotation",
+				"Warning: Value observability.open-cluster-management.io/v1beta1, Kind=ObservabilityAddon: provided API should have an example annotation"
+			],
+			"scorecardFailingTests": [
+				"olm-spec-descriptors",
+				"olm-crds-have-resources",
+				"olm-status-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForOwnNamespaces": true,
+			"hasInfraAnnotation": true
+		},
+		{
+			"packageName": "amq-broker",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"multipleArchitectures": [
+				"amd64",
+				"linux"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(amq-broker-operator.v7.8.1-opr-3) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"activemqartemises.broker.amq.io\" \"activemqartemisaddresses.broker.amq.io\" \"activemqartemisscaledowns.broker.amq.io\"])"
+			],
+			"scorecardErrors": [
+				"Owned CRDs do not have resources specified",
+				"activemqartemisaddresses.broker.amq.io does not have a status descriptor",
+				"activemqartemisscaledowns.broker.amq.io does not have a status descriptor",
+				"deploymentPlan does not have a spec descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for deploymentPlan"
+			],
+			"scorecardFailingTests": [
+				"olm-crds-have-resources",
+				"olm-status-descriptors",
+				"olm-spec-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "amq-broker-lts",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(amq-broker-operator.v0.9.3) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"activemqartemises.broker.amq.io\" \"activemqartemisaddresses.broker.amq.io\" \"activemqartemisscaledowns.broker.amq.io\"])"
+			],
+			"scorecardErrors": [
+				"deploymentPlan does not have a spec descriptor",
+				"Owned CRDs do not have resources specified",
+				"activemqartemises.broker.amq.io does not have a status descriptor",
+				"activemqartemisaddresses.broker.amq.io does not have a status descriptor",
+				"activemqartemisscaledowns.broker.amq.io does not have a status descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add CRD validation for spec field `deploymentPlan` in ActiveMQArtemis/v2alpha1",
+				"Add a spec descriptor for deploymentPlan"
+			],
+			"scorecardFailingTests": [
+				"olm-spec-descriptors",
+				"olm-crds-have-resources",
+				"olm-status-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "amq-broker-rhel8",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"multipleArchitectures": [
+				"amd64",
+				"ppc64le",
+				"s390x",
+				"linux"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(amq-broker-operator.v7.8.1-opr-3-rhel8) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"activemqartemises.broker.amq.io\" \"activemqartemisaddresses.broker.amq.io\" \"activemqartemisscaledowns.broker.amq.io\"])"
+			],
+			"scorecardErrors": [
+				"activemqartemisaddresses.broker.amq.io does not have a status descriptor",
+				"activemqartemisscaledowns.broker.amq.io does not have a status descriptor",
+				"Owned CRDs do not have resources specified",
+				"deploymentPlan does not have a spec descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for deploymentPlan"
+			],
+			"scorecardFailingTests": [
+				"olm-status-descriptors",
+				"olm-crds-have-resources",
+				"olm-spec-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "amq-online",
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(amq-online.1.7.0) csv.metadata.Name amq-online.1.7.0 is not following the recommended naming convention: \u003coperator-name\u003e.v\u003csemver\u003e e.g. memcached-operator.v0.0.1",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation"
+			],
+			"scorecardErrors": [
+				"router does not have a spec descriptor",
+				"broker does not have a spec descriptor",
+				"broker does not have a spec descriptor",
+				"resources does not have a spec descriptor",
+				"addressType does not have a spec descriptor",
+				"addressSpaceType does not have a spec descriptor",
+				"resourceLimits does not have a spec descriptor",
+				"addressPlans does not have a spec descriptor",
+				"standard does not have a spec descriptor",
+				"address does not have a spec descriptor",
+				"authentication does not have a spec descriptor",
+				"authorization does not have a spec descriptor",
+				"Owned CRDs do not have resources specified",
+				"standardinfraconfigs.admin.enmasse.io does not have a status descriptor",
+				"brokeredinfraconfigs.admin.enmasse.io does not have a status descriptor",
+				"addressplans.admin.enmasse.io does not have a status descriptor",
+				"addressspaceplans.admin.enmasse.io does not have a status descriptor",
+				"authenticationservices.admin.enmasse.io does not have a status descriptor",
+				"messagingusers.user.enmasse.io does not have a status descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for router",
+				"Add a spec descriptor for broker",
+				"Add a spec descriptor for broker",
+				"Add a spec descriptor for resources",
+				"Add a spec descriptor for addressType",
+				"Add a spec descriptor for addressSpaceType",
+				"Add a spec descriptor for resourceLimits",
+				"Add a spec descriptor for addressPlans",
+				"Add a spec descriptor for standard",
+				"Add a spec descriptor for address",
+				"Add a spec descriptor for authentication",
+				"Add a spec descriptor for authorization",
+				"Warning: Value enmasse.io/v1beta1, Kind=AddressSpaceSchema: provided API should have an example annotation",
+				"Warning: Value admin.enmasse.io/v1beta1, Kind=ConsoleService: provided API should have an example annotation"
+			],
+			"scorecardFailingTests": [
+				"olm-spec-descriptors",
+				"olm-crds-have-resources",
+				"olm-status-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NOT REQUIRED",
+			"hasSupportForAllNamespaces": true,
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "amq-streams",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"kafkabridges.kafka.strimzi.io\" \"kafkaconnectors.kafka.strimzi.io\" \"kafkaconnects.kafka.strimzi.io\" \"kafkaconnects2is.kafka.strimzi.io\" \"kafkamirrormaker2s.kafka.strimzi.io\" \"kafkamirrormakers.kafka.strimzi.io\" \"kafkarebalances.kafka.strimzi.io\" \"kafkas.kafka.strimzi.io\" \"kafkatopics.kafka.strimzi.io\" \"kafkausers.kafka.strimzi.io\"])"
+			],
+			"scorecardErrors": [
+				"Owned CRDs do not have resources specified",
+				"zookeeper does not have a spec descriptor",
+				"entityOperator does not have a spec descriptor",
+				"kafka does not have a spec descriptor",
+				"tls does not have a spec descriptor",
+				"tls does not have a spec descriptor",
+				"consumer does not have a spec descriptor",
+				"producer does not have a spec descriptor",
+				"http does not have a spec descriptor",
+				"config does not have a spec descriptor",
+				"authentication does not have a spec descriptor",
+				"authorization does not have a spec descriptor",
+				"config does not have a spec descriptor",
+				"clusters does not have a spec descriptor",
+				"mirrors does not have a spec descriptor",
+				"goals does not have a spec descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for zookeeper",
+				"Add a spec descriptor for entityOperator",
+				"Add a spec descriptor for kafka",
+				"Add a spec descriptor for tls",
+				"Add a spec descriptor for tls",
+				"Add a spec descriptor for consumer",
+				"Add a spec descriptor for producer",
+				"Add a spec descriptor for http",
+				"Add a spec descriptor for config",
+				"Add a spec descriptor for authentication",
+				"Add a spec descriptor for authorization",
+				"Add a spec descriptor for config",
+				"Add a spec descriptor for clusters",
+				"Add a spec descriptor for mirrors",
+				"Add a spec descriptor for goals"
+			],
+			"scorecardFailingTests": [
+				"olm-crds-have-resources",
+				"olm-spec-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForAllNamespaces": true,
+			"hasSupportForMultiNamespaces": true,
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true,
+			"hasInfraAnnotation": true
+		},
+		{
+			"packageName": "amq7-interconnect-operator",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(amq7-interconnect-operator.v1.2.3) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"interconnects.interconnectedcloud.github.io\"])"
+			],
+			"scorecardErrors": [
+				"deploymentPlan does not have a spec descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for deploymentPlan"
+			],
+			"scorecardFailingTests": [
+				"olm-spec-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "apicast-operator",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"apicasts.apps.3scale.net\"])"
+			],
+			"scorecardErrors": [
+				"Owned CRDs do not have resources specified",
+				"adminPortalCredentialsRef does not have a spec descriptor",
+				"embeddedConfigurationSecretRef does not have a spec descriptor",
+				"apicasts.apps.3scale.net does not have a status descriptor",
+				"apicasts.apps.3scale.net does not have a status descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for adminPortalCredentialsRef",
+				"Add a spec descriptor for embeddedConfigurationSecretRef"
+			],
+			"scorecardFailingTests": [
+				"olm-crds-have-resources",
+				"olm-spec-descriptors",
+				"olm-status-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "awx-resource-operator",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(awx-resource-operator.v0.1.1) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"ansiblejobs.tower.ansible.com\" \"jobtemplates.tower.ansible.com\"])"
+			],
+			"scorecardErrors": [
+				"ansiblejobs.tower.ansible.com does not have a status descriptor",
+				"jobtemplates.tower.ansible.com does not have a status descriptor",
+				"Owned CRDs do not have resources specified",
+				"extra_vars does not have a spec descriptor",
+				"job_template_name does not have a spec descriptor",
+				"tower_auth_secret does not have a spec descriptor",
+				"job_template_inventory does not have a spec descriptor",
+				"job_template_name does not have a spec descriptor",
+				"job_template_playbook does not have a spec descriptor",
+				"job_template_project does not have a spec descriptor",
+				"tower_auth_secret does not have a spec descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for extra_vars",
+				"Add a spec descriptor for job_template_name",
+				"Add a spec descriptor for tower_auth_secret",
+				"Add a spec descriptor for job_template_inventory",
+				"Add a spec descriptor for job_template_name",
+				"Add a spec descriptor for job_template_playbook",
+				"Add a spec descriptor for job_template_project",
+				"Add a spec descriptor for tower_auth_secret"
+			],
+			"scorecardFailingTests": [
+				"olm-status-descriptors",
+				"olm-crds-have-resources",
+				"olm-spec-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "businessautomation-operator",
+			"multipleArchitectures": [
+				"amd64",
+				"linux"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": false,
+			"hasScorecardSuggestions": false,
+			"validatorWarnings": [
+				"(businessautomation-operator.7.10.1-2) csv.metadata.Name businessautomation-operator.7.10.1-2 is not following the recommended naming convention: \u003coperator-name\u003e.v\u003csemver\u003e e.g. memcached-operator.v0.0.1"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NOT REQUIRED",
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true,
+			"hasInfraAnnotation": true,
+			"hasPossiblePerformIssues": true
+		},
+		{
+			"packageName": "cluster-kube-descheduler-operator",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(clusterkubedescheduleroperator.4.6.0-202103010126.p0) csv.metadata.Name clusterkubedescheduleroperator.4.6.0-202103010126.p0 is not following the recommended naming convention: \u003coperator-name\u003e.v\u003csemver\u003e e.g. memcached-operator.v0.0.1",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"kubedeschedulers.operator.openshift.io\"])"
+			],
+			"scorecardErrors": [
+				"Owned CRDs do not have resources specified",
+				"image does not have a spec descriptor",
+				"deschedulingIntervalSeconds does not have a spec descriptor",
+				"kubedeschedulers.operator.openshift.io does not have a status descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for image",
+				"Add a spec descriptor for deschedulingIntervalSeconds"
+			],
+			"scorecardFailingTests": [
+				"olm-crds-have-resources",
+				"olm-spec-descriptors",
+				"olm-status-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "cluster-logging",
+			"multipleArchitectures": [
+				"amd64",
+				"ppc64le",
+				"s390x"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(cluster-logging.5.0.3-6) csv.metadata.Name cluster-logging.5.0.3-6 is not following the recommended naming convention: \u003coperator-name\u003e.v\u003csemver\u003e e.g. memcached-operator.v0.0.1"
+			],
+			"scorecardErrors": [
+				"managementState does not have a spec descriptor",
+				"logStore does not have a spec descriptor",
+				"visualization does not have a spec descriptor",
+				"curation does not have a spec descriptor",
+				"collection does not have a spec descriptor",
+				"outputs does not have a spec descriptor",
+				"pipelines does not have a spec descriptor",
+				"Owned CRDs do not have resources specified"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for managementState",
+				"Add a spec descriptor for logStore",
+				"Add a spec descriptor for visualization",
+				"Add a spec descriptor for curation",
+				"Add a spec descriptor for collection",
+				"Add a spec descriptor for outputs",
+				"Add a spec descriptor for pipelines"
+			],
+			"scorecardFailingTests": [
+				"olm-spec-descriptors",
+				"olm-crds-have-resources"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NOT REQUIRED",
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "clusterresourceoverride",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(clusterresourceoverride-operator.4.7.0-202102110027.p0) csv.metadata.Name clusterresourceoverride-operator.4.7.0-202102110027.p0 is not following the recommended naming convention: \u003coperator-name\u003e.v\u003csemver\u003e e.g. memcached-operator.v0.0.1",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"clusterresourceoverrides.operator.autoscaling.openshift.io\"])"
+			],
+			"scorecardErrors": [
+				"podResourceOverride does not have a spec descriptor",
+				"Owned CRDs do not have resources specified",
+				"clusterresourceoverrides.operator.autoscaling.openshift.io does not have a status descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for podResourceOverride"
+			],
+			"scorecardFailingTests": [
+				"olm-spec-descriptors",
+				"olm-crds-have-resources",
+				"olm-status-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "codeready-workspaces",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"multipleArchitectures": [
+				"amd64",
+				"ppc64le",
+				"s390x"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(crwoperator.v2.8.0) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"checlusters.org.eclipse.che\"])"
+			],
+			"scorecardErrors": [
+				"server does not have a spec descriptor",
+				"storage does not have a spec descriptor",
+				"auth does not have a spec descriptor",
+				"database does not have a spec descriptor",
+				"devWorkspace does not have a spec descriptor",
+				"metrics does not have a spec descriptor",
+				"Owned CRDs do not have resources specified"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for server",
+				"Add a spec descriptor for storage",
+				"Add a spec descriptor for auth",
+				"Add a spec descriptor for database",
+				"Add a spec descriptor for devWorkspace",
+				"Add a spec descriptor for metrics"
+			],
+			"scorecardFailingTests": [
+				"olm-spec-descriptors",
+				"olm-crds-have-resources"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForMultiNamespaces": true,
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "compliance-operator",
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(compliance-operator.v0.1.32) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation"
+			],
+			"scorecardErrors": [
+				"compliancescans.compliance.openshift.io does not have a status descriptor",
+				"compliancescans.compliance.openshift.io does not have a status descriptor",
+				"compliancesuites.compliance.openshift.io does not have a status descriptor",
+				"profilebundles.compliance.openshift.io does not have a status descriptor",
+				"scansettings.compliance.openshift.io does not have a status descriptor",
+				"scansettingbindings.compliance.openshift.io does not have a status descriptor",
+				"tailoredprofiles.compliance.openshift.io does not have a status descriptor",
+				"error spec does not exist",
+				"content does not have a spec descriptor",
+				"profile does not have a spec descriptor",
+				"profile does not have a spec descriptor",
+				"scanType does not have a spec descriptor",
+				"content does not have a spec descriptor",
+				"autoApplyRemediations does not have a spec descriptor",
+				"scans does not have a spec descriptor",
+				"schedule does not have a spec descriptor",
+				"contentFile does not have a spec descriptor",
+				"contentImage does not have a spec descriptor",
+				"disableRules does not have a spec descriptor",
+				"extends does not have a spec descriptor",
+				"setValues does not have a spec descriptor",
+				"title does not have a spec descriptor",
+				"Owned CRDs do not have resources specified"
+			],
+			"scorecardSuggestions": [
+				"Warning: Value compliance.openshift.io/v1alpha1, Kind=Rule: provided API should have an example annotation",
+				"Warning: Value compliance.openshift.io/v1alpha1, Kind=ComplianceCheckResult: provided API should have an example annotation",
+				"Warning: Value compliance.openshift.io/v1alpha1, Kind=Profile: provided API should have an example annotation",
+				"Warning: Value compliance.openshift.io/v1alpha1, Kind=Variable: provided API should have an example annotation",
+				"Warning: Value compliance.openshift.io/v1alpha1, Kind=ComplianceRemediation: provided API should have an example annotation",
+				"Add a spec descriptor for content",
+				"Add a spec descriptor for profile",
+				"Add a spec descriptor for profile",
+				"Add a spec descriptor for scanType",
+				"Add a spec descriptor for content",
+				"Add a spec descriptor for autoApplyRemediations",
+				"Add a spec descriptor for scans",
+				"Add a spec descriptor for schedule",
+				"Add a spec descriptor for contentFile",
+				"Add a spec descriptor for contentImage",
+				"Add a spec descriptor for disableRules",
+				"Add a spec descriptor for extends",
+				"Add a spec descriptor for setValues",
+				"Add a spec descriptor for title"
+			],
+			"scorecardFailingTests": [
+				"olm-status-descriptors",
+				"basic-check-spec",
+				"olm-spec-descriptors",
+				"olm-crds-have-resources"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NOT REQUIRED",
+			"hasSupportForMultiNamespaces": true,
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true,
+			"hasInfraAnnotation": true
+		},
+		{
+			"packageName": "container-security-operator",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": false,
+			"validatorWarnings": [
+				"(container-security-operator.v3.4.4) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"imagemanifestvulns.secscan.quay.redhat.com\"])"
+			],
+			"scorecardErrors": [
+				"imagemanifestvulns.secscan.quay.redhat.com does not have a status descriptor",
+				"Owned CRDs do not have resources specified",
+				"error spec does not exist"
+			],
+			"scorecardFailingTests": [
+				"olm-status-descriptors",
+				"olm-crds-have-resources",
+				"basic-check-spec"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForAllNamespaces": true,
+			"hasSupportForMultiNamespaces": true,
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "costmanagement-metrics-operator",
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(costmanagement-metrics-operator.1.0.0) csv.metadata.Name costmanagement-metrics-operator.1.0.0 is not following the recommended naming convention: \u003coperator-name\u003e.v\u003csemver\u003e e.g. memcached-operator.v0.0.1"
+			],
+			"scorecardErrors": [
+				"Owned CRDs do not have resources specified",
+				"costmanagementmetricsconfigs.costmanagement-metrics-cfg.openshift.io does not have a status descriptor",
+				"authentication does not have a spec descriptor",
+				"packaging does not have a spec descriptor",
+				"prometheus_config does not have a spec descriptor",
+				"source does not have a spec descriptor",
+				"upload does not have a spec descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for authentication",
+				"Add a spec descriptor for packaging",
+				"Add a spec descriptor for prometheus_config",
+				"Add a spec descriptor for source",
+				"Add a spec descriptor for upload"
+			],
+			"scorecardFailingTests": [
+				"olm-crds-have-resources",
+				"olm-status-descriptors",
+				"olm-spec-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NOT REQUIRED",
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true,
+			"hasInfraAnnotation": true
+		},
+		{
+			"packageName": "datagrid",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"multipleArchitectures": [
+				"amd64",
+				"ppc64le",
+				"s390x"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"caches.infinispan.org\" \"infinispans.infinispan.org\"])"
+			],
+			"scorecardErrors": [
+				"caches.infinispan.org does not have a status descriptor",
+				"Owned CRDs do not have resources specified",
+				"adminAuth does not have a spec descriptor",
+				"clusterName does not have a spec descriptor",
+				"name does not have a spec descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for adminAuth",
+				"Add a spec descriptor for clusterName",
+				"Add a spec descriptor for name"
+			],
+			"scorecardFailingTests": [
+				"olm-status-descriptors",
+				"olm-crds-have-resources",
+				"olm-spec-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForAllNamespaces": true,
+			"hasSupportForMultiNamespaces": true,
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true,
+			"hasInfraAnnotation": true,
+			"hasPossiblePerformIssues": true
+		},
+		{
+			"packageName": "eap",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": false,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"wildflyservers.wildfly.org\"])",
+				"(eap-operator.v2.1.2) example annotations not found"
+			],
+			"scorecardSuggestions": [
+				"Warning: Value : (eap-operator.v2.1.2) example annotations not found"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForAllNamespaces": true,
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "elasticsearch-operator",
+			"multipleArchitectures": [
+				"s390x",
+				"amd64",
+				"ppc64le"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(elasticsearch-operator.5.0.3-6) csv.metadata.Name elasticsearch-operator.5.0.3-6 is not following the recommended naming convention: \u003coperator-name\u003e.v\u003csemver\u003e e.g. memcached-operator.v0.0.1"
+			],
+			"scorecardErrors": [
+				"redundancyPolicy does not have a spec descriptor",
+				"indexManagement does not have a spec descriptor",
+				"managementState does not have a spec descriptor",
+				"nodeSpec does not have a spec descriptor",
+				"nodes does not have a spec descriptor",
+				"managementState does not have a spec descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for redundancyPolicy",
+				"Add a spec descriptor for indexManagement",
+				"Add a spec descriptor for managementState",
+				"Add a spec descriptor for nodeSpec",
+				"Add a spec descriptor for nodes",
+				"Add a spec descriptor for managementState"
+			],
+			"scorecardFailingTests": [
+				"olm-spec-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NOT REQUIRED",
+			"hasSupportForAllNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "file-integrity-operator",
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(file-integrity-operator.v0.1.13) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"provided API should have an example annotation"
+			],
+			"scorecardErrors": [
+				"fileintegrities.fileintegrity.openshift.io does not have a status descriptor",
+				"Owned CRDs do not have resources specified",
+				"debug does not have a spec descriptor",
+				"config does not have a spec descriptor"
+			],
+			"scorecardSuggestions": [
+				"Warning: Value fileintegrity.openshift.io/v1alpha1, Kind=FileIntegrityNodeStatus: provided API should have an example annotation",
+				"Add a spec descriptor for debug",
+				"Add a spec descriptor for config"
+			],
+			"scorecardFailingTests": [
+				"olm-status-descriptors",
+				"olm-crds-have-resources",
+				"olm-spec-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NOT REQUIRED",
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true,
+			"hasInfraAnnotation": true
+		},
+		{
+			"packageName": "fuse-apicurito",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(apicuritooperator.v7.7.1) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"apicuritos.apicur.io\"])"
+			],
+			"scorecardErrors": [
+				"apicuritos.apicur.io does not have a status descriptor",
+				"Owned CRDs do not have resources specified"
+			],
+			"scorecardSuggestions": [
+				"Add CRD validation for spec field `size` in Apicurito/v1alpha1"
+			],
+			"scorecardFailingTests": [
+				"olm-status-descriptors",
+				"olm-crds-have-resources"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "fuse-console",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(fuse-console.v7.8.1) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"hawtios.hawt.io\"])"
+			],
+			"scorecardErrors": [
+				"resources does not have a spec descriptor",
+				"type does not have a spec descriptor",
+				"Owned CRDs do not have resources specified",
+				"hawtios.hawt.io does not have a status descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for resources",
+				"Add a spec descriptor for type"
+			],
+			"scorecardFailingTests": [
+				"olm-spec-descriptors",
+				"olm-crds-have-resources",
+				"olm-status-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "fuse-online",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(fuse-online-operator.v7.8.0) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"syndesises.syndesis.io\"])"
+			],
+			"scorecardErrors": [
+				"addons does not have a spec descriptor",
+				"syndesises.syndesis.io does not have a status descriptor",
+				"Owned CRDs do not have resources specified"
+			],
+			"scorecardSuggestions": [
+				"Add CRD validation for Syndesis/v1beta2",
+				"Add a spec descriptor for addons"
+			],
+			"scorecardFailingTests": [
+				"olm-spec-descriptors",
+				"olm-status-descriptors",
+				"olm-crds-have-resources"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "gatekeeper-operator-product",
+			"kindsDeprecateAPIs": [
+				"CRD",
+				"ClusterRole"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(gatekeeper-operator-product.v0.1.2) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for ClusterRole: ([\"gatekeeper-operator-metrics-reader\"]),CRD: ([\"gatekeepers.operator.gatekeeper.sh\"]),"
+			],
+			"scorecardErrors": [
+				"gatekeepers.operator.gatekeeper.sh does not have a status descriptor",
+				"image does not have a spec descriptor",
+				"validatingWebhook does not have a spec descriptor",
+				"webhook does not have a spec descriptor",
+				"audit does not have a spec descriptor",
+				"Owned CRDs do not have resources specified"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for image",
+				"Add a spec descriptor for validatingWebhook",
+				"Add a spec descriptor for webhook",
+				"Add a spec descriptor for audit"
+			],
+			"scorecardFailingTests": [
+				"olm-status-descriptors",
+				"olm-spec-descriptors",
+				"olm-crds-have-resources"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForAllNamespaces": true
+		},
+		{
+			"packageName": "integration-operator",
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": false,
+			"validatorWarnings": [
+				"(integration-operator.v1.0.1) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects."
+			],
+			"scorecardErrors": [
+				"installations.integration.redhat.com does not have a status descriptor"
+			],
+			"scorecardFailingTests": [
+				"olm-status-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NOT REQUIRED",
+			"hasSupportForAllNamespaces": true,
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "jaeger-product",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"multipleArchitectures": [
+				"amd64",
+				"ppc64le",
+				"s390x"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(jaeger-operator.v1.20.3) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"jaegers.jaegertracing.io\"])"
+			],
+			"scorecardErrors": [
+				"Owned CRDs do not have resources specified",
+				"error spec does not exist",
+				"jaegers.jaegertracing.io does not have a status descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add CRD validation for Jaeger/v1"
+			],
+			"scorecardFailingTests": [
+				"olm-crds-have-resources",
+				"basic-check-spec",
+				"olm-status-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForAllNamespaces": true
+		},
+		{
+			"packageName": "jws-operator",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(jws-operator.v1.0.1) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"webservers.web.servers.org\"])"
+			],
+			"scorecardErrors": [
+				"webservers.web.servers.org does not have a status descriptor",
+				"webservers.web.servers.org does not have a status descriptor",
+				"applicationName does not have a spec descriptor",
+				"replicas does not have a spec descriptor",
+				"webImage does not have a spec descriptor",
+				"replicas does not have a spec descriptor",
+				"webImageStream does not have a spec descriptor",
+				"applicationName does not have a spec descriptor",
+				"Owned CRDs do not have resources specified"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for applicationName",
+				"Add a spec descriptor for replicas",
+				"Add a spec descriptor for webImage",
+				"Add a spec descriptor for replicas",
+				"Add a spec descriptor for webImageStream",
+				"Add a spec descriptor for applicationName"
+			],
+			"scorecardFailingTests": [
+				"olm-status-descriptors",
+				"olm-spec-descriptors",
+				"olm-crds-have-resources"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForAllNamespaces": true,
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "kiali-ossm",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"multipleArchitectures": [
+				"ppc64le",
+				"s390x",
+				"amd64"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(kiali-operator.v1.24.7) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"kialis.kiali.io\" \"monitoringdashboards.monitoring.kiali.io\"])"
+			],
+			"scorecardErrors": [
+				"kialis.kiali.io does not have a status descriptor",
+				"monitoringdashboards.monitoring.kiali.io does not have a status descriptor",
+				"Owned CRDs do not have resources specified",
+				"installation_tag does not have a spec descriptor",
+				"istio_namespace does not have a spec descriptor",
+				"deployment does not have a spec descriptor",
+				"external_services does not have a spec descriptor",
+				"server does not have a spec descriptor",
+				"items does not have a spec descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add CRD validation for Kiali/v1alpha1",
+				"Add CRD validation for MonitoringDashboard/v1alpha1",
+				"Add a spec descriptor for installation_tag",
+				"Add a spec descriptor for istio_namespace",
+				"Add a spec descriptor for deployment",
+				"Add a spec descriptor for external_services",
+				"Add a spec descriptor for server",
+				"Add a spec descriptor for items"
+			],
+			"scorecardFailingTests": [
+				"olm-status-descriptors",
+				"olm-crds-have-resources",
+				"olm-spec-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForAllNamespaces": true,
+			"hasInfraAnnotation": true,
+			"hasPossiblePerformIssues": true
+		},
+		{
+			"packageName": "klusterlet-product",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"multipleArchitectures": [
+				"amd64",
+				"s390x",
+				"linux"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(klusterlet-product.v2.2.3) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"klusterlets.operator.open-cluster-management.io\"])"
+			],
+			"scorecardErrors": [
+				"Owned CRDs do not have resources specified",
+				"clusterName does not have a spec descriptor",
+				"externalServerURLs does not have a spec descriptor",
+				"namespace does not have a spec descriptor",
+				"registrationImagePullSpec does not have a spec descriptor",
+				"workImagePullSpec does not have a spec descriptor",
+				"klusterlets.operator.open-cluster-management.io does not have a status descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for clusterName",
+				"Add a spec descriptor for externalServerURLs",
+				"Add a spec descriptor for namespace",
+				"Add a spec descriptor for registrationImagePullSpec",
+				"Add a spec descriptor for workImagePullSpec"
+			],
+			"scorecardFailingTests": [
+				"olm-crds-have-resources",
+				"olm-spec-descriptors",
+				"olm-status-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForAllNamespaces": true,
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "kubernetes-nmstate-operator",
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(kubernetes-nmstate-operator.v4.7.0) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects."
+			],
+			"scorecardErrors": [
+				"Owned CRDs do not have resources specified",
+				"nmstates.nmstate.io does not have a status descriptor",
+				"nodeSelector does not have a spec descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for nodeSelector"
+			],
+			"scorecardFailingTests": [
+				"olm-crds-have-resources",
+				"olm-status-descriptors",
+				"olm-spec-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NOT REQUIRED",
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "kubevirt-hyperconverged",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(kubevirt-hyperconverged-operator.v2.4.5) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"networkaddonsconfigs.networkaddonsoperator.network.kubevirt.io\" \"hostpathprovisioners.hostpathprovisioner.kubevirt.io\" \"hyperconvergeds.hco.kubevirt.io\" \"v2vvmwares.v2v.kubevirt.io\" \"ovirtproviders.v2v.kubevirt.io\" \"kubevirtcommontemplatesbundles.ssp.kubevirt.io\" \"kubevirtmetricsaggregations.ssp.kubevirt.io\" \"kubevirtnodelabellerbundles.ssp.kubevirt.io\" \"kubevirttemplatevalidators.ssp.kubevirt.io\" \"nodemaintenances.nodemaintenance.kubevirt.io\" \"cdis.cdi.kubevirt.io\" \"kubevirts.kubevirt.io\" \"vmimportconfigs.v2v.kubevirt.io\"])",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation"
+			],
+			"scorecardErrors": [
+				"hyperconvergeds.hco.kubevirt.io does not have a status descriptor",
+				"networkaddonsconfigs.networkaddonsoperator.network.kubevirt.io does not have a status descriptor",
+				"kubevirts.kubevirt.io does not have a status descriptor",
+				"kubevirtcommontemplatesbundles.ssp.kubevirt.io does not have a status descriptor",
+				"kubevirtmetricsaggregations.ssp.kubevirt.io does not have a status descriptor",
+				"kubevirtnodelabellerbundles.ssp.kubevirt.io does not have a status descriptor",
+				"kubevirttemplatevalidators.ssp.kubevirt.io does not have a status descriptor",
+				"cdis.cdi.kubevirt.io does not have a status descriptor",
+				"nodemaintenances.nodemaintenance.kubevirt.io does not have a status descriptor",
+				"hostpathprovisioners.hostpathprovisioner.kubevirt.io does not have a status descriptor",
+				"vmimportconfigs.v2v.kubevirt.io does not have a status descriptor",
+				"Owned CRDs do not have resources specified",
+				"BareMetalPlatform does not have a spec descriptor",
+				"kubeMacPool does not have a spec descriptor",
+				"linuxBridge does not have a spec descriptor",
+				"macvtap does not have a spec descriptor",
+				"multus does not have a spec descriptor",
+				"nmstate does not have a spec descriptor",
+				"ovs does not have a spec descriptor",
+				"imagePullPolicy does not have a spec descriptor",
+				"imagePullPolicy does not have a spec descriptor",
+				"version does not have a spec descriptor",
+				"version does not have a spec descriptor",
+				"version does not have a spec descriptor",
+				"templateValidatorReplicas does not have a spec descriptor",
+				"version does not have a spec descriptor",
+				"imagePullPolicy does not have a spec descriptor",
+				"nodeName does not have a spec descriptor",
+				"reason does not have a spec descriptor",
+				"imagePullPolicy does not have a spec descriptor",
+				"pathConfig does not have a spec descriptor",
+				"imagePullPolicy does not have a spec descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for BareMetalPlatform",
+				"Add a spec descriptor for kubeMacPool",
+				"Add a spec descriptor for linuxBridge",
+				"Add a spec descriptor for macvtap",
+				"Add a spec descriptor for multus",
+				"Add a spec descriptor for nmstate",
+				"Add a spec descriptor for ovs",
+				"Add a spec descriptor for imagePullPolicy",
+				"Add a spec descriptor for imagePullPolicy",
+				"Add a spec descriptor for version",
+				"Add a spec descriptor for version",
+				"Add a spec descriptor for version",
+				"Add a spec descriptor for templateValidatorReplicas",
+				"Add a spec descriptor for version",
+				"Add a spec descriptor for imagePullPolicy",
+				"Add a spec descriptor for nodeName",
+				"Add a spec descriptor for reason",
+				"Add a spec descriptor for imagePullPolicy",
+				"Add a spec descriptor for pathConfig",
+				"Add a spec descriptor for imagePullPolicy",
+				"Warning: Value v2v.kubevirt.io/v1alpha1, Kind=V2VVmware: provided API should have an example annotation",
+				"Warning: Value v2v.kubevirt.io/v1alpha1, Kind=OVirtProvider: provided API should have an example annotation",
+				"Add CRD validation for spec field `BareMetalPlatform` in HyperConverged/v1alpha1",
+				"Add CRD validation for spec field `kubeMacPool` in NetworkAddonsConfig/v1alpha1",
+				"Add CRD validation for spec field `linuxBridge` in NetworkAddonsConfig/v1alpha1",
+				"Add CRD validation for spec field `macvtap` in NetworkAddonsConfig/v1alpha1",
+				"Add CRD validation for spec field `multus` in NetworkAddonsConfig/v1alpha1",
+				"Add CRD validation for spec field `nmstate` in NetworkAddonsConfig/v1alpha1",
+				"Add CRD validation for spec field `ovs` in NetworkAddonsConfig/v1alpha1",
+				"Add CRD validation for spec field `imagePullPolicy` in NetworkAddonsConfig/v1alpha1",
+				"Add CRD validation for KubeVirt/v1alpha3",
+				"Add CRD validation for KubevirtCommonTemplatesBundle/v1",
+				"Add CRD validation for KubevirtMetricsAggregation/v1",
+				"Add CRD validation for KubevirtNodeLabellerBundle/v1",
+				"Add CRD validation for KubevirtTemplateValidator/v1"
+			],
+			"scorecardFailingTests": [
+				"olm-status-descriptors",
+				"olm-crds-have-resources",
+				"olm-spec-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true,
+			"hasInfraAnnotation": true
+		},
+		{
+			"packageName": "local-storage-operator",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"multipleArchitectures": [
+				"amd64",
+				"ppc64le",
+				"s390x"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(local-storage-operator.4.6.0-202103010126.p0) csv.metadata.Name local-storage-operator.4.6.0-202103010126.p0 is not following the recommended naming convention: \u003coperator-name\u003e.v\u003csemver\u003e e.g. memcached-operator.v0.0.1",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"localvolumediscoveries.local.storage.openshift.io\" \"localvolumediscoveryresults.local.storage.openshift.io\" \"localvolumesets.local.storage.openshift.io\" \"localvolumes.local.storage.openshift.io\"])",
+				"provided API should have an example annotation"
+			],
+			"scorecardErrors": [
+				"maxDeviceCount does not have a spec descriptor",
+				"Owned CRDs do not have resources specified"
+			],
+			"scorecardSuggestions": [
+				"Warning: Value local.storage.openshift.io/v1alpha1, Kind=LocalVolumeDiscoveryResult: provided API should have an example annotation",
+				"Add a spec descriptor for maxDeviceCount"
+			],
+			"scorecardFailingTests": [
+				"olm-spec-descriptors",
+				"olm-crds-have-resources"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "metering-ocp",
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(metering-operator.4.6.0-202103010126.p0) csv.metadata.Name metering-operator.4.6.0-202103010126.p0 is not following the recommended naming convention: \u003coperator-name\u003e.v\u003csemver\u003e e.g. memcached-operator.v0.0.1"
+			],
+			"scorecardErrors": [
+				"meteringconfigs.metering.openshift.io does not have a status descriptor",
+				"reports.metering.openshift.io does not have a status descriptor",
+				"reportqueries.metering.openshift.io does not have a status descriptor",
+				"reportdatasources.metering.openshift.io does not have a status descriptor",
+				"storagelocations.metering.openshift.io does not have a status descriptor",
+				"prestotables.metering.openshift.io does not have a status descriptor",
+				"hivetables.metering.openshift.io does not have a status descriptor",
+				"Owned CRDs do not have resources specified",
+				"storage does not have a spec descriptor",
+				"query does not have a spec descriptor",
+				"schedule does not have a spec descriptor",
+				"inputs does not have a spec descriptor",
+				"query does not have a spec descriptor",
+				"columns does not have a spec descriptor",
+				"prometheusMetricsImporter does not have a spec descriptor",
+				"hive does not have a spec descriptor",
+				"createTableAs does not have a spec descriptor",
+				"query does not have a spec descriptor",
+				"schema does not have a spec descriptor",
+				"tableName does not have a spec descriptor",
+				"catalog does not have a spec descriptor",
+				"columns does not have a spec descriptor",
+				"columns does not have a spec descriptor",
+				"databaseName does not have a spec descriptor",
+				"external does not have a spec descriptor",
+				"fileFormat does not have a spec descriptor",
+				"location does not have a spec descriptor",
+				"rowFormat does not have a spec descriptor",
+				"tableName does not have a spec descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for storage",
+				"Add a spec descriptor for query",
+				"Add a spec descriptor for schedule",
+				"Add a spec descriptor for inputs",
+				"Add a spec descriptor for query",
+				"Add a spec descriptor for columns",
+				"Add a spec descriptor for prometheusMetricsImporter",
+				"Add a spec descriptor for hive",
+				"Add a spec descriptor for createTableAs",
+				"Add a spec descriptor for query",
+				"Add a spec descriptor for schema",
+				"Add a spec descriptor for tableName",
+				"Add a spec descriptor for catalog",
+				"Add a spec descriptor for columns",
+				"Add a spec descriptor for columns",
+				"Add a spec descriptor for databaseName",
+				"Add a spec descriptor for external",
+				"Add a spec descriptor for fileFormat",
+				"Add a spec descriptor for location",
+				"Add a spec descriptor for rowFormat",
+				"Add a spec descriptor for tableName"
+			],
+			"scorecardFailingTests": [
+				"olm-status-descriptors",
+				"olm-crds-have-resources",
+				"olm-spec-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NOT REQUIRED",
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "mtc-operator",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(mtc-operator.v1.3.2) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"backups.velero.io\" \"backupstoragelocations.velero.io\" \"deletebackuprequests.velero.io\" \"downloadrequests.velero.io\" \"miganalytics.migration.openshift.io\" \"migclusters.migration.openshift.io\" \"mighooks.migration.openshift.io\" \"migmigrations.migration.openshift.io\" \"migplans.migration.openshift.io\" \"migstorages.migration.openshift.io\" \"migrationcontrollers.migration.openshift.io\" \"podvolumebackups.velero.io\" \"podvolumerestores.velero.io\" \"resticrepositories.velero.io\" \"restores.velero.io\" \"schedules.velero.io\" \"serverstatusrequests.velero.io\" \"volumesnapshotlocations.velero.io\"])",
+				"provided API should have an example annotation"
+			],
+			"scorecardErrors": [
+				"Owned CRDs do not have resources specified",
+				"migration_controller does not have a spec descriptor",
+				"mig_pv_limit does not have a spec descriptor",
+				"mig_namespace_limit does not have a spec descriptor",
+				"olm_managed does not have a spec descriptor",
+				"restic_timeout does not have a spec descriptor",
+				"mig_pod_limit does not have a spec descriptor",
+				"azure_resource_group does not have a spec descriptor",
+				"cluster_name does not have a spec descriptor",
+				"migration_velero does not have a spec descriptor",
+				"migration_ui does not have a spec descriptor",
+				"plan does not have a spec descriptor",
+				"analyzeK8SResources does not have a spec descriptor",
+				"analyzeImageCount does not have a spec descriptor",
+				"analyzePVCapacity does not have a spec descriptor",
+				"migrationcontrollers.migration.openshift.io does not have a status descriptor",
+				"backups.velero.io does not have a status descriptor",
+				"backupstoragelocations.velero.io does not have a status descriptor",
+				"deletebackuprequests.velero.io does not have a status descriptor",
+				"downloadrequests.velero.io does not have a status descriptor",
+				"podvolumebackups.velero.io does not have a status descriptor",
+				"podvolumerestores.velero.io does not have a status descriptor",
+				"resticrepositories.velero.io does not have a status descriptor",
+				"restores.velero.io does not have a status descriptor",
+				"schedules.velero.io does not have a status descriptor",
+				"serverstatusrequests.velero.io does not have a status descriptor",
+				"volumesnapshotlocations.velero.io does not have a status descriptor",
+				"miganalytics.migration.openshift.io does not have a status descriptor",
+				"migclusters.migration.openshift.io does not have a status descriptor",
+				"migplans.migration.openshift.io does not have a status descriptor",
+				"migmigrations.migration.openshift.io does not have a status descriptor",
+				"migstorages.migration.openshift.io does not have a status descriptor"
+			],
+			"scorecardSuggestions": [
+				"Warning: Value migration.openshift.io/v1alpha1, Kind=MigHook: provided API should have an example annotation",
+				"Add CRD validation for MigrationController/v1alpha1",
+				"Add CRD validation for spec field `plan` in MigAnalytic/v1alpha1",
+				"Add a spec descriptor for migration_controller",
+				"Add a spec descriptor for mig_pv_limit",
+				"Add a spec descriptor for mig_namespace_limit",
+				"Add a spec descriptor for olm_managed",
+				"Add a spec descriptor for restic_timeout",
+				"Add a spec descriptor for mig_pod_limit",
+				"Add a spec descriptor for azure_resource_group",
+				"Add a spec descriptor for cluster_name",
+				"Add a spec descriptor for migration_velero",
+				"Add a spec descriptor for migration_ui",
+				"Add a spec descriptor for plan",
+				"Add a spec descriptor for analyzeK8SResources",
+				"Add a spec descriptor for analyzeImageCount",
+				"Add a spec descriptor for analyzePVCapacity"
+			],
+			"scorecardFailingTests": [
+				"olm-crds-have-resources",
+				"olm-spec-descriptors",
+				"olm-status-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForOwnNamespaces": true,
+			"hasInfraAnnotation": true
+		},
+		{
+			"packageName": "nfd",
+			"multipleArchitectures": [
+				"ppc64le",
+				"s390x",
+				"amd64"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(nfd.4.7.0-202102111715.p0) csv.metadata.Name nfd.4.7.0-202102111715.p0 is not following the recommended naming convention: \u003coperator-name\u003e.v\u003csemver\u003e e.g. memcached-operator.v0.0.1"
+			],
+			"scorecardErrors": [
+				"Owned CRDs do not have resources specified",
+				"nodefeaturediscoveries.nfd.openshift.io does not have a status descriptor",
+				"operand does not have a spec descriptor",
+				"workerConfig does not have a spec descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for operand",
+				"Add a spec descriptor for workerConfig"
+			],
+			"scorecardFailingTests": [
+				"olm-crds-have-resources",
+				"olm-status-descriptors",
+				"olm-spec-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NOT REQUIRED",
+			"hasSupportForAllNamespaces": true,
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "ocs-operator",
+			"kindsDeprecateAPIs": [
+				"CRD",
+				"ClusterRole",
+				"ClusterRoleBinding",
+				"Role",
+				"RoleBinding"
+			],
+			"multipleArchitectures": [
+				"amd64",
+				"ppc64le",
+				"s390x"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(ocs-operator.v4.6.4) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for Role: ([\"ocs-metrics-svc\" \"noobaa-metrics\" \"rook-ceph-metrics\" \"rook-ceph-monitor\"]),RoleBinding: ([\"ocs-metrics-svc\" \"noobaa-metrics\" \"rook-ceph-metrics\" \"rook-ceph-monitor\"]),CRD: ([\"backingstores.noobaa.io\" \"bucketclasses.noobaa.io\" \"cephblockpools.ceph.rook.io\" \"cephclients.ceph.rook.io\" \"cephclusters.ceph.rook.io\" \"cephfilesystems.ceph.rook.io\" \"cephnfses.ceph.rook.io\" \"cephobjectrealms.ceph.rook.io\" \"cephobjectstores.ceph.rook.io\" \"cephobjectstoreusers.ceph.rook.io\" \"cephobjectzones.ceph.rook.io\" \"cephobjectzonegroups.ceph.rook.io\" \"cephrbdmirrors.ceph.rook.io\" \"noobaas.noobaa.io\" \"objectbuckets.objectbucket.io\" \"objectbucketclaims.objectbucket.io\" \"ocsinitializations.ocs.openshift.io\" \"storageclusters.ocs.openshift.io\"]),ClusterRole: ([\"ocs-metrics-exporter\"]),ClusterRoleBinding: ([\"ocs-metrics-exporter\"]),",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation"
+			],
+			"scorecardErrors": [
+				"manageNodes does not have a spec descriptor",
+				"monPVCTemplate does not have a spec descriptor",
+				"storageDeviceSets does not have a spec descriptor",
+				"storageclusters.ocs.openshift.io does not have a status descriptor",
+				"Owned CRDs do not have resources specified"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for manageNodes",
+				"Add a spec descriptor for monPVCTemplate",
+				"Add a spec descriptor for storageDeviceSets",
+				"Warning: Value ceph.rook.io/v1, Kind=CephNFS: provided API should have an example annotation",
+				"Warning: Value ceph.rook.io/v1, Kind=CephClient: provided API should have an example annotation",
+				"Warning: Value ceph.rook.io/v1, Kind=CephFilesystem: provided API should have an example annotation",
+				"Warning: Value ocs.openshift.io/v1, Kind=OCSInitialization: provided API should have an example annotation",
+				"Warning: Value ceph.rook.io/v1, Kind=CephObjectStoreUser: provided API should have an example annotation",
+				"Warning: Value ceph.rook.io/v1, Kind=CephObjectRealm: provided API should have an example annotation",
+				"Warning: Value noobaa.io/v1alpha1, Kind=NooBaa: provided API should have an example annotation",
+				"Warning: Value ceph.rook.io/v1, Kind=CephCluster: provided API should have an example annotation",
+				"Warning: Value ceph.rook.io/v1, Kind=CephBlockPool: provided API should have an example annotation",
+				"Warning: Value ceph.rook.io/v1, Kind=CephObjectStore: provided API should have an example annotation",
+				"Warning: Value ceph.rook.io/v1, Kind=CephObjectZoneGroup: provided API should have an example annotation",
+				"Warning: Value ceph.rook.io/v1, Kind=CephObjectZone: provided API should have an example annotation",
+				"Warning: Value noobaa.io/v1alpha1, Kind=BucketClass: provided API should have an example annotation",
+				"Warning: Value objectbucket.io/v1alpha1, Kind=ObjectBucketClaim: provided API should have an example annotation",
+				"Warning: Value ceph.rook.io/v1, Kind=CephRBDMirror: provided API should have an example annotation",
+				"Warning: Value noobaa.io/v1alpha1, Kind=BackingStore: provided API should have an example annotation",
+				"Warning: Value objectbucket.io/v1alpha1, Kind=ObjectBucket: provided API should have an example annotation"
+			],
+			"scorecardFailingTests": [
+				"olm-spec-descriptors",
+				"olm-status-descriptors",
+				"olm-crds-have-resources"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "openshift-gitops-operator",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(openshift-gitops-operator.v1.1.0) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"argocds.argoproj.io\" \"gitopsservices.pipelines.openshift.io\"])",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation"
+			],
+			"scorecardErrors": [
+				"Owned CRDs do not have resources specified",
+				"argocds.argoproj.io does not have a status descriptor",
+				"server does not have a spec descriptor"
+			],
+			"scorecardSuggestions": [
+				"Warning: Value pipelines.openshift.io/v1alpha1, Kind=GitopsService: provided API should have an example annotation",
+				"Warning: Value argoproj.io/v1alpha1, Kind=Application: provided API should have an example annotation",
+				"Warning: Value argoproj.io/v1alpha1, Kind=AppProject: provided API should have an example annotation",
+				"Warning: Value argoproj.io/v1alpha1, Kind=ApplicationSet: provided API should have an example annotation",
+				"Add a spec descriptor for server"
+			],
+			"scorecardFailingTests": [
+				"olm-crds-have-resources",
+				"olm-status-descriptors",
+				"olm-spec-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForAllNamespaces": true
+		},
+		{
+			"packageName": "openshift-jenkins-operator",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(jenkins-operator.0.7.1) csv.metadata.Name jenkins-operator.0.7.1 is not following the recommended naming convention: \u003coperator-name\u003e.v\u003csemver\u003e e.g. memcached-operator.v0.0.1",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"backups.jenkins.io\" \"backupconfigs.jenkins.io\" \"jenkins.jenkins.io\" \"jenkinsimages.jenkins.io\" \"restores.jenkins.io\"])",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation"
+			],
+			"scorecardErrors": [
+				"failed to parse alm-examples annotation: invalid character '}' looking for beginning of object key string",
+				"error getting custom resources",
+				"Owned CRDs do not have resources specified",
+				"failed to parse alm-examples annotation: invalid character '}' looking for beginning of object key string",
+				"failed to parse alm-examples annotation: invalid character '}' looking for beginning of object key string"
+			],
+			"scorecardSuggestions": [
+				"Warning: Value jenkins.io/v1alpha2, Kind=JenkinsImage: provided API should have an example annotation",
+				"Warning: Value jenkins.io/v1alpha2, Kind=Restore: provided API should have an example annotation"
+			],
+			"scorecardFailingTests": [
+				"olm-crds-have-validation",
+				"basic-check-spec",
+				"olm-crds-have-resources",
+				"olm-status-descriptors",
+				"olm-spec-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true,
+			"hasInfraAnnotation": true
+		},
+		{
+			"packageName": "openshift-pipelines-operator-rh",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": false,
+			"hasScorecardSuggestions": false,
+			"validatorWarnings": [
+				"(redhat-openshift-pipelines-operator.v1.1.2) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"config.operator.tekton.dev\"])"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForAllNamespaces": true
+		},
+		{
+			"packageName": "performance-addon-operator",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(performance-addon-operator.v4.5.4) csv.Spec.Icon not specified",
+				"(performance-addon-operator.v4.5.4) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"performanceprofiles.performance.openshift.io\"])"
+			],
+			"scorecardErrors": [
+				"Owned CRDs do not have resources specified",
+				"additionalKernelArgs does not have a spec descriptor",
+				"cpu does not have a spec descriptor",
+				"hugepages does not have a spec descriptor",
+				"nodeSelector does not have a spec descriptor",
+				"realTimeKernel does not have a spec descriptor",
+				"performanceprofiles.performance.openshift.io does not have a status descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for additionalKernelArgs",
+				"Add a spec descriptor for cpu",
+				"Add a spec descriptor for hugepages",
+				"Add a spec descriptor for nodeSelector",
+				"Add a spec descriptor for realTimeKernel"
+			],
+			"scorecardFailingTests": [
+				"olm-crds-have-resources",
+				"olm-spec-descriptors",
+				"olm-status-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForAllNamespaces": true,
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "ptp-operator",
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(ptp-operator.4.6.0-202103010126.p0) csv.metadata.Name ptp-operator.4.6.0-202103010126.p0 is not following the recommended naming convention: \u003coperator-name\u003e.v\u003csemver\u003e e.g. memcached-operator.v0.0.1"
+			],
+			"scorecardErrors": [
+				"ptpconfigs.ptp.openshift.io does not have a status descriptor",
+				"nodeptpdevices.ptp.openshift.io does not have a status descriptor",
+				"ptpoperatorconfigs.ptp.openshift.io does not have a status descriptor",
+				"Owned CRDs do not have resources specified",
+				"profile does not have a spec descriptor",
+				"recommend does not have a spec descriptor",
+				"daemonNodeSelector does not have a spec descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for profile",
+				"Add a spec descriptor for recommend",
+				"Add a spec descriptor for daemonNodeSelector"
+			],
+			"scorecardFailingTests": [
+				"olm-status-descriptors",
+				"olm-crds-have-resources",
+				"olm-spec-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NOT REQUIRED",
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "quay-bridge-operator",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(quay-bridge-operator.v3.3.4) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"quayintegrations.redhatcop.redhat.io\"])"
+			],
+			"scorecardErrors": [
+				"quayintegrations.redhatcop.redhat.io does not have a status descriptor",
+				"clusterID does not have a spec descriptor",
+				"credentialsSecretName does not have a spec descriptor",
+				"quayHostname does not have a spec descriptor",
+				"insecureRegistry does not have a spec descriptor",
+				"Owned CRDs do not have resources specified"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for clusterID",
+				"Add a spec descriptor for credentialsSecretName",
+				"Add a spec descriptor for quayHostname",
+				"Add a spec descriptor for insecureRegistry"
+			],
+			"scorecardFailingTests": [
+				"olm-status-descriptors",
+				"olm-spec-descriptors",
+				"olm-crds-have-resources"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForAllNamespaces": true
+		},
+		{
+			"packageName": "quay-operator",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(quay-operator.v3.4.4) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"quayecosystems.redhatcop.redhat.io\" \"quayregistries.quay.redhat.com\"])",
+				"provided API should have an example annotation"
+			],
+			"scorecardErrors": [
+				"Owned CRDs do not have resources specified"
+			],
+			"scorecardSuggestions": [
+				"Warning: Value redhatcop.redhat.io/v1alpha1, Kind=QuayEcosystem: provided API should have an example annotation"
+			],
+			"scorecardFailingTests": [
+				"olm-crds-have-resources"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForAllNamespaces": true,
+			"hasSupportForMultiNamespaces": true,
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true,
+			"hasInfraAnnotation": true
+		},
+		{
+			"packageName": "red-hat-camel-k",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": false,
+			"hasScorecardSuggestions": false,
+			"validatorWarnings": [
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"builds.camel.apache.org\" \"camelcatalogs.camel.apache.org\" \"integrationkits.camel.apache.org\" \"integrationplatforms.camel.apache.org\" \"integrations.camel.apache.org\" \"kameletbindings.camel.apache.org\" \"kamelets.camel.apache.org\"])"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForAllNamespaces": true,
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "rh-service-binding-operator",
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(service-binding-operator.v0.7.1) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects."
+			],
+			"scorecardErrors": [
+				"Owned CRDs do not have resources specified",
+				"servicebindings.binding.operators.coreos.com does not have a status descriptor",
+				"application does not have a spec descriptor",
+				"services does not have a spec descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for application",
+				"Add a spec descriptor for services"
+			],
+			"scorecardFailingTests": [
+				"olm-crds-have-resources",
+				"olm-status-descriptors",
+				"olm-spec-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NOT REQUIRED",
+			"hasSupportForAllNamespaces": true,
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "rhmtv-operator",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(rhmtv-operator.2.0.0-beta.1) csv.metadata.Name rhmtv-operator.2.0.0-beta.1 is not following the recommended naming convention: \u003coperator-name\u003e.v\u003csemver\u003e e.g. memcached-operator.v0.0.1",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"forkliftcontrollers.forklift.konveyor.io\" \"hosts.forklift.konveyor.io\" \"migrations.forklift.konveyor.io\" \"networkmaps.forklift.konveyor.io\" \"plans.forklift.konveyor.io\" \"providers.forklift.konveyor.io\" \"provisioners.forklift.konveyor.io\" \"storagemaps.forklift.konveyor.io\"])",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation"
+			],
+			"scorecardErrors": [
+				"Owned CRDs do not have resources specified",
+				"forkliftcontrollers.forklift.konveyor.io does not have a status descriptor",
+				"providers.forklift.konveyor.io does not have a status descriptor",
+				"plans.forklift.konveyor.io does not have a status descriptor",
+				"migrations.forklift.konveyor.io does not have a status descriptor",
+				"url does not have a spec descriptor",
+				"type does not have a spec descriptor",
+				"secret does not have a spec descriptor",
+				"plan does not have a spec descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for url",
+				"Add a spec descriptor for type",
+				"Add a spec descriptor for secret",
+				"Add a spec descriptor for plan",
+				"Warning: Value forklift.konveyor.io/v1alpha1, Kind=NetworkMap: provided API should have an example annotation",
+				"Warning: Value forklift.konveyor.io/v1alpha1, Kind=StorageMap: provided API should have an example annotation",
+				"Warning: Value forklift.konveyor.io/v1alpha1, Kind=Provisioner: provided API should have an example annotation",
+				"Warning: Value forklift.konveyor.io/v1alpha1, Kind=Host: provided API should have an example annotation"
+			],
+			"scorecardFailingTests": [
+				"olm-crds-have-resources",
+				"olm-status-descriptors",
+				"olm-spec-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "rhsso-operator",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"multipleArchitectures": [
+				"ppc64le",
+				"s390x",
+				"amd64"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": false,
+			"hasScorecardSuggestions": false,
+			"validatorWarnings": [
+				"(rhsso-operator.7.4.6) csv.metadata.Name rhsso-operator.7.4.6 is not following the recommended naming convention: \u003coperator-name\u003e.v\u003csemver\u003e e.g. memcached-operator.v0.0.1",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"keycloakbackups.keycloak.org\" \"keycloakclients.keycloak.org\" \"keycloakrealms.keycloak.org\" \"keycloaks.keycloak.org\" \"keycloakusers.keycloak.org\"])"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "serverless-operator",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": false,
+			"validatorWarnings": [
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"knativeeventings.operator.knative.dev\" \"knativeservings.operator.knative.dev\"])"
+			],
+			"scorecardErrors": [
+				"Owned CRDs do not have resources specified"
+			],
+			"scorecardFailingTests": [
+				"olm-crds-have-resources"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForAllNamespaces": true
+		},
+		{
+			"packageName": "service-registry-operator",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": false,
+			"validatorWarnings": [
+				"(service-registry-operator.v1.0.2) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"apicurioregistries.apicur.io\"])"
+			],
+			"scorecardErrors": [
+				"error spec does not exist"
+			],
+			"scorecardFailingTests": [
+				"basic-check-spec"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "service-telemetry-operator",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"servicetelemetrys.infra.watch\"])"
+			],
+			"scorecardErrors": [
+				"eventsEnabled does not have a spec descriptor",
+				"graphingEnabled does not have a spec descriptor",
+				"metricsEnabled does not have a spec descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add CRD validation for spec field `metricsEnabled` in ServiceTelemetry/v1alpha1",
+				"Add CRD validation for spec field `eventsEnabled` in ServiceTelemetry/v1alpha1",
+				"Add CRD validation for spec field `graphingEnabled` in ServiceTelemetry/v1alpha1",
+				"Add CRD validation for spec field `backends` in ServiceTelemetry/v1beta1",
+				"Add CRD validation for spec field `graphing` in ServiceTelemetry/v1beta1",
+				"Add CRD validation for spec field `highAvailability` in ServiceTelemetry/v1beta1",
+				"Add CRD validation for spec field `transports` in ServiceTelemetry/v1beta1",
+				"Add CRD validation for spec field `alerting` in ServiceTelemetry/v1beta1",
+				"Add a spec descriptor for eventsEnabled",
+				"Add a spec descriptor for graphingEnabled",
+				"Add a spec descriptor for metricsEnabled"
+			],
+			"scorecardFailingTests": [
+				"olm-spec-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "servicemeshoperator",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"multipleArchitectures": [
+				"amd64",
+				"ppc64le",
+				"s390x"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(servicemeshoperator.v2.0.4) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"servicemeshcontrolplanes.maistra.io\" \"servicemeshmemberrolls.maistra.io\" \"servicemeshmembers.maistra.io\"])"
+			],
+			"scorecardErrors": [
+				"telemetry does not have a spec descriptor",
+				"addons does not have a spec descriptor",
+				"tracing does not have a spec descriptor",
+				"policy does not have a spec descriptor",
+				"members does not have a spec descriptor",
+				"controlPlaneRef does not have a spec descriptor",
+				"Owned CRDs do not have resources specified",
+				"servicemeshmemberrolls.maistra.io does not have a status descriptor",
+				"servicemeshmembers.maistra.io does not have a status descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for telemetry",
+				"Add a spec descriptor for addons",
+				"Add a spec descriptor for tracing",
+				"Add a spec descriptor for policy",
+				"Add a spec descriptor for members",
+				"Add a spec descriptor for controlPlaneRef"
+			],
+			"scorecardFailingTests": [
+				"olm-spec-descriptors",
+				"olm-crds-have-resources",
+				"olm-status-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForAllNamespaces": true,
+			"hasInfraAnnotation": true,
+			"hasPossiblePerformIssues": true
+		},
+		{
+			"packageName": "smart-gateway-operator",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(smart-gateway-operator.v2.2.0) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"smartgateways.smartgateway.infra.watch\"])"
+			],
+			"scorecardErrors": [
+				"resetIndex does not have a spec descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for resetIndex"
+			],
+			"scorecardFailingTests": [
+				"olm-spec-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "sriov-network-operator",
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(sriov-network-operator.4.6.0-202103010126.p0) csv.metadata.Name sriov-network-operator.4.6.0-202103010126.p0 is not following the recommended naming convention: \u003coperator-name\u003e.v\u003csemver\u003e e.g. memcached-operator.v0.0.1"
+			],
+			"scorecardErrors": [
+				"sriovoperatorconfigs.sriovnetwork.openshift.io does not have a status descriptor",
+				"sriovnetworknodepolicies.sriovnetwork.openshift.io does not have a status descriptor",
+				"sriovnetworks.sriovnetwork.openshift.io does not have a status descriptor",
+				"sriovibnetworks.sriovnetwork.openshift.io does not have a status descriptor",
+				"sriovnetworknodestates.sriovnetwork.openshift.io does not have a status descriptor",
+				"logLevel does not have a spec descriptor",
+				"enableInjector does not have a spec descriptor",
+				"enableOperatorWebhook does not have a spec descriptor",
+				"resourceName does not have a spec descriptor",
+				"nodeSelector does not have a spec descriptor",
+				"priority does not have a spec descriptor",
+				"mtu does not have a spec descriptor",
+				"numVfs does not have a spec descriptor",
+				"nicSelector does not have a spec descriptor",
+				"deviceType does not have a spec descriptor",
+				"ipam does not have a spec descriptor",
+				"vlan does not have a spec descriptor",
+				"spoofChk does not have a spec descriptor",
+				"trust does not have a spec descriptor",
+				"resourceName does not have a spec descriptor",
+				"networkNamespace does not have a spec descriptor",
+				"ipam does not have a spec descriptor",
+				"linkState does not have a spec descriptor",
+				"resourceName does not have a spec descriptor",
+				"networkNamespace does not have a spec descriptor",
+				"interfaces does not have a spec descriptor",
+				"Owned CRDs do not have resources specified"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for logLevel",
+				"Add a spec descriptor for enableInjector",
+				"Add a spec descriptor for enableOperatorWebhook",
+				"Add a spec descriptor for resourceName",
+				"Add a spec descriptor for nodeSelector",
+				"Add a spec descriptor for priority",
+				"Add a spec descriptor for mtu",
+				"Add a spec descriptor for numVfs",
+				"Add a spec descriptor for nicSelector",
+				"Add a spec descriptor for deviceType",
+				"Add a spec descriptor for ipam",
+				"Add a spec descriptor for vlan",
+				"Add a spec descriptor for spoofChk",
+				"Add a spec descriptor for trust",
+				"Add a spec descriptor for resourceName",
+				"Add a spec descriptor for networkNamespace",
+				"Add a spec descriptor for ipam",
+				"Add a spec descriptor for linkState",
+				"Add a spec descriptor for resourceName",
+				"Add a spec descriptor for networkNamespace",
+				"Add a spec descriptor for interfaces"
+			],
+			"scorecardFailingTests": [
+				"olm-status-descriptors",
+				"olm-spec-descriptors",
+				"olm-crds-have-resources"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NOT REQUIRED",
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "submariner",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(submariner.v0.8) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"(submariner.v0.8) csv.metadata.Name submariner.v0.8 is not following the versioning convention (MAJOR.MINOR.PATCH e.g 0.0.1): https://semver.org/",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"submariners.submariner.io\"])"
+			],
+			"scorecardErrors": [
+				"broker does not have a spec descriptor",
+				"clusterCIDR does not have a spec descriptor",
+				"debug does not have a spec descriptor",
+				"globalCIDR does not have a spec descriptor",
+				"brokerK8sApiServerToken does not have a spec descriptor",
+				"brokerK8sCA does not have a spec descriptor",
+				"ceIPSecDebug does not have a spec descriptor",
+				"ceIPSecNATTPort does not have a spec descriptor",
+				"ceIPSecPSK does not have a spec descriptor",
+				"serviceDiscoveryEnabled does not have a spec descriptor",
+				"brokerK8sApiServer does not have a spec descriptor",
+				"brokerK8sRemoteNamespace does not have a spec descriptor",
+				"colorCodes does not have a spec descriptor",
+				"namespace does not have a spec descriptor",
+				"natEnabled does not have a spec descriptor",
+				"serviceCIDR does not have a spec descriptor",
+				"cableDriver does not have a spec descriptor",
+				"ceIPSecIKEPort does not have a spec descriptor",
+				"clusterID does not have a spec descriptor",
+				"Owned CRDs do not have resources specified"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for broker",
+				"Add a spec descriptor for clusterCIDR",
+				"Add a spec descriptor for debug",
+				"Add a spec descriptor for globalCIDR",
+				"Add a spec descriptor for brokerK8sApiServerToken",
+				"Add a spec descriptor for brokerK8sCA",
+				"Add a spec descriptor for ceIPSecDebug",
+				"Add a spec descriptor for ceIPSecNATTPort",
+				"Add a spec descriptor for ceIPSecPSK",
+				"Add a spec descriptor for serviceDiscoveryEnabled",
+				"Add a spec descriptor for brokerK8sApiServer",
+				"Add a spec descriptor for brokerK8sRemoteNamespace",
+				"Add a spec descriptor for colorCodes",
+				"Add a spec descriptor for namespace",
+				"Add a spec descriptor for natEnabled",
+				"Add a spec descriptor for serviceCIDR",
+				"Add a spec descriptor for cableDriver",
+				"Add a spec descriptor for ceIPSecIKEPort",
+				"Add a spec descriptor for clusterID"
+			],
+			"scorecardFailingTests": [
+				"olm-spec-descriptors",
+				"olm-crds-have-resources"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForAllNamespaces": true,
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "vertical-pod-autoscaler",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(verticalpodautoscaler.4.7.0-202102110027.p0) csv.metadata.Name verticalpodautoscaler.4.7.0-202102110027.p0 is not following the recommended naming convention: \u003coperator-name\u003e.v\u003csemver\u003e e.g. memcached-operator.v0.0.1",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"verticalpodautoscalercontrollers.autoscaling.openshift.io\" \"verticalpodautoscalers.autoscaling.k8s.io\" \"verticalpodautoscalercheckpoints.autoscaling.k8s.io\"])",
+				"provided API should have an example annotation"
+			],
+			"scorecardErrors": [
+				"verticalpodautoscalercontrollers.autoscaling.openshift.io does not have a status descriptor",
+				"verticalpodautoscalers.autoscaling.k8s.io does not have a status descriptor",
+				"Owned CRDs do not have resources specified",
+				"podMinCPUMillicores does not have a spec descriptor",
+				"podMinMemoryMb does not have a spec descriptor",
+				"recommendationOnly does not have a spec descriptor",
+				"safetyMarginFraction does not have a spec descriptor",
+				"targetRef does not have a spec descriptor",
+				"resourcePolicy does not have a spec descriptor"
+			],
+			"scorecardSuggestions": [
+				"Warning: Value autoscaling.k8s.io/v1, Kind=VerticalPodAutoscalerCheckpoint: provided API should have an example annotation",
+				"Add a spec descriptor for podMinCPUMillicores",
+				"Add a spec descriptor for podMinMemoryMb",
+				"Add a spec descriptor for recommendationOnly",
+				"Add a spec descriptor for safetyMarginFraction",
+				"Add a spec descriptor for targetRef",
+				"Add a spec descriptor for resourcePolicy"
+			],
+			"scorecardFailingTests": [
+				"olm-status-descriptors",
+				"olm-crds-have-resources",
+				"olm-spec-descriptors"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "web-terminal",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(web-terminal.v1.2.1) csv.Spec.Icon not specified",
+				"(web-terminal.v1.2.1) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"components.controller.devfile.io\" \"workspaceroutings.controller.devfile.io\" \"devworkspaces.workspace.devfile.io\"])",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation"
+			],
+			"scorecardErrors": [
+				"routingClass does not have a spec descriptor",
+				"template does not have a spec descriptor",
+				"Owned CRDs do not have resources specified"
+			],
+			"scorecardSuggestions": [
+				"Warning: Value controller.devfile.io/v1alpha1, Kind=Component: provided API should have an example annotation",
+				"Warning: Value controller.devfile.io/v1alpha1, Kind=WorkspaceRouting: provided API should have an example annotation",
+				"Add a spec descriptor for routingClass",
+				"Add a spec descriptor for template"
+			],
+			"scorecardFailingTests": [
+				"olm-spec-descriptors",
+				"olm-crds-have-resources"
+			],
+			"hasDeprecateAPIsSuggestionsSet": "NO",
+			"hasSupportForAllNamespaces": true
+		}
+	],
+	"flags": {
+		"index-image": "registry.redhat.io/redhat/redhat-operator-index:v4.8",
+		"limit": 0,
+		"filter": "",
+		"label": "",
+		"labelValue": "",
+		"outputPath": "/Users/camilamacedo/go/src/github.com/operator-framework/audit-1/testdata/reports/redhat_redhat_operator_index",
+		"outputFormat": "all",
+		"disableScorecard": false,
+		"disableValidators": false
+	},
+	"IndexImageInspect": {
+		"ID": "sha256:ea297440153c826c047d1943c5518400ec7760ca97f3e41d416bd996b7a5178b",
+		"Created": "2021-05-12T00:41:56.651052508Z",
+		"Config": {
+			"Labels": {
+				"License": "GPLv2+",
+				"architecture": "x86_64",
+				"build-date": "2021-04-25T08:44:25.330828",
+				"com.redhat.build-host": "cpt-1007.osbs.prod.upshift.rdu2.redhat.com",
+				"com.redhat.component": "operator-registry-container",
+				"com.redhat.index.delivery.distribution_scope": "prod",
+				"com.redhat.index.delivery.version": "v4.8",
+				"com.redhat.license_terms": "https://www.redhat.com/agreements",
+				"description": "This is a component of OpenShift Operator Lifecycle Manager and is the base for operator catalog API containers.",
+				"distribution-scope": "public",
+				"io.buildah.version": "1.16.7",
+				"io.k8s.description": "This is a component of OpenShift Operator Lifecycle Manager and is the base for operator catalog API containers.",
+				"io.k8s.display-name": "OpenShift Operator Registry",
+				"io.openshift.build.commit.id": "a97d366a92d302ff2056fa2d19aa3e48b0fbc99c",
+				"io.openshift.build.commit.url": "https://github.com/operator-framework/operator-registry/commit/a97d366a92d302ff2056fa2d19aa3e48b0fbc99c",
+				"io.openshift.build.source-location": "https://github.com/operator-framework/operator-registry",
+				"io.openshift.expose-services": "",
+				"io.openshift.maintainer.component": "OLM",
+				"io.openshift.maintainer.product": "OpenShift Container Platform",
+				"io.openshift.tags": "openshift,base",
+				"maintainer": "Odin Team \u003caos-odin@redhat.com\u003e",
+				"name": "openshift/ose-operator-registry",
+				"operators.operatorframework.io.index.database.v1": "/database/index.db",
+				"release": "202104250659.p0",
+				"summary": "Operator Registry runs in a Kubernetes or OpenShift cluster to provide operator catalog data to Operator Lifecycle Manager.",
+				"url": "https://access.redhat.com/containers/#/registry.access.redhat.com/openshift/ose-operator-registry/images/v4.7.0-202104250659.p0",
+				"vcs-ref": "671d1091efbf7d37090f100211ed97e488a59d51",
+				"vcs-type": "git",
+				"vendor": "Red Hat, Inc.",
+				"version": "v4.7.0"
+			}
+		}
+	}
+}
