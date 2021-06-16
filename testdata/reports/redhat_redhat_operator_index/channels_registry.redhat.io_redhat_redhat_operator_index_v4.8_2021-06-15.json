@@ -1,0 +1,712 @@
+{
+	"columns": [
+		{
+			"packageName": "3scale-operator",
+			"channelName": "threescale-2.8",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "3scale-operator",
+			"channelName": "threescale-2.6",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "3scale-operator",
+			"channelName": "threescale-2.7",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "3scale-operator",
+			"channelName": "threescale-2.9",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "3scale-operator",
+			"channelName": "threescale-2.10",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "advanced-cluster-management",
+			"channelName": "release-2.2",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "advanced-cluster-management",
+			"channelName": "release-2.1",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "advanced-cluster-management",
+			"channelName": "release-2.0",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "amq-broker",
+			"channelName": "7.x",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "amq-broker",
+			"channelName": "current",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "amq-broker",
+			"channelName": "current-76",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "amq-broker",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "amq-broker",
+			"channelName": "7.8.x",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "amq-broker-lts",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "amq-broker-rhel8",
+			"channelName": "7.8.x",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "amq-broker-rhel8",
+			"channelName": "7.x",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "amq-online",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "amq-streams",
+			"channelName": "amq-streams-1.6.x",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "amq-streams",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "amq-streams",
+			"channelName": "amq-streams-1.7.x",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "amq-streams",
+			"channelName": "amq-streams-1.5.x",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "amq-streams",
+			"channelName": "amq-streams-1.x",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "amq7-interconnect-operator",
+			"channelName": "1.2.0",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "apicast-operator",
+			"channelName": "threescale-2.9",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "apicast-operator",
+			"channelName": "threescale-2.8",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "apicast-operator",
+			"channelName": "threescale-2.10",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "awx-resource-operator",
+			"channelName": "release-0.1",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "businessautomation-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "cluster-kube-descheduler-operator",
+			"channelName": "4.7",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "cluster-kube-descheduler-operator",
+			"channelName": "4.6",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "cluster-logging",
+			"channelName": "5.0",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "cluster-logging",
+			"channelName": "4.6",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "cluster-logging",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "clusterresourceoverride",
+			"channelName": "4.7",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "clusterresourceoverride",
+			"channelName": "4.6",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "codeready-workspaces",
+			"channelName": "latest",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "compliance-operator",
+			"channelName": "4.7",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "container-security-operator",
+			"channelName": "quay-v3.5",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "container-security-operator",
+			"channelName": "quay-v3.4",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "container-security-operator",
+			"channelName": "quay-v3.3",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "costmanagement-metrics-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "datagrid",
+			"channelName": "8.1.x",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "datagrid",
+			"channelName": "8.0.x",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "eap",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "elasticsearch-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "elasticsearch-operator",
+			"channelName": "4.6",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "elasticsearch-operator",
+			"channelName": "5.0",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "file-integrity-operator",
+			"channelName": "4.7",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "fuse-apicurito",
+			"channelName": "fuse-apicurito-7.8.x",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "fuse-apicurito",
+			"channelName": "fuse-apicurito-7.7.x",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "fuse-console",
+			"channelName": "fuse-console-7.8.x",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "fuse-console",
+			"channelName": "fuse-console-7.7.x",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "fuse-online",
+			"channelName": "fuse-online-7.7.x",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "fuse-online",
+			"channelName": "fuse-online-v7.8.x",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "gatekeeper-operator-product",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "integration-operator",
+			"channelName": "1.x",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "jaeger-product",
+			"channelName": "1.20-stable",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "jaeger-product",
+			"channelName": "1.17-stable",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "jaeger-product",
+			"channelName": "tech-preview",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "jaeger-product",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "jws-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "kiali-ossm",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "klusterlet-product",
+			"channelName": "release-2.2",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "kubernetes-nmstate-operator",
+			"channelName": "4.7",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "kubevirt-hyperconverged",
+			"channelName": "2.4",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "kubevirt-hyperconverged",
+			"channelName": "2.3",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "kubevirt-hyperconverged",
+			"channelName": "2.2",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "kubevirt-hyperconverged",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "kubevirt-hyperconverged",
+			"channelName": "2.1",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "local-storage-operator",
+			"channelName": "4.6",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "local-storage-operator",
+			"channelName": "4.7",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "metering-ocp",
+			"channelName": "4.6",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "metering-ocp",
+			"channelName": "4.7",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "mtc-operator",
+			"channelName": "release-v1.3",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "mtc-operator",
+			"channelName": "release-v1.2",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "mtc-operator",
+			"channelName": "release-v1.4",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "nfd",
+			"channelName": "4.6",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "nfd",
+			"channelName": "4.7",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "ocs-operator",
+			"channelName": "stable-4.4",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "ocs-operator",
+			"channelName": "stable-4.3",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "ocs-operator",
+			"channelName": "stable-4.5",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "ocs-operator",
+			"channelName": "stable-4.6",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "openshift-gitops-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "openshift-gitops-operator",
+			"channelName": "preview",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "openshift-jenkins-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "openshift-pipelines-operator-rh",
+			"channelName": "ocp-4.5",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "openshift-pipelines-operator-rh",
+			"channelName": "ocp-4.6",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "openshift-pipelines-operator-rh",
+			"channelName": "preview",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "openshift-pipelines-operator-rh",
+			"channelName": "ocp-4.4",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "openshift-pipelines-operator-rh",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "performance-addon-operator",
+			"channelName": "4.4",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "performance-addon-operator",
+			"channelName": "4.5",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "performance-addon-operator",
+			"channelName": "4.6",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "performance-addon-operator",
+			"channelName": "4.7",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "ptp-operator",
+			"channelName": "4.6",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "ptp-operator",
+			"channelName": "4.7",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "quay-bridge-operator",
+			"channelName": "quay-v3.3",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "quay-bridge-operator",
+			"channelName": "quay-v3.5",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "quay-bridge-operator",
+			"channelName": "quay-v3.4",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "quay-operator",
+			"channelName": "quay-v3.4",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "quay-operator",
+			"channelName": "quay-v3.5",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "quay-operator",
+			"channelName": "quay-v3.3",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "red-hat-camel-k",
+			"channelName": "techpreview",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "rh-service-binding-operator",
+			"channelName": "preview",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "rh-service-binding-operator",
+			"channelName": "beta",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "rhmtv-operator",
+			"channelName": "release-v2.0.0-beta",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "rhsso-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "serverless-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "serverless-operator",
+			"channelName": "4.5",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "serverless-operator",
+			"channelName": "4.4",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "serverless-operator",
+			"channelName": "4.3",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "serverless-operator",
+			"channelName": "4.7",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "serverless-operator",
+			"channelName": "4.6",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "service-registry-operator",
+			"channelName": "2.0.x",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "service-registry-operator",
+			"channelName": "serviceregistry-1.0",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "service-registry-operator",
+			"channelName": "serviceregistry-1",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "service-registry-operator",
+			"channelName": "serviceregistry-1.1",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "service-registry-operator",
+			"channelName": "2.x",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "service-telemetry-operator",
+			"channelName": "stable-1.2",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "servicemeshoperator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "servicemeshoperator",
+			"channelName": "1.0",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "smart-gateway-operator",
+			"channelName": "stable-1.2",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "sriov-network-operator",
+			"channelName": "4.7",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "sriov-network-operator",
+			"channelName": "4.6",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "submariner",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "vertical-pod-autoscaler",
+			"channelName": "4.7",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "vertical-pod-autoscaler",
+			"channelName": "4.6",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "web-terminal",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		}
+	],
+	"flags": {
+		"index-image": "registry.redhat.io/redhat/redhat-operator-index:v4.8",
+		"limit": 0,
+		"filter": "",
+		"outputPath": "/Users/camilamacedo/go/src/github.com/operator-framework/audit-1/testdata/reports/redhat_redhat_operator_index",
+		"outputFormat": "all"
+	},
+	"IndexImageInspect": {
+		"ID": "sha256:ea297440153c826c047d1943c5518400ec7760ca97f3e41d416bd996b7a5178b",
+		"Created": "2021-05-12T00:41:56.651052508Z",
+		"Config": {
+			"Labels": {
+				"License": "GPLv2+",
+				"architecture": "x86_64",
+				"build-date": "2021-04-25T08:44:25.330828",
+				"com.redhat.build-host": "cpt-1007.osbs.prod.upshift.rdu2.redhat.com",
+				"com.redhat.component": "operator-registry-container",
+				"com.redhat.index.delivery.distribution_scope": "prod",
+				"com.redhat.index.delivery.version": "v4.8",
+				"com.redhat.license_terms": "https://www.redhat.com/agreements",
+				"description": "This is a component of OpenShift Operator Lifecycle Manager and is the base for operator catalog API containers.",
+				"distribution-scope": "public",
+				"io.buildah.version": "1.16.7",
+				"io.k8s.description": "This is a component of OpenShift Operator Lifecycle Manager and is the base for operator catalog API containers.",
+				"io.k8s.display-name": "OpenShift Operator Registry",
+				"io.openshift.build.commit.id": "a97d366a92d302ff2056fa2d19aa3e48b0fbc99c",
+				"io.openshift.build.commit.url": "https://github.com/operator-framework/operator-registry/commit/a97d366a92d302ff2056fa2d19aa3e48b0fbc99c",
+				"io.openshift.build.source-location": "https://github.com/operator-framework/operator-registry",
+				"io.openshift.expose-services": "",
+				"io.openshift.maintainer.component": "OLM",
+				"io.openshift.maintainer.product": "OpenShift Container Platform",
+				"io.openshift.tags": "openshift,base",
+				"maintainer": "Odin Team \u003caos-odin@redhat.com\u003e",
+				"name": "openshift/ose-operator-registry",
+				"operators.operatorframework.io.index.database.v1": "/database/index.db",
+				"release": "202104250659.p0",
+				"summary": "Operator Registry runs in a Kubernetes or OpenShift cluster to provide operator catalog data to Operator Lifecycle Manager.",
+				"url": "https://access.redhat.com/containers/#/registry.access.redhat.com/openshift/ose-operator-registry/images/v4.7.0-202104250659.p0",
+				"vcs-ref": "671d1091efbf7d37090f100211ed97e488a59d51",
+				"vcs-type": "git",
+				"vendor": "Red Hat, Inc.",
+				"version": "v4.7.0"
+			}
+		}
+	}
+}

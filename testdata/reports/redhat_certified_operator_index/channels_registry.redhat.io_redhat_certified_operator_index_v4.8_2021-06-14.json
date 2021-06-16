@@ -1,0 +1,995 @@
+{
+	"columns": [
+		{
+			"packageName": "aci-containers-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "akka-cluster-operator-certified",
+			"channelName": "beta",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "alcide-kaudit-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "anaconda-team-edition",
+			"channelName": "beta",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "anchore-engine",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "anzo-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "anzograph-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "anzounstructured-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "appdynamics-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "appranix-cps",
+			"channelName": "deprecated",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "appranix-cps",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "appsody-operator-certified",
+			"channelName": "beta",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "aqua-operator-certified",
+			"channelName": "5.3",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "aqua-operator-certified",
+			"channelName": "latest",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "aqua-operator-certified",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "armory-operator",
+			"channelName": "v1alpha2",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "as400rpc-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "atomicorp-helm-operator-certified",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "aws-event-sources-operator-certified",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "bacula-operator2",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "behavior-analytics-services-operator-certified",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "blackduck-connector-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "can-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "cert-manager-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "cert-manager-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "cic-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "cic-operator-with-crds",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "citrix-adc-istio-ingress-gateway-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "citrix-cpx-istio-sidecar-injector-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "citrix-cpx-with-ingress-controller-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "citrix-ingress-controller-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "cloud-native-postgresql",
+			"channelName": "beta",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "cloud-native-postgresql",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "cloud-native-postgresql",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "cnvrg-operator-marketplace",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "cockroachdb-certified",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "cockroachdb-certified",
+			"channelName": "beta",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "coralogix-operator-certified",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "cortex-certifai-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "cortex-certifai-operator",
+			"channelName": "beta",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "cortex-fabric-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "cortex-fabric-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "cortex-healthcare-hub-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "cortex-hub-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "couchbase-enterprise-certified",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "couchdb-operator-certified",
+			"channelName": "v1.4",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "couchdb-operator-certified",
+			"channelName": "v1.0",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "couchdb-operator-certified",
+			"channelName": "v1.3",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "couchdb-operator-certified",
+			"channelName": "beta",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "couchdb-operator-certified",
+			"channelName": "v1.2",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "couchdb-operator-certified",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "couchdb-operator-certified",
+			"channelName": "v1.1",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "cpx-cic-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "crunchy-postgres-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "cyberarmor-operator-certified",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "data-explorer-operator-certified",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "datadog-operator-certified",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "datadog-operator-certified",
+			"channelName": "beta",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "dell-csi-operator-certified",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "densify-operator",
+			"channelName": "v1.0",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "densify-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "eddi-operator-certified",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "elasticsearch-eck-operator-certified",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "entando-k8s-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "entando-k8s-operator",
+			"channelName": "beta",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "entando-k8s-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "f5-bigip-ctlr-operator",
+			"channelName": "beta",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "falco-certified",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "federatorai-certified",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "fep-ansible-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "fp-predict-plus-operator-certified",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "gitlab-runner-operator",
+			"channelName": "beta",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "gitlab-runner-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "gpu-operator-certified",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "growth-stack-operator-certified",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "h2o-operator",
+			"channelName": "beta",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "hazelcast-enterprise-certified",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "hazelcast-jet-enterprise-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "here-service-operator-certified",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "hpe-csi-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "hpe-ezmeral-csi-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "hspc-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "humio-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "humio-operator",
+			"channelName": "beta",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "ibm-block-csi-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "ibm-spectrum-scale-csi",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "ibm-spectrum-symphony-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "ibm-tas",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "infinibox-operator-certified",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "insightedge-enterprise-operator2",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "instana-agent",
+			"channelName": "beta",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "ionir-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "ivory-server-app",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "joget-dx-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "joget-openshift-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "jtrac-app-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "k10-kasten-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "k10-kasten-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "k8s-triliovault",
+			"channelName": "namespaced",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "k8s-triliovault",
+			"channelName": "cluster",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "kong-offline-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "kpow-io-certified",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "kube-arangodb",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "kubemq-operator-marketplace",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "kubeplus",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "kubeturbo-certified",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "linstor-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "linstor-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "memql-certified",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "mongodb-enterprise",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "nastel-navigator-operator-certified",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "nastel-xray-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "neuvector-certified-operator",
+			"channelName": "beta",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "nginx-ingress-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "node-red-operator-certified",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "nsx-container-plugin-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "nuodb-ce-certified",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "nvmesh-operator",
+			"channelName": "beta",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "nxiq-operator-certified",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "nxrm-operator-certified",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "oneagent-certified",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "open-liberty-certified",
+			"channelName": "beta",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "openshiftartifactoryha-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "openshiftpipeline-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "openshiftxray-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "openunison-ocp-certified",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "orca",
+			"channelName": "beta",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "ovms-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "perceptilabs-operator-package",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "percona-server-mongodb-operator-certified",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "percona-xtradb-cluster-operator-certified",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "portshift-controller-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "portworx-certified",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "portworx-certified",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "presto-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "prisma-cloud-compute-console-operator.v2.0.1",
+			"channelName": "latest",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "rapidbiz-operator-certified",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "redhat-marketplace-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "redhat-marketplace-operator",
+			"channelName": "beta",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "redis-enterprise-operator-cert",
+			"channelName": "preview",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "redis-enterprise-operator-cert",
+			"channelName": "production",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "redis-enterprise-operator-cert",
+			"channelName": "5.4.14",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "redis-enterprise-operator-cert",
+			"channelName": "6.0.6",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "redis-enterprise-operator-cert",
+			"channelName": "6.0.12",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "redis-enterprise-operator-cert",
+			"channelName": "6.0.8",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "rocketchat-operator-certified",
+			"channelName": "beta",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "runtime-component-operator-certified",
+			"channelName": "beta",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "sanstoragecsi-operator-bundle",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "seldon-deploy-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "seldon-deploy-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "seldon-operator-certified",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "seldon-operator-certified",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "sematext",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "snyk-operator-certified",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "splunk-certified",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "stonebranch-universalagent-operator-certified",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "storageos2",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "synopsys-certified",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "sysdig-certified",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "t8c-certified",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "tf-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "tigera-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "timemachine-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "traefikee-redhat-certified",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "transform-adv-operator",
+			"channelName": "v2.3",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "transform-adv-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "uma-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "vfunction-server-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "vprotect-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "wavefront-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "xcrypt-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "xspc-operator",
+			"channelName": "stable",
+			"isFollowingNameConvention": true,
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "yugabyte-operator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "yugabyte-operator",
+			"channelName": "beta",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "yugabyte-platform-operator-bundle",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "zabbix-operator-certified",
+			"channelName": "lts",
+			"foundAllReplaces": true
+		},
+		{
+			"packageName": "zoperator",
+			"channelName": "alpha",
+			"foundAllReplaces": true
+		}
+	],
+	"flags": {
+		"index-image": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+		"limit": 0,
+		"filter": "",
+		"outputPath": "/Users/camilamacedo/go/src/github.com/operator-framework/audit-1/testdata/reports/redhat_certified_operator_index",
+		"outputFormat": "all"
+	},
+	"IndexImageInspect": {
+		"ID": "sha256:414ec051c4eec31a9f8e0e51eb4e0aa92653ca6b1d1c3da6cef92cb4bd21d0ed",
+		"Created": "2021-04-27T21:39:54.614373596Z",
+		"Config": {
+			"Labels": {
+				"License": "GPLv2+",
+				"architecture": "x86_64",
+				"build-date": "2021-03-27T03:46:48.681338",
+				"com.redhat.build-host": "cpt-1004.osbs.prod.upshift.rdu2.redhat.com",
+				"com.redhat.component": "operator-registry-container",
+				"com.redhat.index.delivery.distribution_scope": "prod",
+				"com.redhat.index.delivery.version": "v4.8",
+				"com.redhat.license_terms": "https://www.redhat.com/agreements",
+				"description": "This is a component of OpenShift Operator Lifecycle Manager and is the base for operator catalog API containers.",
+				"distribution-scope": "public",
+				"io.buildah.version": "1.16.7",
+				"io.k8s.description": "This is a component of OpenShift Operator Lifecycle Manager and is the base for operator catalog API containers.",
+				"io.k8s.display-name": "OpenShift Operator Registry",
+				"io.openshift.build.commit.id": "bc4c9f8f967736a6ff774c52845e8a3ed28e7072",
+				"io.openshift.build.commit.url": "https://github.com/operator-framework/operator-registry/commit/bc4c9f8f967736a6ff774c52845e8a3ed28e7072",
+				"io.openshift.build.source-location": "https://github.com/operator-framework/operator-registry",
+				"io.openshift.maintainer.component": "OLM",
+				"io.openshift.maintainer.product": "OpenShift Container Platform",
+				"io.openshift.tags": "openshift,base",
+				"maintainer": "Odin Team \u003caos-odin@redhat.com\u003e",
+				"name": "openshift/ose-operator-registry",
+				"operators.operatorframework.io.index.database.v1": "/database/index.db",
+				"release": "202103270246.p0",
+				"summary": "Operator Registry runs in a Kubernetes or OpenShift cluster to provide operator catalog data to Operator Lifecycle Manager.",
+				"url": "https://access.redhat.com/containers/#/registry.access.redhat.com/openshift/ose-operator-registry/images/v4.5.0-202103270246.p0",
+				"vcs-ref": "35e04a390e2ca45f9ef267a5ab9e7bec47cb331a",
+				"vcs-type": "git",
+				"vendor": "Red Hat, Inc.",
+				"version": "v4.5.0"
+			}
+		}
+	}
+}

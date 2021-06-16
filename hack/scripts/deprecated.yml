@@ -1,0 +1,492 @@
+container-security-operator:
+
+    - quay/quay-container-security-operator-bundle@sha256:6a96cb52b92ad47871446ef04ed727e1e376c69456f370f40774b9c5b73f329b
+    - quay/quay-container-security-rhel8-operator-metadata@sha256:87b32fd8753bc35f72a9087bd20c1de120094885ced267a0802f89b26283f828
+    - quay/quay-container-security-operator-bundle@sha256:2de8912c6f5adcf5af468d052105d46803b73b53b46e0f18ede5073d70fef96c
+    - quay/quay-container-security-operator-bundle@sha256:586af2816f9100d9357e7e42244e5760626412d971225bc0ad07fd0d2635718d
+    - quay/quay-container-security-operator-bundle@sha256:69a08e9f1fb49347da86488c0d70aca5dbc6835665f2ac7d1069b39b3a852919
+    - quay/quay-container-security-operator-bundle@sha256:b00993869900ac164a844d2be3c9957f0024eed3927bc45f239d8c11622678e6
+    - quay/quay-container-security-operator-bundle@sha256:68193e04c251ce1c3f4f94e8169e66aab6a9a8602be387c7cb2418c50c389833
+    - quay/quay-container-security-operator-bundle@sha256:68193e04c251ce1c3f4f94e8169e66aab6a9a8602be387c7cb2418c50c389833
+    - quay/quay-container-security-operator-bundle@sha256:68193e04c251ce1c3f4f94e8169e66aab6a9a8602be387c7cb2418c50c389833
+    - quay/quay-container-security-operator-bundle@sha256:68193e04c251ce1c3f4f94e8169e66aab6a9a8602be387c7cb2418c50c389833
+    - quay/quay-container-security-operator-bundle@sha256:68193e04c251ce1c3f4f94e8169e66aab6a9a8602be387c7cb2418c50c389833
+gatekeeper-operator-product:
+
+    - rhacm2/gatekeeper-operator-bundle@sha256:b8c4694c5d948540c6c46d19610c11930a1bf8c76a84722119f9cb22cccfe55f
+    - rhacm2/gatekeeper-operator-bundle@sha256:b48c02d6220e61460c908676d0ae75c7cd3f47645755a636f3329acb2d8a4760
+jws-operator:
+
+    - jboss-webserver-5/webserver-openjdk8-operator-bundle@sha256:4eb2ce7385cf6dc0b30dcc05ec7bbe2269bf929b09dafa1a17b8446f6a4c631b
+    - jboss-webserver-5/webserver-openjdk8-operator-bundle@sha256:fe31cbcbd11180a684437e5ccf819f4ffafa519e9fe1b5f5771a8d45cf7b7f75
+web-terminal:
+
+    - web-terminal-tech-preview/web-terminal-rhel8-operator-metadata@sha256:e08d38c7b0e585df1185d97890a8723827c47c6749e7d7cec0afa8c9359c3ff4
+    - web-terminal-tech-preview/web-terminal-rhel8-operator-metadata@sha256:320875845790b0da60dbfbe08fbd4112a80d47cd79510f16d2a1080c66420fd5
+    - web-terminal-tech-preview/web-terminal-rhel8-operator-metadata@sha256:72654f9d638fc59231c4bfa75781aa2cf7ab911a3c42d6ba51232ee9894d54d5
+    - web-terminal-tech-preview/web-terminal-rhel8-operator-metadata@sha256:cbf74af4bf114e9207613a850a62116e99eb3148d3e27e3f7b540f39d6259234
+amq-streams:
+
+    - amq7/amqstreams-rhel7-operator-metadata@sha256:2faf1131fadd0f7f4f4fe870363b24a5c15cc7806e083906a1125943eabe509b
+    - amq7/amqstreams-rhel7-operator-metadata@sha256:6ef3bf83ee075cff73ecc2df897d747b6d589df423dcb3ac1f493d1535e627eb
+    - amq7/amqstreams-rhel7-operator-metadata@sha256:0b98ed968b943454b4424ed4dd35b6c9bd8e4d958eaf1efeedfb605e1fe6eabd
+    - amq7/amqstreams-rhel7-operator-metadata@sha256:ecbf8a70bbb6e16c12800446971a824de1d5963a920e7179e88605681b556c76
+    - amq7/amqstreams-rhel7-operator-metadata@sha256:29e4531e462565399ea54a99d3dda5a8162001de2d1dc8d0714ffe74e5d37b00
+    - amq7/amqstreams-rhel7-operator-metadata@sha256:8e659e0f077b9cdf1109a94286fce987eba9964393e972c7147c6060db2f645f
+    - amq7/amqstreams-rhel7-operator-metadata@sha256:da05a2ee6e834116d5d182573e3c65c5323e34046bd7508dc857bcf66689e089
+    - amq7/amqstreams-rhel7-operator-metadata@sha256:b54a6934bf0bdbb2c773dfb70b6f9e0489bf9f217db12da310c6fe929d4c74dc
+    - amq7/amqstreams-rhel7-operator-metadata@sha256:25b8153b1f5cace8963715dad8019b07fbbc2501d42fb21b189193baa596a41d
+    - amq7/amqstreams-rhel7-operator-metadata@sha256:98f899a50f0128981be420cbdc9d18d3b5ff640d51d3aa70d4f3b11131d9b7b3
+    - amq7/amqstreams-rhel7-operator-metadata@sha256:aa4458758f0f7ae5d5f73303d2fa9ebddba9e3f5685d89cb751dc58b82f3b21b
+    - amq7/amqstreams-rhel7-operator-metadata@sha256:eaa66e127f03083033a3e64b2e9f08b8f1157440fdc0b7bf80cc62f1af24452e
+    - amq7/amqstreams-rhel7-operator-metadata@sha256:0cd1c66ab08812de30b2baecfa4269843cbabbfb1899730bd4e16739df0aba4f
+    - amq7/amqstreams-rhel7-operator-metadata@sha256:e2a78d91adf336c2824e0690f611ce13db4507aed081cf3943c15b9b38b439f5
+    - amq7/amqstreams-rhel7-operator-metadata@sha256:26081ac7674eac9443b2badea6cf485a280f7bf83d635fed5b8b0ca4abaf33c5
+    - amq7/amqstreams-rhel7-operator-metadata@sha256:cc19289ff777153ca9ab3cebc45e4c98e9c083437d5e2b6407244aead6e89312
+    - amq7/amqstreams-rhel7-operator-metadata@sha256:ec906a4abe8e72844e0fd0ebf0abdc312c0b599e22dc3b7c80b9543cdc76b622
+red-hat-camel-k:
+
+    - integration-tech-preview/camel-k-rhel8-operator-metadata@sha256:bd035c4c61c5dd8a7e8b9420a296733c5c410aea5bf993f973d61dcb2042e998
+    - integration-tech-preview/camel-k-rhel8-operator-metadata@sha256:7290c901a716ce5285659c69cc212f678f5e5c203fbdfef062307eb9aa8eb8ce
+    - integration-tech-preview/camel-k-rhel8-operator-metadata@sha256:684bd0865612137b06177054af618ac1cb800ec9e9f4fa08824068e71e5deb37
+clusterresourceoverride:
+
+    - openshift4/ose-clusterresourceoverride-operator-bundle@sha256:ecb1c2e3ff2ae911006aac71536401710100e0b6614494d4f996d15b2daf572e
+    - openshift4/ose-clusterresourceoverride-operator-bundle@sha256:081a1e247e2d4be1b502b7e336d73ae03d0203bd1ad8d03ce2d7bf61ae969ebe
+eap:
+
+    - jboss-eap-7/eap73-rhel8-operator-bundle@sha256:23c0de3059f16b616505be698252c314dd6c645f0820975f6d207ef1e9ce20de
+    - jboss-eap-7/eap73-rhel8-operator-bundle@sha256:ce8976c30e638820ae66f6ff06dae996da407a8fb5512f43c8919a59a2bc5210
+    - jboss-eap-7/eap73-rhel8-operator-bundle@sha256:dda936663249468e8a08673bdda90bac71c51983f65e811c87abd4885bc12759
+    - jboss-eap-7/eap73-rhel8-operator-bundle@sha256:64ba482c95a252ef495483d898e5dc94adb95446f2f257e0ebe04c737163be40
+    - jboss-eap-7/eap73-rhel8-operator-bundle@sha256:a1ae631ea20156c5c7b3c13109ec5a11eae50955eaf46f91dc6979a21b84cd63
+    - jboss-eap-7/eap73-rhel8-operator-bundle@sha256:9915981fa22fce058f41b364fd26b22ed2bb43a21e9a17db97850b3a5c156baf
+fuse-apicurito:
+
+    - fuse7/fuse-apicurito-operator-bundle@sha256:2c31a890dbd52578a8d1b64710bb96f4aa01eee88499fef2f798bc465971e314
+    - fuse7/fuse-apicurito-operator-bundle@sha256:1884385fe3f6b7977896909a38d4038373d1aa0b957a0857080450bc9012e41f
+submariner:
+
+    - rhacm2-tech-preview/submariner-operator-bundle@sha256:64eb60ef28b9a39982dd843a0a47df3e75e8f0b67b420642bd0e2ab99dcdd545
+service-telemetry-operator:
+
+    - stf/service-telemetry-operator-bundle@sha256:0dfb4f70ff662b3e900a019e8cc6c905d9640746915c8c540982b01db43d79de
+businessautomation-operator:
+
+    - rhpam-7/rhpam-operator-bundle@sha256:af5a192a66fd81506cc5361103d7e3d510992f207343f6580a91022dc1bce745
+    - rhpam-7/rhpam-operator-bundle@sha256:5929b5d30f2c3c215bf0c3052101b618d1e16c39f8b525a22ceb3541009c1a2c
+    - rhpam-7/rhpam-operator-bundle@sha256:a9d8ced4deb7113de7c97efc226cb9d2ee912be2ce6e67418ddcee423f2a9204
+    - rhpam-7/rhpam-operator-bundle@sha256:8bd9ac4b1ddcc03f2e6beb131bcfaf0f65ba6b90039e7a1af9dda631ae8d37f8
+    - rhpam-7/rhpam-operator-bundle@sha256:ce102ebf04a9854a71b1fdac0d9d9e17580fa18d8cb9f6ee507abcd77e6efeac
+    - rhpam-7/rhpam-operator-bundle@sha256:c119d2dc15f7d0038623fc2d682e513bba0cbbc63e0095ab769bd119faf59b7f
+    - rhpam-7/rhpam-operator-bundle@sha256:d59c5d8525cf543fc3c12ef631f9fa7a2dd59e2147cbd840437723bbeaa76008
+    - rhpam-7/rhpam-operator-bundle@sha256:aa942303f701c3f484cd5ff75eb231dbb2c3d5d2a9a748d57bb5b6c1b34d05f7
+    - rhpam-7/rhpam-operator-bundle@sha256:5a5429d84cc36ce29d95fe86d9b6a9eaef0c3ed3d1925fd9b653904c411cbcb4
+    - rhpam-7/rhpam-operator-bundle@sha256:f486e4a3085ce9245a7d0eec827f97b6d7fac61eeeca01563288d0370370af83
+    - rhpam-7/rhpam-operator-bundle@sha256:3e7da2092cffe5bd2161c98b86e26ce6107248ca52c94a3a333b180f623333de
+    - rhpam-7/rhpam-operator-bundle@sha256:df348c6ad999c3be37ab19b3651b5a61ab1fa55f7b2ff02b1fea48bfad69ab4a
+    - rhpam-7/rhpam-operator-bundle@sha256:ee5ef1dfefb946f8eec41f05c0f7b496b431c04ddb16489ea4a0515a5a43f0c2
+    - rhpam-7/rhpam-operator-bundle@sha256:42dd0fa00313fd075868fb81b07b1567169bd89b1168e1d4d29e8b62e63adfc4
+jaeger-product:
+
+    - distributed-tracing/jaeger-operator-bundle@sha256:866f57300fd736976e5da7ea483b27c7e094463c83b8ba7da1860fd6a652b1c0
+    - distributed-tracing/jaeger-operator-bundle@sha256:db9f5d0566bacdb5e60d86e68964cae052a4e330804687eb0cf764e41acaf9a7
+    - distributed-tracing/jaeger-operator-bundle@sha256:2d3b46a96af8b2455bb614ee6db92516a6d9d94e31fe6076acb6e9524c1cb25b
+fuse-online:
+
+    - fuse7/fuse-online-operator-bundle@sha256:93d12b2fc2a2e0263890529e227dcb9e37172139f63a95d39b1dce4f19cee39c
+    - fuse7/fuse-online-operator-bundle@sha256:aa1c21f3401f2b3c5a85a612e044346f2f694568d4e6b525cb8b6ba3ff95c343
+service-registry-operator:
+
+    - integration/service-registry-rhel8-operator-metadata@sha256:a4f5b333f7009001bc27849f752aaf71daf03a534e65b59b88463e2b8ddce8f4
+    - integration/service-registry-rhel8-operator-metadata@sha256:31c7dd275bc4c2b0d9ead9c2002963485791b279a90174191826236ac624a44b
+    - integration/service-registry-rhel8-operator-metadata@sha256:49b50e2b4cfe341a30f6d4f8e8a6d411da7926335bd22a2397ba37acaf1ce756
+    - integration/service-registry-rhel8-operator-metadata@sha256:39b0ba26ea73c6ba54c8ce0c86c2563a3284e5690f091a0536c9722e4f11d62a
+    - integration/service-registry-rhel8-operator-metadata@sha256:93da36db720902a958cfe3df7b0c67a96bd0fc2cf57f52c205f1e0dde8764bcd
+    - integration/service-registry-rhel8-operator-metadata@sha256:720fd4d865f4e4a404d9a7846d5608b87d540f87a49cb5161ce383be0233d4b4
+amq-online:
+
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:e81aac14ba253b4a89370f8aabfebf491f34621cf8d54efd6b8b3796ca8732bb
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:f0f899b90e0ab0e9cc9818e4181beccf178543388c14570da0fd8dda0b4abaa9
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:ed1658893b5e78ea6d684dac7f237a80eb1a5fe146996c39152c077ea59f0d61
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:609f34c93dfc53fb853c45d395fcb5c07b6d96e7ab075b036c785203415cfc11
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:81fabc8e6bdc05a772fbf4401331e8ccc568593dafada38fff4c8aaf0565ba06
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:c5b5ba7265c5ac8e77ff9836746a8ac9ca5e1967270adffffdfe32d8a14968cf
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:debf79ef45e0fdd229bdfae29ff9a40926854278b39b4aa0d364f5ae9c02c6dc
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:6195b018194b457eb6bad2c53381bdfa4d84329e86d561580a63a9c2faab66d9
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:b350796e748ac56aeaf71711f4eaae06d2b9f77fc1c9aeec1680c9ab096e663c
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:28157b46dcee1e5fffef9260aa9639df03cca2d8e84ccd63bf1fd966c17c10d5
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:5f582e82bd357530a7d66bdf25598b69ad75e79e2b28ca028cd656fb52a8259f
+awx-resource-operator:
+
+    - ansible-automation-platform/platform-resource-operator-bundle@sha256:1f31be82087b8d16953388696eff7ac7bfc93a507704ff10fe3db23eda1cd856
+    - ansible-automation-platform/platform-resource-operator-bundle@sha256:4243b1ed45e18bdb42c17374d11e2f252a11457099740ca9e9ad9d430d1a02e0
+datagrid:
+
+    - datagrid/datagrid-8-prod-operator-bundle@sha256:7dd45b30f4ffc76846fb6841317c91d6c414b78e0ce10d64f8673447ac2a9066
+    - datagrid/datagrid-8-prod-operator-bundle@sha256:8a958713ec2b1f484a688b9dbab0158c6753d59b37dc41075c86dabe6c4eea56
+    - datagrid/datagrid-8-prod-operator-bundle@sha256:7765bf223baf3e6fd3f5db725586888874280812f017bb01c0bd7714a8bab336
+    - datagrid/datagrid-8-prod-operator-bundle@sha256:c503cc820237d2aaaf4fa42145e05b3d49645485d343f0c0fa87baa6242a9fd1
+    - datagrid/datagrid-8-prod-operator-bundle@sha256:ec6fd022c1d740c86ee449b1c29817bcf8a7002f62e8c95167b961f6a74a1730
+    - datagrid/datagrid-8-prod-operator-bundle@sha256:37e5af4cf83db8ab63e6e6ddd39aa06100d2fc4110705e88ac9afb3a7abc15c4
+    - datagrid/datagrid-8-prod-operator-bundle@sha256:17009de2d5a855a4570defc332378ce042630784bd29006740d34c435af9008c
+    - datagrid/datagrid-8-prod-operator-bundle@sha256:eee656a31b8ef822fca8c25cc4d5efe11a07090d32410b3a016dd9204fa79247
+    - datagrid/datagrid-8-prod-operator-bundle@sha256:7c133eb164050d4e13ff1edbf30394d34b985c313a8b2a333d6ac54e05b66889
+    - datagrid/datagrid-8-prod-operator-bundle@sha256:fe608b121e62e77c39fc6abeb13d1618f2d593811f962e8e3ce477d927c821f1
+    - datagrid/datagrid-8-prod-operator-bundle@sha256:14fd60e0b98aa6eceec076f5ca340610ff3f9e61a70ff6ebff3da3cc7f855514
+    - datagrid/datagrid-8-prod-operator-bundle@sha256:cc0bb4989fe0e7107d07bcec39e5595291152d602652aa9b6d2a3b7fb24f86c4
+apicast-operator:
+
+    - 3scale-amp2/apicast-rhel7-operator-metadata@sha256:35d94ce12486c78bf27583987afa63f0146173c25cf5715a7d62fd2e91b2414e
+    - 3scale-amp2/apicast-rhel7-operator-metadata@sha256:05f0817f38329cc1938e95932a504b9d94ac94544581d1352be9c225697e2204
+    - 3scale-amp2/apicast-rhel7-operator-metadata@sha256:65447df0f16603ea021eaae880865ccfcb4449aab6fc2fd519da554c46987e84
+    - 3scale-amp2/apicast-rhel7-operator-metadata@sha256:69854f078065b711dbc9ca7b088fa0fe4cfbafa577450ff94578915f202e41c7
+    - 3scale-amp2/apicast-rhel7-operator-metadata@sha256:95e057316c411a0add6ddc90f63500c17a288bbc9772d9e8b6a59a15cdcc824c
+    - 3scale-amp2/apicast-rhel7-operator-metadata@sha256:f66685c272d98de6e5c32f4090fc4dc84f0c94fa05a233b4f7737a31d478b983
+    - 3scale-amp2/apicast-rhel7-operator-metadata@sha256:3f695c906f2baabe49af6353fc79140b1a45f2431bb10512ba83c7c7cabf88bd
+    - 3scale-amp2/apicast-rhel7-operator-metadata@sha256:da8930f0d4a627f323166fe8506f0a31e67c96cf258c548acc1cc60b461adc7f
+openshift-gitops-operator:
+
+    - openshift-gitops-1-tech-preview/gitops-operator-bundle@sha256:592a5248f1dc1e0167b951d8443d2bd3342e252ebf2046702ec675150b3f2786
+    - openshift-gitops-1-tech-preview/gitops-operator-bundle@sha256:0a432c618304f2d5ccfcc73ca03f32525939262cfd262c363b120847e71a29b4
+    - openshift-gitops-1/gitops-operator-bundle@sha256:849a346bb1faac6a76595a21ebbc424134f21fbaed693b8bde6490df6a46c6c0
+codeready-workspaces:
+
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:080bc58804ca40380c5ed58a5bbdd5fe035fed84a07e58d1c590e06695bbb720
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:289f77b62c012b6ef09930acf1466749327ef9a1594eb39e077ff7116f5be73b
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:b9bc3d8fb71df47ef32e4f2c7d74b938887fbe2683b132d76e0215eb6cee4a9a
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:496aeecec52b0645cfcaa8b7ee7e71c55f823c7520ce3d2c9238d522c17a6e98
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:c48e4c3f85e30ab3a209369f7fd9212d34fbe2b97de5334439b06742e9cdec2a
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:69761d7600d9602fd89f600d9670156e71f68c82802578b0db729cfa0087c89b
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:181dc432a5aa228ca57a4c23218391f846284e258f72ed306f15ef884e991ee8
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:af5795b85faa63523353eba59b244b94578eed6ee11d0a4f834e64009395a069
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:357f830568a690ea194acdf2b1c5d66b54b10bf1a0dc58d1e771454692dc2270
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:aba490f87a1ed4c4a47cb5cb5a82ea1bd67031db0382df400d81e13a125f4aff
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:7b7558c8d9170bd27c9dcf2e62df827d477dbbea694f7040f5cd5bcd0eb598a4
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:1007e3de27d2235e319c23b08dce4ad83d3569f37fff37ad8174b29909e01f04
+quay-operator:
+
+    - quay/quay-operator-bundle@sha256:3fd2bae6aee6015d085eb0f6dd3943aea1fff524ed4b2b30967d948f30d8b595
+    - quay/quay-operator-bundle@sha256:831f385afdd3f1fdd56175d41849dee9688527f51fddbde05064725d649389b7
+    - quay/quay-operator-bundle@sha256:4a2b3c089220d33a5d326bb7965c1db8756c7734e13895e821f694358f0bb45c
+    - quay/quay-operator-bundle@sha256:34f4bc4eb4a4d35c629a0ec99d4e6b26cc6e1fe8c4c4cb27372e4f6112ce4954
+    - quay/quay-operator-bundle@sha256:2dda41a155c4c05fb8781f262d7e99529fa7f8dd9f28eaeb120cd6f70946cf44
+    - quay/quay-operator-bundle@sha256:82a5c7ad01ba4283752ce8364f17c591c4d73aeb712a37cc6ec731251587cd86
+    - quay/quay-operator-bundle@sha256:ff7373332d535f9d87d872495da28fe1dd7c5a9b5b3144ed0ba51469ad9d39eb
+    - quay/quay-operator-bundle@sha256:ff7373332d535f9d87d872495da28fe1dd7c5a9b5b3144ed0ba51469ad9d39eb
+    - quay/quay-operator-bundle@sha256:ff7373332d535f9d87d872495da28fe1dd7c5a9b5b3144ed0ba51469ad9d39eb
+    - quay/quay-operator-bundle@sha256:ff7373332d535f9d87d872495da28fe1dd7c5a9b5b3144ed0ba51469ad9d39eb
+    - quay/quay-operator-bundle@sha256:ff7373332d535f9d87d872495da28fe1dd7c5a9b5b3144ed0ba51469ad9d39eb
+    - quay/quay-operator-bundle@sha256:ff7373332d535f9d87d872495da28fe1dd7c5a9b5b3144ed0ba51469ad9d39eb
+rhsso-operator:
+
+    - rh-sso-7-tech-preview/sso74-rhel8-operator-bundle@sha256:2d084eb6b16944e88b1d8dfbc7cd32d1f9ed109ed932371f76539d165205a2c6
+    - rh-sso-7-tech-preview/sso74-rhel8-operator-bundle@sha256:6c405f51d712ac8952c30d8e97aaef15f9cdf73061c6014b6d9b11c080fe1a04
+    - rh-sso-7-tech-preview/sso74-rhel8-operator-bundle@sha256:1a7e24f1d76e670b32b19fa34deb48c27ae75757249e1dce0ef6515cf29cab46
+amq-broker:
+
+    - amq7/amq-broker-operator-bundle@sha256:5a5f53ec96ddb46f6c25bf7319ecb1a86e6754da0d09927c917ecea037eb6d05
+    - amq7/amq-broker-operator-bundle@sha256:4677056566e09daf0a316e24abdba542c29c2194cd98b6e8af50f654a930a97d
+    - amq7/amq-broker-operator-bundle@sha256:1d8aebf3ee175b795bb14c385d1183bd9da5c2fdce4005d09b01ddc2a3b1b0aa
+    - amq7/amq-broker-operator-bundle@sha256:86853f5d81be450a999ba261c60bfe1e429a4a8312d7ef5dedb2cd66be118147
+    - amq7/amq-broker-operator-bundle@sha256:63b9c3d4b7f7b06ce10f57afec75cb4c39470a800d7ab26d7cc5d9b5876ef347
+    - amq7/amq-broker-operator-bundle@sha256:93eb77beb3df602b64e59521459f4b389777ad3409e5dc5715e672af3e1059b2
+    - amq7/amq-broker-operator-bundle@sha256:e769ee90622890ba32b6f6aa98a9586d32323abb7867215954c7a4ac579e873b
+rhmtv-operator:
+
+    - rhmtv-beta/rhmtv-operator-bundle@sha256:68b2aef42de74bef3502cfbb4c6a5af9092814629e6d946c92cf269fdd58b845
+quay-bridge-operator:
+
+    - quay/quay-bridge-operator-bundle@sha256:02bc935004d2bee5c6b53dc9730ce9eaf01509e3dcb0415d2abd18353d62e691
+    - quay/quay-bridge-operator-bundle@sha256:f6a273c7e2c997dfd6c6f6a2f38a1aa406fd7b313bbd0400372f843ca8f715e1
+    - quay/quay-bridge-operator-bundle@sha256:58ee282fc7e1847fd547f6c71ad358482f5cb0ace2bfcdd04e1a4d5622f8e1cc
+    - quay/quay-bridge-operator-bundle@sha256:4ca121b0cfceef38fd2c8256fa026bb4b705a696c2871c70157f4defa98278c2
+    - quay/quay-bridge-operator-bundle@sha256:4434e099525d5b974c7a9262e5f202de3f4fba80c751cc79558923b2b44b36bd
+    - quay/quay-openshift-bridge-rhel8-operator-metadata@sha256:6e6b6b8c141ade81231d69ebe9b7eedbb60d32573cc0bf037040e64c304eff74
+    - quay/quay-bridge-operator-bundle@sha256:0bd573d46d2ece146bfde9edadeabdf0fbf92bad0319870bb03303b94dcdcf62
+    - quay/quay-bridge-operator-bundle@sha256:0bd573d46d2ece146bfde9edadeabdf0fbf92bad0319870bb03303b94dcdcf62
+    - quay/quay-bridge-operator-bundle@sha256:0bd573d46d2ece146bfde9edadeabdf0fbf92bad0319870bb03303b94dcdcf62
+    - quay/quay-bridge-operator-bundle@sha256:0bd573d46d2ece146bfde9edadeabdf0fbf92bad0319870bb03303b94dcdcf62
+    - quay/quay-bridge-operator-bundle@sha256:0bd573d46d2ece146bfde9edadeabdf0fbf92bad0319870bb03303b94dcdcf62
+3scale-operator:
+
+    - 3scale-amp2/3scale-rhel7-operator-metadata@sha256:f698cf1102a1847cba810f5be68c264223a37f6424c3e4902465111b5b74d496
+    - 3scale-amp2/3scale-rhel7-operator-metadata@sha256:3d51773c86faf0a06661d824d25e63bb704fdd45740131ab5c2c3cff2f3afe20
+    - 3scale-amp2/3scale-rhel7-operator-metadata@sha256:2d1d177e854d5065d872b63502b2ac08bbcb9855ab1f0609106c31ef13f8d67b
+    - 3scale-amp2/3scale-rhel7-operator-metadata@sha256:d3f06246be00c7a0e8474eee22791a9b0fcd64863bcd45a19d84e5dc88bc075a
+    - 3scale-amp2/3scale-rhel7-operator-metadata@sha256:55166d313d270ae4740a260149bfb41df1af8214744e9c38abef07add49c95de
+    - 3scale-amp2/3scale-rhel7-operator-metadata@sha256:27a445a5c1950513cf5088dc96e6768c717f3079dfa445775768ea573a1436f7
+    - 3scale-amp2/3scale-rhel7-operator-metadata@sha256:523ca71b96847059b68f6def61e4735a52315757395556f37977e083aef305de
+    - 3scale-amp2/3scale-rhel7-operator-metadata@sha256:a4bd65860deeca86308b783186e34f7f947e5bfe072eee459091d698fac51409
+    - 3scale-amp2/3scale-rhel7-operator-metadata@sha256:bb7dc249eb517b6e3ffd7d4ceb19884ad4af97f16835bf58e1930534ca7e4764
+    - 3scale-amp2/3scale-rhel7-operator-metadata@sha256:361ee922e6460100781906421e3b4339850785fe1d1559b17be6555ab7684a52
+    - 3scale-amp2/3scale-rhel7-operator-metadata@sha256:65f6dc458d864761dc05f265d2e679104510bb38c5a0e5a31e2268ec674b9ebe
+    - 3scale-amp2/3scale-rhel7-operator-metadata@sha256:996c4b5c28ba35b640f2ccf12f49a477bdd65e69c3741f0253c850aaf14f0176
+    - 3scale-amp2/3scale-rhel7-operator-metadata@sha256:9e2588646a095b3067cd785910c7cde820b7b7aaf864d5600a577a13a5bd69c4
+fuse-console:
+
+    - fuse7/fuse-console-operator-bundle@sha256:5e3e9d565510c1a12351f89f912e21f318ee0d7ed52fc8cca6051a6dbf3a6e6d
+    - fuse7/fuse-console-operator-bundle@sha256:2b6f31cf17fc4a17d9d465ebb05f4c2226319d82e3626da6dcb659fede069692
+local-storage-operator:
+
+    - openshift4/ose-local-storage-operator-bundle@sha256:172eb0bf709ba9c8a0292df85c2ccf8d8ddec4e9727725e21237f899d0b2444b
+    - openshift4/ose-local-storage-operator-bundle@sha256:74647dbf9fd2a04bdba72f663bdd3fdf30d26c9a2dd8a442d2bfe5bad8192fa2
+mtc-operator:
+
+    - rhmtc/openshift-migration-operator-bundle@sha256:f53faabf65c9a610cc2c840db941a284ccc4a9665f9f16ae226a2ec8262dd17e
+    - rhmtc/openshift-migration-operator-bundle@sha256:a2c3b92e69cd2d26d686e59c4b3f13c422576ac36bcf6b665150a12767735e85
+    - rhmtc/openshift-migration-operator-bundle@sha256:1b0c9b3856ae4de8de26bb8317f00471e534794eef1edc595b107725dbae3774
+    - rhmtc/openshift-migration-operator-bundle@sha256:a3e42128d08e7f9586c506b5c7fa5155f0981de6ab46bd6ca78b161caaf352c9
+    - rhmtc/openshift-migration-operator-bundle@sha256:1d3d63c721292e3596b871c0c10833fdecedacc4e3a09f25864740282a27f482
+    - rhmtc/openshift-migration-operator-bundle@sha256:8e75c98807166988536c695b5c46ec2fc1cc0fa793b6d5cb5200cc22c6af6249
+    - rhmtc/openshift-migration-operator-bundle@sha256:74e96547d0834cb32b9506b13e61e5e0353f83c5a3e58c2ff17ff41bf7d2c006
+    - rhmtc/openshift-migration-operator-bundle@sha256:f5f09c6157744828702b291049e4deecd7f98f63e912fee1cb6e55f04d7b8ce8
+openshift-jenkins-operator:
+
+    - ocp-tools-4-tech-preview/jenkins-operator-bundle@sha256:a5c0f38916348cd703383c810c93256dbebbed4a37ba21f352d39a8456ad4c0c
+vertical-pod-autoscaler:
+
+    - openshift4/ose-vertical-pod-autoscaler-operator-metadata@sha256:8dda299b8a1fb48c637f38ff3fd4175d56e30fc7f0cc65d980f283e0896c9d0b
+    - openshift4/ose-vertical-pod-autoscaler-operator-metadata@sha256:9411c10cb6ce38569ef647f7e36ee1c0c87905df354bae0357f1cc94d6cc96af
+ocs-operator:
+
+    - ocs4/ocs-operator-bundle@sha256:2b2f725f6b12935a8487b2fe6dd4362ad5c9706b926081aed8d4a609c97d40ea
+    - ocs4/ocs-operator-bundle@sha256:67b54ea3788c66f47e183876fd3203898ec798b82cec49abeb2954ec41789950
+    - ocs4/ocs-operator-bundle@sha256:70757ff902e868423ac3d46f7853d4931b8d0069357c68e1746f87643c67410f
+    - ocs4/ocs-operator-bundle@sha256:37db5bf2386f605772f5bc1a714e77ab4f0a8998c9c646c7fcd9988e9d9e4c6c
+    - ocs4/ocs-operator-bundle@sha256:469bcd9a88807aff83277ca90579d477cc9dcbdc422660adc5e0cef8d8eb3ff8
+    - ocs4/ocs-operator-bundle@sha256:469bcd9a88807aff83277ca90579d477cc9dcbdc422660adc5e0cef8d8eb3ff8
+    - ocs4/ocs-operator-bundle@sha256:469bcd9a88807aff83277ca90579d477cc9dcbdc422660adc5e0cef8d8eb3ff8
+    - ocs4/ocs-operator-bundle@sha256:469bcd9a88807aff83277ca90579d477cc9dcbdc422660adc5e0cef8d8eb3ff8
+amq-broker-rhel8:
+
+    - amq7/amq-broker-rhel8-operator-bundle@sha256:835143a542a09c511751f77a2c2fc643dc6d3060d74ea2c07d94b5681a4288a0
+serverless-operator:
+
+    - openshift-serverless-1/serverless-rhel8-operator-bundle-backfill@sha256:70bb9a7a04774ff386c44889ba94811ac49829822aadd0970b1a55178afdb60f
+    - openshift-serverless-1/serverless-rhel8-operator-bundle-backfill@sha256:e30456268966cc10cf3648c386f680f728541cfd522123e59ed276e8e4bed55c
+    - openshift-serverless-1/serverless-rhel8-operator-bundle-backfill@sha256:c1cb56d6188bf6622bdb05af087092ed9dbe3cc92645cba3e6289bb7d7eab7a1
+    - openshift-serverless-1/serverless-operator-bundle@sha256:864547fac0966a74c2e1642bf7f4718fb8e449a094511df0dc0ae9a7119caf29
+    - openshift-serverless-1/serverless-rhel8-operator-bundle-backfill@sha256:0ac3c8490a5426c9e0ffe5d48823108b122420b6991c08d342ccab1ac7559f21
+    - openshift-serverless-1/serverless-operator-bundle@sha256:781665631ab00e0c1a68b932624d84da76b65e3f140cb6561084ce7b5d0b68ca
+    - openshift-serverless-1/serverless-operator-bundle@sha256:f51bf79d93c571064a8038cd7ab40ced67ab87d5e0063afe3dda47935cb1eda6
+    - openshift-serverless-1/serverless-operator-bundle@sha256:4084782075db365dc60e1cd142e60d699f2a5c28d7ed4c414b3fef5e79529cac
+    - openshift-serverless-1/serverless-rhel8-operator-bundle-backfill@sha256:262beb6c4826ce26a43cafd2962ac058c6053606afeb64132e031188e6d7f929
+    - openshift-serverless-1/serverless-rhel8-operator-bundle-backfill@sha256:7b43ec0c862eae649975e119bb122cc631be80ac117631dd4d3a31c761aa5810
+    - openshift-serverless-1/serverless-rhel8-operator@sha256:7ff51fbfc38689b72ad6c8591a8c7d21b32f48da3a6ca0ed27c3dc08af1a1738
+    - openshift-serverless-1/serverless-rhel8-operator-bundle-backfill@sha256:b1f90409e146f456c35927db9fa03681a06bc6588993820b5e7f23f41bcdd13d
+    - openshift-serverless-1/serverless-operator-bundle@sha256:f950157a8497edec98f412904ea80359f5b081873b5a79e72289d8db175e6da0
+    - openshift-serverless-1/serverless-rhel8-operator-bundle-backfill@sha256:3747ebff5550e9c04abb0f9f1909e9df9c0dd7b85a791994248a29a7f399e199
+    - openshift-serverless-1/serverless-rhel8-operator-bundle-backfill@sha256:647cf102d13ef1e4db397f3f4a661ba18874ced4fe8a898872826d4cefe425e6
+    - openshift-serverless-1/serverless-operator-bundle@sha256:bb0f2c2f421501e12d559ae7d9247d084d020ec5a78c1b42f065edbccf45d69e
+    - openshift-serverless-1/serverless-operator-bundle@sha256:b494c1eb911e7949218ae8851b3df4d6d1c82c30249b032a16410e95b22b1425
+    - openshift-serverless-1/serverless-rhel8-operator-bundle-backfill@sha256:dcc60de51a12452dd1e470710daf2312917b720c2f5ced8874d4595d8760afb0
+    - openshift-serverless-1/serverless-rhel8-operator-bundle-backfill@sha256:c55434f36e23c9e1edcc6e5dbc843c380745227cb7a0dcea38c34e94e616640a
+openshift-pipelines-operator-rh:
+
+    - openshift-pipelines-tech-preview/pipelines-rhel8-operator-metadata@sha256:4521df2f43b4b0d3d305c4a85621675b02da17c58d9f40a6f616bb40934c86f7
+    - openshift-pipelines-tech-preview/pipelines-rhel8-operator-metadata@sha256:3e953a2a4910d026672681f97bdb8bfbc0c0ce21ed74790df254d8398ee8d7b9
+    - openshift-pipelines-tech-preview/pipelines-rhel8-operator-metadata@sha256:aae9c3409971cf612629321aa4657ebc9705b78d6917e30c7c47ebb2d49d25d5
+    - openshift-pipelines-tech-preview/pipelines-rhel8-operator-metadata@sha256:0f4b4082d0b087da0a56cf43ce17763925ac2bca743bf1ef164a38375ae3c5a4
+    - openshift-pipelines/pipelines-operator-bundle@sha256:4a8a4f4dc20909ad47a0e357f22a8d50763afd515c1c2c607a3df90f1dac0d34
+    - openshift-pipelines-tech-preview/pipelines-rhel8-operator-metadata@sha256:2371ccddc7b04c70ee75477cca6cd832b19c9a8c63f67f3a0127dd970506e30a
+    - openshift-pipelines/pipelines-operator-bundle@sha256:5ec96fd5f92d750cde664316e483ce435b81fee9702edb2f7ad6a9da30a7c090
+    - openshift-pipelines-tech-preview/pipelines-rhel8-operator-metadata@sha256:04007ddaa0c12d6c38ef11a3e24bc5a0f451476292a81c7fb2d17d03fb785c3e
+    - openshift-pipelines-tech-preview/pipelines-rhel8-operator-metadata@sha256:f7f29ecf9f6aa87d8eafa967996b3323bf0eb86cd612524dbe2327accc1c5f8e
+    - openshift-pipelines-tech-preview/pipelines-rhel8-operator-metadata@sha256:5ee476b093569846e19deca332ff18809f01e46353e0d4d8de10876be60ef3e3
+    - openshift-pipelines-tech-preview/pipelines-rhel8-operator-metadata@sha256:ee6146e6d1e2417190f690ec9173c756b5115b36d450422aa2e94ad564cb51a5
+performance-addon-operator:
+
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:52b92063ab262de4eccd82b3e276bc464448a552f47f019b13f5bc03603ab3a1
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:51eeb8f196464a6a0046984592701073b5788ab54420a097054909dbb926c8b1
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:cb3c005ede341aba4e9c42b7461474e67ec810461287ca9f174565c12dced7f0
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:d822388c726075230f1eb6e9fd26a99291590bc267d76fde7b7137eb737e46fd
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:d1748d3ca91bd4586031dcc2b047c0f1865b4dde6f4106b4eb6209a5561cd449
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:d1748d3ca91bd4586031dcc2b047c0f1865b4dde6f4106b4eb6209a5561cd449
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:d1748d3ca91bd4586031dcc2b047c0f1865b4dde6f4106b4eb6209a5561cd449
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:d1748d3ca91bd4586031dcc2b047c0f1865b4dde6f4106b4eb6209a5561cd449
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:3d2aa4e54a723b5610a4fd7c92e347c0cb8fea6d7fd78de3bbfa049690686500
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:3d2aa4e54a723b5610a4fd7c92e347c0cb8fea6d7fd78de3bbfa049690686500
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:3d2aa4e54a723b5610a4fd7c92e347c0cb8fea6d7fd78de3bbfa049690686500
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:3d2aa4e54a723b5610a4fd7c92e347c0cb8fea6d7fd78de3bbfa049690686500
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:3d2aa4e54a723b5610a4fd7c92e347c0cb8fea6d7fd78de3bbfa049690686500
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:3d2aa4e54a723b5610a4fd7c92e347c0cb8fea6d7fd78de3bbfa049690686500
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:3d2aa4e54a723b5610a4fd7c92e347c0cb8fea6d7fd78de3bbfa049690686500
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:3d2aa4e54a723b5610a4fd7c92e347c0cb8fea6d7fd78de3bbfa049690686500
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:cc7eefa06f30e64c8ae0f6d86da875039e1fb31af07f569f0d75ae72d3536390
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:cc7eefa06f30e64c8ae0f6d86da875039e1fb31af07f569f0d75ae72d3536390
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:cc7eefa06f30e64c8ae0f6d86da875039e1fb31af07f569f0d75ae72d3536390
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:cc7eefa06f30e64c8ae0f6d86da875039e1fb31af07f569f0d75ae72d3536390
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:cc7eefa06f30e64c8ae0f6d86da875039e1fb31af07f569f0d75ae72d3536390
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:cc7eefa06f30e64c8ae0f6d86da875039e1fb31af07f569f0d75ae72d3536390
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:cc7eefa06f30e64c8ae0f6d86da875039e1fb31af07f569f0d75ae72d3536390
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:cc7eefa06f30e64c8ae0f6d86da875039e1fb31af07f569f0d75ae72d3536390
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:cc7eefa06f30e64c8ae0f6d86da875039e1fb31af07f569f0d75ae72d3536390
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:cc7eefa06f30e64c8ae0f6d86da875039e1fb31af07f569f0d75ae72d3536390
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:cc7eefa06f30e64c8ae0f6d86da875039e1fb31af07f569f0d75ae72d3536390
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:cc7eefa06f30e64c8ae0f6d86da875039e1fb31af07f569f0d75ae72d3536390
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:cc7eefa06f30e64c8ae0f6d86da875039e1fb31af07f569f0d75ae72d3536390
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:cc7eefa06f30e64c8ae0f6d86da875039e1fb31af07f569f0d75ae72d3536390
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:cc7eefa06f30e64c8ae0f6d86da875039e1fb31af07f569f0d75ae72d3536390
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:cc7eefa06f30e64c8ae0f6d86da875039e1fb31af07f569f0d75ae72d3536390
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:0a0e78068e0a73ffc9fc85ba1b89ebadbf73e689ecbab7f44f7ec0cfd11655d8
+advanced-cluster-management:
+
+    - rhacm2/acm-operator-bundle@sha256:a0a2be3279d03955acf2c2471384c819d45ee765401242eeac20751fe3c835fd
+    - rhacm2/acm-operator-bundle@sha256:d97ae02a20eaaa1a0770710a7b5808787d9617ce63c03d3c3f08a11f5bf41aa3
+    - rhacm2/acm-operator-bundle@sha256:9725b91409219faf9e37bab93529ca21bfd209aab3395403866275a3bd08f072
+    - rhacm2/acm-operator-bundle@sha256:adba2e6b585bde1c05d041097a9f19b0753230480032aa44ad1b27fecbf819f5
+    - rhacm2/acm-operator-bundle@sha256:ea42543f1127fd6ec53cf7f6c7f61f3e0b62f1b210844584d89d60c4bf53fef9
+    - rhacm2/acm-operator-bundle@sha256:55906425c2619315d98a9f2b3b014379bfa14875592d18a550a93344097c5496
+    - rhacm2/acm-operator-bundle@sha256:5d6c8f7a046eaebd4cee3ad10151bfa3bb176df8e20cd475db66becdcd7356fd
+    - rhacm2/acm-operator-bundle@sha256:f02648187cb8cc1c34a6c463ce7f307cab7016da4c06e836971b9bd23d967394
+    - rhacm2/acm-operator-bundle@sha256:3560cfe5aa98787496ad1db0440c32a53c9f91ec6bf56fe674b44fcce0913fbc
+    - rhacm2/acm-operator-bundle@sha256:c068e6f697764fe0aa82f5572450bbf6cc80d9670a7cb65a8753afa9fa9f8bf6
+    - rhacm2/acm-operator-bundle@sha256:510b81899ac25c4318e31a7a44b5c2645fc14e24cc463847f19c5229e8d87c6f
+    - rhacm2/acm-operator-bundle@sha256:82f8508111f307c25e458a2283e86a21eaeeaa2cd0b335766174f324f6bd392d
+    - rhacm2/acm-operator-bundle@sha256:c86057b81e3f4a2979f6d5e2ddcbb9fc31549f8d528497a4924e53b26fd75c8c
+    - rhacm2/acm-operator-bundle@sha256:96e323e923dfb556daadc87e990eb89277c21926e56e378bae60bf1d2a46931a
+    - rhacm2/acm-operator-bundle@sha256:e77e15271554a64192f4c80a864efe4f082caeeb94d72f10165beb5cba043ebf
+    - rhacm2/acm-operator-bundle@sha256:75c32ced4add3c6c583daf0bcf81b13cbeb99fd2e24f2c3261fb95ac7bcec4f1
+    - rhacm2/acm-operator-bundle@sha256:1af785b35226525dc1265123bc274bccb025439ea396e560d0a562791f2c8217
+    - rhacm2/acm-operator-bundle@sha256:3a8c3261d61779907a9a86bb4a2699bd8c60f3ec6466cf6656034b7eda127bc6
+    - rhacm2/acm-operator-bundle@sha256:280bf802843fab435a2946a49324900223f14ae01abbb113624bc056b5ab0188
+    - rhacm2/acm-operator-bundle@sha256:76435cfe5728bbcacabb1a444ca45df913a7d5a8541b0cc40496cd11d77865db
+    - rhacm2/acm-operator-bundle@sha256:1e1cd6a2950349e3e619e2ffe15cd10d36a5b15e1a9e3b0024bdb11a2355b7ca
+    - rhacm2/acm-operator-bundle@sha256:4e4fc6cdfec03a175ada82a98044ba6ae80e5d7fc096a24bc5f2977f49d6c70b
+kiali-ossm:
+
+    - openshift-istio/kiali-operator-metadata@sha256:90d85fe3e7561cb132e8074beaa2f84ec38d508cebac01b891dd5b470ac88250
+    - openshift-istio/kiali-operator-metadata@sha256:fec8560f02a08585797895cb644c640132b79af0280158473e146954137e337b
+    - openshift-istio/kiali-operator-metadata@sha256:4a5599af4f17c38412e05354e5de90fe07b423668ebf1997dafc7e4dafb62ffc
+    - openshift-istio/kiali-operator-metadata@sha256:2ab8d3a25f17000d57941bcc3bebddf54ecea85d69e3cf2f40b8411836d1b6e1
+    - openshift-istio/kiali-operator-metadata@sha256:6c3de8e02aa1be4b89fc6567e30ba78d8422099df9cd6368ce6b396d41cf1505
+    - openshift-istio/kiali-operator-metadata@sha256:e50a8a6c367160590a73937a96990af9ad2352177b776d8611c3554f7ab1af27
+    - openshift-istio/kiali-operator-metadata@sha256:b8d7fd645e4fcb864fe11c41d5b3e8040a5fc1dba1b6c4b027ef6f753325a57f
+    - openshift-istio/kiali-operator-metadata@sha256:78d19b5112f9aaaff96e59ded7c3a2197910491df5512c3915fe0e5c7c449e59
+    - openshift-istio/kiali-operator-metadata@sha256:a96359d8c1c44f5c6881cfb44e5dbb0518d7ccd44b6e77116e9ed9a6d96dff2e
+    - openshift-istio/kiali-operator-metadata@sha256:ade6990aa57d2fd4dfdb80d401534a8130b380d356087ae3925606d7a47ac7b9
+    - openshift-istio/kiali-operator-metadata@sha256:546d007d832f14cb03b2ba55b8c14bc66e3ac750a3698cf75b502ddcf7c8db2a
+    - openshift-istio/kiali-operator-metadata@sha256:2ff3a1f5de8fa26c260f08fe5cd965006b66903bc0a56ca464bdf857e742988d
+    - openshift-istio/kiali-operator-metadata@sha256:3747fa0ad6498d79a77be22a2bb42bfd22ca9fbe1aaff08e8b069433620e0258
+    - openshift-istio/kiali-operator-metadata@sha256:259877ab1bc66848ea8fd8b2847a4ff883575e2bf76d93cd717cea68ed27dcd7
+    - openshift-istio/kiali-operator-metadata@sha256:3a1126c3df937ed08d32627e7af38632e06f6f905d5457a47fb59288041cd330
+    - openshift-istio/kiali-operator-metadata@sha256:1dc2e01b133860f5a0649517dd768b53033be6f20f1d676dc49927138984ec3f
+    - openshift-istio/kiali-operator-metadata@sha256:0dc2d3bc91aa5c05762c590816deb595ca588dee171631634078319fd22a81f4
+    - openshift-istio/kiali-operator-metadata@sha256:cbc5dcb6332a5d8330a99130f18f87ded9cbc6935bfe2205ccddff4af808155c
+    - openshift-istio/kiali-operator-metadata@sha256:562027fcd20cff4b99dbbbe3447bac6132f1af4444229b0752189756b347b81d
+    - openshift-istio/kiali-operator-metadata@sha256:9eadcdefb6a8fdb16795b8749f2e9b4888d29beaab269498d9776a6d3145749c
+    - openshift-istio/kiali-operator-metadata@sha256:bf8f64d8663a8f9fc1f2bf61638905793ae466eeb3caf392c0d6c6c69c8611f4
+amq7-interconnect-operator:
+
+    - amq7/amq-interconnect-operator-metadata@sha256:15723f36c4ef130b25681367a8425f542475b0258122a04cc332872a4273eec7
+    - amq7/amq-interconnect-operator-metadata@sha256:1470d60ca59fef22b776f1581c12d3bb06949d071d07a9cdd97a37a840ed905c
+    - amq7/amq-interconnect-operator-metadata@sha256:afe43efe442ccd8d3c0d3181b5a23d683809703a0a374dbfecf91d0322cf9781
+    - amq7/amq-interconnect-operator-metadata@sha256:b2f1961f30a612edb84fac79211d5c54843c0478235839f83018c92cb428d165
+cluster-kube-descheduler-operator:
+
+    - openshift4/ose-cluster-kube-descheduler-operator-bundle@sha256:38ac3877f990c0351bfba7bf2fbcf85cdba185434237f70283bd42ddbf98c9f7
+    - openshift4/ose-cluster-kube-descheduler-operator-bundle@sha256:245047cbeb06ce7c62b35ced8ac82695370de02579582a527089eccd4d584df4
+smart-gateway-operator:
+
+    - stf/smart-gateway-operator-bundle@sha256:320d8413adb0acdd9d7e157885191970ec3baa96cdb480e26e504d36fb1fa38c
+servicemeshoperator:
+
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:169917409ad8a04d390277f32f05fdbcdfefdab9fd126433034644b7332ac744
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:59cb2f1e42cf00401f6d468142fa0d5db042ec283b290c9e85821cac7a4fc183
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:f943aed689b4d320a6f5339f275d99e4b1b341857142373e82cc160f60eb9b99
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:10f9d6053445313f39debfc9f3c5ba8ce048797606d92cdc1a0d47c6d4e5f344
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:0b8e61ba6509f2e0c53d138b57f79099af0fd3d57a3a6620ff770354c905bcce
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:520db9418a7a0c296d3d51f1cb52cd615ee85e349475fe96ce5ee9ca2343ee0a
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:2b125380cda483bb7fa0dd44d0aa820ab7d35aa8d759b19b8147ff2b6e2b248a
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:1e467558e4e6e04c3ab886f87565fddf9dec2cf6a8993b54a212d0cbb462b99e
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:b9260547c3cbec27ff8c06c7a039cc5816bfb9eda34a8651a956e47961640d88
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:e43298496afd3f9ae121c3264e1b3dfb7b3be729cc05d78de190b0cda83f5c73
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:781dd1d9a575d381f64c96a7ca9f4b3c03435e03cd9bc37aa92388730ec89075
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:7fd11c843f707a7ab5593428e1f1694e739f795ced3a68b824c50c4efa589f6e
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:5ee0be8435ba05729c4ce4570b9af5f8f37038bd17357dc120bdeaec48a9a58c
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:88eda5f019aa359c8656d4f1f9df8ab7a9738f959617129753b8ab020947a4bf
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:5bb7df9e5934c701cc558677d47e08cfbd72943d3b9da3c3ade1b327409716a9
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:948914734cd5f38d7812eeeed5e3c41bd602d5157c3241f798f1e62cde64d494
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:cb6dc8b72bd78b7c991a02eb97bd567507c78b5873e3aafd4c1bad50bc8c1f72
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:e065720afc628e0218f56c52a72acb80edc498ef4c502ac3eb1d6a10d06e17eb
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:76d956130c3916e3fea16f22d6f2e89a01538964d4827aaa03ff7e85f440f064
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:0a662a0d0ea3c7101100faf846750cdfcfb101d52542f400b0727b790226e52f
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:cf90097f2ef894bbf1778c647fb35988a5ff49e6fe0e064c34c6d6cea9ba6c61
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:ee82bef55db5e94eea952f948d4a45d7666041011062607b85dd78694e142a55
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:4fb42ad92227800d127894450e563b12fb9bae43a15e96768bf39841e4f58920
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:2427453fd9de937fcc546c50541821232ce7ebe811b0faded24e04483232c51b
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:7e63825458a736885cb651fbefab4a59ff12c4f80af6c75c94cc286ec662db32
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:48e9f6686e659fc1c5afe22d93328318b8581daec8ccfd311f546e2dbf639382
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:3ce700eea13c1a10bd071ea0dba330fb6c643da093ff2f727af98bb91b4d3e78
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:2db6c35143b19817cf7a0cec6e63bd817eeca3b2d1da0d6dcfbb70bbe8d96b16
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:25646a4f821823dad46bd9085d70347302c44b4aa3c3efd075f489665dc4fff3
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:0c5bc7032405382c183c1d901da28c8010dcedb971bc41af4b9974672d5edb0f
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:f51d78f84e9f1c2600b610b9e1ba8c9540c147d117a40acc5a3315e7929ebc1a
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:9b5526585598cfca46e0bc9588ee0994dc4d0c41f6139c37fdc2ec99ddc4bc49
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:c3d70b97d83fd5515f59a3407930b2f348d154f3a91c55b99775ccd40c7a03eb
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:8daa9cb2fb63248b931c9b52307c6cc36bfb69f56275599d12325437331ffd5e
+klusterlet-product:
+
+    - rhacm2/klusterlet-operator-bundle@sha256:58b7976358bd5b30958602c820c5d3b0ba136e65fd7424ce92d23801dbd0976f
+    - rhacm2/klusterlet-operator-bundle@sha256:33651be7274ff2cd66c9e23e7eb20d5d5ca9649aed6777bb8b0ec03dfc8b0707
+    - rhacm2/klusterlet-operator-bundle@sha256:d3b166fed222fbbcfe70e7a3872e8c1ac02a5ccd2cbf8585bedd29c005f6a16d
+    - rhacm2/klusterlet-operator-bundle@sha256:dd102ee9ec3a32312e63309e5cd5526e8eb1eb7e7b5ee299b95302618c00a0cb
+kubevirt-hyperconverged:
+
+    - container-native-virtualization/hco-bundle-registry@sha256:096949be81c57a0f2d6834c6dbd3a39f8464d7687115da5824dd3acb58bf4bcd
+    - container-native-virtualization/hco-bundle-registry@sha256:ca5315dec677075a643cd009dfbe768eb6d1dea941e41e3b7ea88d1a430c2fae
+    - container-native-virtualization/hco-bundle-registry@sha256:3e26ec915e2b9b21300d384594223ec3db3e885a627ee433df80ac9b04a5da75
+    - container-native-virtualization/hco-bundle-registry@sha256:1cd80adae36f3ceae5b8f3703d5761e82c1a5ed364b5f771f537dd6090d1c5a7
+    - container-native-virtualization/hco-bundle-registry@sha256:5128091ce8551d630ba7afb4723d9433da3cb09f99eb06b1dbc4fee490faa612
+    - container-native-virtualization/hco-bundle-registry@sha256:307e78697fa8546af3c965feda55b3499a6db0c10612812ad849221b4d450534
+    - container-native-virtualization/hco-bundle-registry@sha256:a3c97ad23758c377884be9ca53b4136b256952a660872b38d6ac2e9a6b449eaa
+    - container-native-virtualization/hco-bundle-registry@sha256:039844b547e6e28f5e24b8d0caf9d26bc04ff61f44e3b3a5a6b4e6e5d4748293
+    - container-native-virtualization/hco-bundle-registry@sha256:6639ea7b8cf2d0f4a1df71116525c3383c9a55962403fee4bae461e1095d3718
+    - container-native-virtualization/hco-bundle-registry@sha256:1d08941f581ce9c39fde20ca1d6e17b2732b78504cd490ccaddc75e5db144a08
+    - container-native-virtualization/hco-bundle-registry@sha256:90a1f9a2db2b0d1ac78586e79dd0ea3e1ca0a20300e4da95118d0bb77271b39b
+    - container-native-virtualization/hco-bundle-registry@sha256:76402738a5a52397b164aa85850df9d5ffa446a2be4b0956d30120c1eade0848
+    - container-native-virtualization/hco-bundle-registry@sha256:a8c2a4a8138f0b6945116747b52e1167a2f49316ab7960a51c0a03d82f6b41fa
+    - container-native-virtualization/hco-bundle-registry@sha256:e99ff69879859d0bf689e052839c47d95e47da44926f86240d8f833858af77a2
+    - container-native-virtualization/hco-bundle-registry@sha256:546e4497d96fd0ef834acbe7dae2c7383d2e5325b14cdaec2e631560d102720f
+    - container-native-virtualization/hco-bundle-registry@sha256:9811228cf63e2d85529410c0fcaa36999a25dcede649dc4d7d809b98b0a1c332
+    - container-native-virtualization/hco-bundle-registry@sha256:4ed94efd3ddf14dc111a473c891469f7251cd94ccf2046c96524d17ca82c6602
+nfd:
+
+    - openshift4/ose-cluster-nfd-operator-bundle@sha256:1ff292ba91da3c03474ae2f53dc541a7db01925fd7f02a01f0cbb8d4d76e6333
+    - openshift4/ose-cluster-nfd-operator-bundle@sha256:57c643e96095bfec48faa60751a1dff95ac22fcf1afe426607e1ce71d4a7345c
+amq-broker-lts:
+
+    - amq7/amq-broker-lts-operator-bundle@sha256:154d343f8646c2fe8d35c235e1fa112ece443f08a9c18bf0029892741dd73b9c
+    - amq7/amq-broker-lts-operator-bundle@sha256:b480e64de68bbe7c271623cf9a9f88067fa7d1dd4dc54f192ca505ecfb25dd17

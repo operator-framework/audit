@@ -17,23 +17,101 @@ package actions
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
+	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 
+	"github.com/goccy/go-yaml"
 	"github.com/operator-framework/api/pkg/apis/scorecard/v1alpha3"
 	"github.com/operator-framework/audit/pkg"
+	"github.com/operator-framework/audit/pkg/models"
 	log "github.com/sirupsen/logrus"
 )
 
-func RunScorecard(bundleDir string) (v1alpha3.TestList, error) {
-	scorecardConfigPath := filepath.Join(bundleDir, "tests", "scorecard")
-	// Check if has scorecard manifests
-	if _, err := os.Stat(scorecardConfigPath); os.IsNotExist(err) {
-		// Write scorecard config when that does not exist
-		if err := writeScorecardConfig(scorecardConfigPath); err != nil {
-			return v1alpha3.TestList{}, err
+const defaultSDKScorecardImageName = "quay.io/operator-framework/scorecard-test"
+const scorecardAnnotation = "operators.operatorframework.io.test.config.v1"
+
+type BundleAnnotations struct {
+	Annotations map[string]string `yaml:"annotations,omitempty"`
+}
+
+func RunScorecard(bundleDir string, auditBundle *models.AuditBundle) *models.AuditBundle {
+	scorecardTestsPath := filepath.Join(bundleDir, "tests", "scorecard")
+	annotationsPath := filepath.Join(bundleDir, "metadata", "annotations.yaml")
+
+	// If find the annotations file then, check for the scorecard path on it.
+	if _, err := os.Stat(annotationsPath); err == nil && !os.IsNotExist(err) {
+		annFile, err := pkg.ReadFile(annotationsPath)
+		if err != nil {
+			msg := fmt.Errorf("unable to read annotations.yaml to check scorecard path: %s", err)
+			log.Error(msg)
+			auditBundle.Errors = append(auditBundle.Errors, msg.Error())
 		}
+		var bundleAnnotations BundleAnnotations
+		if err := yaml.Unmarshal(annFile, &bundleAnnotations); err != nil {
+			msg := fmt.Errorf("unable to Unmarshal annotations.yaml to check scorecard path: %s", err)
+			log.Error(msg)
+			auditBundle.Errors = append(auditBundle.Errors, msg.Error())
+		}
+		if len(bundleAnnotations.Annotations) > 0 {
+			path := bundleAnnotations.Annotations[scorecardAnnotation]
+			if len(path) > 0 {
+				scorecardTestsPath = path
+			}
+		}
+	}
+
+	// Check if has scorecard manifests
+	if _, err := os.Stat(scorecardTestsPath); err != nil {
+		if os.IsNotExist(err) {
+			if err := os.MkdirAll(scorecardTestsPath, os.ModePerm); err != nil {
+				auditBundle.Errors = append(auditBundle.Errors,
+					fmt.Errorf("unable to create scorecard dir test: %s", err).Error())
+				return auditBundle
+			}
+		} else {
+			auditBundle.Errors = append(auditBundle.Errors,
+				fmt.Errorf("unexpected error to run scorecard: %s", err).Error())
+			return auditBundle
+		}
+	} else {
+		err := filepath.Walk(scorecardTestsPath, func(path string, info os.FileInfo, err error) error {
+			if info != nil && !info.IsDir() && strings.HasSuffix(info.Name(), "yaml") {
+				scorecardFilePath := filepath.Join(scorecardTestsPath, info.Name())
+				if existingFile, err := ioutil.ReadFile(scorecardFilePath); err == nil {
+					var scorecardConfig v1alpha3.Configuration
+					if err := json.Unmarshal(existingFile, &scorecardConfig); err != nil {
+						msg := fmt.Errorf("unable to Unmarshal scorecard file %s: %s", info.Name(), err)
+						log.Error(msg)
+						auditBundle.Errors = append(auditBundle.Errors, msg.Error())
+					}
+
+					for _, k := range scorecardConfig.Stages {
+						for _, t := range k.Tests {
+							if !strings.Contains(t.Image, defaultSDKScorecardImageName) {
+								auditBundle.HasCustomScorecardTests = true
+								break
+							}
+						}
+					}
+				}
+			}
+
+			return nil
+		})
+		msg := fmt.Errorf("unable to walk in scorecard filse: %s", err)
+		log.Error(msg)
+		auditBundle.Errors = append(auditBundle.Errors, msg.Error())
+	}
+
+	if err := writeScorecardConfig(scorecardTestsPath); err != nil {
+		msg := fmt.Errorf("unable to write scorecard default tests: %s", err)
+		log.Error(msg)
+		auditBundle.Errors = append(auditBundle.Errors, msg.Error())
+		return auditBundle
 	}
 
 	// run scorecard against bundle
@@ -41,38 +119,43 @@ func RunScorecard(bundleDir string) (v1alpha3.TestList, error) {
 	output, _ := pkg.RunCommand(cmd)
 	if len(output) < 1 {
 		log.Errorf("unable to get scorecard output: %s", output)
-		return v1alpha3.TestList{}, errors.New("unable get scorecard output")
+		auditBundle.Errors = append(auditBundle.Errors,
+			fmt.Errorf("unable to run scorecard: %s", errors.New("unable get scorecard output")).Error())
+		return auditBundle
 	}
 
 	var scorecardResults v1alpha3.TestList
 	err := json.Unmarshal(output, &scorecardResults)
 	if err != nil {
-		return v1alpha3.TestList{}, err
+		auditBundle.Errors = append(auditBundle.Errors,
+			fmt.Errorf("unable to run scorecard: %s", err).Error())
+		return auditBundle
 	}
-
-	return scorecardResults, nil
+	auditBundle.ScorecardResults = scorecardResults
+	return auditBundle
 }
 
+// writeScorecardConfig always the config file for audit
 func writeScorecardConfig(scorecardConfigPath string) error {
-	if err := os.MkdirAll(scorecardConfigPath, os.ModePerm); err != nil {
-		return err
-	}
+	auditScorecardConfig := filepath.Join(scorecardConfigPath, "config.yaml")
+	cmd := exec.Command("rm", "-rf", auditScorecardConfig)
+	_, _ = pkg.RunCommand(cmd)
 
-	f, err := os.Create(filepath.Join(scorecardConfigPath, "config.yaml"))
+	f, err := os.Create(auditScorecardConfig)
 	if err != nil {
 		return err
 	}
 
 	defer f.Close()
 
-	_, err = f.WriteString(scorecardConfigFragment)
+	_, err = f.WriteString(scorecardDefaultConfigFragment)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-const scorecardConfigFragment = `apiVersion: scorecard.operatorframework.io/v1alpha3
+const scorecardDefaultConfigFragment = `apiVersion: scorecard.operatorframework.io/v1alpha3
 kind: Configuration
 metadata:
   name: config
@@ -82,42 +165,42 @@ stages:
   - entrypoint:
     - scorecard-test
     - basic-check-spec
-    image: quay.io/operator-framework/scorecard-test:v1.5.0
+    image: quay.io/operator-framework/scorecard-test:v1.8.0
     labels:
       suite: basic
       test: basic-check-spec-test
   - entrypoint:
     - scorecard-test
     - olm-bundle-validation
-    image: quay.io/operator-framework/scorecard-test:v1.5.0
+    image: quay.io/operator-framework/scorecard-test:v1.8.0
     labels:
       suite: olm
       test: olm-bundle-validation-test
   - entrypoint:
     - scorecard-test
     - olm-crds-have-validation
-    image: quay.io/operator-framework/scorecard-test:v1.5.0
+    image: quay.io/operator-framework/scorecard-test:v1.8.0
     labels:
       suite: olm
       test: olm-crds-have-validation-test
   - entrypoint:
     - scorecard-test
     - olm-crds-have-resources
-    image: quay.io/operator-framework/scorecard-test:v1.5.0
+    image: quay.io/operator-framework/scorecard-test:v1.8.0
     labels:
       suite: olm
       test: olm-crds-have-resources-test
   - entrypoint:
     - scorecard-test
     - olm-spec-descriptors
-    image: quay.io/operator-framework/scorecard-test:v1.5.0
+    image: quay.io/operator-framework/scorecard-test:v1.8.0
     labels:
       suite: olm
       test: olm-spec-descriptors-test
   - entrypoint:
     - scorecard-test
     - olm-status-descriptors
-    image: quay.io/operator-framework/scorecard-test:v1.5.0
+    image: quay.io/operator-framework/scorecard-test:v1.8.0
     labels:
       suite: olm
       test: olm-status-descriptors-test`

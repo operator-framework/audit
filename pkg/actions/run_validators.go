@@ -24,8 +24,13 @@ func RunValidators(auditBundle *models.AuditBundle) *models.AuditBundle {
 	validators := apivalidation.DefaultBundleValidators
 	validators = validators.WithValidators(apivalidation.OperatorHubValidator)
 	validators = validators.WithValidators(apivalidation.ObjectValidator)
+	// todo: check how can we call the community validator since it will make all bundles
+	// shipped previously fail
+	// validators = validators.WithValidators(apivalidation.CommunityOperatorValidator)
 
-	results := validators.Validate(auditBundle.Bundle.ObjectsToValidate()...)
+	objs := auditBundle.Bundle.ObjectsToValidate()
+
+	results := validators.Validate(objs...)
 	nonEmptyResults := []errors.ManifestResult{}
 
 	for _, result := range results {
@@ -33,6 +38,7 @@ func RunValidators(auditBundle *models.AuditBundle) *models.AuditBundle {
 			nonEmptyResults = append(nonEmptyResults, result)
 		}
 	}
+
 	auditBundle.ValidatorsResults = nonEmptyResults
 	return auditBundle
 }

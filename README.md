@@ -56,19 +56,19 @@ docker login https://registry.redhat.io
 Now, you can audit all operator bundles of an image catalog with: 
 
 ```sh 
-audit-tool bundles --index-image=registry.redhat.io/redhat/redhat--operator-index:v4.7 --head-only --output-path=testdata/xls
+audit-tool index bundles --index-image=registry.redhat.io/redhat/redhat--operator-index:v4.7 --head-only --output-path=testdata/xls
 ```
 
 Now, you can audit all packages of an image catalog with: 
 
 ```sh 
-audit-tool packages --index-image=registry.redhat.io/redhat/redhat--operator-index:v4.7 --output-path=testdata/xls
+audit-tool index packages --index-image=registry.redhat.io/redhat/redhat--operator-index:v4.7 --output-path=testdata/xls
 ```
 
 Note that you can also output the results in JSON format:
 
 ```sh 
-audit-tool bundles index \
+audit-tool index bundles \
     --index-image=registry.redhat.io/redhat/redhat-operator-index:v4.7 \
     --limit=3 \
     --head-only \
@@ -81,7 +81,7 @@ audit-tool bundles index \
 Use the `--help` flag to check the options and the further information about its commands. Following an example:
 
 ```sh
-$ audit-tool bundles --help
+$ audit-tool index bundles --help
 Provides reports with the details of all bundles operators ship in the index image informed according to the criteria defined via the flags.
 
  **When this report is useful?** 
@@ -92,17 +92,7 @@ Usage:
   audit-tool bundles [flags]
 
 Flags:
-      --disable-scorecard    if set, will disable the scorecard tests
-      --disable-validators   if set, will disable the validators tests
-      --filter string        filter by the packages names which are like *filter*
-      --head-only            if set, will just check the operator bundle which are head of the channels
-  -h, --help                 help for bundles
-      --index-image string   index image and tag which will be audit
-      --label string         filter by bundles which has index images where contains *label*
-      --label-value string   filter by bundles which has index images where contains *label=label-value*. This option can only be used with the --label flag.
-      --limit int32          limit the num of operator bundles to be audit
-      --output string        inform the output format. [Flags: xls, json]. (Default: xls) (default "xls")
-      --output-path string   inform the path of the directory to output the report. (Default: current directory) (default "/Users/camilamacedo/go/src/github.com/operator-framework/audit-1")
+...
 ```
 
 ### Filtering results by names
@@ -110,16 +100,16 @@ Flags:
 See that you can use the `--filter` --flag to filter the results by the package name:
 
 ```sh
-./bin/audit audit [bundles|packages|channels] --index-image=registry.redhat.io/redhat/redhat-operator-index:v4.5 --filter="mypackagename"
+audit-tool index [bundles|packages|channels] --index-image=registry.redhat.io/redhat/redhat-operator-index:v4.5 --filter="mypackagename"
 ```
 
 ## Reports
 
 | Report Type | Command | Description |
 | ------ | ----- |  ------ |
-| bundles | `audit bundle --index-image [OPTIONS]` | Audit all Bundles |
-| packages | `audit packages --index-image [OPTIONS]` | Audit all Packages |
-| channels | `audit channels --index-image [OPTIONS]` | Audit all Channels |
+| bundles | `audit index bundle --index-image [OPTIONS]` | Audit all Bundles |
+| packages | `audit index packages --index-image [OPTIONS]` | Audit all Packages |
+| channels | `audit index channels --index-image [OPTIONS]` | Audit all Channels |
 
 ## Testdata
 

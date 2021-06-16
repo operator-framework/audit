@@ -19,6 +19,7 @@ import (
 	apimanifests "github.com/operator-framework/api/pkg/manifests"
 	"github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/operator-framework/api/pkg/validation/errors"
+	"github.com/operator-framework/audit/pkg"
 )
 
 // AuditBundle defines the data per bundle which is gathering to generate the reports
@@ -39,7 +40,9 @@ type AuditBundle struct {
 	Channels                []string
 	PackageName             string
 	DefaultChannel          string
-	Errors                  []error
+	PropertiesDB            []pkg.PropertiesAnnotation
+	HasCustomScorecardTests bool
+	Errors                  []string
 }
 
 func NewAuditBundle(operatorBundleName, operatorBundleImagePath string) *AuditBundle {

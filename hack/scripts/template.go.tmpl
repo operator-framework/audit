@@ -1,0 +1,4 @@
+{{ with .Deprecated }}{{ range . }}{{ .PackageName }}:
+{{ with .BundlesPath }}{{ range . }}
+    - {{ .Paths }}{{ end }}{{ end }}
+{{ end }}{{ end }}

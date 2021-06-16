@@ -19,6 +19,8 @@ import (
 	"log"
 	"sort"
 
+	"github.com/blang/semver"
+
 	sq "github.com/Masterminds/squirrel"
 	"github.com/operator-framework/api/pkg/operators/v1alpha1"
 
@@ -43,17 +45,15 @@ func (d *Data) PrepareReport() Report {
 
 		allBundles := d.getAllBundles(auditPkg)
 
-		var auditErrors []error
+		var auditErrors []string
 		var validatorErrors []string
 		var validatorWarnings []string
 		var scorecardErrors []string
 		var scorecardSuggestions []string
 		var scorecardFailingTests []string
 		var muiltArchSupport []string
-		var ocpLabel []string
-		var creationDates []string
+		var kindsFromRemovedAPI []string
 
-		foundDeprecatedAPI := false
 		foundWebhooks := false
 		foundScorecardSuggestions := false
 		foundScorecardFailingTests := false
@@ -68,7 +68,8 @@ func (d *Data) PrepareReport() Report {
 		foundSupportingMultiNamespaces := false
 		foundInfraSupport := false
 		foundPossiblePerformIssues := false
-
+		foundCustomScorecards := false
+		foundBundlesNotFollowingSuggestionsForDeprecatedAPIs := false
 		qtUnknown := 0
 		var uniqueChannelsFound []string
 
@@ -80,18 +81,12 @@ func (d *Data) PrepareReport() Report {
 			scorecardSuggestions = append(scorecardSuggestions, v.ScorecardSuggestions...)
 			scorecardFailingTests = append(scorecardFailingTests, v.ScorecardFailingTests...)
 			muiltArchSupport = append(muiltArchSupport, v.MultipleArchitectures...)
-			ocpLabel = append(ocpLabel, v.OCPLabel)
-			creationDates = append(creationDates, v.BuildAt)
+			kindsFromRemovedAPI = append(kindsFromRemovedAPI, v.KindsDeprecateAPIs...)
+			if len(v.KindsDeprecateAPIs) > 0 && v.KindsDeprecateAPIs[0] == pkg.Unknown {
+				qtUnknown++
+			}
 			uniqueChannelsFound = append(uniqueChannelsFound, v.Channels...)
 
-			if !foundDeprecatedAPI {
-				switch v.HasV1beta1CRDs {
-				case pkg.Yes:
-					foundDeprecatedAPI = true
-				case pkg.Unknown:
-					qtUnknown++
-				}
-			}
 			if !foundScorecardSuggestions {
 				foundScorecardSuggestions = len(v.ScorecardSuggestions) > 0
 			}
@@ -134,6 +129,14 @@ func (d *Data) PrepareReport() Report {
 			if !foundPossiblePerformIssues {
 				foundPossiblePerformIssues = v.HasPossiblePerformIssues
 			}
+			if !foundCustomScorecards {
+				foundCustomScorecards = v.HasCustomScorecardTests
+			}
+			if !foundBundlesNotFollowingSuggestionsForDeprecatedAPIs {
+				if v.IsDeprecationAPIsSuggestionsSet == pkg.GetYesOrNo(false) {
+					foundBundlesNotFollowingSuggestionsForDeprecatedAPIs = true
+				}
+			}
 		}
 
 		uniqueChannelsFound = pkg.GetUniqueValues(uniqueChannelsFound)
@@ -145,7 +148,6 @@ func (d *Data) PrepareReport() Report {
 		col.ScorecardErrors = scorecardErrors
 		col.ValidatorErrors = validatorErrors
 		col.MultipleArchitectures = muiltArchSupport
-		col.HasWebhooks = foundWebhooks
 		col.HasScorecardFailingTests = foundScorecardFailingTests
 		col.HasScorecardSuggestions = foundScorecardSuggestions
 		col.HasValidatorWarnings = foundValidatorWarnings
@@ -156,16 +158,26 @@ func (d *Data) PrepareReport() Report {
 		col.HasSupportForMultiNamespaces = foundSupportingMultiNamespaces
 		col.HasSupportForOwnNamespaces = foundSupportingOwnNamespaces
 		col.HasSupportForSingleNamespace = foundSupportingSingleNamespaces
-		col.HasInfraSupport = foundInfraSupport
+		col.HasInfraAnnotation = foundInfraSupport
 		col.HasPossiblePerformIssues = foundPossiblePerformIssues
-		col.HasDependency = foundDependency
-		col.BuildAtDates = creationDates
-		col.OCPLabel = ocpLabel
+		col.KindsDeprecateAPIs = pkg.GetUniqueValues(kindsFromRemovedAPI)
+		col.HasCustomScorecardTests = foundCustomScorecards
 
 		// If was not possible get any bundle then needs to be Unknown
-		col.HasV1beta1CRD = pkg.GetYesOrNo(foundDeprecatedAPI)
-		if !foundDeprecatedAPI && len(allBundles) == qtUnknown {
-			col.HasV1beta1CRD = pkg.Unknown
+		if qtUnknown > 0 {
+			if len(allBundles) == qtUnknown {
+				col.KindsDeprecateAPIs[0] = pkg.Unknown
+			}
+			col.AuditErrors = append(col.AuditErrors,
+				fmt.Errorf("unable to check the "+
+					"removed API(s) for %d of %d head bundles of this package",
+					qtUnknown, len(allBundles)).Error())
+		}
+
+		if len(col.KindsDeprecateAPIs) == 0 {
+			col.HasDeprecateAPIsSuggestionsSet = pkg.NotRequired
+		} else {
+			col.HasDeprecateAPIsSuggestionsSet = pkg.GetYesOrNo(!foundBundlesNotFollowingSuggestionsForDeprecatedAPIs)
 		}
 
 		allColumns = append(allColumns, col)
@@ -190,6 +202,10 @@ func (d *Data) PrepareReport() Report {
 
 func (d *Data) getAllBundles(auditPkg models.AuditPackage) []bundles.Columns {
 	var allBundles []bundles.Columns
+
+	// todo: check how to cleanup and centralize the bundle process
+	// in the bundle for not duplicate the code and avoid issues
+
 	for _, v := range auditPkg.AuditBundle {
 		// do not add bundle which has not the label
 		if len(d.Flags.Label) > 0 && !v.FoundLabel {
@@ -209,9 +225,41 @@ func (d *Data) getAllBundles(auditPkg models.AuditPackage) []bundles.Columns {
 		bundles.AddDataFromBundle(v.Bundle)
 		bundles.AddDataFromScorecard(v.ScorecardResults)
 		bundles.AddDataFromValidators(v.ValidatorsResults)
+		bundles.SetMaxOpenshiftVersion(csv, v.PropertiesDB)
 
-		bundles.BuildAt = v.BuildAt
+		bundles.BundleImageBuildDate = v.BuildAt
 		bundles.OCPLabel = v.OCPLabel
+		bundles.HasCustomScorecardTests = v.HasCustomScorecardTests
+
+		if len(bundles.BundleVersion) < 1 && len(v.VersionDB) > 0 {
+			bundles.BundleVersion = v.VersionDB
+		}
+
+		if len(bundles.BundleVersion) > 0 {
+			_, err := semver.Parse(bundles.BundleVersion)
+			if err != nil {
+				bundles.InvalidVersioning = pkg.GetYesOrNo(true)
+			} else {
+				bundles.InvalidVersioning = pkg.GetYesOrNo(false)
+			}
+		}
+
+		if len(bundles.SkipRange) > 0 {
+			_, err := semver.ParseRange(bundles.SkipRange)
+			if err != nil {
+				bundles.InvalidSkipRange = pkg.GetYesOrNo(true)
+			} else {
+				bundles.InvalidSkipRange = pkg.GetYesOrNo(false)
+			}
+		}
+
+		// Check if the bundle comply with the deprecated criteria
+		if len(bundles.KindsDeprecateAPIs) > 0 {
+			bundles.IsDeprecationAPIsSuggestionsSet = pkg.GetYesOrNo(
+				pkg.IsComplyingWithDeprecatedCriteria(bundles.MaxOCPVersion, bundles.OCPLabel))
+		} else {
+			bundles.IsDeprecationAPIsSuggestionsSet = pkg.NotRequired
+		}
 
 		allBundles = append(allBundles, bundles)
 	}
@@ -226,6 +274,13 @@ func (d *Data) OutputReport() error {
 			return err
 		}
 	case pkg.JSON:
+		if err := report.writeJSON(); err != nil {
+			return err
+		}
+	case pkg.All:
+		if err := report.writeXls(); err != nil {
+			return err
+		}
 		if err := report.writeJSON(); err != nil {
 			return err
 		}
