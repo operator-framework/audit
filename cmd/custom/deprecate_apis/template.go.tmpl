@@ -76,6 +76,7 @@
             <ul>
                 <li>Check <a href="https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22"> Deprecated API Migration Guide (v1.22)</a> and ensure that your projects have them migrated and are not using any deprecated/removed API(s) </li>
                 <li>Ensure that any distribution which requires be made with any deprecation API(s) to the OCP catalogs will be configured with the Max OpenShift Version compatible (`olm.openShiftMaxVersion`) and to be distributed only on OCP version(s) <= 4.8 via the annotation/label `com.redhat.openshift.versions`. More info see: <a href="https://github.com/operator-framework/community-operators/blob/master/docs/packaging-required-criteria-ocp.md"> OKD/OpenShift Catalogs criteria and options </a></li>
+                <li>OpenShift 4.8 introduces two new alerts that fire when an API that will be removed in the next release is in use. Check the event alerts of your Operators running on 4.8 and ensure that you will not find any warning about these API(s) still being used by it</li>
             </ul>
 </div>
 
