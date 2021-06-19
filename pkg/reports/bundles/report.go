@@ -27,9 +27,10 @@ import (
 )
 
 type Report struct {
-	Columns           []Columns
+	Columns           []Column
 	Flags             BindFlags
 	IndexImageInspect pkg.DockerInspectManifest
+	GenerateAt        string
 }
 
 //todo: fix the complexity
@@ -89,21 +90,20 @@ func (r *Report) writeXls() error {
 		"X":  "Validator Warnings",
 		"Y":  "Invalid Versioning",
 		"Z":  "Invalid SkipRange",
-		"AA": "Found Replace",
-		"AB": "Has deprecate API(s) suggestions set",
-		"AC": "Skip Range",
-		"AD": "Skips",
-		"AE": "Replace",
-		"AF": "Supports All Namespaces",
-		"AG": "Supports Single Namespaces",
-		"AH": "Supports Own Namespaces",
-		"AI": "Supports Multi Namespaces",
-		"AJ": "Infrastructure Annotations",
-		"AK": "Has possible performance issues",
-		"AL": "Suggestion API(s) manifests",
-		"AM": "Max OCP Version",
-		"AN": "Has custom Scorecards",
-		"AO": "Issues (To process this report)",
+		"AA": "Is head of channel",
+		"AB": "Skip Range",
+		"AC": "Skips",
+		"AD": "Replace",
+		"AE": "Supports All Namespaces",
+		"AF": "Supports Single Namespaces",
+		"AG": "Supports Own Namespaces",
+		"AH": "Supports Multi Namespaces",
+		"AI": "Infrastructure Annotations",
+		"AJ": "Has possible performance issues",
+		"AK": "Suggestion API(s) manifests",
+		"AL": "Max OCP Version",
+		"AM": "Has custom Scorecards",
+		"AN": "Issues (To process this report)",
 	}
 
 	// Header
@@ -256,96 +256,81 @@ func (r *Report) writeXls() error {
 			_ = f.SetCellStyle(sheetName, fmt.Sprintf("Z%d", line),
 				fmt.Sprintf("AC%d", line), styleRed)
 		}
+
 		if err := f.SetCellValue(sheetName, fmt.Sprintf("AA%d", line),
-			v.FoundReplace); err != nil {
-			log.Errorf("to add FoundReplace cell value : %s", err)
+			pkg.GetYesOrNo(v.IsHeadOfChannel)); err != nil {
+			log.Errorf("to add IsHeadOfChannel cell value: %s", err)
 		}
-		if v.FoundReplace == pkg.GetYesOrNo(false) {
-			_ = f.SetCellStyle(sheetName, fmt.Sprintf("AA%d", line),
-				fmt.Sprintf("AA%d", line), styleRed)
-		}
+
 		if err := f.SetCellValue(sheetName, fmt.Sprintf("AB%d", line),
-			v.IsDeprecationAPIsSuggestionsSet); err != nil {
-			log.Errorf("to add HasDeprecateAPIsSuggestionsSet cell value : %s", err)
-		}
-
-		if v.IsDeprecationAPIsSuggestionsSet == pkg.GetYesOrNo(false) {
-			_ = f.SetCellStyle(sheetName, fmt.Sprintf("AB%d", line),
-				fmt.Sprintf("AB%d", line), styleRed)
-		} else {
-			_ = f.SetCellStyle(sheetName, fmt.Sprintf("AB%d", line),
-				fmt.Sprintf("AB%d", line), styleGreen)
-		}
-
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AC%d", line),
 			v.SkipRange); err != nil {
 			log.Errorf("to add SkipRange cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AD%d", line),
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AC%d", line),
 			pkg.GetFormatArrayWithBreakLine(v.Skips)); err != nil {
 			log.Errorf("to add HasGKVDependency cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AE%d", line),
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AD%d", line),
 			v.Replace); err != nil {
 			log.Errorf("to add Replace cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AF%d", line),
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AE%d", line),
 			pkg.GetYesOrNo(v.IsSupportingAllNamespaces)); err != nil {
 			log.Errorf("to add HasSupportForAllNamespaces cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AG%d", line),
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AF%d", line),
 			pkg.GetYesOrNo(v.IsSupportingSingleNamespace)); err != nil {
 			log.Errorf("to add HasSupportForAllNamespaces cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AH%d", line),
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AG%d", line),
 			pkg.GetYesOrNo(v.IsSupportingOwnNamespaces)); err != nil {
 			log.Errorf("to add HasSupportForAllNamespaces cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AI%d", line),
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AH%d", line),
 			pkg.GetYesOrNo(v.IsSupportingMultiNamespaces)); err != nil {
 			log.Errorf("to add HasSupportForAllNamespaces cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AJ%d", line),
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AI%d", line),
 			v.Infrastructure); err != nil {
 			log.Errorf("to add HasInfraAnnotation cell value : %s", err)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AK%d", line),
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AJ%d", line),
 			pkg.GetYesOrNo(v.HasPossiblePerformIssues)); err != nil {
 			log.Errorf("to add HasPossiblePerformIssues cell value : %s", err)
 		}
 		if v.HasPossiblePerformIssues {
-			if err := f.AddComment(sheetName, fmt.Sprintf("AK%d", line),
+			if err := f.AddComment(sheetName, fmt.Sprintf("AJ%d", line),
 				`{"author":"Audit: ","text":"Project supports Disconnected Mode and Multiple Architectures"}`); err != nil {
 				log.Errorf("to add comment for HasPossiblePerformIssues: %s", err)
 			}
 
-			_ = f.SetCellStyle(sheetName, fmt.Sprintf("AK%d", line),
-				fmt.Sprintf("AK%d", line), styleOrange)
+			_ = f.SetCellStyle(sheetName, fmt.Sprintf("AJ%d", line),
+				fmt.Sprintf("AJ%d", line), styleOrange)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AL%d", line),
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AK%d", line),
 			pkg.GenerateMessageWithDeprecatedAPIs(v.DeprecateAPIsManifests)); err != nil {
 			log.Errorf("to add DeprecateAPIsManifests cell value : %s", err)
 		}
 		if len(v.DeprecateAPIsManifests) > 0 {
-			_ = f.SetCellStyle(sheetName, fmt.Sprintf("AL%d", line),
+			_ = f.SetCellStyle(sheetName, fmt.Sprintf("AK%d", line),
 				fmt.Sprintf("AL%d", line), styleOrange)
 		}
 
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AM%d", line), v.MaxOCPVersion); err != nil {
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AL%d", line), v.MaxOCPVersion); err != nil {
 			log.Errorf("to add MaxOCPVersion cell value : %s", err)
 		}
 
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AN%d", line),
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AM%d", line),
 			pkg.GetYesOrNo(v.HasCustomScorecardTests)); err != nil {
 			log.Errorf("to add HasCustomScorecardTests cell value: %s", err)
 		}
 
 		if v.HasCustomScorecardTests {
-			_ = f.SetCellStyle(sheetName, fmt.Sprintf("AN%d", line),
-				fmt.Sprintf("AN%d", line), styleGreen)
+			_ = f.SetCellStyle(sheetName, fmt.Sprintf("AM%d", line),
+				fmt.Sprintf("AM%d", line), styleGreen)
 		}
 
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AO%d", line), v.AuditErrors); err != nil {
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AN%d", line), v.AuditErrors); err != nil {
 			log.Errorf("to add AuditErrors cell value : %s", err)
 		}
 	}
@@ -361,16 +346,6 @@ func (r *Report) writeXls() error {
 		if err := f.SetColVisible(sheetName, "V", false); err != nil {
 			log.Errorf("unable to remove scorecard columns : %s", err)
 		}
-		if err := f.SetColVisible(sheetName, "AN", false); err != nil {
-			log.Errorf("unable to remove scorecard columns : %s", err)
-		}
-	}
-
-	// Found replace when it is not looking all bundles
-	if r.Flags.HeadOnly || r.Flags.Limit > 0 {
-		if err := f.SetColVisible(sheetName, "AA", false); err != nil {
-			log.Errorf("unable to remove found Replace columns : %s", err)
-		}
 	}
 
 	// Remove the validators columns when that is disable
@@ -383,7 +358,7 @@ func (r *Report) writeXls() error {
 		}
 	}
 
-	if err := f.AddTable(sheetName, "A5", "AO5", pkg.TableFormat); err != nil {
+	if err := f.AddTable(sheetName, "A5", "AN5", pkg.TableFormat); err != nil {
 		log.Errorf("unable to add table format : %s", err)
 	}
 

@@ -36,7 +36,6 @@ const Yes = "YES"
 const No = "NO"
 const Unknown = "UNKNOWN"
 const NotUsed = "NOT USED"
-const NotRequired = "NOT REQUIRED"
 
 const TableFormat = `{
     "table_name": "table",
@@ -175,6 +174,7 @@ func CleanupTemporaryDirs() {
 
 type DockerInspectManifest struct {
 	ID           string       `json:"ID"`
+	RepoDigests  []string     `json:"RepoDigests"`
 	Created      string       `json:"Created"`
 	DockerConfig DockerConfig `json:"Config"`
 }

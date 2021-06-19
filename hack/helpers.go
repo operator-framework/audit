@@ -16,6 +16,9 @@ package hack
 
 import "strings"
 
+const ReportsPath = "testdata/reports/"
+const BinPath = "bin/audit-tool"
+
 // GetImageNameToCreateDir returns the name of the image formatted to be used
 // as the name of the dir
 func GetImageNameToCreateDir(v string) string {

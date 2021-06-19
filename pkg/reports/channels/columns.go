@@ -14,15 +14,79 @@
 
 package channels
 
-type Columns struct {
+import (
+	"strings"
+
+	"github.com/blang/semver"
+	"github.com/operator-framework/audit/pkg"
+	"github.com/operator-framework/audit/pkg/models"
+	"github.com/operator-framework/audit/pkg/reports/bundles"
+)
+
+type Column struct {
 	PackageName               string   `json:"packageName"`
 	ChannelName               string   `json:"channelName"`
 	IsUsingSkips              bool     `json:"isUsingSkips,omitempty"`
 	IsUsingSkipRange          bool     `json:"isUsingSkipRange,omitempty"`
 	IsFollowingNameConvention bool     `json:"isFollowingNameConvention,omitempty"`
-	FoundAllReplaces          bool     `json:"foundAllReplaces,omitempty"`
 	HasInvalidSkipRange       bool     `json:"HasInvalidSkipRange,omitempty"`
 	HasInvalidVersioning      bool     `json:"HasInvalidVersioning,omitempty"`
-	MissingReplaces           []string `json:"missingReplaces,omitempty"`
 	AuditErrors               []string `json:"errors,omitempty"`
+}
+
+func NewColumn(auditCha models.AuditChannel) *Column {
+	col := Column{}
+	col.PackageName = auditCha.PackageName
+	col.ChannelName = auditCha.ChannelName
+	col.IsFollowingNameConvention = isFollowingConventional(auditCha.ChannelName)
+
+	var allBundles []bundles.Column
+	for _, v := range auditCha.AuditBundles {
+		bundles := bundles.Column{}
+		bundles.Replace = v.ReplacesDB
+		bundles.SkipRange = v.SkipRangeDB
+		bundles.PackageName = v.PackageName
+		bundles.Channels = v.Channels
+		if len(v.SkipsDB) > 0 {
+			bundles.Skips = strings.Split(v.SkipsDB, ",")
+		}
+
+		if len(v.VersionDB) > 0 {
+			_, err := semver.Parse(v.VersionDB)
+			if err != nil {
+				bundles.InvalidVersioning = pkg.GetYesOrNo(true)
+			} else {
+				bundles.InvalidVersioning = pkg.GetYesOrNo(false)
+			}
+		}
+
+		if len(v.SkipRangeDB) > 0 {
+			_, err := semver.ParseRange(v.SkipRangeDB)
+			if err != nil {
+				bundles.InvalidSkipRange = pkg.GetYesOrNo(true)
+			} else {
+				bundles.InvalidSkipRange = pkg.GetYesOrNo(false)
+			}
+		}
+	}
+
+	var auditErrors []string
+
+	foundInvalidSkipRange := false
+	foundInvalidVersioning := false
+
+	for _, v := range allBundles {
+		if !foundInvalidVersioning && v.InvalidVersioning == pkg.GetYesOrNo(true) {
+			foundInvalidVersioning = true
+		}
+		if !foundInvalidSkipRange && len(v.InvalidSkipRange) > 0 && v.InvalidSkipRange == pkg.GetYesOrNo(true) {
+			foundInvalidSkipRange = true
+		}
+	}
+
+	col.HasInvalidVersioning = foundInvalidVersioning
+	col.HasInvalidSkipRange = foundInvalidSkipRange
+	col.AuditErrors = auditErrors
+	return &col
+
 }

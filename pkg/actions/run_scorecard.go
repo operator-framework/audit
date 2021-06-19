@@ -59,7 +59,7 @@ func RunScorecard(bundleDir string, auditBundle *models.AuditBundle) *models.Aud
 		if len(bundleAnnotations.Annotations) > 0 {
 			path := bundleAnnotations.Annotations[scorecardAnnotation]
 			if len(path) > 0 {
-				scorecardTestsPath = filepath.Join(bundleDir,path)
+				scorecardTestsPath = filepath.Join(bundleDir, path)
 			}
 		}
 	}

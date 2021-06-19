@@ -81,22 +81,19 @@ test-license: ## Check if all files has the license
 ##@ Reports
 
 .PHONY: generate-samples ## Generate the samples in the testdata
-generate-samples:
-	make install
+generate-samples: install
 	go run ./hack/samples/generate_samples.go
 
 .PHONY: generate-testdata ## Generate the full testdata directory
-generate-testdata: docker-login
-	make install
-	go run ./hack/samples/generate_samples.go
-	go run ./hack/report/full.go
+generate-testdata: generate-samples
+	go run ./hack/report/bundles/generate.go
+	make generate-dashboards
 	make generate-index
-
-.PHONY: docker-login ## Login to redhat registries to get the latest versions
-docker-login:
-	docker login https://registry.connect.redhat.com
-	docker login https://registry.redhat.io
 
 .PHONY: generate-index ## Generate index.html
 generate-index:
 	go run ./hack/index/generate.go
+
+.PHONY: generate-dashboards ## Generate the testdata custom dashboards
+generate-dashboards:
+	go run ./hack/deprecate-api/generate.go

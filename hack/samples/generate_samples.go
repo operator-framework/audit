@@ -19,6 +19,8 @@ import (
 	"os"
 	"os/exec"
 
+	"github.com/operator-framework/audit/hack"
+
 	"path/filepath"
 
 	"github.com/operator-framework/audit/pkg"
@@ -36,7 +38,7 @@ func main() {
 	const testdataPath = "/testdata/samples/"
 
 	samplesDir := filepath.Join(currentPath, testdataPath)
-	binPath := filepath.Join(currentPath, "bin", "audit-tool")
+	binPath := filepath.Join(currentPath, hack.BinPath)
 
 	log.Infof("using the path: (%v)", samplesDir)
 	log.Infof("using the bin: (%v)", binPath)

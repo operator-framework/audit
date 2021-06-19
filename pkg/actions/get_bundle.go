@@ -45,7 +45,13 @@ func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 		return auditBundle
 	}
 
-	downloadBundleImage(auditBundle)
+	err := DownloadImage(auditBundle.OperatorBundleImagePath)
+	if err != nil {
+		auditBundle.Errors = append(auditBundle.Errors,
+			fmt.Errorf("unable to download container image (%s): %s", auditBundle.OperatorBundleImagePath, err).Error())
+		return auditBundle
+	}
+
 	bundleDir := createBundleDir(auditBundle)
 	extractBundleFromImage(auditBundle, bundleDir)
 
@@ -103,15 +109,6 @@ func createBundleDir(auditBundle *models.AuditBundle) string {
 			fmt.Errorf("unable to create the dir for the bundle: %s", err).Error())
 	}
 	return dir
-}
-
-func downloadBundleImage(auditBundle *models.AuditBundle) {
-	cmd := exec.Command("docker", "pull", auditBundle.OperatorBundleImagePath)
-	_, err := pkg.RunCommand(cmd)
-	if err != nil {
-		auditBundle.Errors = append(auditBundle.Errors,
-			fmt.Errorf("unable to create container image : %s", err).Error())
-	}
 }
 
 func extractBundleFromImage(auditBundle *models.AuditBundle, bundleDir string) {
@@ -193,4 +190,10 @@ func cleanupBundleDir(auditBundle *models.AuditBundle, dir string) {
 
 	cmd = exec.Command("docker", "rmi", auditBundle.OperatorBundleImagePath)
 	_, _ = pkg.RunCommand(cmd)
+}
+
+func DownloadImage(image string) error {
+	cmd := exec.Command("docker", "pull", image)
+	_, err := pkg.RunCommand(cmd)
+	return err
 }

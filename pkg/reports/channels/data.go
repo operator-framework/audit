@@ -19,13 +19,11 @@ import (
 	"log"
 	"sort"
 	"strings"
-
-	"github.com/blang/semver"
+	"time"
 
 	sq "github.com/Masterminds/squirrel"
 	"github.com/operator-framework/audit/pkg"
 	"github.com/operator-framework/audit/pkg/models"
-	"github.com/operator-framework/audit/pkg/reports/bundles"
 )
 
 type Data struct {
@@ -35,80 +33,9 @@ type Data struct {
 }
 
 func (d *Data) PrepareReport() Report {
-	var allColumns []Columns
+	var allColumns []Column
 	for _, auditCha := range d.AuditChannel {
-
-		col := Columns{}
-		col.PackageName = auditCha.PackageName
-		col.ChannelName = auditCha.ChannelName
-		col.IsFollowingNameConvention = isFollowingConventional(auditCha.ChannelName)
-
-		var allBundles []bundles.Columns
-		for _, v := range auditCha.AuditBundles {
-			bundles := bundles.Columns{}
-			bundles.Replace = v.ReplacesDB
-			bundles.SkipRange = v.SkipRangeDB
-			bundles.PackageName = v.PackageName
-			bundles.Channels = v.Channels
-			if len(v.SkipsDB) > 0 {
-				bundles.Skips = strings.Split(v.SkipsDB, ",")
-			}
-
-			if len(v.VersionDB) > 0 {
-				_, err := semver.Parse(v.VersionDB)
-				if err != nil {
-					bundles.InvalidVersioning = pkg.GetYesOrNo(true)
-				} else {
-					bundles.InvalidVersioning = pkg.GetYesOrNo(false)
-				}
-			}
-
-			if len(v.SkipRangeDB) > 0 {
-				_, err := semver.ParseRange(v.SkipRangeDB)
-				if err != nil {
-					bundles.InvalidSkipRange = pkg.GetYesOrNo(true)
-				} else {
-					bundles.InvalidSkipRange = pkg.GetYesOrNo(false)
-				}
-			}
-
-			if len(v.ReplacesDB) > 0 {
-				// check if found replace
-				bundles.FoundReplace = pkg.GetYesOrNo(false)
-				for _, b := range auditCha.AuditBundles {
-					if b.OperatorBundleName == bundles.Replace {
-						bundles.FoundReplace = pkg.GetYesOrNo(true)
-						break
-					}
-				}
-			}
-		}
-
-		var auditErrors []string
-
-		foundInvalidSkipRange := false
-		foundInvalidVersioning := false
-
-		var missingReplace []string
-		for _, v := range allBundles {
-			if !foundInvalidVersioning && v.InvalidVersioning == pkg.GetYesOrNo(true) {
-				foundInvalidVersioning = true
-			}
-			if !foundInvalidSkipRange && len(v.InvalidSkipRange) > 0 && v.InvalidSkipRange == pkg.GetYesOrNo(true) {
-				foundInvalidSkipRange = true
-			}
-			if len(v.Replace) > 0 && v.FoundReplace == pkg.GetYesOrNo(false) {
-				missingReplace = append(missingReplace, v.Replace)
-			}
-
-		}
-
-		col.MissingReplaces = missingReplace
-		col.FoundAllReplaces = len(missingReplace) == 0
-		col.HasInvalidVersioning = foundInvalidVersioning
-		col.HasInvalidSkipRange = foundInvalidSkipRange
-		col.AuditErrors = auditErrors
-		allColumns = append(allColumns, col)
+		allColumns = append(allColumns, *NewColumn(auditCha))
 	}
 
 	sort.Slice(allColumns[:], func(i, j int) bool {
@@ -119,6 +46,9 @@ func (d *Data) PrepareReport() Report {
 	finalReport.Flags = d.Flags
 	finalReport.Columns = allColumns
 	finalReport.IndexImageInspect = d.IndexImageInspect
+
+	dt := time.Now().Format("2006-01-02")
+	finalReport.GenerateAt = dt
 
 	if len(allColumns) == 0 {
 		log.Fatal("No data was found for the criteria informed. " +
@@ -175,11 +105,11 @@ func (d *Data) BuildChannelsQuery() (string, error) {
 
 // isFollowingConventional will check the channels.
 func isFollowingConventional(channel string) bool {
-	const preview = "preview"
+	const candidate = "candidate"
 	const stable = "stable"
 	const fast = "fast"
 
-	if !strings.HasPrefix(channel, preview) &&
+	if !strings.HasPrefix(channel, candidate) &&
 		!strings.HasPrefix(channel, stable) &&
 		!strings.HasPrefix(channel, fast) {
 		return false

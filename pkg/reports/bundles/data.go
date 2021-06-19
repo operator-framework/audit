@@ -17,12 +17,12 @@ package bundles
 import (
 	"fmt"
 	"sort"
+	"strings"
+	"time"
 
 	log "github.com/sirupsen/logrus"
 
 	sq "github.com/Masterminds/squirrel"
-	"github.com/blang/semver"
-	"github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/operator-framework/audit/pkg"
 
 	"github.com/operator-framework/audit/pkg/models"
@@ -35,89 +35,18 @@ type Data struct {
 }
 
 func (d *Data) PrepareReport() Report {
-	var allColumns []Columns
-	for _, v := range d.AuditBundle {
+	d.fixPackageNameInconsistency()
 
-		col := Columns{}
+	var allColumns []Column
+	for _, v := range d.AuditBundle {
+		col := NewColumn(v)
 
 		// do not add bundle which has not the label
 		if len(d.Flags.Label) > 0 && !v.FoundLabel {
 			continue
 		}
 
-		col.InvalidSkipRange = pkg.NotUsed
-		col.InvalidVersioning = pkg.Unknown
-		col.PackageName = v.PackageName
-		col.BundleImagePath = v.OperatorBundleImagePath
-		col.BundleName = v.OperatorBundleName
-		col.DefaultChannel = v.DefaultChannel
-		col.Channels = v.Channels
-		col.AuditErrors = v.Errors
-		col.SkipRange = v.SkipRangeDB
-		col.Replace = v.ReplacesDB
-		col.BundleVersion = v.VersionDB
-		col.OCPLabel = v.OCPLabel
-		col.BundleImageBuildDate = v.BuildAt
-		col.HasCustomScorecardTests = v.HasCustomScorecardTests
-
-		var csv *v1alpha1.ClusterServiceVersion
-		if v.Bundle != nil && v.Bundle.CSV != nil {
-			csv = v.Bundle.CSV
-		} else if v.CSVFromIndexDB != nil {
-			csv = v.CSVFromIndexDB
-		}
-
-		col.AddDataFromCSV(csv)
-		col.AddDataFromBundle(v.Bundle)
-		col.AddDataFromScorecard(v.ScorecardResults)
-		col.AddDataFromValidators(v.ValidatorsResults)
-		col.SetMaxOpenshiftVersion(csv, v.PropertiesDB)
-
-		if len(col.BundleVersion) < 1 && len(v.VersionDB) > 0 {
-			col.BundleVersion = v.VersionDB
-		}
-
-		if len(col.BundleVersion) > 0 {
-			_, err := semver.Parse(col.BundleVersion)
-			if err != nil {
-				col.InvalidVersioning = pkg.GetYesOrNo(true)
-			} else {
-				col.InvalidVersioning = pkg.GetYesOrNo(false)
-			}
-		}
-
-		if len(col.SkipRange) > 0 {
-			_, err := semver.ParseRange(col.SkipRange)
-			if err != nil {
-				col.InvalidSkipRange = pkg.GetYesOrNo(true)
-			} else {
-				col.InvalidSkipRange = pkg.GetYesOrNo(false)
-			}
-		}
-
-		// Ignore this check if the head-only flag was used
-		if !d.Flags.HeadOnly && d.Flags.Limit == 0 {
-			if len(col.Replace) > 0 {
-				// check if found replace
-				col.FoundReplace = pkg.GetYesOrNo(false)
-				for _, b := range d.AuditBundle {
-					if b.OperatorBundleName == col.Replace {
-						col.FoundReplace = pkg.GetYesOrNo(true)
-						break
-					}
-				}
-			}
-		}
-
-		// Check if the bundle comply with the deprecated criteria
-		if len(col.KindsDeprecateAPIs) > 0 {
-			col.IsDeprecationAPIsSuggestionsSet = pkg.GetYesOrNo(
-				pkg.IsComplyingWithDeprecatedCriteria(col.MaxOCPVersion, col.OCPLabel))
-		} else {
-			col.IsDeprecationAPIsSuggestionsSet = pkg.NotRequired
-		}
-
-		allColumns = append(allColumns, col)
+		allColumns = append(allColumns, *col)
 	}
 
 	sort.Slice(allColumns[:], func(i, j int) bool {
@@ -129,12 +58,38 @@ func (d *Data) PrepareReport() Report {
 	finalReport.Columns = allColumns
 	finalReport.IndexImageInspect = d.IndexImageInspect
 
+	dt := time.Now().Format("2006-01-02")
+	finalReport.GenerateAt = dt
+
 	if len(allColumns) == 0 {
 		log.Fatal("No data was found for the criteria informed. " +
 			"Please, ensure that you provide valid information.")
 	}
 
 	return finalReport
+}
+
+// fix inconsistency in the index db
+// some packages are empty then, we get them by looking for the bundles
+// which are publish with the same registry path
+func (d *Data) fixPackageNameInconsistency() {
+	for _, auditBundle := range d.AuditBundle {
+		if auditBundle.PackageName == "" {
+			split := strings.Split(auditBundle.OperatorBundleImagePath, "/")
+			nm := ""
+			for _, v := range split {
+				if strings.Contains(v, "@") {
+					nm = strings.Split(v, "@")[0]
+					break
+				}
+			}
+			for _, bundle := range d.AuditBundle {
+				if strings.Contains(bundle.OperatorBundleImagePath, nm) {
+					auditBundle.PackageName = bundle.PackageName
+				}
+			}
+		}
+	}
 }
 
 func (d *Data) OutputReport() error {
