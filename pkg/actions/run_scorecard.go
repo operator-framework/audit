@@ -59,7 +59,7 @@ func RunScorecard(bundleDir string, auditBundle *models.AuditBundle) *models.Aud
 		if len(bundleAnnotations.Annotations) > 0 {
 			path := bundleAnnotations.Annotations[scorecardAnnotation]
 			if len(path) > 0 {
-				scorecardTestsPath = path
+				scorecardTestsPath = filepath.Join(bundleDir, path)
 			}
 		}
 	}
@@ -83,7 +83,7 @@ func RunScorecard(bundleDir string, auditBundle *models.AuditBundle) *models.Aud
 				scorecardFilePath := filepath.Join(scorecardTestsPath, info.Name())
 				if existingFile, err := ioutil.ReadFile(scorecardFilePath); err == nil {
 					var scorecardConfig v1alpha3.Configuration
-					if err := json.Unmarshal(existingFile, &scorecardConfig); err != nil {
+					if err := yaml.Unmarshal(existingFile, &scorecardConfig); err != nil {
 						msg := fmt.Errorf("unable to Unmarshal scorecard file %s: %s", info.Name(), err)
 						log.Error(msg)
 						auditBundle.Errors = append(auditBundle.Errors, msg.Error())
@@ -102,9 +102,11 @@ func RunScorecard(bundleDir string, auditBundle *models.AuditBundle) *models.Aud
 
 			return nil
 		})
-		msg := fmt.Errorf("unable to walk in scorecard filse: %s", err)
-		log.Error(msg)
-		auditBundle.Errors = append(auditBundle.Errors, msg.Error())
+		if err != nil {
+			msg := fmt.Errorf("unable to walk in scorecard filse: %s", err)
+			log.Error(msg)
+			auditBundle.Errors = append(auditBundle.Errors, msg.Error())
+		}
 	}
 
 	if err := writeScorecardConfig(scorecardTestsPath); err != nil {

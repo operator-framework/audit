@@ -18,7 +18,6 @@ import (
 	"encoding/json"
 	"errors"
 	"os"
-	"os/exec"
 	"strings"
 
 	"github.com/operator-framework/audit/pkg/actions"
@@ -37,8 +36,6 @@ import (
 	"github.com/operator-framework/audit/pkg/models"
 	"github.com/operator-framework/audit/pkg/reports/packages"
 )
-
-const catalogIndex = "audit-catalog-index"
 
 var flags = packages.BindFlags{}
 
@@ -132,9 +129,11 @@ func run(cmd *cobra.Command, args []string) error {
 	log.Info("Starting audit...")
 	reportData := packages.Data{}
 	reportData.Flags = flags
+	// to fix common possible typo issue
+	reportData.Flags.Filter = strings.ReplaceAll(reportData.Flags.Filter, "”", "")
 	pkg.GenerateTemporaryDirs()
 
-	if err := extractIndexDB(); err != nil {
+	if err := actions.DownloadImage(flags.IndexImage); err != nil {
 		return err
 	}
 
@@ -145,8 +144,9 @@ func run(cmd *cobra.Command, args []string) error {
 		log.Errorf("unable to inspect the index image: %s", err)
 	}
 
-	// to fix common possible typo issue
-	reportData.Flags.Filter = strings.ReplaceAll(reportData.Flags.Filter, "”", "")
+	if err := actions.ExtractIndexDB(flags.IndexImage); err != nil {
+		return err
+	}
 
 	reportData, err = getDataFromIndexDB(reportData)
 	if err != nil {
@@ -161,27 +161,6 @@ func run(cmd *cobra.Command, args []string) error {
 	pkg.CleanupTemporaryDirs()
 	log.Infof("Operation completed.")
 
-	return nil
-}
-
-func extractIndexDB() error {
-	// Remove image if exists already
-	command := exec.Command("docker", "rm", catalogIndex)
-	_, _ = pkg.RunCommand(command)
-
-	// Download the image
-	command = exec.Command("docker", "create", "--name", catalogIndex, flags.IndexImage, "\"yes\"")
-	_, err := pkg.RunCommand(command)
-	if err != nil {
-		return fmt.Errorf("unable to create container image %s : %s", flags.IndexImage, err)
-	}
-
-	// Extract
-	command = exec.Command("docker", "cp", fmt.Sprintf("%s:/database/index.db", catalogIndex), "./output/")
-	_, err = pkg.RunCommand(command)
-	if err != nil {
-		return fmt.Errorf("unable to extract the image for index.db %s : %s", flags.IndexImage, err)
-	}
 	return nil
 }
 

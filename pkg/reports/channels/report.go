@@ -27,9 +27,10 @@ import (
 )
 
 type Report struct {
-	Columns           []Columns `json:"columns"`
+	Columns           []Column  `json:"columns"`
 	Flags             BindFlags `json:"flags"`
 	IndexImageInspect pkg.DockerInspectManifest
+	GenerateAt        string
 }
 
 //todo: fix the complexity
@@ -52,9 +53,7 @@ func (r *Report) writeXls() error {
 		"E": "Is Following Name Convention",
 		"F": "Has Invalid Versioning",
 		"G": "Has Invalid SkipRange",
-		"H": "Found All Replaces",
-		"I": "List of Missing Replaces",
-		"J": "Issues (To process this report)",
+		"H": "Issues (To process this report)",
 	}
 
 	// Header
@@ -109,23 +108,13 @@ func (r *Report) writeXls() error {
 			_ = f.SetCellStyle(sheetName, fmt.Sprintf("G%d", line),
 				fmt.Sprintf("G%d", line), styleOrange)
 		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("H%d", line), pkg.GetYesOrNo(v.FoundAllReplaces)); err != nil {
-			log.Errorf("to add FoundAllReplaces cell value: %s", err)
-		}
-		if !v.FoundAllReplaces {
-			_ = f.SetCellStyle(sheetName, fmt.Sprintf("H%d", line),
-				fmt.Sprintf("H%d", line), styleOrange)
-		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("I%d", line), v.MissingReplaces); err != nil {
-			log.Errorf("to add MissingReplaces cell value: %s", err)
-		}
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("J%d", line), v.AuditErrors); err != nil {
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("H%d", line), v.AuditErrors); err != nil {
 			log.Errorf("to add AuditErrors cell value: %s", err)
 		}
 
 	}
 
-	if err := f.AddTable(sheetName, "A5", "J5", pkg.TableFormat); err != nil {
+	if err := f.AddTable(sheetName, "A5", "H5", pkg.TableFormat); err != nil {
 		log.Errorf("to set table format : %s", err)
 	}
 

@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// Deprecated
 // This script is only a helper for we are able to know what are the bundles that we need to
 // deprecated on 4.9. That will be removed as soon as possible and is just added
-// here in case be required to still using that.
+// here in case it be required to be checked and used so far.
 package main
 
 import (
@@ -65,7 +66,7 @@ func main() {
 	}
 
 	// create a map with all bundles found per pkg name
-	mapPackagesWithBundles := make(map[string][]bundles.Columns)
+	mapPackagesWithBundles := make(map[string][]bundles.Column)
 	for _, v := range bundlesReport.Columns {
 		mapPackagesWithBundles[v.PackageName] = append(mapPackagesWithBundles[v.PackageName], v)
 	}
@@ -90,7 +91,7 @@ func main() {
 		}
 
 		//remove from the empty key
-		var all []bundles.Columns
+		var all []bundles.Column
 		for _, be := range mapPackagesWithBundles[""] {
 			if be.BundleImagePath != bundle.BundleImagePath {
 				all = append(all, be)
@@ -100,7 +101,7 @@ func main() {
 	}
 
 	// filter by all pkgs which has only deprecated APIs
-	hasDeprecated := make(map[string][]bundles.Columns)
+	hasDeprecated := make(map[string][]bundles.Column)
 	for key, bundles := range mapPackagesWithBundles {
 		for _, b := range bundles {
 			if len(b.KindsDeprecateAPIs) > 0 {

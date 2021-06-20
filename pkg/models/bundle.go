@@ -42,6 +42,7 @@ type AuditBundle struct {
 	DefaultChannel          string
 	PropertiesDB            []pkg.PropertiesAnnotation
 	HasCustomScorecardTests bool
+	IsHeadOfChannel         bool
 	Errors                  []string
 }
 

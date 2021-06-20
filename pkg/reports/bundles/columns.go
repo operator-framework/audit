@@ -19,6 +19,9 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/blang/semver"
+	"github.com/operator-framework/audit/pkg/models"
+
 	"github.com/operator-framework/api/pkg/apis/scorecard/v1alpha3"
 	apimanifests "github.com/operator-framework/api/pkg/manifests"
 	"github.com/operator-framework/api/pkg/operators/v1alpha1"
@@ -38,52 +41,105 @@ const infrastructureAnnotation = "operators.openshift.io/infrastructure-features
 const olmproperties = "olm.properties"
 const olmmaxOpenShiftVersion = "olm.maxOpenShiftVersion"
 
-type Columns struct {
-	PackageName                     string              `json:"packageName"`
-	BundleName                      string              `json:"bundleName"`
-	BundleVersion                   string              `json:"bundleVersion,omitempty"`
-	Certified                       bool                `json:"certified"`
-	BundleImagePath                 string              `json:"bundleImagePath,omitempty"`
-	HasWebhook                      bool                `json:"hasWebhook"`
-	KindsDeprecateAPIs              []string            `json:"kindsDeprecateAPIs,omitempty"`
-	DeprecateAPIsManifests          map[string][]string `json:"deprecateAPIsManifests,omitempty"`
-	BundleImageBuildDate            string              `json:"bundleImageBuildDate,omitempty"`
-	Repository                      string              `json:"repository,omitempty"`
-	Channels                        []string            `json:"bundleChannel,omitempty"`
-	DefaultChannel                  string              `json:"defaultChannel,omitempty"`
-	Maturity                        string              `json:"maturity,omitempty"`
-	Capabilities                    string              `json:"capabilities,omitempty"`
-	Categories                      string              `json:"categories,omitempty"`
-	MultipleArchitectures           []string            `json:"multipleArchitectures,omitempty"`
-	Builder                         string              `json:"builder,omitempty"`
-	SDKVersion                      string              `json:"sdkVersion,omitempty"`
-	ProjectLayout                   string              `json:"projectLayout,omitempty"`
-	ValidatorErrors                 []string            `json:"validatorErrors,omitempty"`
-	ValidatorWarnings               []string            `json:"validatorWarnings,omitempty"`
-	ScorecardErrors                 []string            `json:"scorecardErrors,omitempty"`
-	ScorecardSuggestions            []string            `json:"scorecardSuggestions,omitempty"`
-	ScorecardFailingTests           []string            `json:"scorecardFailingTests,omitempty"`
-	InvalidVersioning               string              `json:"invalidVersioning,omitempty"`
-	InvalidSkipRange                string              `json:"invalidSkipRange,omitempty"`
-	FoundReplace                    string              `json:"foundReplace,omitempty"`
-	HasDependency                   bool                `json:"HasDependency,omitempty"`
-	SkipRange                       string              `json:"skipRange,omitempty"`
-	Skips                           []string            `json:"skips,omitempty"`
-	Replace                         string              `json:"replace,omitempty"`
-	IsSupportingAllNamespaces       bool                `json:"supportsAllNamespaces,omitempty"`
-	IsSupportingMultiNamespaces     bool                `json:"supportsMultiNamespaces,omitempty"`
-	IsSupportingSingleNamespace     bool                `json:"supportSingleNamespaces,omitempty"`
-	IsSupportingOwnNamespaces       bool                `json:"supportsOwnNamespaces,omitempty"`
-	Infrastructure                  string              `json:"infrastructure,omitempty"`
-	HasPossiblePerformIssues        bool                `json:"hasPossiblePerformIssues,omitempty"`
-	OCPLabel                        string              `json:"ocpLabel,omitempty"`
-	MaxOCPVersion                   string              `json:"maxOCPVersion,omitempty"`
-	IsDeprecationAPIsSuggestionsSet string              `json:"isDeprecationAPIsSuggestionsSet,omitempty"`
-	HasCustomScorecardTests         bool                `json:"hasCustomScorecardTests,omitempty"`
-	AuditErrors                     []string            `json:"errors,omitempty"`
+type Column struct {
+	PackageName                 string              `json:"packageName"`
+	BundleName                  string              `json:"bundleName"`
+	BundleVersion               string              `json:"bundleVersion,omitempty"`
+	BundleImagePath             string              `json:"bundleImagePath,omitempty"`
+	BundleImageBuildDate        string              `json:"bundleImageBuildDate,omitempty"`
+	Repository                  string              `json:"repository,omitempty"`
+	DefaultChannel              string              `json:"defaultChannel,omitempty"`
+	Maturity                    string              `json:"maturity,omitempty"`
+	Capabilities                string              `json:"capabilities,omitempty"`
+	Categories                  string              `json:"categories,omitempty"`
+	Builder                     string              `json:"builder,omitempty"`
+	SDKVersion                  string              `json:"sdkVersion,omitempty"`
+	ProjectLayout               string              `json:"projectLayout,omitempty"`
+	InvalidVersioning           string              `json:"invalidVersioning,omitempty"`
+	InvalidSkipRange            string              `json:"invalidSkipRange,omitempty"`
+	SkipRange                   string              `json:"skipRange,omitempty"`
+	Replace                     string              `json:"replace,omitempty"`
+	Infrastructure              string              `json:"infrastructure,omitempty"`
+	OCPLabel                    string              `json:"ocpLabel,omitempty"`
+	MaxOCPVersion               string              `json:"maxOCPVersion,omitempty"`
+	KindsDeprecateAPIs          []string            `json:"kindsDeprecateAPIs,omitempty"`
+	Channels                    []string            `json:"bundleChannel,omitempty"`
+	MultipleArchitectures       []string            `json:"multipleArchitectures,omitempty"`
+	ValidatorErrors             []string            `json:"validatorErrors,omitempty"`
+	ValidatorWarnings           []string            `json:"validatorWarnings,omitempty"`
+	ScorecardErrors             []string            `json:"scorecardErrors,omitempty"`
+	ScorecardSuggestions        []string            `json:"scorecardSuggestions,omitempty"`
+	ScorecardFailingTests       []string            `json:"scorecardFailingTests,omitempty"`
+	AuditErrors                 []string            `json:"errors,omitempty"`
+	Skips                       []string            `json:"skips,omitempty"`
+	DeprecateAPIsManifests      map[string][]string `json:"deprecateAPIsManifests,omitempty"`
+	Certified                   bool                `json:"certified"`
+	HasWebhook                  bool                `json:"hasWebhook"`
+	IsSupportingAllNamespaces   bool                `json:"supportsAllNamespaces"`
+	IsSupportingMultiNamespaces bool                `json:"supportsMultiNamespaces"`
+	IsSupportingSingleNamespace bool                `json:"supportSingleNamespaces"`
+	IsSupportingOwnNamespaces   bool                `json:"supportsOwnNamespaces"`
+	HasPossiblePerformIssues    bool                `json:"hasPossiblePerformIssues"`
+	HasCustomScorecardTests     bool                `json:"hasCustomScorecardTests"`
+	IsHeadOfChannel             bool                `json:"isHeadOfChannel"`
 }
 
-func (c *Columns) SetMaxOpenshiftVersion(csv *v1alpha1.ClusterServiceVersion, propertiesDB []pkg.PropertiesAnnotation) {
+func NewColumn(v models.AuditBundle) *Column {
+	col := Column{}
+	col.InvalidSkipRange = pkg.NotUsed
+	col.InvalidVersioning = pkg.Unknown
+	col.PackageName = v.PackageName
+	col.BundleImagePath = v.OperatorBundleImagePath
+	col.BundleName = v.OperatorBundleName
+	col.DefaultChannel = v.DefaultChannel
+	col.Channels = v.Channels
+	col.AuditErrors = v.Errors
+	col.SkipRange = v.SkipRangeDB
+	col.Replace = v.ReplacesDB
+	col.BundleVersion = v.VersionDB
+	col.OCPLabel = v.OCPLabel
+	col.BundleImageBuildDate = v.BuildAt
+	col.HasCustomScorecardTests = v.HasCustomScorecardTests
+	col.IsHeadOfChannel = v.IsHeadOfChannel
+
+	var csv *v1alpha1.ClusterServiceVersion
+	if v.Bundle != nil && v.Bundle.CSV != nil {
+		csv = v.Bundle.CSV
+	} else if v.CSVFromIndexDB != nil {
+		csv = v.CSVFromIndexDB
+	}
+
+	col.AddDataFromCSV(csv)
+	col.AddDataFromBundle(v.Bundle)
+	col.AddDataFromScorecard(v.ScorecardResults)
+	col.AddDataFromValidators(v.ValidatorsResults)
+	col.SetMaxOpenshiftVersion(csv, v.PropertiesDB)
+
+	if len(col.BundleVersion) < 1 && len(v.VersionDB) > 0 {
+		col.BundleVersion = v.VersionDB
+	}
+
+	if len(col.BundleVersion) > 0 {
+		_, err := semver.Parse(col.BundleVersion)
+		if err != nil {
+			col.InvalidVersioning = pkg.GetYesOrNo(true)
+		} else {
+			col.InvalidVersioning = pkg.GetYesOrNo(false)
+		}
+	}
+
+	if len(col.SkipRange) > 0 {
+		_, err := semver.ParseRange(col.SkipRange)
+		if err != nil {
+			col.InvalidSkipRange = pkg.GetYesOrNo(true)
+		} else {
+			col.InvalidSkipRange = pkg.GetYesOrNo(false)
+		}
+	}
+	return &col
+}
+
+func (c *Column) SetMaxOpenshiftVersion(csv *v1alpha1.ClusterServiceVersion, propertiesDB []pkg.PropertiesAnnotation) {
 
 	if csv == nil {
 		return
@@ -114,7 +170,7 @@ func (c *Columns) SetMaxOpenshiftVersion(csv *v1alpha1.ClusterServiceVersion, pr
 	}
 }
 
-func (c *Columns) AddDataFromCSV(csv *v1alpha1.ClusterServiceVersion) {
+func (c *Column) AddDataFromCSV(csv *v1alpha1.ClusterServiceVersion) {
 
 	if csv == nil {
 		return
@@ -184,20 +240,19 @@ func (c *Columns) AddDataFromCSV(csv *v1alpha1.ClusterServiceVersion) {
 	}
 }
 
-func (c *Columns) AddDataFromBundle(bundle *apimanifests.Bundle) {
+func (c *Column) AddDataFromBundle(bundle *apimanifests.Bundle) {
 	if bundle == nil {
 		c.KindsDeprecateAPIs = []string{pkg.Unknown}
 		return
 	}
 
-	c.HasDependency = bundle.Dependencies != nil && len(bundle.Dependencies) > 0
 	removedAPIs := pkg.GetRemovedAPIsOn1_22From(bundle)
 	c.KindsDeprecateAPIs = pkg.RemovedAPIsKind(removedAPIs)
 	c.DeprecateAPIsManifests = removedAPIs
 
 }
 
-func (c *Columns) AddDataFromScorecard(scorecardResults v1alpha3.TestList) {
+func (c *Column) AddDataFromScorecard(scorecardResults v1alpha3.TestList) {
 	for _, i := range scorecardResults.Items {
 		for _, v := range i.Status.Results {
 			c.ScorecardErrors = append(c.ScorecardErrors, v.Errors...)
@@ -209,7 +264,7 @@ func (c *Columns) AddDataFromScorecard(scorecardResults v1alpha3.TestList) {
 	}
 }
 
-func (c *Columns) AddDataFromValidators(validatorsResults []validationerrors.ManifestResult) {
+func (c *Column) AddDataFromValidators(validatorsResults []validationerrors.ManifestResult) {
 	for _, result := range validatorsResults {
 		for _, err := range result.Errors {
 			c.ValidatorErrors = append(c.ValidatorErrors, err.Detail)

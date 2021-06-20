@@ -162,6 +162,26 @@ func IsOcpLabelRangeLowerThan49(ocpLabel string) bool {
 			return false
 		}
 	} else {
+
+		// That is no longer accepted. It is only to check the old register
+		if strings.Contains(ocpLabel, ",") {
+			versionsSet := strings.Split(ocpLabel, ",")
+			foundLowerThan49 := false
+			for _, ver := range versionsSet {
+				verSemVer, _ := semver.ParseTolerant(ver)
+				if verSemVer.LE(semVerOCPV1beta1Unsupported) {
+					foundLowerThan49 = true
+					break
+				}
+			}
+			// In this case if found lower than 4.9 that means that
+			// the bundle will be carried on to 4.9 and upper
+			if foundLowerThan49 {
+				// So, the result of IsOcpLabelRangeLowerThan49 is no
+				return false
+			}
+		}
+
 		// if not has not the = then the value needs contains - value less < 4.9
 		if !strings.Contains(ocpLabel, "-") {
 			return false

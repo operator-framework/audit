@@ -12,15 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// This module is used to generate the index.html page
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"sort"
 	"strings"
+
+	"github.com/operator-framework/audit/hack"
 
 	log "github.com/sirupsen/logrus"
 
@@ -33,8 +37,9 @@ type DashboardPerCatalog struct {
 }
 
 type Reports struct {
-	Path     string
-	FileName string
+	Path string
+	Name string
+	Kind string
 }
 
 type Index struct {
@@ -49,8 +54,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	reportsPath := "testdata/reports/"
-	fullReportsPath := filepath.Join(currentPath, reportsPath)
+	fullReportsPath := filepath.Join(currentPath, hack.ReportsPath)
 
 	dirs := map[string]string{
 		"redhat_certified_operator_index": "registry.redhat.io/redhat/certified-operator-index",
@@ -65,12 +69,28 @@ func main() {
 	// nolint:scopelint
 	for dir, image := range dirs {
 		pathToWalk := filepath.Join(fullReportsPath, dir, "dashboards")
+
+		if _, err := os.Stat(pathToWalk); err != nil && os.IsNotExist(err) {
+			continue
+		}
+
 		dash := DashboardPerCatalog{Name: image}
 		err = filepath.Walk(pathToWalk, func(path string, info os.FileInfo, err error) error {
 			if info != nil && !info.IsDir() && strings.HasSuffix(info.Name(), "html") {
+				var kind = "UNKNOWN"
+				if strings.Contains(info.Name(), "deprecate") {
+					kind = "Deprecated API(s) in 1.22/OCP 4.9"
+				}
+				tagValue := "latest"
+				if strings.Contains(info.Name(), "v") {
+					tagS := strings.Split(info.Name(), "v")[1]
+					tagValue = strings.Split(tagS, "_")[0]
+				}
+
+				name := fmt.Sprintf("[%s] - Tag: %s", kind, tagValue)
 				dash.Reports = append(dash.Reports,
-					Reports{Path: filepath.Join(reportsPath, dir, "dashboards", info.Name()),
-						FileName: info.Name()})
+					Reports{Path: filepath.Join(hack.ReportsPath, dir, "dashboards", info.Name()),
+						Name: name, Kind: kind})
 			}
 			return nil
 		})
@@ -78,9 +98,13 @@ func main() {
 			log.Fatal(err)
 		}
 		sort.Slice(dash.Reports[:], func(i, j int) bool {
-			return dash.Reports[i].FileName < dash.Reports[j].FileName
+			return dash.Reports[i].Name < dash.Reports[j].Name
 		})
 		all = append(all, dash)
+
+		sort.Slice(all[:], func(i, j int) bool {
+			return all[i].Name < all[j].Name
+		})
 	}
 
 	index.DashboardPerCatalog = all

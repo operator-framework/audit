@@ -20,7 +20,6 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"os/exec"
 	"strings"
 
 	"github.com/operator-framework/audit/pkg/actions"
@@ -36,8 +35,6 @@ import (
 	"github.com/operator-framework/audit/pkg/models"
 	index "github.com/operator-framework/audit/pkg/reports/bundles"
 )
-
-const catalogIndex = "audit-catalog-index"
 
 var flags = index.BindFlags{}
 
@@ -137,7 +134,7 @@ func run(cmd *cobra.Command, args []string) error {
 	// to fix common possible typo issue
 	reportData.Flags.Filter = strings.ReplaceAll(reportData.Flags.Filter, "”", "")
 
-	if err := extractIndexDB(); err != nil {
+	if err := actions.DownloadImage(flags.IndexImage); err != nil {
 		return err
 	}
 
@@ -146,6 +143,10 @@ func run(cmd *cobra.Command, args []string) error {
 	reportData.IndexImageInspect, err = pkg.RunDockerInspect(flags.IndexImage)
 	if err != nil {
 		log.Errorf("unable to inspect the index image: %s", err)
+	}
+
+	if err := actions.ExtractIndexDB(flags.IndexImage); err != nil {
+		return err
 	}
 
 	reportData, err = getDataFromIndexDB(reportData)
@@ -161,27 +162,6 @@ func run(cmd *cobra.Command, args []string) error {
 	pkg.CleanupTemporaryDirs()
 	log.Infof("Operation completed.")
 
-	return nil
-}
-
-func extractIndexDB() error {
-	// Remove image if exists already
-	command := exec.Command("docker", "rm", catalogIndex)
-	_, _ = pkg.RunCommand(command)
-
-	// Download the image
-	command = exec.Command("docker", "create", "--name", catalogIndex, flags.IndexImage, "\"yes\"")
-	_, err := pkg.RunCommand(command)
-	if err != nil {
-		return fmt.Errorf("unable to create container image %s : %s", flags.IndexImage, err)
-	}
-
-	// Extract
-	command = exec.Command("docker", "cp", fmt.Sprintf("%s:/database/index.db", catalogIndex), "./output/")
-	_, err = pkg.RunCommand(command)
-	if err != nil {
-		return fmt.Errorf("unable to extract the image for index.db %s : %s", flags.IndexImage, err)
-	}
 	return nil
 }
 
@@ -278,7 +258,7 @@ func getDataFromIndexDB(report index.Data) (index.Data, error) {
 			auditBundle.OperatorBundleName)
 		row, err = db.Query(sqlString)
 		if err != nil {
-			return report, fmt.Errorf("unable to query default channel entry in the index db : %s", err)
+			return report, fmt.Errorf("unable to query properties entry in the index db : %s", err)
 		}
 
 		defer row.Close()
@@ -288,6 +268,20 @@ func getDataFromIndexDB(report index.Data) (index.Data, error) {
 			_ = row.Scan(&properType, &properValue)
 			auditBundle.PropertiesDB = append(auditBundle.PropertiesDB,
 				pkg.PropertiesAnnotation{Type: properType, Value: properValue})
+		}
+
+		sqlString = fmt.Sprintf("select count(*) from channel where head_operatorbundle_name = '%s'",
+			auditBundle.OperatorBundleName)
+		row, err = db.Query(sqlString)
+		if err != nil {
+			return report, fmt.Errorf("unable to query properties entry in the index db : %s", err)
+		}
+
+		defer row.Close()
+		var found int
+		for row.Next() { // Iterate and fetch the records from result cursor
+			_ = row.Scan(&found)
+			auditBundle.IsHeadOfChannel = found > 0
 		}
 
 		report.AuditBundle = append(report.AuditBundle, *auditBundle)
