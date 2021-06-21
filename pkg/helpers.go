@@ -229,3 +229,18 @@ func ReadFile(file string) ([]byte, error) {
 	}
 	return byteValue, err
 }
+
+// IsFollowingChannelNameConventional will check the channels.
+func IsFollowingChannelNameConventional(channel string) bool {
+	const candidate = "candidate"
+	const stable = "stable"
+	const fast = "fast"
+
+	if !strings.HasPrefix(channel, candidate) &&
+		!strings.HasPrefix(channel, stable) &&
+		!strings.HasPrefix(channel, fast) {
+		return false
+	}
+
+	return true
+}

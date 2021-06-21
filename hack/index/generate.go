@@ -80,6 +80,8 @@ func main() {
 				var kind = "UNKNOWN"
 				if strings.Contains(info.Name(), "deprecate") {
 					kind = "Deprecated API(s) in 1.22/OCP 4.9"
+				} else if strings.Contains(info.Name(), "grade") {
+					kind = "Grade - Experimental"
 				}
 				tagValue := "latest"
 				if strings.Contains(info.Name(), "v") {

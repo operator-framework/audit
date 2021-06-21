@@ -82,17 +82,6 @@ func GetQtLatestVersionChannelsState(bundlesPerChannels map[string][]bundles.Col
 	return qtChannelOK, qtChannelConfiguredAccordingly
 }
 
-// BuildMapBundlesPerChannels returns a map of bundles per packages
-func BuildMapBundlesPerChannels(bundlesPerPkg []bundles.Column) map[string][]bundles.Column {
-	bundlesPerChannels := make(map[string][]bundles.Column)
-	for _, b := range bundlesPerPkg {
-		for _, c := range b.Channels {
-			bundlesPerChannels[c] = append(bundlesPerChannels[c], b)
-		}
-	}
-	return bundlesPerChannels
-}
-
 // GetHeadOfChannelState returns the qtd. of head of channels which are OK and configured with max ocp version
 func GetHeadOfChannelState(headOfChannels []bundles.Column) (int, int) {
 	var foundOK = 0
@@ -111,6 +100,17 @@ func GetHeadOfChannelState(headOfChannels []bundles.Column) (int, int) {
 	return foundOK, foundConfiguredAccordingly
 }
 
+// BuildMapBundlesPerChannels returns a map of bundles per packages
+func BuildMapBundlesPerChannels(bundlesPerPkg []bundles.Column) map[string][]bundles.Column {
+	bundlesPerChannels := make(map[string][]bundles.Column)
+	for _, b := range bundlesPerPkg {
+		for _, c := range b.Channels {
+			bundlesPerChannels[c] = append(bundlesPerChannels[c], b)
+		}
+	}
+	return bundlesPerChannels
+}
+
 // MapBundlesPerPackage returns map with all bundles found per pkg name
 func MapBundlesPerPackage(bundlesReport bundles.Report) map[string][]bundles.Column {
 	mapPackagesWithBundles := make(map[string][]bundles.Column)
@@ -118,4 +118,40 @@ func MapBundlesPerPackage(bundlesReport bundles.Report) map[string][]bundles.Col
 		mapPackagesWithBundles[v.PackageName] = append(mapPackagesWithBundles[v.PackageName], v)
 	}
 	return mapPackagesWithBundles
+}
+
+func GetHeadOfChannels(bundlesOfPackage []bundles.Column) []bundles.Column {
+	var headOfChannels []bundles.Column
+	qtdHeads := 0
+	for _, v := range bundlesOfPackage {
+		if v.IsHeadOfChannel {
+			qtdHeads++
+			headOfChannels = append(headOfChannels, v)
+		}
+	}
+
+	bundlesPerChannels := BuildMapBundlesPerChannels(bundlesOfPackage)
+
+	// If for the package has no bundle set in the channels
+	// table as head of the channel then, we need to check
+	// the scenarios
+	if qtdHeads == 0 || qtdHeads != len(bundlesPerChannels) {
+		headOfChannels = GetLatestBundlesVersions(bundlesPerChannels)
+	}
+	return headOfChannels
+}
+
+// GetQtLatestVersionChannelsState returns the qtd. of channels which are OK and configured with max ocp version
+func GetLatestBundlesVersions(bundlesPerChannels map[string][]bundles.Column) []bundles.Column {
+	var latestBundlesVersionsPerChannel []bundles.Column
+	for _, bundlesFromChannel := range bundlesPerChannels {
+		latest := GetTheLatestBundleVersion(bundlesFromChannel)
+		for _, bd := range bundlesFromChannel {
+			if bd.BundleVersion == latest {
+				latestBundlesVersionsPerChannel = append(latestBundlesVersionsPerChannel, bd)
+				continue
+			}
+		}
+	}
+	return latestBundlesVersionsPerChannel
 }

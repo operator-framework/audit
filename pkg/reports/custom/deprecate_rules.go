@@ -96,39 +96,3 @@ func hasNotMigrated(bundlesPerPkg []bundles.Column) bool {
 	}
 	return foundNotMigrated
 }
-
-func GetHeadOfChannels(bundlesOfPackage []bundles.Column) []bundles.Column {
-	var headOfChannels []bundles.Column
-	qtdHeads := 0
-	for _, v := range bundlesOfPackage {
-		if v.IsHeadOfChannel {
-			qtdHeads++
-			headOfChannels = append(headOfChannels, v)
-		}
-	}
-
-	bundlesPerChannels := BuildMapBundlesPerChannels(bundlesOfPackage)
-
-	// If for the package has no bundle set in the channels
-	// table as head of the channel then, we need to check
-	// the scenarios
-	if qtdHeads == 0 {
-		headOfChannels = GetLatestBundlesVersions(bundlesPerChannels)
-	}
-	return headOfChannels
-}
-
-// GetQtLatestVersionChannelsState returns the qtd. of channels which are OK and configured with max ocp version
-func GetLatestBundlesVersions(bundlesPerChannels map[string][]bundles.Column) []bundles.Column {
-	var latestBundlesVersionsPerChannel []bundles.Column
-	for _, bundlesFromChannel := range bundlesPerChannels {
-		latest := GetTheLatestBundleVersion(bundlesFromChannel)
-		for _, bd := range bundlesFromChannel {
-			if bd.BundleVersion == latest {
-				latestBundlesVersionsPerChannel = append(latestBundlesVersionsPerChannel, bd)
-				continue
-			}
-		}
-	}
-	return latestBundlesVersionsPerChannel
-}

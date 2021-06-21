@@ -52,17 +52,17 @@ func main() {
 		pathToWalk := filepath.Join(fullReportsPath, dir)
 		dashboardPath := filepath.Join(fullReportsPath, dir, "dashboards")
 
-		command := exec.Command("rm", "-rf", dashboardPath)
-		_, err = pkg.RunCommand(command)
-		if err != nil {
-			log.Errorf("running command :%s", err)
-		}
+		//command := exec.Command("rm", "-rf", dashboardPath)
+		//_, err = pkg.RunCommand(command)
+		//if err != nil {
+		//	log.Errorf("running command :%s", err)
+		//}
 
-		command = exec.Command("mkdir", dashboardPath)
-		_, err = pkg.RunCommand(command)
-		if err != nil {
-			log.Errorf("running command :%s", err)
-		}
+		//command = exec.Command("mkdir", dashboardPath)
+		//_, err = pkg.RunCommand(command)
+		//if err != nil {
+		//	log.Errorf("running command :%s", err)
+		//}
 
 		if _, err := os.Stat(pathToWalk); err != nil && os.IsNotExist(err) {
 			continue
@@ -74,7 +74,7 @@ func main() {
 			if info != nil && !info.IsDir() && strings.HasPrefix(info.Name(), "bundles") &&
 				strings.HasSuffix(info.Name(), "json") {
 				// run report
-				command := exec.Command(binPath, "dashboard", "deprecate-apis",
+				command := exec.Command(binPath, "dashboard", "grade",
 					fmt.Sprintf("--file=%s", path),
 					fmt.Sprintf("--output-path=%s", dashboardPath),
 				)

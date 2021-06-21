@@ -18,6 +18,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/operator-framework/audit/cmd/custom/deprecate"
+	"github.com/operator-framework/audit/cmd/custom/grade"
 )
 
 func NewCmd() *cobra.Command {
@@ -28,6 +29,7 @@ func NewCmd() *cobra.Command {
 
 	indexCmd.AddCommand(
 		deprecate.NewCmd(),
+		grade.NewCmd(),
 	)
 
 	return indexCmd
