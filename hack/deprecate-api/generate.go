@@ -22,9 +22,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/operator-framework/audit/hack"
 	"github.com/operator-framework/audit/pkg"
 
+	"github.com/operator-framework/audit/hack"
 	log "github.com/sirupsen/logrus"
 )
 
