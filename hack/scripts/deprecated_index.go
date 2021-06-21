@@ -23,6 +23,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"text/template"
 
@@ -52,7 +53,7 @@ func main() {
 	}
 
 	// Update here the path of the JSON report for the image that you would like to be used
-	path := "testdata/reports/redhat_redhat_operator_index/bundles_registry.redhat.io_redhat_redhat_operator_index_v4.8_2021-06-15.json"
+	path := "testdata/reports/redhat_redhat_operator_index/bundles_registry.redhat.io_redhat_redhat_operator_index_v4.8_2021-06-19.json"
 
 	byteValue, err := pkg.ReadFile(filepath.Join(currentPath, path))
 	if err != nil {
@@ -120,6 +121,10 @@ func main() {
 		}
 		allDeprecated = append(allDeprecated, deprecatedYaml)
 	}
+
+	sort.Slice(allDeprecated[:], func(i, j int) bool {
+		return allDeprecated[i].PackageName < allDeprecated[j].PackageName
+	})
 
 	f, err := os.Create(filepath.Join(currentPath, "hack/scripts/deprecated.yml"))
 	if err != nil {
