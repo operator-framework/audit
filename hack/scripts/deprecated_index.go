@@ -31,13 +31,14 @@ import (
 	"github.com/operator-framework/audit/pkg/reports/bundles"
 )
 
-type BundlesPath struct {
-	Paths string
+type Bundles struct {
+	Details string
+	Paths   string
 }
 
 type Deprecated struct {
 	PackageName string
-	BundlesPath []BundlesPath
+	Bundles     []Bundles
 }
 
 type File struct {
@@ -116,8 +117,18 @@ func main() {
 	allDeprecated := []Deprecated{}
 	for key, bundles := range hasDeprecated {
 		deprecatedYaml := Deprecated{PackageName: key}
+
+		// nolint:scopelint
+		sort.Slice(bundles[:], func(i, j int) bool {
+			return bundles[i].BundleName < bundles[j].BundleName
+		})
+
 		for _, b := range bundles {
-			deprecatedYaml.BundlesPath = append(deprecatedYaml.BundlesPath, BundlesPath{Paths: strings.ReplaceAll(b.BundleImagePath, "registry.redhat.io/", "")})
+			deprecatedYaml.Bundles = append(deprecatedYaml.Bundles,
+				Bundles{
+					Paths:   strings.ReplaceAll(b.BundleImagePath, "registry.redhat.io/", ""),
+					Details: b.BundleName,
+				})
 		}
 		allDeprecated = append(allDeprecated, deprecatedYaml)
 	}

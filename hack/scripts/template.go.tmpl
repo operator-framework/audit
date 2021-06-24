@@ -1,3 +1,4 @@
-{{ with .Deprecated }}{{ range . }}{{ .PackageName }}:{{ with .BundlesPath }}{{ range . }}
+{{ with .Deprecated }}{{ range . }}{{ .PackageName }}:{{ with .Bundles }}{{ range . }}
+    # Bundle: {{ .Details }}
     - {{ .Paths }}{{ end }}{{ end }}
 {{ end }}{{ end }}
