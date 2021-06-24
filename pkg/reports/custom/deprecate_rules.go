@@ -39,15 +39,8 @@ func MapPkgsComplyingWithDeprecateAPI122(
 	mapPackagesWithBundles map[string][]bundles.Column) map[string][]bundles.Column {
 	complying := make(map[string][]bundles.Column)
 	for key, bundlesPerPkg := range mapPackagesWithBundles {
-		foundOK := 0
-		foundConfiguredAccordingly := 0
-		qtdHeads := 0
-		for _, v := range bundlesPerPkg {
-			if v.IsHeadOfChannel {
-				qtdHeads++
-			}
-			foundOK, foundConfiguredAccordingly = GetHeadOfChannelState(v, foundOK, foundConfiguredAccordingly)
-		}
+		headOfChannels := GetHeadOfChannels(bundlesPerPkg)
+		foundOK, foundConfiguredAccordingly := GetHeadOfChannelState(headOfChannels)
 		// has bundlesPerPkg that we cannot find the package
 		// some inconsistency in the index db.
 		// So, this scenario can only be added to the complying if all is migrated
@@ -58,22 +51,7 @@ func MapPkgsComplyingWithDeprecateAPI122(
 			continue
 		}
 
-		// If for the package has no bundle set in the channels
-		// table as head of the channel then, we need to check
-		// the scenarios
-		if qtdHeads == 0 {
-			// We need to check if the latest version for each
-			// channel found is migrated or not
-			bundlesPerChannels := BuildMapBundlesPerChannels(bundlesPerPkg)
-			qtChannelOK, qtChannelConfiguredAccordingly := GetQtLatestVersionChannelsState(bundlesPerChannels)
-
-			if len(bundlesPerChannels) == qtChannelOK ||
-				(qtChannelOK > 0 && len(bundlesPerChannels) == qtChannelOK+qtChannelConfiguredAccordingly) {
-				complying[key] = mapPackagesWithBundles[key]
-			}
-			continue
-		}
-
+		qtdHeads := len(headOfChannels)
 		if qtdHeads == foundOK || (foundOK > 0 && qtdHeads == foundOK+foundConfiguredAccordingly) {
 			complying[key] = mapPackagesWithBundles[key]
 		}
@@ -87,38 +65,15 @@ func MapPkgsComplyingWithDeprecateAPI122(
 func MapPkgsNotComplyingWithDeprecateAPI122(
 	mapPackagesWithBundles map[string][]bundles.Column) map[string][]bundles.Column {
 	notComplying := make(map[string][]bundles.Column)
+
 	for key, bundlesPerPkg := range mapPackagesWithBundles {
-		foundOK := 0
-		foundConfiguredAccordingly := 0
-		qtdHeads := 0
-		for _, v := range bundlesPerPkg {
-			if v.IsHeadOfChannel {
-				qtdHeads++
-			}
-			foundOK, foundConfiguredAccordingly = GetHeadOfChannelState(v, foundOK, foundConfiguredAccordingly)
-		}
+		headOfChannels := GetHeadOfChannels(bundlesPerPkg)
+		foundOK, foundConfiguredAccordingly := GetHeadOfChannelState(headOfChannels)
 		// has bundlesPerPkg that we cannot find the package
 		// some inconsistency in the index db.
 		// So, this scenario can only be added to the complying if all is migrated
 		if key == "" {
 			if hasNotMigrated(bundlesPerPkg) {
-				notComplying[key] = mapPackagesWithBundles[key]
-			}
-			continue
-		}
-
-		// If for the package has no bundle set in the channels
-		// table as head of the channel then, we need to check
-		// the scenarios
-		if qtdHeads == 0 {
-			// We need to check if the latest version for each
-			// channel found is migrated or not
-			// We need to check if the latest version for each
-			// channel found is migrated or not
-			bundlesPerChannels := BuildMapBundlesPerChannels(bundlesPerPkg)
-			qtChannelOK, qtChannelConfiguredAccordingly := GetQtLatestVersionChannelsState(bundlesPerChannels)
-
-			if qtChannelOK == 0 && qtChannelConfiguredAccordingly == 0 {
 				notComplying[key] = mapPackagesWithBundles[key]
 			}
 			continue
@@ -140,4 +95,40 @@ func hasNotMigrated(bundlesPerPkg []bundles.Column) bool {
 		}
 	}
 	return foundNotMigrated
+}
+
+func GetHeadOfChannels(bundlesOfPackage []bundles.Column) []bundles.Column {
+	var headOfChannels []bundles.Column
+	qtdHeads := 0
+	for _, v := range bundlesOfPackage {
+		if v.IsHeadOfChannel {
+			qtdHeads++
+			headOfChannels = append(headOfChannels, v)
+		}
+	}
+
+	bundlesPerChannels := BuildMapBundlesPerChannels(bundlesOfPackage)
+
+	// If for the package has no bundle set in the channels
+	// table as head of the channel then, we need to check
+	// the scenarios
+	if qtdHeads == 0 {
+		headOfChannels = GetLatestBundlesVersions(bundlesPerChannels)
+	}
+	return headOfChannels
+}
+
+// GetQtLatestVersionChannelsState returns the qtd. of channels which are OK and configured with max ocp version
+func GetLatestBundlesVersions(bundlesPerChannels map[string][]bundles.Column) []bundles.Column {
+	var latestBundlesVersionsPerChannel []bundles.Column
+	for _, bundlesFromChannel := range bundlesPerChannels {
+		latest := GetTheLatestBundleVersion(bundlesFromChannel)
+		for _, bd := range bundlesFromChannel {
+			if bd.BundleVersion == latest {
+				latestBundlesVersionsPerChannel = append(latestBundlesVersionsPerChannel, bd)
+				continue
+			}
+		}
+	}
+	return latestBundlesVersionsPerChannel
 }

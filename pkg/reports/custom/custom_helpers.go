@@ -94,14 +94,17 @@ func BuildMapBundlesPerChannels(bundlesPerPkg []bundles.Column) map[string][]bun
 }
 
 // GetHeadOfChannelState returns the qtd. of head of channels which are OK and configured with max ocp version
-func GetHeadOfChannelState(v bundles.Column, foundOK int, foundConfiguredAccordingly int) (int, int) {
-	if v.IsHeadOfChannel {
+func GetHeadOfChannelState(headOfChannels []bundles.Column) (int, int) {
+	var foundOK = 0
+	var foundConfiguredAccordingly = 0
+	for _, v := range headOfChannels {
 		// In this case has a valid path
 		if len(v.KindsDeprecateAPIs) == 0 && !pkg.IsOcpLabelRangeLowerThan49(v.OCPLabel) {
 			foundOK++
 		}
 		// in this case will block the cluster upgrade at least
-		if len(v.KindsDeprecateAPIs) > 0 && pkg.IsMaxOCPVersionLowerThan49(v.MaxOCPVersion) {
+		if (len(v.KindsDeprecateAPIs) > 0 && pkg.IsMaxOCPVersionLowerThan49(v.MaxOCPVersion)) ||
+			(len(v.KindsDeprecateAPIs) == 0 && pkg.IsOcpLabelRangeLowerThan49(v.OCPLabel)) {
 			foundConfiguredAccordingly++
 		}
 	}
