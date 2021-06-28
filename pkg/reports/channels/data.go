@@ -18,7 +18,6 @@ import (
 	"fmt"
 	"log"
 	"sort"
-	"strings"
 	"time"
 
 	sq "github.com/Masterminds/squirrel"
@@ -101,19 +100,4 @@ func (d *Data) BuildChannelsQuery() (string, error) {
 		return "", fmt.Errorf("unable to create sql : %s", err)
 	}
 	return sql, nil
-}
-
-// isFollowingConventional will check the channels.
-func isFollowingConventional(channel string) bool {
-	const candidate = "candidate"
-	const stable = "stable"
-	const fast = "fast"
-
-	if !strings.HasPrefix(channel, candidate) &&
-		!strings.HasPrefix(channel, stable) &&
-		!strings.HasPrefix(channel, fast) {
-		return false
-	}
-
-	return true
 }

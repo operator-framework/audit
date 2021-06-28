@@ -38,7 +38,7 @@ func NewColumn(auditCha models.AuditChannel) *Column {
 	col := Column{}
 	col.PackageName = auditCha.PackageName
 	col.ChannelName = auditCha.ChannelName
-	col.IsFollowingNameConvention = isFollowingConventional(auditCha.ChannelName)
+	col.IsFollowingNameConvention = pkg.IsFollowingChannelNameConventional(auditCha.ChannelName)
 
 	var allBundles []bundles.Column
 	for _, v := range auditCha.AuditBundles {
