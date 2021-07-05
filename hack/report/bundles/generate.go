@@ -72,7 +72,7 @@ func main() {
 		command := exec.Command("mkdir", reportPathName)
 		_, err = pkg.RunCommand(command)
 		if err != nil {
-			log.Errorf("running command :%s", err)
+			log.Warnf("running command :%s", err)
 		}
 
 		command = exec.Command("docker", "login", registry)
