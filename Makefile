@@ -85,16 +85,15 @@ generate-samples: install
 	go run ./hack/samples/generate_samples.go
 
 .PHONY: generate-testdata ## Generate the full testdata directory
-generate-testdata: generate-samples
+generate-testdata:
+	docker login https://registry.redhat.io
+	make generate-samples
 	go run ./hack/report/bundles/generate.go
 	make generate-dashboards
 	make generate-index
-
-.PHONY: generate-index ## Generate index.html
-generate-index:
-	go run ./hack/index/generate.go
 
 .PHONY: generate-dashboards ## Generate the testdata custom dashboards
 generate-dashboards:
 	go run ./hack/deprecate-api/generate.go
 	go run ./hack/grade/generate.go
+	go run ./hack/index/generate.go

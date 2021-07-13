@@ -52,17 +52,11 @@ func main() {
 		pathToWalk := filepath.Join(fullReportsPath, dir)
 		dashboardPath := filepath.Join(fullReportsPath, dir, "dashboards")
 
-		//command := exec.Command("rm", "-rf", dashboardPath)
-		//_, err = pkg.RunCommand(command)
-		//if err != nil {
-		//	log.Errorf("running command :%s", err)
-		//}
-
-		//command = exec.Command("mkdir", dashboardPath)
-		//_, err = pkg.RunCommand(command)
-		//if err != nil {
-		//	log.Errorf("running command :%s", err)
-		//}
+		command := exec.Command("mkdir", dashboardPath)
+		_, err = pkg.RunCommand(command)
+		if err != nil {
+			log.Warnf("running command :%s", err)
+		}
 
 		if _, err := os.Stat(pathToWalk); err != nil && os.IsNotExist(err) {
 			continue
