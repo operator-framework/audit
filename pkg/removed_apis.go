@@ -124,16 +124,12 @@ func RemovedAPIsKind(deprecatedAPIs map[string][]string) []string {
 // OCP version where the apis v1beta1 is no longer supported
 const ocpVerV1beta1Unsupported = "4.9"
 
-// IsComplyingWithDeprecatedCriteria will verify if the OpenShiftVersion property was informed as the OCP label index
-// For audit we have not the dockerfile so we are checking by here.
-func IsComplyingWithDeprecatedCriteria(maxOCPVersion, ocpLabel string) bool {
-	return IsMaxOCPVersionLowerThan49(maxOCPVersion) && IsOcpLabelRangeLowerThan49(ocpLabel)
-}
-
 func IsMaxOCPVersionLowerThan49(maxOCPVersion string) bool {
 	if len(maxOCPVersion) == 0 {
 		return false
 	}
+
+	maxOCPVersion = strings.ReplaceAll(maxOCPVersion, "\"", "")
 	semVerVersionMaxOcp, err := semver.ParseTolerant(maxOCPVersion)
 	if err != nil {
 		return false
