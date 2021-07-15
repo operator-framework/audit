@@ -44,7 +44,7 @@ $ make install
 
 ### Ensure that you have access to pull the images
 
-You need first use docker login to have access to the images. 
+You must run `docker login` to have access to the images.
 
 ### Generating the reports
 
@@ -97,6 +97,13 @@ See that you can use the `--filter` --flag to filter the results by the package 
 ```sh
 audit-tool index [bundles|packages|channels] --index-image=registry.redhat.io/redhat/redhat-operator-index:v4.5 --filter="mypackagename"
 ```
+
+### Option to run in dedicated environments
+
+Use the flag `--server-mode` to generate the reports in dedicated environments. By using this flag option the images
+which are downloaded will not be removed, allowing the reports to be generated faster after the first execution.
+
+Also, ensure that you have enough space to store all images. Note that the default behavior is to remove them, when this option is not used.  
 
 ## Reports
 

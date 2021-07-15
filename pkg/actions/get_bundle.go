@@ -37,7 +37,7 @@ type Manifest struct {
 
 // GetDataFromBundleImage returns the bundle from the image
 func GetDataFromBundleImage(auditBundle *models.AuditBundle,
-	disableScorecard, disableValidators bool, label, labelValue string) *models.AuditBundle {
+	disableScorecard, disableValidators, serverMode bool, label, labelValue string) *models.AuditBundle {
 
 	if len(auditBundle.OperatorBundleImagePath) < 1 {
 		auditBundle.Errors = append(auditBundle.Errors,
@@ -95,7 +95,7 @@ func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 
 	}
 
-	cleanupBundleDir(auditBundle, bundleDir)
+	cleanupBundleDir(auditBundle, bundleDir, serverMode)
 
 	return auditBundle
 }
@@ -184,12 +184,14 @@ func extractBundleFromImage(auditBundle *models.AuditBundle, bundleDir string) {
 	_, _ = pkg.RunCommand(cmd)
 }
 
-func cleanupBundleDir(auditBundle *models.AuditBundle, dir string) {
+func cleanupBundleDir(auditBundle *models.AuditBundle, dir string, serverMode bool) {
 	cmd := exec.Command("rm", "-rf", dir)
 	_, _ = pkg.RunCommand(cmd)
 
-	cmd = exec.Command("docker", "rmi", auditBundle.OperatorBundleImagePath)
-	_, _ = pkg.RunCommand(cmd)
+	if !serverMode {
+		cmd = exec.Command("docker", "rmi", auditBundle.OperatorBundleImagePath)
+		_, _ = pkg.RunCommand(cmd)
+	}
 }
 
 func DownloadImage(image string) error {
