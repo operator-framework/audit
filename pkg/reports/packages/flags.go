@@ -24,4 +24,5 @@ type BindFlags struct {
 	OutputFormat      string `json:"outputFormat"`
 	DisableScorecard  bool   `json:"disableScorecard"`
 	DisableValidators bool   `json:"disableValidators"`
+	ServerMode        bool   `json:"serverMode"`
 }

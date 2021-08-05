@@ -82,6 +82,9 @@ func NewCmd() *cobra.Command {
 	cmd.Flags().StringVar(&flags.LabelValue, "label-value", "",
 		"filter by bundles which has index images where contains *label=label-value*. "+
 			"This option can only be used with the --label flag.")
+	cmd.Flags().BoolVar(&flags.ServerMode, "server-mode", false,
+		"if set, the images which are downloaded will not be removed. This flag should be used on dedicated "+
+			"environments and reduce the cost to generate the reports periodically")
 
 	return cmd
 }
@@ -219,7 +222,7 @@ func getDataFromIndexDB(report index.Data) (index.Data, error) {
 		auditBundle.SkipsDB = skips
 
 		auditBundle = actions.GetDataFromBundleImage(auditBundle, report.Flags.DisableScorecard,
-			report.Flags.DisableValidators, report.Flags.Label, report.Flags.LabelValue)
+			report.Flags.DisableValidators, report.Flags.ServerMode, report.Flags.Label, report.Flags.LabelValue)
 
 		sqlString := fmt.Sprintf("SELECT c.channel_name, c.package_name FROM channel_entry c "+
 			"where c.operatorbundle_name = '%s'", auditBundle.OperatorBundleName)

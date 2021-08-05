@@ -21,6 +21,7 @@ type BindFlags struct {
 	HeadOnly          bool   `json:"headOnly"`
 	DisableScorecard  bool   `json:"disableScorecard"`
 	DisableValidators bool   `json:"disableValidators"`
+	ServerMode        bool   `json:"serverMode"`
 	Label             string `json:"label"`
 	LabelValue        string `json:"labelValue"`
 	Filter            string `json:"filter"`
