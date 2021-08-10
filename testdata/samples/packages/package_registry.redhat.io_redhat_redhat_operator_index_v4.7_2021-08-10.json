@@ -14,27 +14,20 @@
 			],
 			"scorecardErrors": [
 				"Owned CRDs do not have resources specified",
-				"apis.capabilities.3scale.net does not have a status descriptor",
-				"bindings.capabilities.3scale.net does not have a status descriptor",
-				"limits.capabilities.3scale.net does not have a status descriptor",
-				"mappingrules.capabilities.3scale.net does not have a status descriptor",
-				"metrics.capabilities.3scale.net does not have a status descriptor",
-				"plans.capabilities.3scale.net does not have a status descriptor",
-				"tenants.capabilities.3scale.net does not have a status descriptor",
 				"highAvailability does not have a spec descriptor",
 				"system does not have a spec descriptor",
-				"integrationMethod does not have a spec descriptor",
 				"description does not have a spec descriptor",
+				"integrationMethod does not have a spec descriptor",
 				"APISelector does not have a spec descriptor",
 				"credentialsRef does not have a spec descriptor",
-				"period does not have a spec descriptor",
 				"description does not have a spec descriptor",
 				"maxValue does not have a spec descriptor",
 				"metricRef does not have a spec descriptor",
-				"increment does not have a spec descriptor",
+				"period does not have a spec descriptor",
 				"method does not have a spec descriptor",
 				"metricRef does not have a spec descriptor",
 				"path does not have a spec descriptor",
+				"increment does not have a spec descriptor",
 				"description does not have a spec descriptor",
 				"incrementHits does not have a spec descriptor",
 				"unit does not have a spec descriptor",
@@ -49,25 +42,30 @@
 				"username does not have a spec descriptor",
 				"email does not have a spec descriptor",
 				"masterCredentialsRef does not have a spec descriptor",
-				"organizationName does not have a spec descriptor"
+				"organizationName does not have a spec descriptor",
+				"apis.capabilities.3scale.net does not have a status descriptor",
+				"bindings.capabilities.3scale.net does not have a status descriptor",
+				"limits.capabilities.3scale.net does not have a status descriptor",
+				"mappingrules.capabilities.3scale.net does not have a status descriptor",
+				"metrics.capabilities.3scale.net does not have a status descriptor",
+				"plans.capabilities.3scale.net does not have a status descriptor",
+				"tenants.capabilities.3scale.net does not have a status descriptor"
 			],
 			"scorecardSuggestions": [
-				"Add CRD validation for spec field `APISelector` in Binding/v1alpha1",
-				"Add CRD validation for spec field `description` in Limit/v1alpha1",
 				"Add a spec descriptor for highAvailability",
 				"Add a spec descriptor for system",
-				"Add a spec descriptor for integrationMethod",
 				"Add a spec descriptor for description",
+				"Add a spec descriptor for integrationMethod",
 				"Add a spec descriptor for APISelector",
 				"Add a spec descriptor for credentialsRef",
-				"Add a spec descriptor for period",
 				"Add a spec descriptor for description",
 				"Add a spec descriptor for maxValue",
 				"Add a spec descriptor for metricRef",
-				"Add a spec descriptor for increment",
+				"Add a spec descriptor for period",
 				"Add a spec descriptor for method",
 				"Add a spec descriptor for metricRef",
 				"Add a spec descriptor for path",
+				"Add a spec descriptor for increment",
 				"Add a spec descriptor for description",
 				"Add a spec descriptor for incrementHits",
 				"Add a spec descriptor for unit",
@@ -82,12 +80,14 @@
 				"Add a spec descriptor for username",
 				"Add a spec descriptor for email",
 				"Add a spec descriptor for masterCredentialsRef",
-				"Add a spec descriptor for organizationName"
+				"Add a spec descriptor for organizationName",
+				"Add CRD validation for spec field `APISelector` in Binding/v1alpha1",
+				"Add CRD validation for spec field `description` in Limit/v1alpha1"
 			],
 			"scorecardFailingTests": [
 				"olm-crds-have-resources",
-				"olm-status-descriptors",
-				"olm-spec-descriptors"
+				"olm-spec-descriptors",
+				"olm-status-descriptors"
 			],
 			"hasSupportForSingleNamespaces": true,
 			"hasSupportForOwnNamespaces": true
@@ -106,19 +106,19 @@
 			],
 			"scorecardErrors": [
 				"deploymentPlan does not have a spec descriptor",
+				"Owned CRDs do not have resources specified",
 				"activemqartemises.broker.amq.io does not have a status descriptor",
 				"activemqartemisaddresses.broker.amq.io does not have a status descriptor",
-				"activemqartemisscaledowns.broker.amq.io does not have a status descriptor",
-				"Owned CRDs do not have resources specified"
+				"activemqartemisscaledowns.broker.amq.io does not have a status descriptor"
 			],
 			"scorecardSuggestions": [
-				"Add CRD validation for spec field `deploymentPlan` in ActiveMQArtemis/v2alpha1",
-				"Add a spec descriptor for deploymentPlan"
+				"Add a spec descriptor for deploymentPlan",
+				"Add CRD validation for spec field `deploymentPlan` in ActiveMQArtemis/v2alpha1"
 			],
 			"scorecardFailingTests": [
 				"olm-spec-descriptors",
-				"olm-status-descriptors",
-				"olm-crds-have-resources"
+				"olm-crds-have-resources",
+				"olm-status-descriptors"
 			],
 			"hasSupportForOwnNamespaces": true
 		},
@@ -167,10 +167,10 @@
 				"provided API should have an example annotation"
 			],
 			"scorecardErrors": [
-				"error getting custom resources",
-				"failed to parse alm-examples annotation: invalid character '}' looking for beginning of object key string",
 				"failed to parse alm-examples annotation: invalid character '}' looking for beginning of object key string",
 				"Owned CRDs do not have resources specified",
+				"error getting custom resources",
+				"failed to parse alm-examples annotation: invalid character '}' looking for beginning of object key string",
 				"failed to parse alm-examples annotation: invalid character '}' looking for beginning of object key string"
 			],
 			"scorecardSuggestions": [
@@ -178,11 +178,11 @@
 				"Warning: Value jenkins.io/v1alpha2, Kind=Restore: provided API should have an example annotation"
 			],
 			"scorecardFailingTests": [
-				"basic-check-spec",
 				"olm-spec-descriptors",
-				"olm-status-descriptors",
 				"olm-crds-have-resources",
-				"olm-crds-have-validation"
+				"basic-check-spec",
+				"olm-crds-have-validation",
+				"olm-status-descriptors"
 			],
 			"hasSupportForSingleNamespaces": true,
 			"hasSupportForOwnNamespaces": true,
@@ -209,26 +209,26 @@
 				"type does not have a spec descriptor",
 				"secret does not have a spec descriptor",
 				"plan does not have a spec descriptor",
+				"Owned CRDs do not have resources specified",
 				"forkliftcontrollers.forklift.konveyor.io does not have a status descriptor",
 				"providers.forklift.konveyor.io does not have a status descriptor",
 				"plans.forklift.konveyor.io does not have a status descriptor",
-				"migrations.forklift.konveyor.io does not have a status descriptor",
-				"Owned CRDs do not have resources specified"
+				"migrations.forklift.konveyor.io does not have a status descriptor"
 			],
 			"scorecardSuggestions": [
 				"Add a spec descriptor for url",
 				"Add a spec descriptor for type",
 				"Add a spec descriptor for secret",
 				"Add a spec descriptor for plan",
+				"Warning: Value forklift.konveyor.io/v1alpha1, Kind=StorageMap: provided API should have an example annotation",
 				"Warning: Value forklift.konveyor.io/v1alpha1, Kind=Provisioner: provided API should have an example annotation",
 				"Warning: Value forklift.konveyor.io/v1alpha1, Kind=Host: provided API should have an example annotation",
-				"Warning: Value forklift.konveyor.io/v1alpha1, Kind=NetworkMap: provided API should have an example annotation",
-				"Warning: Value forklift.konveyor.io/v1alpha1, Kind=StorageMap: provided API should have an example annotation"
+				"Warning: Value forklift.konveyor.io/v1alpha1, Kind=NetworkMap: provided API should have an example annotation"
 			],
 			"scorecardFailingTests": [
 				"olm-spec-descriptors",
-				"olm-status-descriptors",
-				"olm-crds-have-resources"
+				"olm-crds-have-resources",
+				"olm-status-descriptors"
 			],
 			"hasSupportForOwnNamespaces": true
 		}
