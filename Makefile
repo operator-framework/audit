@@ -90,7 +90,6 @@ generate-testdata:
 	make generate-samples
 	go run ./hack/report/bundles/generate.go
 	make generate-dashboards
-	make generate-index
 
 .PHONY: generate-dashboards ## Generate the testdata custom dashboards
 generate-dashboards:
