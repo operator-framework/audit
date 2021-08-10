@@ -57,10 +57,10 @@
 				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"apicasts.apps.3scale.net\"])"
 			],
 			"scorecardErrors": [
+				"apicasts.apps.3scale.net does not have a status descriptor",
+				"apicasts.apps.3scale.net does not have a status descriptor",
 				"adminPortalCredentialsRef does not have a spec descriptor",
 				"embeddedConfigurationSecretRef does not have a spec descriptor",
-				"apicasts.apps.3scale.net does not have a status descriptor",
-				"apicasts.apps.3scale.net does not have a status descriptor",
 				"Owned CRDs do not have resources specified"
 			],
 			"scorecardSuggestions": [
@@ -68,8 +68,8 @@
 				"Add a spec descriptor for embeddedConfigurationSecretRef"
 			],
 			"scorecardFailingTests": [
-				"olm-spec-descriptors",
 				"olm-status-descriptors",
+				"olm-spec-descriptors",
 				"olm-crds-have-resources"
 			],
 			"deprecateAPIsManifests": {
@@ -115,20 +115,20 @@
 				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"apicasts.apps.3scale.net\"])"
 			],
 			"scorecardErrors": [
+				"apicasts.apps.3scale.net does not have a status descriptor",
+				"apicasts.apps.3scale.net does not have a status descriptor",
 				"Owned CRDs do not have resources specified",
 				"adminPortalCredentialsRef does not have a spec descriptor",
-				"embeddedConfigurationSecretRef does not have a spec descriptor",
-				"apicasts.apps.3scale.net does not have a status descriptor",
-				"apicasts.apps.3scale.net does not have a status descriptor"
+				"embeddedConfigurationSecretRef does not have a spec descriptor"
 			],
 			"scorecardSuggestions": [
 				"Add a spec descriptor for adminPortalCredentialsRef",
 				"Add a spec descriptor for embeddedConfigurationSecretRef"
 			],
 			"scorecardFailingTests": [
+				"olm-status-descriptors",
 				"olm-crds-have-resources",
-				"olm-spec-descriptors",
-				"olm-status-descriptors"
+				"olm-spec-descriptors"
 			],
 			"deprecateAPIsManifests": {
 				"CRD": [
