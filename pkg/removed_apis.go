@@ -136,10 +136,7 @@ func IsMaxOCPVersionLowerThan49(maxOCPVersion string) bool {
 	}
 
 	semVerOCPV1beta1Unsupported, _ := semver.ParseTolerant(ocpVerV1beta1Unsupported)
-	if semVerVersionMaxOcp.GE(semVerOCPV1beta1Unsupported) {
-		return false
-	}
-	return true
+	return !semVerVersionMaxOcp.GE(semVerOCPV1beta1Unsupported)
 }
 
 // IsOcpLabelRangeLowerThan49 returns true if the range < 4.9
