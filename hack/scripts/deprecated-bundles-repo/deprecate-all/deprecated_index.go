@@ -16,6 +16,9 @@
 // This script is only a helper for we are able to know what are the bundles that we need to
 // deprecated on 4.9. That will be removed as soon as possible and is just added
 // here in case it be required to be checked and used so far.
+// The following script uses the JSON format output image to
+// generates the deprecate.yml file with all bundles which requires
+// to be deprecated because are using the APIs which will be removed on ocp 4.9 .
 package main
 
 import (
@@ -54,7 +57,7 @@ func main() {
 	}
 
 	// Update here the path of the JSON report for the image that you would like to be used
-	path := "testdata/reports/redhat_redhat_operator_index/bundles_registry.redhat.io_redhat_redhat_operator_index_v4.8_2021-06-19.json"
+	path := "testdata/reports/redhat_redhat_operator_index/bundles_registry.redhat.io_redhat_redhat_operator_index_v4.8_2021-08-07.json"
 
 	byteValue, err := pkg.ReadFile(filepath.Join(currentPath, path))
 	if err != nil {
@@ -137,14 +140,14 @@ func main() {
 		return allDeprecated[i].PackageName < allDeprecated[j].PackageName
 	})
 
-	f, err := os.Create(filepath.Join(currentPath, "hack/scripts/deprecated.yml"))
+	f, err := os.Create(filepath.Join(currentPath, "hack/scripts/deprecated-bundles-repo/deprecate-all/deprecated.yml"))
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	defer f.Close()
 
-	t := template.Must(template.ParseFiles(filepath.Join(currentPath, "hack/scripts/template.go.tmpl")))
+	t := template.Must(template.ParseFiles(filepath.Join(currentPath, "hack/scripts/deprecated-bundles-repo/deprecate-all/template.go.tmpl")))
 	err = t.Execute(f, File{allDeprecated})
 	if err != nil {
 		panic(err)

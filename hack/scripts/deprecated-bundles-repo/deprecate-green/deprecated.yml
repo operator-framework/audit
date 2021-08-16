@@ -1,0 +1,259 @@
+advanced-cluster-management:
+    # Bundle: advanced-cluster-management.v2.0.0 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/acm-operator-bundle@sha256:280bf802843fab435a2946a49324900223f14ae01abbb113624bc056b5ab0188
+    # Bundle: advanced-cluster-management.v2.0.1 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/acm-operator-bundle@sha256:1e1cd6a2950349e3e619e2ffe15cd10d36a5b15e1a9e3b0024bdb11a2355b7ca
+    # Bundle: advanced-cluster-management.v2.0.10 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/acm-operator-bundle@sha256:ea42543f1127fd6ec53cf7f6c7f61f3e0b62f1b210844584d89d60c4bf53fef9
+    # Bundle: advanced-cluster-management.v2.0.2 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/acm-operator-bundle@sha256:75c32ced4add3c6c583daf0bcf81b13cbeb99fd2e24f2c3261fb95ac7bcec4f1
+    # Bundle: advanced-cluster-management.v2.0.3 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/acm-operator-bundle@sha256:c068e6f697764fe0aa82f5572450bbf6cc80d9670a7cb65a8753afa9fa9f8bf6
+    # Bundle: advanced-cluster-management.v2.0.4 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/acm-operator-bundle@sha256:1af785b35226525dc1265123bc274bccb025439ea396e560d0a562791f2c8217
+    # Bundle: advanced-cluster-management.v2.0.5 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/acm-operator-bundle@sha256:3a8c3261d61779907a9a86bb4a2699bd8c60f3ec6466cf6656034b7eda127bc6
+    # Bundle: advanced-cluster-management.v2.0.6 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/acm-operator-bundle@sha256:d97ae02a20eaaa1a0770710a7b5808787d9617ce63c03d3c3f08a11f5bf41aa3
+    # Bundle: advanced-cluster-management.v2.0.7 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/acm-operator-bundle@sha256:e77e15271554a64192f4c80a864efe4f082caeeb94d72f10165beb5cba043ebf
+    # Bundle: advanced-cluster-management.v2.0.8 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/acm-operator-bundle@sha256:c86057b81e3f4a2979f6d5e2ddcbb9fc31549f8d528497a4924e53b26fd75c8c
+    # Bundle: advanced-cluster-management.v2.0.9 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/acm-operator-bundle@sha256:a0a2be3279d03955acf2c2471384c819d45ee765401242eeac20751fe3c835fd
+    # Bundle: advanced-cluster-management.v2.1.0 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/acm-operator-bundle@sha256:76435cfe5728bbcacabb1a444ca45df913a7d5a8541b0cc40496cd11d77865db
+    # Bundle: advanced-cluster-management.v2.1.1 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/acm-operator-bundle@sha256:f02648187cb8cc1c34a6c463ce7f307cab7016da4c06e836971b9bd23d967394
+    # Bundle: advanced-cluster-management.v2.1.2 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/acm-operator-bundle@sha256:9725b91409219faf9e37bab93529ca21bfd209aab3395403866275a3bd08f072
+    # Bundle: advanced-cluster-management.v2.1.3 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/acm-operator-bundle@sha256:510b81899ac25c4318e31a7a44b5c2645fc14e24cc463847f19c5229e8d87c6f
+    # Bundle: advanced-cluster-management.v2.1.4 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/acm-operator-bundle@sha256:5d6c8f7a046eaebd4cee3ad10151bfa3bb176df8e20cd475db66becdcd7356fd
+    # Bundle: advanced-cluster-management.v2.1.5 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/acm-operator-bundle@sha256:4e4fc6cdfec03a175ada82a98044ba6ae80e5d7fc096a24bc5f2977f49d6c70b
+    # Bundle: advanced-cluster-management.v2.1.6 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/acm-operator-bundle@sha256:55906425c2619315d98a9f2b3b014379bfa14875592d18a550a93344097c5496
+    # Bundle: advanced-cluster-management.v2.2.0 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/acm-operator-bundle@sha256:96e323e923dfb556daadc87e990eb89277c21926e56e378bae60bf1d2a46931a
+    # Bundle: advanced-cluster-management.v2.2.1 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/acm-operator-bundle@sha256:adba2e6b585bde1c05d041097a9f19b0753230480032aa44ad1b27fecbf819f5
+    # Bundle: advanced-cluster-management.v2.2.2 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/acm-operator-bundle@sha256:82f8508111f307c25e458a2283e86a21eaeeaa2cd0b335766174f324f6bd392d
+    # Bundle: advanced-cluster-management.v2.2.3 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/acm-operator-bundle@sha256:3560cfe5aa98787496ad1db0440c32a53c9f91ec6bf56fe674b44fcce0913fbc
+    # Bundle: advanced-cluster-management.v2.2.4 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/acm-operator-bundle@sha256:5af9a80acccef3f230dca67538276c3777568cbc98b20d6018c5a9843ab18005
+    # Bundle: advanced-cluster-management.v2.2.5 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/acm-operator-bundle@sha256:2dc9b26f20e89ab7faa9b6a4a4cdf3137061a5115447d0342de268b8fbdd34ad
+    # Bundle: advanced-cluster-management.v2.3.0 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/acm-operator-bundle@sha256:595f4345c97f951c5733879f4d817668b9028805b1f2a158f915c19aa00f392c
+amq-online:
+    # Bundle: amq-online.1.4.0 : Note that this package has 1..N bundles compatible with 4.9
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:ed1658893b5e78ea6d684dac7f237a80eb1a5fe146996c39152c077ea59f0d61
+    # Bundle: amq-online.1.4.1 : Note that this package has 1..N bundles compatible with 4.9
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:6195b018194b457eb6bad2c53381bdfa4d84329e86d561580a63a9c2faab66d9
+    # Bundle: amq-online.1.4.2 : Note that this package has 1..N bundles compatible with 4.9
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:28157b46dcee1e5fffef9260aa9639df03cca2d8e84ccd63bf1fd966c17c10d5
+    # Bundle: amq-online.1.4.4 : Note that this package has 1..N bundles compatible with 4.9
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:f0f899b90e0ab0e9cc9818e4181beccf178543388c14570da0fd8dda0b4abaa9
+    # Bundle: amq-online.1.5.0 : Note that this package has 1..N bundles compatible with 4.9
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:b350796e748ac56aeaf71711f4eaae06d2b9f77fc1c9aeec1680c9ab096e663c
+    # Bundle: amq-online.1.5.1 : Note that this package has 1..N bundles compatible with 4.9
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:609f34c93dfc53fb853c45d395fcb5c07b6d96e7ab075b036c785203415cfc11
+    # Bundle: amq-online.1.5.2 : Note that this package has 1..N bundles compatible with 4.9
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:81fabc8e6bdc05a772fbf4401331e8ccc568593dafada38fff4c8aaf0565ba06
+    # Bundle: amq-online.1.5.3 : Note that this package has 1..N bundles compatible with 4.9
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:e81aac14ba253b4a89370f8aabfebf491f34621cf8d54efd6b8b3796ca8732bb
+    # Bundle: amq-online.1.6.1 : Note that this package has 1..N bundles compatible with 4.9
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:c5b5ba7265c5ac8e77ff9836746a8ac9ca5e1967270adffffdfe32d8a14968cf
+    # Bundle: amq-online.1.6.2 : Note that this package has 1..N bundles compatible with 4.9
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:debf79ef45e0fdd229bdfae29ff9a40926854278b39b4aa0d364f5ae9c02c6dc
+    # Bundle: amq-online.1.7.0 : Note that this package has 1..N bundles compatible with 4.9
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:5f582e82bd357530a7d66bdf25598b69ad75e79e2b28ca028cd656fb52a8259f
+    # Bundle: amq-online.1.7.1 : Note that this package has 1..N bundles compatible with 4.9
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:c838ae843b44b9c812bb0f79002cefbc49e68a7eabcb96f242974bb606408a3f
+businessautomation-operator:
+    # Bundle: businessautomation-operator.1.2.0 : Note that this package has 1..N bundles compatible with 4.9
+    - rhpam-7/rhpam-operator-bundle@sha256:df348c6ad999c3be37ab19b3651b5a61ab1fa55f7b2ff02b1fea48bfad69ab4a
+    # Bundle: businessautomation-operator.1.2.1 : Note that this package has 1..N bundles compatible with 4.9
+    - rhpam-7/rhpam-operator-bundle@sha256:a9d8ced4deb7113de7c97efc226cb9d2ee912be2ce6e67418ddcee423f2a9204
+    # Bundle: businessautomation-operator.1.3.0 : Note that this package has 1..N bundles compatible with 4.9
+    - rhpam-7/rhpam-operator-bundle@sha256:c119d2dc15f7d0038623fc2d682e513bba0cbbc63e0095ab769bd119faf59b7f
+    # Bundle: businessautomation-operator.1.4.0 : Note that this package has 1..N bundles compatible with 4.9
+    - rhpam-7/rhpam-operator-bundle@sha256:5929b5d30f2c3c215bf0c3052101b618d1e16c39f8b525a22ceb3541009c1a2c
+    # Bundle: businessautomation-operator.1.4.1 : Note that this package has 1..N bundles compatible with 4.9
+    - rhpam-7/rhpam-operator-bundle@sha256:3e7da2092cffe5bd2161c98b86e26ce6107248ca52c94a3a333b180f623333de
+    # Bundle: businessautomation-operator.7.10.0-1 : Note that this package has 1..N bundles compatible with 4.9
+    - rhpam-7/rhpam-operator-bundle@sha256:ee5ef1dfefb946f8eec41f05c0f7b496b431c04ddb16489ea4a0515a5a43f0c2
+    # Bundle: businessautomation-operator.7.10.0-2 : Note that this package has 1..N bundles compatible with 4.9
+    - rhpam-7/rhpam-operator-bundle@sha256:42dd0fa00313fd075868fb81b07b1567169bd89b1168e1d4d29e8b62e63adfc4
+    # Bundle: businessautomation-operator.7.10.1-1 : Note that this package has 1..N bundles compatible with 4.9
+    - rhpam-7/rhpam-operator-bundle@sha256:d59c5d8525cf543fc3c12ef631f9fa7a2dd59e2147cbd840437723bbeaa76008
+    # Bundle: businessautomation-operator.7.10.1-2 : Note that this package has 1..N bundles compatible with 4.9
+    - rhpam-7/rhpam-operator-bundle@sha256:aa942303f701c3f484cd5ff75eb231dbb2c3d5d2a9a748d57bb5b6c1b34d05f7
+    # Bundle: businessautomation-operator.7.11.0-1 : Note that this package has 1..N bundles compatible with 4.9
+    - rhpam-7/rhpam-operator-bundle@sha256:9d59749ec85ac601c326532492431cdabe86070bc2876ddf760daab08dd5e842
+    # Bundle: businessautomation-operator.7.11.0-2 : Note that this package has 1..N bundles compatible with 4.9
+    - rhpam-7/rhpam-operator-bundle@sha256:5dc16930b4d2f061eb32698cdd1b108e6e2ceb72df319b0a212bc2e4131429d8
+    # Bundle: businessautomation-operator.7.11.1-1 : Note that this package has 1..N bundles compatible with 4.9
+    - rhpam-7/rhpam-operator-bundle@sha256:f5819f66a1e6bbc890fa5e9529eca33154539dfe1a4ce35bdf681ebb1fd8f5b1
+    # Bundle: businessautomation-operator.7.8.0 : Note that this package has 1..N bundles compatible with 4.9
+    - rhpam-7/rhpam-operator-bundle@sha256:8bd9ac4b1ddcc03f2e6beb131bcfaf0f65ba6b90039e7a1af9dda631ae8d37f8
+    # Bundle: businessautomation-operator.7.8.1 : Note that this package has 1..N bundles compatible with 4.9
+    - rhpam-7/rhpam-operator-bundle@sha256:5a5429d84cc36ce29d95fe86d9b6a9eaef0c3ed3d1925fd9b653904c411cbcb4
+    # Bundle: businessautomation-operator.7.9.0 : Note that this package has 1..N bundles compatible with 4.9
+    - rhpam-7/rhpam-operator-bundle@sha256:f486e4a3085ce9245a7d0eec827f97b6d7fac61eeeca01563288d0370370af83
+    # Bundle: businessautomation-operator.7.9.0-2 : Note that this package has 1..N bundles compatible with 4.9
+    - rhpam-7/rhpam-operator-bundle@sha256:af5a192a66fd81506cc5361103d7e3d510992f207343f6580a91022dc1bce745
+    # Bundle: businessautomation-operator.7.9.1-1 : Note that this package has 1..N bundles compatible with 4.9
+    - rhpam-7/rhpam-operator-bundle@sha256:ce102ebf04a9854a71b1fdac0d9d9e17580fa18d8cb9f6ee507abcd77e6efeac
+codeready-workspaces:
+    # Bundle: crwoperator.v2.0.0 : Note that this package has 1..N bundles compatible with 4.9
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:7b7558c8d9170bd27c9dcf2e62df827d477dbbea694f7040f5cd5bcd0eb598a4
+    # Bundle: crwoperator.v2.1.0 : Note that this package has 1..N bundles compatible with 4.9
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:af5795b85faa63523353eba59b244b94578eed6ee11d0a4f834e64009395a069
+    # Bundle: crwoperator.v2.1.1 : Note that this package has 1..N bundles compatible with 4.9
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:aba490f87a1ed4c4a47cb5cb5a82ea1bd67031db0382df400d81e13a125f4aff
+    # Bundle: crwoperator.v2.10.0 : Note that this package has 1..N bundles compatible with 4.9
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:55baa64259da5a50d9ee5e40f0177a3a73ad1f0e73459748ccf7e97ff91296bc
+    # Bundle: crwoperator.v2.10.1 : Note that this package has 1..N bundles compatible with 4.9
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:71267d186d55327e25c0d9a74c21835257b7ed262b3b56319c7ff648e0be0395
+    # Bundle: crwoperator.v2.2.0 : Note that this package has 1..N bundles compatible with 4.9
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:b9bc3d8fb71df47ef32e4f2c7d74b938887fbe2683b132d76e0215eb6cee4a9a
+    # Bundle: crwoperator.v2.3.0 : Note that this package has 1..N bundles compatible with 4.9
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:1007e3de27d2235e319c23b08dce4ad83d3569f37fff37ad8174b29909e01f04
+    # Bundle: crwoperator.v2.4.0 : Note that this package has 1..N bundles compatible with 4.9
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:289f77b62c012b6ef09930acf1466749327ef9a1594eb39e077ff7116f5be73b
+    # Bundle: crwoperator.v2.5.0 : Note that this package has 1..N bundles compatible with 4.9
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:c48e4c3f85e30ab3a209369f7fd9212d34fbe2b97de5334439b06742e9cdec2a
+    # Bundle: crwoperator.v2.5.1 : Note that this package has 1..N bundles compatible with 4.9
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:181dc432a5aa228ca57a4c23218391f846284e258f72ed306f15ef884e991ee8
+    # Bundle: crwoperator.v2.6.0 : Note that this package has 1..N bundles compatible with 4.9
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:496aeecec52b0645cfcaa8b7ee7e71c55f823c7520ce3d2c9238d522c17a6e98
+    # Bundle: crwoperator.v2.7.0 : Note that this package has 1..N bundles compatible with 4.9
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:357f830568a690ea194acdf2b1c5d66b54b10bf1a0dc58d1e771454692dc2270
+    # Bundle: crwoperator.v2.7.1 : Note that this package has 1..N bundles compatible with 4.9
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:69761d7600d9602fd89f600d9670156e71f68c82802578b0db729cfa0087c89b
+    # Bundle: crwoperator.v2.8.0 : Note that this package has 1..N bundles compatible with 4.9
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:080bc58804ca40380c5ed58a5bbdd5fe035fed84a07e58d1c590e06695bbb720
+    # Bundle: crwoperator.v2.9.0 : Note that this package has 1..N bundles compatible with 4.9
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:345073710fca51ab00006902064ab1f5a24db220498acfa7c92986696d33cb6f
+elasticsearch-operator:
+    # Bundle: elasticsearch-operator.4.6.0-202103010126.p0 : Note that this package has 1..N bundles compatible with 4.9
+    - openshift4/ose-elasticsearch-operator-bundle@sha256:037eac94f8d1b63c52f09b0abafd48b7bb3a76db6d01b457fc3a16f63f60a639
+    # Bundle: elasticsearch-operator.5.0.6-40 : Note that this package has 1..N bundles compatible with 4.9
+    - openshift-logging/elasticsearch-operator-bundle@sha256:de2098bea36e57810342ccc41a1c7af9a2549e0ac7b398f23d686dae776b6557
+    # Bundle: elasticsearch-operator.5.1.0-96 : Note that this package has 1..N bundles compatible with 4.9
+    - openshift-logging/elasticsearch-operator-bundle@sha256:f5cebaa2582fee8e6420b009efb9f4d894a487ebf5ab8c717408442eb0cd9bc1
+klusterlet-product:
+    # Bundle: klusterlet-product.v2.2.0 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/klusterlet-operator-bundle@sha256:58b7976358bd5b30958602c820c5d3b0ba136e65fd7424ce92d23801dbd0976f
+    # Bundle: klusterlet-product.v2.2.1 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/klusterlet-operator-bundle@sha256:dd102ee9ec3a32312e63309e5cd5526e8eb1eb7e7b5ee299b95302618c00a0cb
+    # Bundle: klusterlet-product.v2.2.2 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/klusterlet-operator-bundle@sha256:d3b166fed222fbbcfe70e7a3872e8c1ac02a5ccd2cbf8585bedd29c005f6a16d
+    # Bundle: klusterlet-product.v2.2.3 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/klusterlet-operator-bundle@sha256:33651be7274ff2cd66c9e23e7eb20d5d5ca9649aed6777bb8b0ec03dfc8b0707
+    # Bundle: klusterlet-product.v2.2.5 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/klusterlet-operator-bundle@sha256:e5a7688faeb49b5ba135fb37251926c9d6c877c0793a1d88a786f0cd2efb03c1
+    # Bundle: klusterlet-product.v2.3.0 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2/klusterlet-operator-bundle@sha256:281fe57deda5c26e8861540513479fa08bc697eb35fb40544abf0fb697a73a16
+kubevirt-hyperconverged:
+    # Bundle: kubevirt-hyperconverged-operator.v2.3.0 : Note that this package has 1..N bundles compatible with 4.9
+    - container-native-virtualization/hco-bundle-registry@sha256:3e26ec915e2b9b21300d384594223ec3db3e885a627ee433df80ac9b04a5da75
+    # Bundle: kubevirt-hyperconverged-operator.v2.4.0 : Note that this package has 1..N bundles compatible with 4.9
+    - container-native-virtualization/hco-bundle-registry@sha256:307e78697fa8546af3c965feda55b3499a6db0c10612812ad849221b4d450534
+    # Bundle: kubevirt-hyperconverged-operator.v2.4.1 : Note that this package has 1..N bundles compatible with 4.9
+    - container-native-virtualization/hco-bundle-registry@sha256:039844b547e6e28f5e24b8d0caf9d26bc04ff61f44e3b3a5a6b4e6e5d4748293
+    # Bundle: kubevirt-hyperconverged-operator.v2.4.2 : Note that this package has 1..N bundles compatible with 4.9
+    - container-native-virtualization/hco-bundle-registry@sha256:ca5315dec677075a643cd009dfbe768eb6d1dea941e41e3b7ea88d1a430c2fae
+    # Bundle: kubevirt-hyperconverged-operator.v2.4.3 : Note that this package has 1..N bundles compatible with 4.9
+    - container-native-virtualization/hco-bundle-registry@sha256:5128091ce8551d630ba7afb4723d9433da3cb09f99eb06b1dbc4fee490faa612
+    # Bundle: kubevirt-hyperconverged-operator.v2.4.4 : Note that this package has 1..N bundles compatible with 4.9
+    - container-native-virtualization/hco-bundle-registry@sha256:096949be81c57a0f2d6834c6dbd3a39f8464d7687115da5824dd3acb58bf4bcd
+    # Bundle: kubevirt-hyperconverged-operator.v2.4.5 : Note that this package has 1..N bundles compatible with 4.9
+    - container-native-virtualization/hco-bundle-registry@sha256:1cd80adae36f3ceae5b8f3703d5761e82c1a5ed364b5f771f537dd6090d1c5a7
+    # Bundle: kubevirt-hyperconverged-operator.v2.5.0 : Note that this package has 1..N bundles compatible with 4.9
+    - container-native-virtualization/hco-bundle-registry@sha256:546e4497d96fd0ef834acbe7dae2c7383d2e5325b14cdaec2e631560d102720f
+    # Bundle: kubevirt-hyperconverged-operator.v2.5.1 : Note that this package has 1..N bundles compatible with 4.9
+    - container-native-virtualization/hco-bundle-registry@sha256:9811228cf63e2d85529410c0fcaa36999a25dcede649dc4d7d809b98b0a1c332
+    # Bundle: kubevirt-hyperconverged-operator.v2.5.2 : Note that this package has 1..N bundles compatible with 4.9
+    - container-native-virtualization/hco-bundle-registry@sha256:90a1f9a2db2b0d1ac78586e79dd0ea3e1ca0a20300e4da95118d0bb77271b39b
+    # Bundle: kubevirt-hyperconverged-operator.v2.5.3 : Note that this package has 1..N bundles compatible with 4.9
+    - container-native-virtualization/hco-bundle-registry@sha256:76402738a5a52397b164aa85850df9d5ffa446a2be4b0956d30120c1eade0848
+    # Bundle: kubevirt-hyperconverged-operator.v2.5.4 : Note that this package has 1..N bundles compatible with 4.9
+    - container-native-virtualization/hco-bundle-registry@sha256:4ed94efd3ddf14dc111a473c891469f7251cd94ccf2046c96524d17ca82c6602
+    # Bundle: kubevirt-hyperconverged-operator.v2.6.0 : Note that this package has 1..N bundles compatible with 4.9
+    - container-native-virtualization/hco-bundle-registry@sha256:1d08941f581ce9c39fde20ca1d6e17b2732b78504cd490ccaddc75e5db144a08
+    # Bundle: kubevirt-hyperconverged-operator.v2.6.1 : Note that this package has 1..N bundles compatible with 4.9
+    - container-native-virtualization/hco-bundle-registry@sha256:e99ff69879859d0bf689e052839c47d95e47da44926f86240d8f833858af77a2
+    # Bundle: kubevirt-hyperconverged-operator.v2.6.2 : Note that this package has 1..N bundles compatible with 4.9
+    - container-native-virtualization/hco-bundle-registry@sha256:6639ea7b8cf2d0f4a1df71116525c3383c9a55962403fee4bae461e1095d3718
+    # Bundle: kubevirt-hyperconverged-operator.v2.6.3 : Note that this package has 1..N bundles compatible with 4.9
+    - container-native-virtualization/hco-bundle-registry@sha256:37bbf59bce47d6d469b908003f8545b4e2c87b52b274da59daa1993a22fe5591
+    # Bundle: kubevirt-hyperconverged-operator.v2.6.4 : Note that this package has 1..N bundles compatible with 4.9
+    - container-native-virtualization/hco-bundle-registry@sha256:23dee295d93e7e917cefdbf0a6933bcf6136d0f44d723f03f0e533990ca8f14e
+    # Bundle: kubevirt-hyperconverged-operator.v2.6.5 : Note that this package has 1..N bundles compatible with 4.9
+    - container-native-virtualization/hco-bundle-registry@sha256:4a64b511e6d455bc5bcbd821456b1f089cec9f902d90289dd89b8a923b09d803
+    # Bundle: kubevirt-hyperconverged-operator.v4.8.0 : Note that this package has 1..N bundles compatible with 4.9
+    - container-native-virtualization/hco-bundle-registry@sha256:d0aea69adbe85ba64ec810d203e5207ece6b29c4e0a54cc6b2291671b2f50572
+openshift-pipelines-operator-rh:
+    # Bundle: openshift-pipelines-operator.v1.0.1 : Note that this package has 1..N bundles compatible with 4.9
+    - openshift-pipelines-tech-preview/pipelines-rhel8-operator-metadata@sha256:5ee476b093569846e19deca332ff18809f01e46353e0d4d8de10876be60ef3e3
+    # Bundle: openshift-pipelines-operator.v1.1.1 : Note that this package has 1..N bundles compatible with 4.9
+    - openshift-pipelines-tech-preview/pipelines-rhel8-operator-metadata@sha256:aae9c3409971cf612629321aa4657ebc9705b78d6917e30c7c47ebb2d49d25d5
+    # Bundle: redhat-openshift-pipelines-operator.v1.1.2 : Note that this package has 1..N bundles compatible with 4.9
+    - openshift-pipelines-tech-preview/pipelines-rhel8-operator-metadata@sha256:3e953a2a4910d026672681f97bdb8bfbc0c0ce21ed74790df254d8398ee8d7b9
+    # Bundle: redhat-openshift-pipelines-operator.v1.2.0 : Note that this package has 1..N bundles compatible with 4.9
+    - openshift-pipelines-tech-preview/pipelines-rhel8-operator-metadata@sha256:04007ddaa0c12d6c38ef11a3e24bc5a0f451476292a81c7fb2d17d03fb785c3e
+    # Bundle: redhat-openshift-pipelines-operator.v1.2.1 : Note that this package has 1..N bundles compatible with 4.9
+    - openshift-pipelines-tech-preview/pipelines-rhel8-operator-metadata@sha256:2371ccddc7b04c70ee75477cca6cd832b19c9a8c63f67f3a0127dd970506e30a
+    # Bundle: redhat-openshift-pipelines-operator.v1.2.2 : Note that this package has 1..N bundles compatible with 4.9
+    - openshift-pipelines-tech-preview/pipelines-rhel8-operator-metadata@sha256:f7f29ecf9f6aa87d8eafa967996b3323bf0eb86cd612524dbe2327accc1c5f8e
+    # Bundle: redhat-openshift-pipelines-operator.v1.2.3 : Note that this package has 1..N bundles compatible with 4.9
+    - openshift-pipelines-tech-preview/pipelines-rhel8-operator-metadata@sha256:0f4b4082d0b087da0a56cf43ce17763925ac2bca743bf1ef164a38375ae3c5a4
+    # Bundle: redhat-openshift-pipelines.v1.3.0 : Note that this package has 1..N bundles compatible with 4.9
+    - openshift-pipelines-tech-preview/pipelines-rhel8-operator-metadata@sha256:4521df2f43b4b0d3d305c4a85621675b02da17c58d9f40a6f616bb40934c86f7
+    # Bundle: redhat-openshift-pipelines.v1.3.1 : Note that this package has 1..N bundles compatible with 4.9
+    - openshift-pipelines-tech-preview/pipelines-rhel8-operator-metadata@sha256:ee6146e6d1e2417190f690ec9173c756b5115b36d450422aa2e94ad564cb51a5
+    # Bundle: redhat-openshift-pipelines.v1.4.0 : Note that this package has 1..N bundles compatible with 4.9
+    - openshift-pipelines/pipelines-operator-bundle@sha256:4a8a4f4dc20909ad47a0e357f22a8d50763afd515c1c2c607a3df90f1dac0d34
+    # Bundle: redhat-openshift-pipelines.v1.5.0 : Note that this package has 1..N bundles compatible with 4.9
+    - openshift-pipelines/pipelines-operator-bundle@sha256:d4c28d783105a9efae2bd20f199ad1b21904602cbefc3ba8c31a938ff49e7e9f
+performance-addon-operator:
+    # Bundle: performance-addon-operator.v4.4.1 : Note that this package has 1..N bundles compatible with 4.9
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:52b92063ab262de4eccd82b3e276bc464448a552f47f019b13f5bc03603ab3a1
+    # Bundle: performance-addon-operator.v4.5.4 : Note that this package has 1..N bundles compatible with 4.9
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:d822388c726075230f1eb6e9fd26a99291590bc267d76fde7b7137eb737e46fd
+    # Bundle: performance-addon-operator.v4.6.3 : Note that this package has 1..N bundles compatible with 4.9
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:cb3c005ede341aba4e9c42b7461474e67ec810461287ca9f174565c12dced7f0
+    # Bundle: performance-addon-operator.v4.7.3 : Note that this package has 1..N bundles compatible with 4.9
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:51eeb8f196464a6a0046984592701073b5788ab54420a097054909dbb926c8b1
+    # Bundle: performance-addon-operator.v4.8.0 : Note that this package has 1..N bundles compatible with 4.9
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:d1fd434f371a7c06d6a20b39297765858ba6579931946c86e7226d046bcd98c3
+service-registry-operator:
+    # Bundle: service-registry-operator.v1.0.0 : Note that this package has 1..N bundles compatible with 4.9
+    - integration/service-registry-rhel8-operator-metadata@sha256:49b50e2b4cfe341a30f6d4f8e8a6d411da7926335bd22a2397ba37acaf1ce756
+    # Bundle: service-registry-operator.v1.0.1 : Note that this package has 1..N bundles compatible with 4.9
+    - integration/service-registry-rhel8-operator-metadata@sha256:39b0ba26ea73c6ba54c8ce0c86c2563a3284e5690f091a0536c9722e4f11d62a
+    # Bundle: service-registry-operator.v1.0.2 : Note that this package has 1..N bundles compatible with 4.9
+    - integration/service-registry-rhel8-operator-metadata@sha256:31c7dd275bc4c2b0d9ead9c2002963485791b279a90174191826236ac624a44b
+    # Bundle: service-registry-operator.v1.1.0 : Note that this package has 1..N bundles compatible with 4.9
+    - integration/service-registry-rhel8-operator-metadata@sha256:720fd4d865f4e4a404d9a7846d5608b87d540f87a49cb5161ce383be0233d4b4
+    # Bundle: service-registry-operator.v1.1.1 : Note that this package has 1..N bundles compatible with 4.9
+    - integration/service-registry-rhel8-operator-metadata@sha256:a4f5b333f7009001bc27849f752aaf71daf03a534e65b59b88463e2b8ddce8f4
+    # Bundle: service-registry-operator.v1.1.2 : Note that this package has 1..N bundles compatible with 4.9
+    - integration/service-registry-rhel8-operator-metadata@sha256:6269cb4e07a545c4b06557e7a3f3e6969c51cbc4fb13efcd593b4c045207bd06
+    # Bundle: service-registry-operator.v1.1.3 : Note that this package has 1..N bundles compatible with 4.9
+    - integration/service-registry-rhel8-operator-metadata@sha256:a21153027b7a1146752cabb02f53bd2e7f5b72af3af38bd822e214e83e046f31
+    # Bundle: service-registry-operator.v2.0.0 : Note that this package has 1..N bundles compatible with 4.9
+    - integration/service-registry-rhel8-operator-metadata@sha256:93da36db720902a958cfe3df7b0c67a96bd0fc2cf57f52c205f1e0dde8764bcd
+    # Bundle: service-registry-operator.v2.0.1 : Note that this package has 1..N bundles compatible with 4.9
+    - integration/service-registry-rhel8-operator-metadata@sha256:042a75d8910d68719bdc28a59d735a871986e3ceeb11ed135ebd1d7991a6df7c
+submariner:
+    # Bundle: submariner.v0.8.1 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2-tech-preview/submariner-operator-bundle@sha256:0de0f0ee7078e566f0ce21dcfb4eb9f0177ddc790a8a575b967635259df51da5
+    # Bundle: submariner.v0.9.0 : Note that this package has 1..N bundles compatible with 4.9
+    - rhacm2-tech-preview/submariner-operator-bundle@sha256:7725b42971d6735cda68cac2cc46c39b972c8694d2ed21a203551912183aa90c
