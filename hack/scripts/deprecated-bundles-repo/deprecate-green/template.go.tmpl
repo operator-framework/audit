@@ -1,0 +1,4 @@
+{{ with .Deprecated }}{{ range . }}{{ .PackageName }}:{{ with .Bundles }}{{ range . }}
+    # Bundle: {{ .Details }} : Note that this package has 1..N bundles compatible with 4.9
+    - {{ .Paths }}{{ end }}{{ end }}
+{{ end }}{{ end }}

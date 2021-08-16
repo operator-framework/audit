@@ -19,6 +19,8 @@
 // The following script uses the JSON format output image to
 // generates the deprecate.yml file with all bundles which requires
 // to be deprecated because are using the APIs which will be removed on ocp 4.9 .
+// Note that is equals the deprecate-all but will only return the cases where
+// we can found a compatible path with 4.9
 package main
 
 import (
@@ -29,6 +31,8 @@ import (
 	"sort"
 	"strings"
 	"text/template"
+
+	"github.com/operator-framework/audit/pkg/reports/custom"
 
 	"github.com/operator-framework/audit/pkg"
 	"github.com/operator-framework/audit/pkg/reports/bundles"
@@ -105,12 +109,30 @@ func main() {
 		mapPackagesWithBundles[""] = all
 	}
 
+	apiDashReport, err := getAPIDashForImage(path)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	// filter by all pkgs which has only deprecated APIs
 	hasDeprecated := make(map[string][]bundles.Column)
 	for key, bundles := range mapPackagesWithBundles {
 		for _, b := range bundles {
 			if len(b.KindsDeprecateAPIs) > 0 {
-				hasDeprecated[key] = mapPackagesWithBundles[key]
+				// Check if the bundle is from a pkg that is describe as
+				// green in the custom deprecate API dashboard. In this
+				// report we want only the cases that has a valid path for
+				// 4.9
+				found := false
+				for _, v := range apiDashReport.OK {
+					if v.Name == b.PackageName {
+						found = true
+						break
+					}
+				}
+				if found {
+					hasDeprecated[key] = mapPackagesWithBundles[key]
+				}
 			}
 		}
 	}
@@ -140,17 +162,30 @@ func main() {
 		return allDeprecated[i].PackageName < allDeprecated[j].PackageName
 	})
 
-	f, err := os.Create(filepath.Join(currentPath, "hack/scripts/deprecated-bundles-repo/deprecate-all/deprecated.yml"))
+	f, err := os.Create(filepath.Join(currentPath, "hack/scripts/deprecated-bundles-repo/deprecate-green/deprecated.yml"))
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	defer f.Close()
 
-	t := template.Must(template.ParseFiles(filepath.Join(currentPath, "hack/scripts/deprecated-bundles-repo/deprecate-all/template.go.tmpl")))
+	t := template.Must(template.ParseFiles(filepath.Join(currentPath, "hack/scripts/deprecated-bundles-repo/deprecate-green/template.go.tmpl")))
 	err = t.Execute(f, File{allDeprecated})
 	if err != nil {
 		panic(err)
 	}
 
+}
+
+func getAPIDashForImage(image string) (*custom.APIDashReport, error) {
+	// Update here the path of the JSON report for the image that you would like to be used
+	custom.Flags.File = image
+
+	bundlesReport, err := custom.ParseBundlesJSONReport()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	apiDashReport := custom.NewAPIDashReport(bundlesReport)
+	return apiDashReport, err
 }
