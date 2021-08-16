@@ -14,7 +14,12 @@
 
 package hack
 
-import "strings"
+import (
+	"errors"
+	"io/ioutil"
+	"os"
+	"strings"
+)
 
 const ReportsPath = "testdata/reports/"
 const BinPath = "bin/audit-tool"
@@ -29,4 +34,24 @@ func GetImageNameToCreateDir(v string) string {
 	name = strings.ReplaceAll(name, ":", "_")
 	name = strings.ReplaceAll(name, "-", "_")
 	return name
+}
+
+func ReplaceInFile(path, old, new string) error {
+	info, err := os.Stat(path)
+	if err != nil {
+		return err
+	}
+	b, err := ioutil.ReadFile(path)
+	if err != nil {
+		return err
+	}
+	if !strings.Contains(string(b), old) {
+		return errors.New("unable to find the content to be replaced")
+	}
+	s := strings.Replace(string(b), old, new, -1)
+	err = ioutil.WriteFile(path, []byte(s), info.Mode())
+	if err != nil {
+		return err
+	}
+	return nil
 }
