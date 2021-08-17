@@ -20,7 +20,7 @@
 // generates the output.yml file which has all packages which still
 // are without a head of channel compatible with 4.9.
 // The idea is provide a helper to allow to send emails to notify their authors
-// Example of usage:
+// Example of usage: (see that we leave makefile target to help you out here)
 // nolint: lll
 // go run hack/scripts/ivs-emails/generate.go --mongo=mongo-query-join-results-prod.json --image=testdata/reports/redhat_certified_operator_index/bundles_registry.redhat.io_redhat_certified_operator_index_v4.8_2021-08-10.json
 // go run hack/scripts/ivs-emails/generate.go --mongo=mongo-query-join-results-prod.json --image=testdata/reports/redhat_redhat_marketplace_index/bundles_registry.redhat.io_redhat_redhat_marketplace_index_v4.8_2021-08-06.json
@@ -34,20 +34,29 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
-	"text/template"
 
+	"github.com/operator-framework/audit/hack"
 	"github.com/operator-framework/audit/pkg"
 	"github.com/operator-framework/audit/pkg/reports/custom"
 )
 
+type MongoContacts struct {
+	Type  string `json:"type"`
+	Email string `json:"email_address"`
+}
+
+type CertProject struct {
+	Contacts []MongoContacts `json:"contacts,omitempty"`
+}
+
 type MongoItems struct {
-	Association string `json:"association"`
-	PackageName string `json:"package_name"`
+	Association string        `json:"association"`
+	PackageName string        `json:"package_name"`
+	CertProject []CertProject `json:"cert_project,omitempty"`
 }
 
 type Item struct {
-	PackageName string
-	Association string
+	MongoItem MongoItems
 }
 
 type ImageData struct {
@@ -94,15 +103,20 @@ func main() {
 	result.Items = items
 	result.ImageData = image
 
-	f, err := os.Create(filepath.Join(currentPath, pkg.GetReportName(result.ImageData.ImageName, "ivs", "yaml")))
+	fp := filepath.Join(currentPath, pkg.GetReportName(result.ImageData.ImageName, "ivs", "json"))
+	f, err := os.Create(fp)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	defer f.Close()
 
-	t := template.Must(template.ParseFiles(filepath.Join(currentPath, "hack/scripts/ivs-emails/template.go.tmpl")))
-	err = t.Execute(f, result)
+	jsonResult, err := json.MarshalIndent(result, "", "\t")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = hack.ReplaceInFile(fp, "", string(jsonResult))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -117,18 +131,18 @@ func getData(image string, mongoValues []MongoItems) ([]Item, ImageData) {
 
 	var items []Item
 	for _, pkg := range apiDashReport.PartialComplying {
-		ass := "N/A"
+		mg := MongoItems{PackageName: pkg.Name, Association: "N/A"}
 		for _, m := range mongoValues {
 			if m.PackageName == pkg.Name {
-				ass = m.Association
+				mg = m
 				break
 			}
 		}
-		items = append(items, Item{pkg.Name, ass})
+		items = append(items, Item{MongoItem: mg})
 	}
 
 	sort.Slice(items[:], func(i, j int) bool {
-		return items[i].PackageName < items[j].PackageName
+		return items[i].MongoItem.PackageName < items[j].MongoItem.PackageName
 	})
 
 	var imageData ImageData
@@ -136,7 +150,6 @@ func getData(image string, mongoValues []MongoItems) ([]Item, ImageData) {
 	imageData.ImageName = apiDashReport.ImageName
 	imageData.ImageBuild = apiDashReport.ImageBuild
 	imageData.ImageID = apiDashReport.ImageID
-	imageData.ImageHash = apiDashReport.ImageHash
 	imageData.GeneratedAt = apiDashReport.GeneratedAt
 
 	return items, imageData
