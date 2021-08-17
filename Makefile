@@ -96,3 +96,10 @@ generate-dashboards:
 	go run ./hack/deprecate-api/generate.go
 	go run ./hack/grade/generate.go
 	go run ./hack/index/generate.go
+
+## @Helpers - Deprecated implementations
+.PHONY: generate-deprecate-green ## This method should be remove soon. It is only an internal helper
+generate-deprecate-green: ## ensure that you have update the the date of the report.
+	go run ./hack/scripts/deprecated-bundles-repo/deprecate-green/deprecated_index.go --image=testdata/reports/redhat_certified_operator_index/bundles_registry.redhat.io_redhat_certified_operator_index_v4.8_2021-08-16.json
+	go run ./hack/scripts/deprecated-bundles-repo/deprecate-green/deprecated_index.go --image=testdata/reports/redhat_redhat_marketplace_index/bundles_registry.redhat.io_redhat_redhat_marketplace_index_v4.8_2021-08-16.json
+	go run ./hack/scripts/deprecated-bundles-repo/deprecate-green/deprecated_index.go --image=testdata/reports/redhat_redhat_operator_index/bundles_registry.redhat.io_redhat_redhat_operator_index_v4.8_2021-08-15.json
