@@ -103,8 +103,8 @@
             <h5 class="display-12 fw-bold">3. What does it mean for a package to be in red, amber or green?</h5>
             <ul>
                 <li> <b>(Red) Not complying:</b> these are packages which have no head of channel bundles compatible with 4.9(uses removed API(s) on k8s 1.22/ocp 4.9), and no head of channel has a Max OCP annotation set </li>
-                <li> <b>(Green) Complying:</b> these are packages which have no head of channel bundles compatible with 4.9(uses removed API(s) in k8s 1.22/ocp 4.9) or at least has one of the head channel bundles compatible with 4.9 and the rest of the head channel bundles uses the Max OCP version annotation properly</li>
-                <li> <b>(Amber) Partially Complying:</b> these are packages which are not in red or green falls in the amber category. The ones that are partially complying with the requirements but not fully.</li>
+                <li> <b>(Green) Complying:</b> these are packages for which all head of channel bundles are compatible with 4.9(do not use removed API(s) in k8s 1.22/ocp 4.9) or at least has one of the head of channel bundles is compatible with 4.9 and the rest of the head of channel bundles use the Max OCP version annotation properly</li>
+                <li> <b>(Amber) Partially Complying:</b> these are packages which are not in red or green falls in the amber category. The ones that are partially complying with the requirements but not fully.  E.g. at least one head of channel bundles is not compatible with 4.9 and does not declare an appropriate Max OCP version, or none of the head of channel bundles are compatible with 4.9.</li>
             </ul>
 </div>
 
@@ -210,7 +210,7 @@
                 
                     
                         <tr>
-                            <th>openshift-jenkins-operator</th>
+                            <th>amq7-interconnect-operator</th>
                             <th>
                                 <ul>
                                 
@@ -221,188 +221,26 @@
                              <th>
                                  <ul>
                                     
-                                        <li>alpha</li>
+                                        <li>1.2.0</li>
+                                    
+                                        <li>1.10.x</li>
                                     
                                  </ul>
                              </th>
                             <th>
                               <ul>
                                  
-                                     <li>jenkins-operator.0.7.1 - (label=v4.6,max=4.8,channels=[alpha],head:YES)</li>
+                                     <li>amq7-interconnect-operator.v1.10.1 - (label=v4.5-v4.8,max=4.8,channels=[1.2.0 1.10.x],head:YES)</li>
                                  
-                              </ul>
-                            </th>
-                            <th>
-                              <ul>
+                                     <li>amq7-interconnect-operator.v1.2.0 - (label=v4.5,v4.6,max=4.8,channels=[1.2.0 1.10.x],head:NO)</li>
                                  
-                              </ul>
-                            </th>
-                        </tr>
-                    
-                        <tr>
-                            <th>amq-broker</th>
-                            <th>
-                                <ul>
-                                
-                                    <li>CRD</li>
-                                
-                                </ul>
-                            </th>
-                             <th>
-                                 <ul>
-                                    
-                                        <li>current</li>
-                                    
-                                        <li>7.x</li>
-                                    
-                                        <li>7.8.x</li>
-                                    
-                                        <li>current-76</li>
-                                    
-                                        <li>alpha</li>
-                                    
-                                 </ul>
-                             </th>
-                            <th>
-                              <ul>
+                                     <li>amq7-interconnect-operator.v1.2.1 - (label=v4.5,v4.6,max=4.8,channels=[1.2.0 1.10.x],head:NO)</li>
                                  
-                                     <li>amq-broker-operator.v0.13.0 - (label=v4.5,max=4.8,channels=[current 7.x 7.8.x current-76],head:YES)</li>
+                                     <li>amq7-interconnect-operator.v1.2.2 - (label=v4.5,v4.6,max=4.8,channels=[1.2.0 1.10.x],head:NO)</li>
                                  
-                                     <li>amq-broker-operator.v0.15.0 - (label=v4.5,max=4.8,channels=[current 7.x 7.8.x],head:NO)</li>
+                                     <li>amq7-interconnect-operator.v1.2.3 - (label=v4.5,v4.6,max=4.8,channels=[1.2.0 1.10.x],head:NO)</li>
                                  
-                                     <li>amq-broker-operator.v0.17.0 - (label=v4.5,max=4.8,channels=[current 7.x 7.8.x],head:NO)</li>
-                                 
-                                     <li>amq-broker-operator.v0.18.0 - (label=v4.5,max=4.8,channels=[current 7.x 7.8.x],head:NO)</li>
-                                 
-                                     <li>amq-broker-operator.v0.19.0 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[current 7.x 7.8.x],head:NO)</li>
-                                 
-                                     <li>amq-broker-operator.v0.9.1 - (label=v4.5,max=4.8,channels=[current 7.x 7.8.x current-76 alpha],head:YES)</li>
-                                 
-                                     <li>amq-broker-operator.v7.8.1-opr-3 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[current 7.x 7.8.x],head:NO)</li>
-                                 
-                                     <li>amq-broker-operator.v7.8.1-opr-4 - (label=v4.5-v4.7,max=4.8,channels=[current 7.x 7.8.x],head:NO)</li>
-                                 
-                                     <li>amq-broker-operator.v7.8.2-opr-1 - (label=v4.5-v4.7,max=4.8,channels=[current 7.x 7.8.x],head:YES)</li>
-                                 
-                              </ul>
-                            </th>
-                            <th>
-                              <ul>
-                                 
-                              </ul>
-                            </th>
-                        </tr>
-                    
-                        <tr>
-                            <th>mtc-operator</th>
-                            <th>
-                                <ul>
-                                
-                                    <li>CRD</li>
-                                
-                                </ul>
-                            </th>
-                             <th>
-                                 <ul>
-                                    
-                                        <li>release-v1.3</li>
-                                    
-                                        <li>release-v1.4</li>
-                                    
-                                        <li>release-v1.5</li>
-                                    
-                                        <li>release-v1.2</li>
-                                    
-                                 </ul>
-                             </th>
-                            <th>
-                              <ul>
-                                 
-                                     <li>mtc-operator.v1.2.5 - (label=v4.5,v4.6,max=4.8,channels=[release-v1.3 release-v1.4 release-v1.2 release-v1.5],head:YES)</li>
-                                 
-                                     <li>mtc-operator.v1.3.0 - (label=v4.5,v4.6,max=4.8,channels=[release-v1.3 release-v1.4 release-v1.5],head:NO)</li>
-                                 
-                                     <li>mtc-operator.v1.3.1 - (label=v4.5,v4.6,max=4.8,channels=[release-v1.3 release-v1.4 release-v1.5],head:NO)</li>
-                                 
-                                     <li>mtc-operator.v1.3.2 - (label=v4.5,v4.6,max=4.8,channels=[release-v1.3 release-v1.4 release-v1.5],head:YES)</li>
-                                 
-                                     <li>mtc-operator.v1.4.0 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[release-v1.4 release-v1.5],head:NO)</li>
-                                 
-                                     <li>mtc-operator.v1.4.1 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[release-v1.4 release-v1.5],head:NO)</li>
-                                 
-                                     <li>mtc-operator.v1.4.2 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[release-v1.4 release-v1.5],head:NO)</li>
-                                 
-                                     <li>mtc-operator.v1.4.3 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[release-v1.4 release-v1.5],head:NO)</li>
-                                 
-                                     <li>mtc-operator.v1.4.4 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[release-v1.4 release-v1.5],head:NO)</li>
-                                 
-                                     <li>mtc-operator.v1.4.5 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[release-v1.4 release-v1.5],head:NO)</li>
-                                 
-                                     <li>mtc-operator.v1.4.6 - (label=v4.5-v4.8,max=&#34;4.8&#34;,channels=[release-v1.4 release-v1.5],head:YES)</li>
-                                 
-                                     <li>mtc-operator.v1.5.0 - (label=v4.5-v4.8,max=&#34;4.8&#34;,channels=[release-v1.5],head:YES)</li>
-                                 
-                              </ul>
-                            </th>
-                            <th>
-                              <ul>
-                                 
-                              </ul>
-                            </th>
-                        </tr>
-                    
-                        <tr>
-                            <th>amq7-cert-manager-operator</th>
-                            <th>
-                                <ul>
-                                
-                                    <li>CRD</li>
-                                
-                                </ul>
-                            </th>
-                             <th>
-                                 <ul>
-                                    
-                                        <li>alpha</li>
-                                    
-                                        <li>1.x</li>
-                                    
-                                 </ul>
-                             </th>
-                            <th>
-                              <ul>
-                                 
-                                     <li>amq7-cert-manager.v1.0.1 - (label=v4.5-v4.8,max=4.8,channels=[alpha 1.x],head:YES)</li>
-                                 
-                              </ul>
-                            </th>
-                            <th>
-                              <ul>
-                                 
-                              </ul>
-                            </th>
-                        </tr>
-                    
-                        <tr>
-                            <th>local-storage-operator</th>
-                            <th>
-                                <ul>
-                                
-                                    <li>CRD</li>
-                                
-                                </ul>
-                            </th>
-                             <th>
-                                 <ul>
-                                    
-                                        <li>4.6</li>
-                                    
-                                 </ul>
-                             </th>
-                            <th>
-                              <ul>
-                                 
-                                     <li>local-storage-operator.4.6.0-202107291702 - (label==v4.6,max=4.8,channels=[4.6],head:YES)</li>
+                                     <li>amq7-interconnect-operator.v1.2.4 - (label=v4.5,v4.6,max=4.8,channels=[1.2.0 1.10.x],head:NO)</li>
                                  
                               </ul>
                             </th>
@@ -450,39 +288,35 @@
                         </tr>
                     
                         <tr>
-                            <th>cincinnati-operator</th>
+                            <th>elasticsearch-operator</th>
                             <th>
                                 <ul>
-                                
-                                    <li>CRD</li>
-                                
-                                    <li>ClusterRole</li>
                                 
                                 </ul>
                             </th>
                              <th>
                                  <ul>
                                     
-                                        <li>v1</li>
+                                        <li>4.6</li>
                                     
                                  </ul>
                              </th>
                             <th>
                               <ul>
                                  
-                                     <li>update-service-operator.v4.6.0 - (label=v4.6,max=4.8,channels=[v1],head:YES)</li>
-                                 
                               </ul>
                             </th>
                             <th>
                               <ul>
+                                 
+                                     <li>elasticsearch-operator.4.6.0-202107291702 - (label==v4.6,max=not set,channels=[4.6],head:YES)</li>
                                  
                               </ul>
                             </th>
                         </tr>
                     
                         <tr>
-                            <th>container-security-operator</th>
+                            <th>quay-bridge-operator</th>
                             <th>
                                 <ul>
                                 
@@ -504,274 +338,34 @@
                             <th>
                               <ul>
                                  
-                                     <li>container-security-operator.v3.3.4 - (label=v4.5,v4.6,max=4.8,channels=[quay-v3.3],head:YES)</li>
+                                     <li>quay-bridge-operator.v3.3.4 - (label=v4.5,v4.6,max=4.8,channels=[quay-v3.3],head:YES)</li>
                                  
-                                     <li>container-security-operator.v3.4.1 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[quay-v3.4],head:NO)</li>
+                                     <li>quay-bridge-operator.v3.4.1 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[quay-v3.4],head:NO)</li>
                                  
-                                     <li>container-security-operator.v3.4.2 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[quay-v3.4],head:NO)</li>
+                                     <li>quay-bridge-operator.v3.4.2 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[quay-v3.4],head:NO)</li>
                                  
-                                     <li>container-security-operator.v3.4.3 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[quay-v3.4],head:NO)</li>
+                                     <li>quay-bridge-operator.v3.4.3 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[quay-v3.4],head:NO)</li>
                                  
-                                     <li>container-security-operator.v3.4.4 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[quay-v3.4],head:NO)</li>
+                                     <li>quay-bridge-operator.v3.4.4 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[quay-v3.4],head:NO)</li>
                                  
-                                     <li>container-security-operator.v3.4.5 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[quay-v3.4],head:NO)</li>
+                                     <li>quay-bridge-operator.v3.4.5 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[quay-v3.4],head:NO)</li>
                                  
-                                     <li>container-security-operator.v3.4.6 - (label=v4.5-v4.8,max=4.8,channels=[quay-v3.4],head:YES)</li>
+                                     <li>quay-bridge-operator.v3.4.6 - (label=v4.5-v4.8,max=4.8,channels=[quay-v3.4],head:YES)</li>
                                  
-                                     <li>container-security-operator.v3.5.1 - (label=v4.5,max=4.8,channels=[quay-v3.5],head:NO)</li>
+                                     <li>quay-bridge-operator.v3.5.1 - (label=v4.5,max=4.8,channels=[quay-v3.5],head:NO)</li>
                                  
-                                     <li>container-security-operator.v3.5.2 - (label=v4.5,max=4.8,channels=[quay-v3.5],head:NO)</li>
+                                     <li>quay-bridge-operator.v3.5.2 - (label=v4.5,max=4.8,channels=[quay-v3.5],head:NO)</li>
                                  
-                                     <li>container-security-operator.v3.5.3 - (label=v4.5,max=4.8,channels=[quay-v3.5],head:NO)</li>
+                                     <li>quay-bridge-operator.v3.5.3 - (label=v4.5,max=4.8,channels=[quay-v3.5],head:NO)</li>
                                  
-                                     <li>container-security-operator.v3.5.4 - (label=v4.5,max=4.8,channels=[quay-v3.5],head:NO)</li>
+                                     <li>quay-bridge-operator.v3.5.4 - (label=v4.5,max=4.8,channels=[quay-v3.5],head:NO)</li>
                                  
-                                     <li>container-security-operator.v3.5.5 - (label=v4.5,max=4.8,channels=[quay-v3.5],head:YES)</li>
-                                 
-                              </ul>
-                            </th>
-                            <th>
-                              <ul>
-                                 
-                              </ul>
-                            </th>
-                        </tr>
-                    
-                        <tr>
-                            <th>openshift-gitops-operator</th>
-                            <th>
-                                <ul>
-                                
-                                    <li>CRD</li>
-                                
-                                </ul>
-                            </th>
-                             <th>
-                                 <ul>
-                                    
-                                        <li>preview</li>
-                                    
-                                 </ul>
-                             </th>
-                            <th>
-                              <ul>
-                                 
-                                     <li>openshift-gitops-operator.v1.0.0 - (label=v4.6,max=4.8,channels=[preview],head:YES)</li>
+                                     <li>quay-bridge-operator.v3.5.5 - (label=v4.5,max=4.8,channels=[quay-v3.5],head:YES)</li>
                                  
                               </ul>
                             </th>
                             <th>
                               <ul>
-                                 
-                              </ul>
-                            </th>
-                        </tr>
-                    
-                        <tr>
-                            <th>ocs-operator</th>
-                            <th>
-                                <ul>
-                                
-                                    <li>CRD</li>
-                                
-                                    <li>ClusterRole</li>
-                                
-                                    <li>ClusterRoleBinding</li>
-                                
-                                    <li>Role</li>
-                                
-                                    <li>RoleBinding</li>
-                                
-                                </ul>
-                            </th>
-                             <th>
-                                 <ul>
-                                    
-                                        <li>stable-4.6</li>
-                                    
-                                        <li>eus-4.6</li>
-                                    
-                                        <li>stable-4.5</li>
-                                    
-                                 </ul>
-                             </th>
-                            <th>
-                              <ul>
-                                 
-                                     <li>ocs-operator.v4.5.2 - (label=v4.5,v4.6,max=4.8,channels=[stable-4.5],head:YES)</li>
-                                 
-                                     <li>ocs-operator.v4.6.6 - (label=v4.5-v4.7,max=4.8,channels=[stable-4.6 eus-4.6],head:YES)</li>
-                                 
-                              </ul>
-                            </th>
-                            <th>
-                              <ul>
-                                 
-                              </ul>
-                            </th>
-                        </tr>
-                    
-                        <tr>
-                            <th>sriov-network-operator</th>
-                            <th>
-                                <ul>
-                                
-                                </ul>
-                            </th>
-                             <th>
-                                 <ul>
-                                    
-                                        <li>4.6</li>
-                                    
-                                 </ul>
-                             </th>
-                            <th>
-                              <ul>
-                                 
-                              </ul>
-                            </th>
-                            <th>
-                              <ul>
-                                 
-                                     <li>sriov-network-operator.4.6.0-202107300640 - (label==v4.6,max=not set,channels=[4.6],head:YES)</li>
-                                 
-                              </ul>
-                            </th>
-                        </tr>
-                    
-                        <tr>
-                            <th>cluster-logging</th>
-                            <th>
-                                <ul>
-                                
-                                </ul>
-                            </th>
-                             <th>
-                                 <ul>
-                                    
-                                        <li>4.6</li>
-                                    
-                                 </ul>
-                             </th>
-                            <th>
-                              <ul>
-                                 
-                              </ul>
-                            </th>
-                            <th>
-                              <ul>
-                                 
-                                     <li>clusterlogging.4.6.0-202107292226 - (label==v4.6,max=not set,channels=[4.6],head:YES)</li>
-                                 
-                              </ul>
-                            </th>
-                        </tr>
-                    
-                        <tr>
-                            <th>vertical-pod-autoscaler</th>
-                            <th>
-                                <ul>
-                                
-                                    <li>CRD</li>
-                                
-                                </ul>
-                            </th>
-                             <th>
-                                 <ul>
-                                    
-                                        <li>4.6</li>
-                                    
-                                 </ul>
-                             </th>
-                            <th>
-                              <ul>
-                                 
-                                     <li>verticalpodautoscaler.4.6.0-202107291702 - (label==v4.6,max=4.8,channels=[4.6],head:YES)</li>
-                                 
-                              </ul>
-                            </th>
-                            <th>
-                              <ul>
-                                 
-                              </ul>
-                            </th>
-                        </tr>
-                    
-                        <tr>
-                            <th>amq7-interconnect-operator</th>
-                            <th>
-                                <ul>
-                                
-                                    <li>CRD</li>
-                                
-                                </ul>
-                            </th>
-                             <th>
-                                 <ul>
-                                    
-                                        <li>1.2.0</li>
-                                    
-                                        <li>1.10.x</li>
-                                    
-                                 </ul>
-                             </th>
-                            <th>
-                              <ul>
-                                 
-                                     <li>amq7-interconnect-operator.v1.10.1 - (label=v4.5-v4.8,max=4.8,channels=[1.2.0 1.10.x],head:YES)</li>
-                                 
-                                     <li>amq7-interconnect-operator.v1.2.0 - (label=v4.5,v4.6,max=4.8,channels=[1.2.0 1.10.x],head:NO)</li>
-                                 
-                                     <li>amq7-interconnect-operator.v1.2.1 - (label=v4.5,v4.6,max=4.8,channels=[1.2.0 1.10.x],head:NO)</li>
-                                 
-                                     <li>amq7-interconnect-operator.v1.2.2 - (label=v4.5,v4.6,max=4.8,channels=[1.2.0 1.10.x],head:NO)</li>
-                                 
-                                     <li>amq7-interconnect-operator.v1.2.3 - (label=v4.5,v4.6,max=4.8,channels=[1.2.0 1.10.x],head:NO)</li>
-                                 
-                                     <li>amq7-interconnect-operator.v1.2.4 - (label=v4.5,v4.6,max=4.8,channels=[1.2.0 1.10.x],head:NO)</li>
-                                 
-                              </ul>
-                            </th>
-                            <th>
-                              <ul>
-                                 
-                              </ul>
-                            </th>
-                        </tr>
-                    
-                        <tr>
-                            <th>performance-addon-operator</th>
-                            <th>
-                                <ul>
-                                
-                                    <li>CRD</li>
-                                
-                                </ul>
-                            </th>
-                             <th>
-                                 <ul>
-                                    
-                                        <li>4.5</li>
-                                    
-                                        <li>4.4</li>
-                                    
-                                        <li>4.6</li>
-                                    
-                                 </ul>
-                             </th>
-                            <th>
-                              <ul>
-                                 
-                                     <li>performance-addon-operator.v4.4.1 - (label=v4.5,max=4.8,channels=[4.4],head:YES)</li>
-                                 
-                                     <li>performance-addon-operator.v4.5.4 - (label=v4.5,max=4.8,channels=[4.5],head:YES)</li>
-                                 
-                              </ul>
-                            </th>
-                            <th>
-                              <ul>
-                                 
-                                     <li>performance-addon-operator.v4.6.4 - (label==v4.6,max=not set,channels=[4.6],head:YES)</li>
                                  
                               </ul>
                             </th>
@@ -888,42 +482,6 @@
                         </tr>
                     
                         <tr>
-                            <th>red-hat-camel-k</th>
-                            <th>
-                                <ul>
-                                
-                                    <li>CRD</li>
-                                
-                                </ul>
-                            </th>
-                             <th>
-                                 <ul>
-                                    
-                                        <li>techpreview</li>
-                                    
-                                 </ul>
-                             </th>
-                            <th>
-                              <ul>
-                                 
-                                     <li>red-hat-camel-k-operator.v1.3.0 - (label=v4.6,max=4.8,channels=[techpreview],head:NO)</li>
-                                 
-                                     <li>red-hat-camel-k-operator.v1.3.1 - (label=v4.6,max=4.8,channels=[techpreview],head:NO)</li>
-                                 
-                                     <li>red-hat-camel-k-operator.v1.3.2 - (label=v4.6,max=4.8,channels=[techpreview],head:NO)</li>
-                                 
-                                     <li>red-hat-camel-k-operator.v1.3.3 - (label=v4.6,max=4.8,channels=[techpreview],head:YES)</li>
-                                 
-                              </ul>
-                            </th>
-                            <th>
-                              <ul>
-                                 
-                              </ul>
-                            </th>
-                        </tr>
-                    
-                        <tr>
                             <th>eap</th>
                             <th>
                                 <ul>
@@ -968,6 +526,350 @@
                         </tr>
                     
                         <tr>
+                            <th>ansible-automation-platform-operator</th>
+                            <th>
+                                <ul>
+                                
+                                    <li>CRD</li>
+                                
+                                </ul>
+                            </th>
+                             <th>
+                                 <ul>
+                                    
+                                        <li>early-access</li>
+                                    
+                                 </ul>
+                             </th>
+                            <th>
+                              <ul>
+                                 
+                                     <li>ansible-automation-platform-operator.v2.0.0 - (label=v4.6-v4.8,max=4.8,channels=[early-access],head:YES)</li>
+                                 
+                              </ul>
+                            </th>
+                            <th>
+                              <ul>
+                                 
+                              </ul>
+                            </th>
+                        </tr>
+                    
+                        <tr>
+                            <th>gatekeeper-operator-product</th>
+                            <th>
+                                <ul>
+                                
+                                    <li>ClusterRole</li>
+                                
+                                    <li>CRD</li>
+                                
+                                </ul>
+                            </th>
+                             <th>
+                                 <ul>
+                                    
+                                        <li>stable</li>
+                                    
+                                 </ul>
+                             </th>
+                            <th>
+                              <ul>
+                                 
+                                     <li>gatekeeper-operator-product.v0.1.1 - (label=v4.5,v4.6,max=4.8,channels=[stable],head:NO)</li>
+                                 
+                                     <li>gatekeeper-operator-product.v0.1.2 - (label=v4.5,v4.6,max=4.8,channels=[stable],head:NO)</li>
+                                 
+                                     <li>gatekeeper-operator-product.v0.1.2-0.1624366317.p - (label=v4.6-v4.8,max=4.8,channels=[stable],head:NO)</li>
+                                 
+                                     <li>gatekeeper-operator-product.v0.1.2-0.1627931308 - (label=v4.6-v4.8,max=&#34;4.8&#34;,channels=[stable],head:YES)</li>
+                                 
+                              </ul>
+                            </th>
+                            <th>
+                              <ul>
+                                 
+                              </ul>
+                            </th>
+                        </tr>
+                    
+                        <tr>
+                            <th>openshift-jenkins-operator</th>
+                            <th>
+                                <ul>
+                                
+                                    <li>CRD</li>
+                                
+                                </ul>
+                            </th>
+                             <th>
+                                 <ul>
+                                    
+                                        <li>alpha</li>
+                                    
+                                 </ul>
+                             </th>
+                            <th>
+                              <ul>
+                                 
+                                     <li>jenkins-operator.0.7.1 - (label=v4.6,max=4.8,channels=[alpha],head:YES)</li>
+                                 
+                              </ul>
+                            </th>
+                            <th>
+                              <ul>
+                                 
+                              </ul>
+                            </th>
+                        </tr>
+                    
+                        <tr>
+                            <th>container-security-operator</th>
+                            <th>
+                                <ul>
+                                
+                                    <li>CRD</li>
+                                
+                                </ul>
+                            </th>
+                             <th>
+                                 <ul>
+                                    
+                                        <li>quay-v3.3</li>
+                                    
+                                        <li>quay-v3.5</li>
+                                    
+                                        <li>quay-v3.4</li>
+                                    
+                                 </ul>
+                             </th>
+                            <th>
+                              <ul>
+                                 
+                                     <li>container-security-operator.v3.3.4 - (label=v4.5,v4.6,max=4.8,channels=[quay-v3.3],head:YES)</li>
+                                 
+                                     <li>container-security-operator.v3.4.1 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[quay-v3.4],head:NO)</li>
+                                 
+                                     <li>container-security-operator.v3.4.2 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[quay-v3.4],head:NO)</li>
+                                 
+                                     <li>container-security-operator.v3.4.3 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[quay-v3.4],head:NO)</li>
+                                 
+                                     <li>container-security-operator.v3.4.4 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[quay-v3.4],head:NO)</li>
+                                 
+                                     <li>container-security-operator.v3.4.5 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[quay-v3.4],head:NO)</li>
+                                 
+                                     <li>container-security-operator.v3.4.6 - (label=v4.5-v4.8,max=4.8,channels=[quay-v3.4],head:YES)</li>
+                                 
+                                     <li>container-security-operator.v3.5.1 - (label=v4.5,max=4.8,channels=[quay-v3.5],head:NO)</li>
+                                 
+                                     <li>container-security-operator.v3.5.2 - (label=v4.5,max=4.8,channels=[quay-v3.5],head:NO)</li>
+                                 
+                                     <li>container-security-operator.v3.5.3 - (label=v4.5,max=4.8,channels=[quay-v3.5],head:NO)</li>
+                                 
+                                     <li>container-security-operator.v3.5.4 - (label=v4.5,max=4.8,channels=[quay-v3.5],head:NO)</li>
+                                 
+                                     <li>container-security-operator.v3.5.5 - (label=v4.5,max=4.8,channels=[quay-v3.5],head:YES)</li>
+                                 
+                              </ul>
+                            </th>
+                            <th>
+                              <ul>
+                                 
+                              </ul>
+                            </th>
+                        </tr>
+                    
+                        <tr>
+                            <th>ptp-operator</th>
+                            <th>
+                                <ul>
+                                
+                                </ul>
+                            </th>
+                             <th>
+                                 <ul>
+                                    
+                                        <li>4.6</li>
+                                    
+                                 </ul>
+                             </th>
+                            <th>
+                              <ul>
+                                 
+                              </ul>
+                            </th>
+                            <th>
+                              <ul>
+                                 
+                                     <li>ptp-operator.4.6.0-202107291702 - (label==v4.6,max=not set,channels=[4.6],head:YES)</li>
+                                 
+                              </ul>
+                            </th>
+                        </tr>
+                    
+                        <tr>
+                            <th>cluster-logging</th>
+                            <th>
+                                <ul>
+                                
+                                </ul>
+                            </th>
+                             <th>
+                                 <ul>
+                                    
+                                        <li>4.6</li>
+                                    
+                                 </ul>
+                             </th>
+                            <th>
+                              <ul>
+                                 
+                              </ul>
+                            </th>
+                            <th>
+                              <ul>
+                                 
+                                     <li>clusterlogging.4.6.0-202107292226 - (label==v4.6,max=not set,channels=[4.6],head:YES)</li>
+                                 
+                              </ul>
+                            </th>
+                        </tr>
+                    
+                        <tr>
+                            <th>amq-streams</th>
+                            <th>
+                                <ul>
+                                
+                                    <li>CRD</li>
+                                
+                                </ul>
+                            </th>
+                             <th>
+                                 <ul>
+                                    
+                                        <li>amq-streams-1.x</li>
+                                    
+                                        <li>stable</li>
+                                    
+                                        <li>amq-streams-1.7.x</li>
+                                    
+                                        <li>amq-streams-1.6.x</li>
+                                    
+                                 </ul>
+                             </th>
+                            <th>
+                              <ul>
+                                 
+                                     <li>amqstreams.v1.5.4 - (label=v4.5,max=4.8,channels=[amq-streams-1.x stable amq-streams-1.7.x amq-streams-1.6.x],head:NO)</li>
+                                 
+                                     <li>amqstreams.v1.6.0 - (label=v4.5,max=4.8,channels=[amq-streams-1.x stable amq-streams-1.7.x amq-streams-1.6.x],head:NO)</li>
+                                 
+                                     <li>amqstreams.v1.6.1 - (label=v4.5,max=4.8,channels=[amq-streams-1.x stable amq-streams-1.7.x amq-streams-1.6.x],head:NO)</li>
+                                 
+                                     <li>amqstreams.v1.6.2 - (label=v4.5,max=4.8,channels=[amq-streams-1.x stable amq-streams-1.7.x amq-streams-1.6.x],head:NO)</li>
+                                 
+                                     <li>amqstreams.v1.6.3 - (label=v4.5,max=4.8,channels=[amq-streams-1.x stable amq-streams-1.7.x amq-streams-1.6.x],head:YES)</li>
+                                 
+                                     <li>amqstreams.v1.7.0 - (label=v4.6,max=4.8,channels=[amq-streams-1.x stable amq-streams-1.7.x],head:NO)</li>
+                                 
+                                     <li>amqstreams.v1.7.1 - (label=v4.6,max=4.8,channels=[amq-streams-1.x stable amq-streams-1.7.x],head:NO)</li>
+                                 
+                                     <li>amqstreams.v1.7.2 - (label=v4.6,max=4.8,channels=[amq-streams-1.x stable amq-streams-1.7.x],head:NO)</li>
+                                 
+                                     <li>amqstreams.v1.7.3 - (label=v4.6,max=4.8,channels=[amq-streams-1.x stable amq-streams-1.7.x],head:YES)</li>
+                                 
+                              </ul>
+                            </th>
+                            <th>
+                              <ul>
+                                 
+                              </ul>
+                            </th>
+                        </tr>
+                    
+                        <tr>
+                            <th>serverless-operator</th>
+                            <th>
+                                <ul>
+                                
+                                    <li>CRD</li>
+                                
+                                </ul>
+                            </th>
+                             <th>
+                                 <ul>
+                                    
+                                        <li>4.5</li>
+                                    
+                                        <li>4.3</li>
+                                    
+                                        <li>4.4</li>
+                                    
+                                        <li>4.7</li>
+                                    
+                                        <li>4.6</li>
+                                    
+                                        <li>stable</li>
+                                    
+                                 </ul>
+                             </th>
+                            <th>
+                              <ul>
+                                 
+                                     <li>serverless-operator.v1.0.0 - (label=v4.5,max=4.8,channels=[4.5 4.3 4.4 4.7 4.6 stable],head:NO)</li>
+                                 
+                                     <li>serverless-operator.v1.1.0 - (label=v4.5,max=4.8,channels=[4.5 4.3 4.4 4.7 4.6 stable],head:NO)</li>
+                                 
+                                     <li>serverless-operator.v1.10.0 - (label=v4.5,v4.6,max=4.8,channels=[4.5 4.7 4.6 stable],head:NO)</li>
+                                 
+                                     <li>serverless-operator.v1.10.1 - (label=v4.5,v4.6,max=4.8,channels=[4.5],head:NO)</li>
+                                 
+                                     <li>serverless-operator.v1.10.2 - (label=v4.5,v4.6,max=4.8,channels=[4.5],head:YES)</li>
+                                 
+                                     <li>serverless-operator.v1.11.0 - (label=v4.6,max=4.8,channels=[4.7 4.6 stable],head:NO)</li>
+                                 
+                                     <li>serverless-operator.v1.12.0 - (label=v4.6,max=4.8,channels=[4.7 4.6 stable],head:NO)</li>
+                                 
+                                     <li>serverless-operator.v1.13.0 - (label=v4.6,v4.7,max=4.8,channels=[4.7 4.6 stable],head:YES)</li>
+                                 
+                                     <li>serverless-operator.v1.14.0 - (label=v4.6,v4.7,max=4.8,channels=[stable],head:NO)</li>
+                                 
+                                     <li>serverless-operator.v1.2.0 - (label=v4.5,max=4.8,channels=[4.5 4.3 4.4 4.7 4.6 stable],head:NO)</li>
+                                 
+                                     <li>serverless-operator.v1.3.0 - (label=v4.5,max=4.8,channels=[4.5 4.3 4.4 4.7 4.6 stable],head:NO)</li>
+                                 
+                                     <li>serverless-operator.v1.4.0 - (label=v4.5,max=4.8,channels=[4.5 4.3 4.4 4.7 4.6 stable],head:NO)</li>
+                                 
+                                     <li>serverless-operator.v1.4.1 - (label=v4.5,max=4.8,channels=[4.5 4.3 4.4 4.7 4.6 stable],head:NO)</li>
+                                 
+                                     <li>serverless-operator.v1.5.0 - (label=v4.5,max=4.8,channels=[4.5 4.3 4.4 4.7 4.6 stable],head:NO)</li>
+                                 
+                                     <li>serverless-operator.v1.6.0 - (label=v4.5,max=4.8,channels=[4.5 4.3 4.4 4.7 4.6 stable],head:NO)</li>
+                                 
+                                     <li>serverless-operator.v1.7.0 - (label=v4.5,max=4.8,channels=[4.5 4.3 4.4 4.7 4.6 stable],head:NO)</li>
+                                 
+                                     <li>serverless-operator.v1.7.1 - (label=v4.5,max=4.8,channels=[4.5 4.3 4.4 4.7 4.6 stable],head:NO)</li>
+                                 
+                                     <li>serverless-operator.v1.7.2 - (label=v4.5,max=4.8,channels=[4.5 4.3 4.4 4.7 4.6 stable],head:YES)</li>
+                                 
+                                     <li>serverless-operator.v1.8.0 - (label=v4.5,max=4.8,channels=[4.5 4.7 4.6 stable],head:NO)</li>
+                                 
+                                     <li>serverless-operator.v1.9.0 - (label=v4.5,max=4.8,channels=[4.5 4.7 4.6 stable],head:NO)</li>
+                                 
+                              </ul>
+                            </th>
+                            <th>
+                              <ul>
+                                 
+                                     <li>serverless-operator.v1.15.0 - (label=v4.6,v4.7,max=not set,channels=[stable],head:NO)</li>
+                                 
+                                     <li>serverless-operator.v1.16.0 - (label=v4.6-v4.8,max=not set,channels=[stable],head:YES)</li>
+                                 
+                              </ul>
+                            </th>
+                        </tr>
+                    
+                        <tr>
                             <th>web-terminal</th>
                             <th>
                                 <ul>
@@ -1002,7 +904,7 @@
                         </tr>
                     
                         <tr>
-                            <th>datagrid</th>
+                            <th>amq7-cert-manager-operator</th>
                             <th>
                                 <ul>
                                 
@@ -1013,46 +915,16 @@
                              <th>
                                  <ul>
                                     
-                                        <li>8.1.x</li>
+                                        <li>alpha</li>
                                     
-                                        <li>8.2.x</li>
-                                    
-                                        <li>8.0.x</li>
+                                        <li>1.x</li>
                                     
                                  </ul>
                              </th>
                             <th>
                               <ul>
                                  
-                                     <li>datagrid-operator.v8.0.0 - (label=v4.5,v4.6,max=4.8,channels=[8.1.x 8.2.x 8.0.x],head:NO)</li>
-                                 
-                                     <li>datagrid-operator.v8.0.1 - (label=v4.5,v4.6,max=4.8,channels=[8.1.x 8.2.x 8.0.x],head:NO)</li>
-                                 
-                                     <li>datagrid-operator.v8.0.2 - (label=v4.5,v4.6,max=4.8,channels=[8.1.x 8.2.x 8.0.x],head:NO)</li>
-                                 
-                                     <li>datagrid-operator.v8.0.3 - (label=v4.5,v4.6,max=4.8,channels=[8.1.x 8.2.x 8.0.x],head:YES)</li>
-                                 
-                                     <li>datagrid-operator.v8.1.0 - (label=v4.5,v4.6,max=4.8,channels=[8.1.x 8.2.x],head:NO)</li>
-                                 
-                                     <li>datagrid-operator.v8.1.1 - (label=v4.5,v4.6,max=4.8,channels=[8.1.x 8.2.x],head:NO)</li>
-                                 
-                                     <li>datagrid-operator.v8.1.2 - (label=v4.5,v4.6,max=4.8,channels=[8.1.x 8.2.x],head:NO)</li>
-                                 
-                                     <li>datagrid-operator.v8.1.3 - (label=v4.5,v4.6,max=4.8,channels=[8.1.x 8.2.x],head:NO)</li>
-                                 
-                                     <li>datagrid-operator.v8.1.4 - (label=v4.5,v4.6,max=4.8,channels=[8.1.x 8.2.x],head:NO)</li>
-                                 
-                                     <li>datagrid-operator.v8.1.5 - (label=v4.5,v4.6,max=4.8,channels=[8.1.x 8.2.x],head:NO)</li>
-                                 
-                                     <li>datagrid-operator.v8.1.6 - (label=v4.5,v4.6,max=4.8,channels=[8.1.x 8.2.x],head:NO)</li>
-                                 
-                                     <li>datagrid-operator.v8.1.7 - (label=v4.5,v4.6,max=4.8,channels=[8.1.x 8.2.x],head:YES)</li>
-                                 
-                                     <li>datagrid-operator.v8.2.0 - (label=v4.5,v4.6,max=4.8,channels=[8.2.x],head:NO)</li>
-                                 
-                                     <li>datagrid-operator.v8.2.1 - (label=v4.5,v4.6,max=4.8,channels=[8.2.x],head:NO)</li>
-                                 
-                                     <li>datagrid-operator.v8.2.2 - (label=v4.5,v4.6,max=4.8,channels=[8.2.x],head:YES)</li>
+                                     <li>amq7-cert-manager.v1.0.1 - (label=v4.5-v4.8,max=4.8,channels=[alpha 1.x],head:YES)</li>
                                  
                               </ul>
                             </th>
@@ -1064,9 +936,205 @@
                         </tr>
                     
                         <tr>
-                            <th>elasticsearch-operator</th>
+                            <th>jws-operator</th>
                             <th>
                                 <ul>
+                                
+                                    <li>CRD</li>
+                                
+                                </ul>
+                            </th>
+                             <th>
+                                 <ul>
+                                    
+                                        <li>alpha</li>
+                                    
+                                 </ul>
+                             </th>
+                            <th>
+                              <ul>
+                                 
+                                     <li>jws-operator.v1.0.0 - (label=v4.5,v4.6,max=4.8,channels=[alpha],head:NO)</li>
+                                 
+                                     <li>jws-operator.v1.0.1 - (label=v4.5,v4.6,max=4.8,channels=[alpha],head:NO)</li>
+                                 
+                                     <li>jws-operator.v1.0.2 - (label=v4.5,v4.6,max=4.8,channels=[alpha],head:YES)</li>
+                                 
+                              </ul>
+                            </th>
+                            <th>
+                              <ul>
+                                 
+                              </ul>
+                            </th>
+                        </tr>
+                    
+                        <tr>
+                            <th>3scale-operator</th>
+                            <th>
+                                <ul>
+                                
+                                    <li>CRD</li>
+                                
+                                </ul>
+                            </th>
+                             <th>
+                                 <ul>
+                                    
+                                        <li>threescale-2.9</li>
+                                    
+                                        <li>threescale-2.10</li>
+                                    
+                                        <li>threescale-2.7</li>
+                                    
+                                        <li>threescale-2.8</li>
+                                    
+                                        <li>threescale-2.6</li>
+                                    
+                                 </ul>
+                             </th>
+                            <th>
+                              <ul>
+                                 
+                                     <li>3scale-operator.v0.3.0 - (label=v4.5,max=4.8,channels=[threescale-2.9 threescale-2.6 threescale-2.10 threescale-2.7 threescale-2.8],head:YES)</li>
+                                 
+                                     <li>3scale-operator.v0.4.0 - (label=v4.5,max=4.8,channels=[threescale-2.9 threescale-2.10 threescale-2.7 threescale-2.8],head:NO)</li>
+                                 
+                                     <li>3scale-operator.v0.4.1 - (label=v4.5,max=4.8,channels=[threescale-2.9 threescale-2.10 threescale-2.7 threescale-2.8],head:NO)</li>
+                                 
+                                     <li>3scale-operator.v0.4.2 - (label=v4.5,max=4.8,channels=[threescale-2.9 threescale-2.10 threescale-2.7 threescale-2.8],head:YES)</li>
+                                 
+                                     <li>3scale-operator.v0.5.0 - (label=v4.5,max=4.8,channels=[threescale-2.9 threescale-2.10 threescale-2.8],head:NO)</li>
+                                 
+                                     <li>3scale-operator.v0.5.1 - (label=v4.5,max=4.8,channels=[threescale-2.9 threescale-2.10 threescale-2.8],head:NO)</li>
+                                 
+                                     <li>3scale-operator.v0.5.2 - (label=v4.5,max=4.8,channels=[threescale-2.9 threescale-2.10 threescale-2.8],head:NO)</li>
+                                 
+                                     <li>3scale-operator.v0.5.3 - (label=v4.5,max=4.8,channels=[threescale-2.9 threescale-2.10 threescale-2.8],head:NO)</li>
+                                 
+                                     <li>3scale-operator.v0.5.4 - (label=v4.5,max=4.8,channels=[threescale-2.9 threescale-2.10 threescale-2.8],head:NO)</li>
+                                 
+                                     <li>3scale-operator.v0.5.5 - (label=v4.5,max=4.8,channels=[threescale-2.9 threescale-2.10 threescale-2.8],head:YES)</li>
+                                 
+                                     <li>3scale-operator.v0.6.0 - (label=v4.5,max=4.8,channels=[threescale-2.9 threescale-2.10],head:NO)</li>
+                                 
+                                     <li>3scale-operator.v0.6.1 - (label=v4.5,v4.6,max=4.8,channels=[threescale-2.9 threescale-2.10],head:YES)</li>
+                                 
+                                     <li>3scale-operator.v0.7.0 - (label=v4.5,v4.6,max=4.8,channels=[threescale-2.10],head:YES)</li>
+                                 
+                              </ul>
+                            </th>
+                            <th>
+                              <ul>
+                                 
+                              </ul>
+                            </th>
+                        </tr>
+                    
+                        <tr>
+                            <th>kubevirt-hyperconverged</th>
+                            <th>
+                                <ul>
+                                
+                                    <li>CRD</li>
+                                
+                                </ul>
+                            </th>
+                             <th>
+                                 <ul>
+                                    
+                                        <li>2.4</li>
+                                    
+                                        <li>stable</li>
+                                    
+                                 </ul>
+                             </th>
+                            <th>
+                              <ul>
+                                 
+                                     <li>kubevirt-hyperconverged-operator.v2.3.0 - (label=v4.5,max=4.8,channels=[stable 2.4],head:NO)</li>
+                                 
+                                     <li>kubevirt-hyperconverged-operator.v2.4.0 - (label=v4.5,max=4.8,channels=[stable 2.4],head:NO)</li>
+                                 
+                                     <li>kubevirt-hyperconverged-operator.v2.4.1 - (label=v4.5,max=4.8,channels=[stable 2.4],head:NO)</li>
+                                 
+                                     <li>kubevirt-hyperconverged-operator.v2.4.2 - (label=v4.5,max=4.8,channels=[stable 2.4],head:NO)</li>
+                                 
+                                     <li>kubevirt-hyperconverged-operator.v2.4.3 - (label=v4.5,max=4.8,channels=[stable 2.4],head:NO)</li>
+                                 
+                                     <li>kubevirt-hyperconverged-operator.v2.4.4 - (label=v4.5,max=4.8,channels=[2.4],head:NO)</li>
+                                 
+                                     <li>kubevirt-hyperconverged-operator.v2.4.5 - (label=v4.5,max=4.8,channels=[2.4],head:YES)</li>
+                                 
+                                     <li>kubevirt-hyperconverged-operator.v2.5.0 - (label=v4.6,max=4.8,channels=[stable],head:NO)</li>
+                                 
+                                     <li>kubevirt-hyperconverged-operator.v2.5.1 - (label=v4.6,max=4.8,channels=[stable],head:NO)</li>
+                                 
+                                     <li>kubevirt-hyperconverged-operator.v2.5.2 - (label=v4.6,max=4.8,channels=[stable],head:NO)</li>
+                                 
+                                     <li>kubevirt-hyperconverged-operator.v2.5.3 - (label=v4.6,max=4.8,channels=[stable],head:NO)</li>
+                                 
+                                     <li>kubevirt-hyperconverged-operator.v2.5.4 - (label=v4.6,max=4.8,channels=[stable],head:NO)</li>
+                                 
+                                     <li>kubevirt-hyperconverged-operator.v2.5.5 - (label==v4.6,max=4.8,channels=[stable],head:NO)</li>
+                                 
+                                     <li>kubevirt-hyperconverged-operator.v2.5.6 - (label==v4.6,max=4.8,channels=[stable],head:NO)</li>
+                                 
+                                     <li>kubevirt-hyperconverged-operator.v2.5.7 - (label==v4.6,max=4.8,channels=[stable],head:YES)</li>
+                                 
+                              </ul>
+                            </th>
+                            <th>
+                              <ul>
+                                 
+                              </ul>
+                            </th>
+                        </tr>
+                    
+                        <tr>
+                            <th>fuse-apicurito</th>
+                            <th>
+                                <ul>
+                                
+                                    <li>CRD</li>
+                                
+                                </ul>
+                            </th>
+                             <th>
+                                 <ul>
+                                    
+                                        <li>fuse-apicurito-7.8.x</li>
+                                    
+                                        <li>fuse-apicurito-7.7.x</li>
+                                    
+                                        <li>fuse-apicurito-7.9.x</li>
+                                    
+                                 </ul>
+                             </th>
+                            <th>
+                              <ul>
+                                 
+                                     <li>apicuritooperator.v7.7.1 - (label=v4.6,max=4.8,channels=[fuse-apicurito-7.7.x],head:YES)</li>
+                                 
+                                     <li>fuse-apicurito.v7.8.1 - (label=v4.6,max=4.8,channels=[fuse-apicurito-7.8.x],head:YES)</li>
+                                 
+                                     <li>fuse-apicurito.v7.9.0 - (label=v4.6,max=4.8,channels=[fuse-apicurito-7.9.x],head:YES)</li>
+                                 
+                              </ul>
+                            </th>
+                            <th>
+                              <ul>
+                                 
+                              </ul>
+                            </th>
+                        </tr>
+                    
+                        <tr>
+                            <th>cluster-kube-descheduler-operator</th>
+                            <th>
+                                <ul>
+                                
+                                    <li>CRD</li>
                                 
                                 </ul>
                             </th>
@@ -1080,12 +1148,12 @@
                             <th>
                               <ul>
                                  
+                                     <li>clusterkubedescheduleroperator.4.6.0-202107291702 - (label==v4.6,max=4.8,channels=[4.6],head:YES)</li>
+                                 
                               </ul>
                             </th>
                             <th>
                               <ul>
-                                 
-                                     <li>elasticsearch-operator.4.6.0-202107291702 - (label==v4.6,max=not set,channels=[4.6],head:YES)</li>
                                  
                               </ul>
                             </th>
@@ -1198,7 +1266,7 @@
                         </tr>
                     
                         <tr>
-                            <th>rhsso-operator</th>
+                            <th>mtc-operator</th>
                             <th>
                                 <ul>
                                 
@@ -1209,18 +1277,124 @@
                              <th>
                                  <ul>
                                     
-                                        <li>alpha</li>
+                                        <li>release-v1.3</li>
+                                    
+                                        <li>release-v1.4</li>
+                                    
+                                        <li>release-v1.5</li>
+                                    
+                                        <li>release-v1.2</li>
                                     
                                  </ul>
                              </th>
                             <th>
                               <ul>
                                  
-                                     <li>rhsso-operator.7.4.0 - (label=v4.5,v4.6,max=4.8,channels=[alpha],head:NO)</li>
+                                     <li>mtc-operator.v1.2.5 - (label=v4.5,v4.6,max=4.8,channels=[release-v1.3 release-v1.4 release-v1.2 release-v1.5],head:YES)</li>
                                  
-                                     <li>rhsso-operator.7.4.1 - (label=v4.5,v4.6,max=4.8,channels=[alpha],head:NO)</li>
+                                     <li>mtc-operator.v1.3.0 - (label=v4.5,v4.6,max=4.8,channels=[release-v1.3 release-v1.4 release-v1.5],head:NO)</li>
                                  
-                                     <li>rhsso-operator.7.4.8 - (label=v4.6,max=4.8,channels=[alpha],head:YES)</li>
+                                     <li>mtc-operator.v1.3.1 - (label=v4.5,v4.6,max=4.8,channels=[release-v1.3 release-v1.4 release-v1.5],head:NO)</li>
+                                 
+                                     <li>mtc-operator.v1.3.2 - (label=v4.5,v4.6,max=4.8,channels=[release-v1.3 release-v1.4 release-v1.5],head:YES)</li>
+                                 
+                                     <li>mtc-operator.v1.4.0 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[release-v1.4 release-v1.5],head:NO)</li>
+                                 
+                                     <li>mtc-operator.v1.4.1 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[release-v1.4 release-v1.5],head:NO)</li>
+                                 
+                                     <li>mtc-operator.v1.4.2 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[release-v1.4 release-v1.5],head:NO)</li>
+                                 
+                                     <li>mtc-operator.v1.4.3 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[release-v1.4 release-v1.5],head:NO)</li>
+                                 
+                                     <li>mtc-operator.v1.4.4 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[release-v1.4 release-v1.5],head:NO)</li>
+                                 
+                                     <li>mtc-operator.v1.4.5 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[release-v1.4 release-v1.5],head:NO)</li>
+                                 
+                                     <li>mtc-operator.v1.4.6 - (label=v4.5-v4.8,max=&#34;4.8&#34;,channels=[release-v1.4 release-v1.5],head:YES)</li>
+                                 
+                                     <li>mtc-operator.v1.5.0 - (label=v4.5-v4.8,max=&#34;4.8&#34;,channels=[release-v1.5],head:YES)</li>
+                                 
+                              </ul>
+                            </th>
+                            <th>
+                              <ul>
+                                 
+                              </ul>
+                            </th>
+                        </tr>
+                    
+                        <tr>
+                            <th>jaeger-product</th>
+                            <th>
+                                <ul>
+                                
+                                    <li>CRD</li>
+                                
+                                </ul>
+                            </th>
+                             <th>
+                                 <ul>
+                                    
+                                        <li>1.20-stable</li>
+                                    
+                                        <li>tech-preview</li>
+                                    
+                                        <li>1.17-stable</li>
+                                    
+                                        <li>stable</li>
+                                    
+                                        <li>1.24-stable</li>
+                                    
+                                        <li>1.13-stable</li>
+                                    
+                                 </ul>
+                             </th>
+                            <th>
+                              <ul>
+                                 
+                                     <li>jaeger-operator.v1.13.2-1 - (label=v4.5,max=4.8,channels=[1.13-stable],head:YES)</li>
+                                 
+                                     <li>jaeger-operator.v1.17.9 - (label=v4.5,v4.6,max=4.8,channels=[1.17-stable],head:YES)</li>
+                                 
+                                     <li>jaeger-operator.v1.20.4 - (label=v4.6,max=4.8,channels=[1.20-stable],head:YES)</li>
+                                 
+                                     <li>jaeger-operator.v1.24.0 - (label=v4.6,max=4.8,channels=[stable 1.24-stable],head:YES)</li>
+                                 
+                                     <li>jaeger-operator.v2.0.0-tp.1 - (label=v4.6,max=4.8,channels=[tech-preview],head:YES)</li>
+                                 
+                              </ul>
+                            </th>
+                            <th>
+                              <ul>
+                                 
+                              </ul>
+                            </th>
+                        </tr>
+                    
+                        <tr>
+                            <th>service-telemetry-operator</th>
+                            <th>
+                                <ul>
+                                
+                                    <li>CRD</li>
+                                
+                                </ul>
+                            </th>
+                             <th>
+                                 <ul>
+                                    
+                                        <li>stable-1.3</li>
+                                    
+                                        <li>stable-1.2</li>
+                                    
+                                 </ul>
+                             </th>
+                            <th>
+                              <ul>
+                                 
+                                     <li>service-telemetry-operator.v1.2.1626281232 - (label=v4.5-v4.6,max=4.8,channels=[stable-1.2],head:YES)</li>
+                                 
+                                     <li>service-telemetry-operator.v1.3.1627467117 - (label=v4.6-v4.7,max=4.8,channels=[stable-1.3],head:YES)</li>
                                  
                               </ul>
                             </th>
@@ -1282,7 +1456,7 @@
                         </tr>
                     
                         <tr>
-                            <th>fuse-apicurito</th>
+                            <th>openshift-gitops-operator</th>
                             <th>
                                 <ul>
                                 
@@ -1293,22 +1467,14 @@
                              <th>
                                  <ul>
                                     
-                                        <li>fuse-apicurito-7.8.x</li>
-                                    
-                                        <li>fuse-apicurito-7.7.x</li>
-                                    
-                                        <li>fuse-apicurito-7.9.x</li>
+                                        <li>preview</li>
                                     
                                  </ul>
                              </th>
                             <th>
                               <ul>
                                  
-                                     <li>apicuritooperator.v7.7.1 - (label=v4.6,max=4.8,channels=[fuse-apicurito-7.7.x],head:YES)</li>
-                                 
-                                     <li>fuse-apicurito.v7.8.1 - (label=v4.6,max=4.8,channels=[fuse-apicurito-7.8.x],head:YES)</li>
-                                 
-                                     <li>fuse-apicurito.v7.9.0 - (label=v4.6,max=4.8,channels=[fuse-apicurito-7.9.x],head:YES)</li>
+                                     <li>openshift-gitops-operator.v1.0.0 - (label=v4.6,max=4.8,channels=[preview],head:YES)</li>
                                  
                               </ul>
                             </th>
@@ -1320,9 +1486,11 @@
                         </tr>
                     
                         <tr>
-                            <th>ptp-operator</th>
+                            <th>nfd</th>
                             <th>
                                 <ul>
+                                
+                                    <li>CRD</li>
                                 
                                 </ul>
                             </th>
@@ -1336,19 +1504,19 @@
                             <th>
                               <ul>
                                  
+                                     <li>nfd.4.6.0-202107291702 - (label==v4.6,max=4.8,channels=[4.6],head:YES)</li>
+                                 
                               </ul>
                             </th>
                             <th>
                               <ul>
-                                 
-                                     <li>ptp-operator.4.6.0-202107291702 - (label==v4.6,max=not set,channels=[4.6],head:YES)</li>
                                  
                               </ul>
                             </th>
                         </tr>
                     
                         <tr>
-                            <th>jaeger-product</th>
+                            <th>smart-gateway-operator</th>
                             <th>
                                 <ul>
                                 
@@ -1359,32 +1527,18 @@
                              <th>
                                  <ul>
                                     
-                                        <li>1.20-stable</li>
+                                        <li>stable-1.3</li>
                                     
-                                        <li>tech-preview</li>
-                                    
-                                        <li>1.17-stable</li>
-                                    
-                                        <li>stable</li>
-                                    
-                                        <li>1.24-stable</li>
-                                    
-                                        <li>1.13-stable</li>
+                                        <li>stable-1.2</li>
                                     
                                  </ul>
                              </th>
                             <th>
                               <ul>
                                  
-                                     <li>jaeger-operator.v1.13.2-1 - (label=v4.5,max=4.8,channels=[1.13-stable],head:YES)</li>
+                                     <li>smart-gateway-operator.v2.2.1626281232 - (label=v4.5-v4.6,max=4.8,channels=[stable-1.2],head:YES)</li>
                                  
-                                     <li>jaeger-operator.v1.17.9 - (label=v4.5,v4.6,max=4.8,channels=[1.17-stable],head:YES)</li>
-                                 
-                                     <li>jaeger-operator.v1.20.4 - (label=v4.6,max=4.8,channels=[1.20-stable],head:YES)</li>
-                                 
-                                     <li>jaeger-operator.v1.24.0 - (label=v4.6,max=4.8,channels=[stable 1.24-stable],head:YES)</li>
-                                 
-                                     <li>jaeger-operator.v2.0.0-tp.1 - (label=v4.6,max=4.8,channels=[tech-preview],head:YES)</li>
+                                     <li>smart-gateway-operator.v3.0.1627467117 - (label=v4.6-v4.7,max=4.8,channels=[stable-1.3],head:YES)</li>
                                  
                               </ul>
                             </th>
@@ -1396,7 +1550,7 @@
                         </tr>
                     
                         <tr>
-                            <th>serverless-operator</th>
+                            <th>vertical-pod-autoscaler</th>
                             <th>
                                 <ul>
                                 
@@ -1406,175 +1560,15 @@
                             </th>
                              <th>
                                  <ul>
-                                    
-                                        <li>4.5</li>
-                                    
-                                        <li>4.3</li>
-                                    
-                                        <li>4.4</li>
-                                    
-                                        <li>4.7</li>
                                     
                                         <li>4.6</li>
                                     
-                                        <li>stable</li>
-                                    
                                  </ul>
                              </th>
                             <th>
                               <ul>
                                  
-                                     <li>serverless-operator.v1.0.0 - (label=v4.5,max=4.8,channels=[4.5 4.3 4.4 4.7 4.6 stable],head:NO)</li>
-                                 
-                                     <li>serverless-operator.v1.1.0 - (label=v4.5,max=4.8,channels=[4.5 4.3 4.4 4.7 4.6 stable],head:NO)</li>
-                                 
-                                     <li>serverless-operator.v1.10.0 - (label=v4.5,v4.6,max=4.8,channels=[4.5 4.7 4.6 stable],head:NO)</li>
-                                 
-                                     <li>serverless-operator.v1.10.1 - (label=v4.5,v4.6,max=4.8,channels=[4.5],head:NO)</li>
-                                 
-                                     <li>serverless-operator.v1.10.2 - (label=v4.5,v4.6,max=4.8,channels=[4.5],head:YES)</li>
-                                 
-                                     <li>serverless-operator.v1.11.0 - (label=v4.6,max=4.8,channels=[4.7 4.6 stable],head:NO)</li>
-                                 
-                                     <li>serverless-operator.v1.12.0 - (label=v4.6,max=4.8,channels=[4.7 4.6 stable],head:NO)</li>
-                                 
-                                     <li>serverless-operator.v1.13.0 - (label=v4.6,v4.7,max=4.8,channels=[4.7 4.6 stable],head:YES)</li>
-                                 
-                                     <li>serverless-operator.v1.14.0 - (label=v4.6,v4.7,max=4.8,channels=[stable],head:NO)</li>
-                                 
-                                     <li>serverless-operator.v1.2.0 - (label=v4.5,max=4.8,channels=[4.5 4.3 4.4 4.7 4.6 stable],head:NO)</li>
-                                 
-                                     <li>serverless-operator.v1.3.0 - (label=v4.5,max=4.8,channels=[4.5 4.3 4.4 4.7 4.6 stable],head:NO)</li>
-                                 
-                                     <li>serverless-operator.v1.4.0 - (label=v4.5,max=4.8,channels=[4.5 4.3 4.4 4.7 4.6 stable],head:NO)</li>
-                                 
-                                     <li>serverless-operator.v1.4.1 - (label=v4.5,max=4.8,channels=[4.5 4.3 4.4 4.7 4.6 stable],head:NO)</li>
-                                 
-                                     <li>serverless-operator.v1.5.0 - (label=v4.5,max=4.8,channels=[4.5 4.3 4.4 4.7 4.6 stable],head:NO)</li>
-                                 
-                                     <li>serverless-operator.v1.6.0 - (label=v4.5,max=4.8,channels=[4.5 4.3 4.4 4.7 4.6 stable],head:NO)</li>
-                                 
-                                     <li>serverless-operator.v1.7.0 - (label=v4.5,max=4.8,channels=[4.5 4.3 4.4 4.7 4.6 stable],head:NO)</li>
-                                 
-                                     <li>serverless-operator.v1.7.1 - (label=v4.5,max=4.8,channels=[4.5 4.3 4.4 4.7 4.6 stable],head:NO)</li>
-                                 
-                                     <li>serverless-operator.v1.7.2 - (label=v4.5,max=4.8,channels=[4.5 4.3 4.4 4.7 4.6 stable],head:YES)</li>
-                                 
-                                     <li>serverless-operator.v1.8.0 - (label=v4.5,max=4.8,channels=[4.5 4.7 4.6 stable],head:NO)</li>
-                                 
-                                     <li>serverless-operator.v1.9.0 - (label=v4.5,max=4.8,channels=[4.5 4.7 4.6 stable],head:NO)</li>
-                                 
-                              </ul>
-                            </th>
-                            <th>
-                              <ul>
-                                 
-                                     <li>serverless-operator.v1.15.0 - (label=v4.6,v4.7,max=not set,channels=[stable],head:NO)</li>
-                                 
-                                     <li>serverless-operator.v1.16.0 - (label=v4.6-v4.8,max=not set,channels=[stable],head:YES)</li>
-                                 
-                              </ul>
-                            </th>
-                        </tr>
-                    
-                        <tr>
-                            <th>amq-streams</th>
-                            <th>
-                                <ul>
-                                
-                                    <li>CRD</li>
-                                
-                                </ul>
-                            </th>
-                             <th>
-                                 <ul>
-                                    
-                                        <li>amq-streams-1.x</li>
-                                    
-                                        <li>stable</li>
-                                    
-                                        <li>amq-streams-1.7.x</li>
-                                    
-                                        <li>amq-streams-1.6.x</li>
-                                    
-                                 </ul>
-                             </th>
-                            <th>
-                              <ul>
-                                 
-                                     <li>amqstreams.v1.5.4 - (label=v4.5,max=4.8,channels=[amq-streams-1.x stable amq-streams-1.7.x amq-streams-1.6.x],head:NO)</li>
-                                 
-                                     <li>amqstreams.v1.6.0 - (label=v4.5,max=4.8,channels=[amq-streams-1.x stable amq-streams-1.7.x amq-streams-1.6.x],head:NO)</li>
-                                 
-                                     <li>amqstreams.v1.6.1 - (label=v4.5,max=4.8,channels=[amq-streams-1.x stable amq-streams-1.7.x amq-streams-1.6.x],head:NO)</li>
-                                 
-                                     <li>amqstreams.v1.6.2 - (label=v4.5,max=4.8,channels=[amq-streams-1.x stable amq-streams-1.7.x amq-streams-1.6.x],head:NO)</li>
-                                 
-                                     <li>amqstreams.v1.6.3 - (label=v4.5,max=4.8,channels=[amq-streams-1.x stable amq-streams-1.7.x amq-streams-1.6.x],head:YES)</li>
-                                 
-                                     <li>amqstreams.v1.7.0 - (label=v4.6,max=4.8,channels=[amq-streams-1.x stable amq-streams-1.7.x],head:NO)</li>
-                                 
-                                     <li>amqstreams.v1.7.1 - (label=v4.6,max=4.8,channels=[amq-streams-1.x stable amq-streams-1.7.x],head:NO)</li>
-                                 
-                                     <li>amqstreams.v1.7.2 - (label=v4.6,max=4.8,channels=[amq-streams-1.x stable amq-streams-1.7.x],head:NO)</li>
-                                 
-                                     <li>amqstreams.v1.7.3 - (label=v4.6,max=4.8,channels=[amq-streams-1.x stable amq-streams-1.7.x],head:YES)</li>
-                                 
-                              </ul>
-                            </th>
-                            <th>
-                              <ul>
-                                 
-                              </ul>
-                            </th>
-                        </tr>
-                    
-                        <tr>
-                            <th>quay-bridge-operator</th>
-                            <th>
-                                <ul>
-                                
-                                    <li>CRD</li>
-                                
-                                </ul>
-                            </th>
-                             <th>
-                                 <ul>
-                                    
-                                        <li>quay-v3.3</li>
-                                    
-                                        <li>quay-v3.5</li>
-                                    
-                                        <li>quay-v3.4</li>
-                                    
-                                 </ul>
-                             </th>
-                            <th>
-                              <ul>
-                                 
-                                     <li>quay-bridge-operator.v3.3.4 - (label=v4.5,v4.6,max=4.8,channels=[quay-v3.3],head:YES)</li>
-                                 
-                                     <li>quay-bridge-operator.v3.4.1 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[quay-v3.4],head:NO)</li>
-                                 
-                                     <li>quay-bridge-operator.v3.4.2 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[quay-v3.4],head:NO)</li>
-                                 
-                                     <li>quay-bridge-operator.v3.4.3 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[quay-v3.4],head:NO)</li>
-                                 
-                                     <li>quay-bridge-operator.v3.4.4 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[quay-v3.4],head:NO)</li>
-                                 
-                                     <li>quay-bridge-operator.v3.4.5 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[quay-v3.4],head:NO)</li>
-                                 
-                                     <li>quay-bridge-operator.v3.4.6 - (label=v4.5-v4.8,max=4.8,channels=[quay-v3.4],head:YES)</li>
-                                 
-                                     <li>quay-bridge-operator.v3.5.1 - (label=v4.5,max=4.8,channels=[quay-v3.5],head:NO)</li>
-                                 
-                                     <li>quay-bridge-operator.v3.5.2 - (label=v4.5,max=4.8,channels=[quay-v3.5],head:NO)</li>
-                                 
-                                     <li>quay-bridge-operator.v3.5.3 - (label=v4.5,max=4.8,channels=[quay-v3.5],head:NO)</li>
-                                 
-                                     <li>quay-bridge-operator.v3.5.4 - (label=v4.5,max=4.8,channels=[quay-v3.5],head:NO)</li>
-                                 
-                                     <li>quay-bridge-operator.v3.5.5 - (label=v4.5,max=4.8,channels=[quay-v3.5],head:YES)</li>
+                                     <li>verticalpodautoscaler.4.6.0-202107291702 - (label==v4.6,max=4.8,channels=[4.6],head:YES)</li>
                                  
                               </ul>
                             </th>
@@ -1616,67 +1610,45 @@
                         </tr>
                     
                         <tr>
-                            <th>kubevirt-hyperconverged</th>
+                            <th>windows-machine-config-operator</th>
                             <th>
                                 <ul>
-                                
-                                    <li>CRD</li>
                                 
                                 </ul>
                             </th>
                              <th>
                                  <ul>
-                                    
-                                        <li>2.4</li>
                                     
                                         <li>stable</li>
                                     
+                                        <li>preview</li>
+                                    
                                  </ul>
                              </th>
                             <th>
                               <ul>
                                  
-                                     <li>kubevirt-hyperconverged-operator.v2.3.0 - (label=v4.5,max=4.8,channels=[stable 2.4],head:NO)</li>
-                                 
-                                     <li>kubevirt-hyperconverged-operator.v2.4.0 - (label=v4.5,max=4.8,channels=[stable 2.4],head:NO)</li>
-                                 
-                                     <li>kubevirt-hyperconverged-operator.v2.4.1 - (label=v4.5,max=4.8,channels=[stable 2.4],head:NO)</li>
-                                 
-                                     <li>kubevirt-hyperconverged-operator.v2.4.2 - (label=v4.5,max=4.8,channels=[stable 2.4],head:NO)</li>
-                                 
-                                     <li>kubevirt-hyperconverged-operator.v2.4.3 - (label=v4.5,max=4.8,channels=[stable 2.4],head:NO)</li>
-                                 
-                                     <li>kubevirt-hyperconverged-operator.v2.4.4 - (label=v4.5,max=4.8,channels=[2.4],head:NO)</li>
-                                 
-                                     <li>kubevirt-hyperconverged-operator.v2.4.5 - (label=v4.5,max=4.8,channels=[2.4],head:YES)</li>
-                                 
-                                     <li>kubevirt-hyperconverged-operator.v2.5.0 - (label=v4.6,max=4.8,channels=[stable],head:NO)</li>
-                                 
-                                     <li>kubevirt-hyperconverged-operator.v2.5.1 - (label=v4.6,max=4.8,channels=[stable],head:NO)</li>
-                                 
-                                     <li>kubevirt-hyperconverged-operator.v2.5.2 - (label=v4.6,max=4.8,channels=[stable],head:NO)</li>
-                                 
-                                     <li>kubevirt-hyperconverged-operator.v2.5.3 - (label=v4.6,max=4.8,channels=[stable],head:NO)</li>
-                                 
-                                     <li>kubevirt-hyperconverged-operator.v2.5.4 - (label=v4.6,max=4.8,channels=[stable],head:NO)</li>
-                                 
-                                     <li>kubevirt-hyperconverged-operator.v2.5.5 - (label==v4.6,max=4.8,channels=[stable],head:NO)</li>
-                                 
-                                     <li>kubevirt-hyperconverged-operator.v2.5.6 - (label==v4.6,max=4.8,channels=[stable],head:NO)</li>
-                                 
-                                     <li>kubevirt-hyperconverged-operator.v2.5.7 - (label==v4.6,max=4.8,channels=[stable],head:YES)</li>
-                                 
                               </ul>
                             </th>
                             <th>
                               <ul>
+                                 
+                                     <li>windows-machine-config-operator.v1.0.2 - (label=v4.6,max=not set,channels=[stable preview],head:NO)</li>
+                                 
+                                     <li>windows-machine-config-operator.v1.0.3 - (label==v4.6,max=not set,channels=[stable preview],head:NO)</li>
+                                 
+                                     <li>windows-machine-config-operator.v1.0.4 - (label==v4.6,max=not set,channels=[stable preview],head:NO)</li>
+                                 
+                                     <li>windows-machine-config-operator.v1.0.5 - (label==v4.6,max=not set,channels=[stable preview],head:NO)</li>
+                                 
+                                     <li>windows-machine-config-operator.v1.0.5-0.1625103163.p - (label==v4.6,max=not set,channels=[stable preview],head:YES)</li>
                                  
                               </ul>
                             </th>
                         </tr>
                     
                         <tr>
-                            <th>ansible-automation-platform-operator</th>
+                            <th>performance-addon-operator</th>
                             <th>
                                 <ul>
                                 
@@ -1687,14 +1659,54 @@
                              <th>
                                  <ul>
                                     
-                                        <li>early-access</li>
+                                        <li>4.5</li>
+                                    
+                                        <li>4.4</li>
+                                    
+                                        <li>4.6</li>
                                     
                                  </ul>
                              </th>
                             <th>
                               <ul>
                                  
-                                     <li>ansible-automation-platform-operator.v2.0.0 - (label=v4.6-v4.8,max=4.8,channels=[early-access],head:YES)</li>
+                                     <li>performance-addon-operator.v4.4.1 - (label=v4.5,max=4.8,channels=[4.4],head:YES)</li>
+                                 
+                                     <li>performance-addon-operator.v4.5.4 - (label=v4.5,max=4.8,channels=[4.5],head:YES)</li>
+                                 
+                              </ul>
+                            </th>
+                            <th>
+                              <ul>
+                                 
+                                     <li>performance-addon-operator.v4.6.4 - (label==v4.6,max=not set,channels=[4.6],head:YES)</li>
+                                 
+                              </ul>
+                            </th>
+                        </tr>
+                    
+                        <tr>
+                            <th>amq-broker-lts</th>
+                            <th>
+                                <ul>
+                                
+                                    <li>CRD</li>
+                                
+                                </ul>
+                            </th>
+                             <th>
+                                 <ul>
+                                    
+                                        <li>alpha</li>
+                                    
+                                 </ul>
+                             </th>
+                            <th>
+                              <ul>
+                                 
+                                     <li>amq-broker-operator.v0.9.2 - (label=v4.5,max=4.8,channels=[alpha],head:NO)</li>
+                                 
+                                     <li>amq-broker-operator.v0.9.3 - (label=v4.5,max=4.8,channels=[alpha],head:YES)</li>
                                  
                               </ul>
                             </th>
@@ -1706,7 +1718,91 @@
                         </tr>
                     
                         <tr>
-                            <th>metering-ocp</th>
+                            <th>amq-broker</th>
+                            <th>
+                                <ul>
+                                
+                                    <li>CRD</li>
+                                
+                                </ul>
+                            </th>
+                             <th>
+                                 <ul>
+                                    
+                                        <li>current</li>
+                                    
+                                        <li>7.x</li>
+                                    
+                                        <li>7.8.x</li>
+                                    
+                                        <li>current-76</li>
+                                    
+                                        <li>alpha</li>
+                                    
+                                 </ul>
+                             </th>
+                            <th>
+                              <ul>
+                                 
+                                     <li>amq-broker-operator.v0.13.0 - (label=v4.5,max=4.8,channels=[current 7.x 7.8.x current-76],head:YES)</li>
+                                 
+                                     <li>amq-broker-operator.v0.15.0 - (label=v4.5,max=4.8,channels=[current 7.x 7.8.x],head:NO)</li>
+                                 
+                                     <li>amq-broker-operator.v0.17.0 - (label=v4.5,max=4.8,channels=[current 7.x 7.8.x],head:NO)</li>
+                                 
+                                     <li>amq-broker-operator.v0.18.0 - (label=v4.5,max=4.8,channels=[current 7.x 7.8.x],head:NO)</li>
+                                 
+                                     <li>amq-broker-operator.v0.19.0 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[current 7.x 7.8.x],head:NO)</li>
+                                 
+                                     <li>amq-broker-operator.v0.9.1 - (label=v4.5,max=4.8,channels=[current 7.x 7.8.x current-76 alpha],head:YES)</li>
+                                 
+                                     <li>amq-broker-operator.v7.8.1-opr-3 - (label=v4.5,v4.6,v4.7,max=4.8,channels=[current 7.x 7.8.x],head:NO)</li>
+                                 
+                                     <li>amq-broker-operator.v7.8.1-opr-4 - (label=v4.5-v4.7,max=4.8,channels=[current 7.x 7.8.x],head:NO)</li>
+                                 
+                                     <li>amq-broker-operator.v7.8.2-opr-1 - (label=v4.5-v4.7,max=4.8,channels=[current 7.x 7.8.x],head:YES)</li>
+                                 
+                              </ul>
+                            </th>
+                            <th>
+                              <ul>
+                                 
+                              </ul>
+                            </th>
+                        </tr>
+                    
+                        <tr>
+                            <th>local-storage-operator</th>
+                            <th>
+                                <ul>
+                                
+                                    <li>CRD</li>
+                                
+                                </ul>
+                            </th>
+                             <th>
+                                 <ul>
+                                    
+                                        <li>4.6</li>
+                                    
+                                 </ul>
+                             </th>
+                            <th>
+                              <ul>
+                                 
+                                     <li>local-storage-operator.4.6.0-202107291702 - (label==v4.6,max=4.8,channels=[4.6],head:YES)</li>
+                                 
+                              </ul>
+                            </th>
+                            <th>
+                              <ul>
+                                 
+                              </ul>
+                            </th>
+                        </tr>
+                    
+                        <tr>
+                            <th>sriov-network-operator</th>
                             <th>
                                 <ul>
                                 
@@ -1727,41 +1823,7 @@
                             <th>
                               <ul>
                                  
-                                     <li>metering-operator.4.6.0-202107292226 - (label==v4.6,max=not set,channels=[4.6],head:YES)</li>
-                                 
-                              </ul>
-                            </th>
-                        </tr>
-                    
-                        <tr>
-                            <th>jws-operator</th>
-                            <th>
-                                <ul>
-                                
-                                    <li>CRD</li>
-                                
-                                </ul>
-                            </th>
-                             <th>
-                                 <ul>
-                                    
-                                        <li>alpha</li>
-                                    
-                                 </ul>
-                             </th>
-                            <th>
-                              <ul>
-                                 
-                                     <li>jws-operator.v1.0.0 - (label=v4.5,v4.6,max=4.8,channels=[alpha],head:NO)</li>
-                                 
-                                     <li>jws-operator.v1.0.1 - (label=v4.5,v4.6,max=4.8,channels=[alpha],head:NO)</li>
-                                 
-                                     <li>jws-operator.v1.0.2 - (label=v4.5,v4.6,max=4.8,channels=[alpha],head:YES)</li>
-                                 
-                              </ul>
-                            </th>
-                            <th>
-                              <ul>
+                                     <li>sriov-network-operator.4.6.0-202107300640 - (label==v4.6,max=not set,channels=[4.6],head:YES)</li>
                                  
                               </ul>
                             </th>
@@ -1840,7 +1902,7 @@
                         </tr>
                     
                         <tr>
-                            <th>smart-gateway-operator</th>
+                            <th>rhsso-operator</th>
                             <th>
                                 <ul>
                                 
@@ -1851,18 +1913,18 @@
                              <th>
                                  <ul>
                                     
-                                        <li>stable-1.3</li>
-                                    
-                                        <li>stable-1.2</li>
+                                        <li>alpha</li>
                                     
                                  </ul>
                              </th>
                             <th>
                               <ul>
                                  
-                                     <li>smart-gateway-operator.v2.2.1626281232 - (label=v4.5-v4.6,max=4.8,channels=[stable-1.2],head:YES)</li>
+                                     <li>rhsso-operator.7.4.0 - (label=v4.5,v4.6,max=4.8,channels=[alpha],head:NO)</li>
                                  
-                                     <li>smart-gateway-operator.v3.0.1627467117 - (label=v4.6-v4.7,max=4.8,channels=[stable-1.3],head:YES)</li>
+                                     <li>rhsso-operator.7.4.1 - (label=v4.5,v4.6,max=4.8,channels=[alpha],head:NO)</li>
+                                 
+                                     <li>rhsso-operator.7.4.8 - (label=v4.6,max=4.8,channels=[alpha],head:YES)</li>
                                  
                               </ul>
                             </th>
@@ -1874,7 +1936,39 @@
                         </tr>
                     
                         <tr>
-                            <th>3scale-operator</th>
+                            <th>cincinnati-operator</th>
+                            <th>
+                                <ul>
+                                
+                                    <li>CRD</li>
+                                
+                                    <li>ClusterRole</li>
+                                
+                                </ul>
+                            </th>
+                             <th>
+                                 <ul>
+                                    
+                                        <li>v1</li>
+                                    
+                                 </ul>
+                             </th>
+                            <th>
+                              <ul>
+                                 
+                                     <li>update-service-operator.v4.6.0 - (label=v4.6,max=4.8,channels=[v1],head:YES)</li>
+                                 
+                              </ul>
+                            </th>
+                            <th>
+                              <ul>
+                                 
+                              </ul>
+                            </th>
+                        </tr>
+                    
+                        <tr>
+                            <th>datagrid</th>
                             <th>
                                 <ul>
                                 
@@ -1885,46 +1979,90 @@
                              <th>
                                  <ul>
                                     
-                                        <li>threescale-2.9</li>
+                                        <li>8.1.x</li>
                                     
-                                        <li>threescale-2.10</li>
+                                        <li>8.2.x</li>
                                     
-                                        <li>threescale-2.7</li>
-                                    
-                                        <li>threescale-2.8</li>
-                                    
-                                        <li>threescale-2.6</li>
+                                        <li>8.0.x</li>
                                     
                                  </ul>
                              </th>
                             <th>
                               <ul>
                                  
-                                     <li>3scale-operator.v0.3.0 - (label=v4.5,max=4.8,channels=[threescale-2.9 threescale-2.6 threescale-2.10 threescale-2.7 threescale-2.8],head:YES)</li>
+                                     <li>datagrid-operator.v8.0.0 - (label=v4.5,v4.6,max=4.8,channels=[8.1.x 8.2.x 8.0.x],head:NO)</li>
                                  
-                                     <li>3scale-operator.v0.4.0 - (label=v4.5,max=4.8,channels=[threescale-2.9 threescale-2.10 threescale-2.7 threescale-2.8],head:NO)</li>
+                                     <li>datagrid-operator.v8.0.1 - (label=v4.5,v4.6,max=4.8,channels=[8.1.x 8.2.x 8.0.x],head:NO)</li>
                                  
-                                     <li>3scale-operator.v0.4.1 - (label=v4.5,max=4.8,channels=[threescale-2.9 threescale-2.10 threescale-2.7 threescale-2.8],head:NO)</li>
+                                     <li>datagrid-operator.v8.0.2 - (label=v4.5,v4.6,max=4.8,channels=[8.1.x 8.2.x 8.0.x],head:NO)</li>
                                  
-                                     <li>3scale-operator.v0.4.2 - (label=v4.5,max=4.8,channels=[threescale-2.9 threescale-2.10 threescale-2.7 threescale-2.8],head:YES)</li>
+                                     <li>datagrid-operator.v8.0.3 - (label=v4.5,v4.6,max=4.8,channels=[8.1.x 8.2.x 8.0.x],head:YES)</li>
                                  
-                                     <li>3scale-operator.v0.5.0 - (label=v4.5,max=4.8,channels=[threescale-2.9 threescale-2.10 threescale-2.8],head:NO)</li>
+                                     <li>datagrid-operator.v8.1.0 - (label=v4.5,v4.6,max=4.8,channels=[8.1.x 8.2.x],head:NO)</li>
                                  
-                                     <li>3scale-operator.v0.5.1 - (label=v4.5,max=4.8,channels=[threescale-2.9 threescale-2.10 threescale-2.8],head:NO)</li>
+                                     <li>datagrid-operator.v8.1.1 - (label=v4.5,v4.6,max=4.8,channels=[8.1.x 8.2.x],head:NO)</li>
                                  
-                                     <li>3scale-operator.v0.5.2 - (label=v4.5,max=4.8,channels=[threescale-2.9 threescale-2.10 threescale-2.8],head:NO)</li>
+                                     <li>datagrid-operator.v8.1.2 - (label=v4.5,v4.6,max=4.8,channels=[8.1.x 8.2.x],head:NO)</li>
                                  
-                                     <li>3scale-operator.v0.5.3 - (label=v4.5,max=4.8,channels=[threescale-2.9 threescale-2.10 threescale-2.8],head:NO)</li>
+                                     <li>datagrid-operator.v8.1.3 - (label=v4.5,v4.6,max=4.8,channels=[8.1.x 8.2.x],head:NO)</li>
                                  
-                                     <li>3scale-operator.v0.5.4 - (label=v4.5,max=4.8,channels=[threescale-2.9 threescale-2.10 threescale-2.8],head:NO)</li>
+                                     <li>datagrid-operator.v8.1.4 - (label=v4.5,v4.6,max=4.8,channels=[8.1.x 8.2.x],head:NO)</li>
                                  
-                                     <li>3scale-operator.v0.5.5 - (label=v4.5,max=4.8,channels=[threescale-2.9 threescale-2.10 threescale-2.8],head:YES)</li>
+                                     <li>datagrid-operator.v8.1.5 - (label=v4.5,v4.6,max=4.8,channels=[8.1.x 8.2.x],head:NO)</li>
                                  
-                                     <li>3scale-operator.v0.6.0 - (label=v4.5,max=4.8,channels=[threescale-2.9 threescale-2.10],head:NO)</li>
+                                     <li>datagrid-operator.v8.1.6 - (label=v4.5,v4.6,max=4.8,channels=[8.1.x 8.2.x],head:NO)</li>
                                  
-                                     <li>3scale-operator.v0.6.1 - (label=v4.5,v4.6,max=4.8,channels=[threescale-2.9 threescale-2.10],head:YES)</li>
+                                     <li>datagrid-operator.v8.1.7 - (label=v4.5,v4.6,max=4.8,channels=[8.1.x 8.2.x],head:YES)</li>
                                  
-                                     <li>3scale-operator.v0.7.0 - (label=v4.5,v4.6,max=4.8,channels=[threescale-2.10],head:YES)</li>
+                                     <li>datagrid-operator.v8.2.0 - (label=v4.5,v4.6,max=4.8,channels=[8.2.x],head:NO)</li>
+                                 
+                                     <li>datagrid-operator.v8.2.1 - (label=v4.5,v4.6,max=4.8,channels=[8.2.x],head:NO)</li>
+                                 
+                                     <li>datagrid-operator.v8.2.2 - (label=v4.5,v4.6,max=4.8,channels=[8.2.x],head:YES)</li>
+                                 
+                              </ul>
+                            </th>
+                            <th>
+                              <ul>
+                                 
+                              </ul>
+                            </th>
+                        </tr>
+                    
+                        <tr>
+                            <th>ocs-operator</th>
+                            <th>
+                                <ul>
+                                
+                                    <li>CRD</li>
+                                
+                                    <li>ClusterRole</li>
+                                
+                                    <li>ClusterRoleBinding</li>
+                                
+                                    <li>Role</li>
+                                
+                                    <li>RoleBinding</li>
+                                
+                                </ul>
+                            </th>
+                             <th>
+                                 <ul>
+                                    
+                                        <li>stable-4.6</li>
+                                    
+                                        <li>eus-4.6</li>
+                                    
+                                        <li>stable-4.5</li>
+                                    
+                                 </ul>
+                             </th>
+                            <th>
+                              <ul>
+                                 
+                                     <li>ocs-operator.v4.5.2 - (label=v4.5,v4.6,max=4.8,channels=[stable-4.5],head:YES)</li>
+                                 
+                                     <li>ocs-operator.v4.6.6 - (label=v4.5-v4.7,max=4.8,channels=[stable-4.6 eus-4.6],head:YES)</li>
                                  
                               </ul>
                             </th>
@@ -1968,83 +2106,9 @@
                         </tr>
                     
                         <tr>
-                            <th>gatekeeper-operator-product</th>
+                            <th>metering-ocp</th>
                             <th>
                                 <ul>
-                                
-                                    <li>ClusterRole</li>
-                                
-                                    <li>CRD</li>
-                                
-                                </ul>
-                            </th>
-                             <th>
-                                 <ul>
-                                    
-                                        <li>stable</li>
-                                    
-                                 </ul>
-                             </th>
-                            <th>
-                              <ul>
-                                 
-                                     <li>gatekeeper-operator-product.v0.1.1 - (label=v4.5,v4.6,max=4.8,channels=[stable],head:NO)</li>
-                                 
-                                     <li>gatekeeper-operator-product.v0.1.2 - (label=v4.5,v4.6,max=4.8,channels=[stable],head:NO)</li>
-                                 
-                                     <li>gatekeeper-operator-product.v0.1.2-0.1624366317.p - (label=v4.6-v4.8,max=4.8,channels=[stable],head:NO)</li>
-                                 
-                                     <li>gatekeeper-operator-product.v0.1.2-0.1627931308 - (label=v4.6-v4.8,max=&#34;4.8&#34;,channels=[stable],head:YES)</li>
-                                 
-                              </ul>
-                            </th>
-                            <th>
-                              <ul>
-                                 
-                              </ul>
-                            </th>
-                        </tr>
-                    
-                        <tr>
-                            <th>service-telemetry-operator</th>
-                            <th>
-                                <ul>
-                                
-                                    <li>CRD</li>
-                                
-                                </ul>
-                            </th>
-                             <th>
-                                 <ul>
-                                    
-                                        <li>stable-1.3</li>
-                                    
-                                        <li>stable-1.2</li>
-                                    
-                                 </ul>
-                             </th>
-                            <th>
-                              <ul>
-                                 
-                                     <li>service-telemetry-operator.v1.2.1626281232 - (label=v4.5-v4.6,max=4.8,channels=[stable-1.2],head:YES)</li>
-                                 
-                                     <li>service-telemetry-operator.v1.3.1627467117 - (label=v4.6-v4.7,max=4.8,channels=[stable-1.3],head:YES)</li>
-                                 
-                              </ul>
-                            </th>
-                            <th>
-                              <ul>
-                                 
-                              </ul>
-                            </th>
-                        </tr>
-                    
-                        <tr>
-                            <th>cluster-kube-descheduler-operator</th>
-                            <th>
-                                <ul>
-                                
-                                    <li>CRD</li>
                                 
                                 </ul>
                             </th>
@@ -2058,19 +2122,19 @@
                             <th>
                               <ul>
                                  
-                                     <li>clusterkubedescheduleroperator.4.6.0-202107291702 - (label==v4.6,max=4.8,channels=[4.6],head:YES)</li>
-                                 
                               </ul>
                             </th>
                             <th>
                               <ul>
+                                 
+                                     <li>metering-operator.4.6.0-202107292226 - (label==v4.6,max=not set,channels=[4.6],head:YES)</li>
                                  
                               </ul>
                             </th>
                         </tr>
                     
                         <tr>
-                            <th>amq-broker-lts</th>
+                            <th>red-hat-camel-k</th>
                             <th>
                                 <ul>
                                 
@@ -2081,89 +2145,25 @@
                              <th>
                                  <ul>
                                     
-                                        <li>alpha</li>
+                                        <li>techpreview</li>
                                     
                                  </ul>
                              </th>
                             <th>
                               <ul>
                                  
-                                     <li>amq-broker-operator.v0.9.2 - (label=v4.5,max=4.8,channels=[alpha],head:NO)</li>
+                                     <li>red-hat-camel-k-operator.v1.3.0 - (label=v4.6,max=4.8,channels=[techpreview],head:NO)</li>
                                  
-                                     <li>amq-broker-operator.v0.9.3 - (label=v4.5,max=4.8,channels=[alpha],head:YES)</li>
+                                     <li>red-hat-camel-k-operator.v1.3.1 - (label=v4.6,max=4.8,channels=[techpreview],head:NO)</li>
                                  
-                              </ul>
-                            </th>
-                            <th>
-                              <ul>
+                                     <li>red-hat-camel-k-operator.v1.3.2 - (label=v4.6,max=4.8,channels=[techpreview],head:NO)</li>
                                  
-                              </ul>
-                            </th>
-                        </tr>
-                    
-                        <tr>
-                            <th>nfd</th>
-                            <th>
-                                <ul>
-                                
-                                    <li>CRD</li>
-                                
-                                </ul>
-                            </th>
-                             <th>
-                                 <ul>
-                                    
-                                        <li>4.6</li>
-                                    
-                                 </ul>
-                             </th>
-                            <th>
-                              <ul>
-                                 
-                                     <li>nfd.4.6.0-202107291702 - (label==v4.6,max=4.8,channels=[4.6],head:YES)</li>
+                                     <li>red-hat-camel-k-operator.v1.3.3 - (label=v4.6,max=4.8,channels=[techpreview],head:YES)</li>
                                  
                               </ul>
                             </th>
                             <th>
                               <ul>
-                                 
-                              </ul>
-                            </th>
-                        </tr>
-                    
-                        <tr>
-                            <th>windows-machine-config-operator</th>
-                            <th>
-                                <ul>
-                                
-                                </ul>
-                            </th>
-                             <th>
-                                 <ul>
-                                    
-                                        <li>stable</li>
-                                    
-                                        <li>preview</li>
-                                    
-                                 </ul>
-                             </th>
-                            <th>
-                              <ul>
-                                 
-                              </ul>
-                            </th>
-                            <th>
-                              <ul>
-                                 
-                                     <li>windows-machine-config-operator.v1.0.2 - (label=v4.6,max=not set,channels=[stable preview],head:NO)</li>
-                                 
-                                     <li>windows-machine-config-operator.v1.0.3 - (label==v4.6,max=not set,channels=[stable preview],head:NO)</li>
-                                 
-                                     <li>windows-machine-config-operator.v1.0.4 - (label==v4.6,max=not set,channels=[stable preview],head:NO)</li>
-                                 
-                                     <li>windows-machine-config-operator.v1.0.5 - (label==v4.6,max=not set,channels=[stable preview],head:NO)</li>
-                                 
-                                     <li>windows-machine-config-operator.v1.0.5-0.1625103163.p - (label==v4.6,max=not set,channels=[stable preview],head:YES)</li>
                                  
                               </ul>
                             </th>
@@ -2190,7 +2190,7 @@
                     
                         
                             <tr>
-                                <th>costmanagement-metrics-operator</th>
+                                <th>rhpam-kogito-operator</th>
                                 <th>
                                     <ul>
                                     
@@ -2199,7 +2199,7 @@
                                  <th>
                                      <ul>
                                         
-                                            <li>stable</li>
+                                            <li>7.x</li>
                                         
                                      </ul>
                                  </th>
@@ -2211,243 +2211,9 @@
                                 <th>
                                   <ul>
                                      
-                                         <li>costmanagement-metrics-operator.1.0.0 - (label=v4.6,max=not set,channels=[stable],head:YES)</li>
+                                         <li>rhpam-kogito-operator.v7.11.0 - (label=v4.6,v4.7,max=not set,channels=[7.x],head:NO)</li>
                                      
-                                  </ul>
-                                </th>
-                            </tr>
-                        
-                            <tr>
-                                <th>codeready-workspaces</th>
-                                <th>
-                                    <ul>
-                                    
-                                        <li>CRD</li>
-                                    
-                                    </ul>
-                                </th>
-                                 <th>
-                                     <ul>
-                                        
-                                            <li>latest</li>
-                                        
-                                     </ul>
-                                 </th>
-                                <th>
-                                  <ul>
-                                     
-                                         <li>crwoperator.v2.0.0 - (label=v4.5,max=4.8,channels=[latest],head:NO)</li>
-                                     
-                                         <li>crwoperator.v2.1.0 - (label=v4.5,max=4.8,channels=[latest],head:NO)</li>
-                                     
-                                         <li>crwoperator.v2.1.1 - (label=v4.5,max=4.8,channels=[latest],head:NO)</li>
-                                     
-                                         <li>crwoperator.v2.2.0 - (label=v4.5,max=4.8,channels=[latest],head:NO)</li>
-                                     
-                                         <li>crwoperator.v2.3.0 - (label=v4.5,max=4.8,channels=[latest],head:NO)</li>
-                                     
-                                         <li>crwoperator.v2.4.0 - (label=v4.5,v4.6,max=4.8,channels=[latest],head:NO)</li>
-                                     
-                                         <li>crwoperator.v2.5.0 - (label=v4.5,v4.6,max=4.8,channels=[latest],head:NO)</li>
-                                     
-                                         <li>crwoperator.v2.5.1 - (label=v4.5,v4.6,max=4.8,channels=[latest],head:NO)</li>
-                                     
-                                         <li>crwoperator.v2.6.0 - (label=v4.5,v4.6,max=4.8,channels=[latest],head:NO)</li>
-                                     
-                                         <li>crwoperator.v2.7.0 - (label=v4.5,v4.6,max=4.8,channels=[latest],head:NO)</li>
-                                     
-                                         <li>crwoperator.v2.7.1 - (label=v4.5,v4.6,max=4.8,channels=[latest],head:NO)</li>
-                                     
-                                         <li>crwoperator.v2.8.0 - (label=v4.5,v4.6,max=4.8,channels=[latest],head:NO)</li>
-                                     
-                                  </ul>
-                                </th>
-                                <th>
-                                  <ul>
-                                     
-                                         <li>crwoperator.v2.10.0 - (label=v4.6,max=not set,channels=[latest],head:NO)</li>
-                                     
-                                         <li>crwoperator.v2.10.1 - (label=v4.6,max=not set,channels=[latest],head:YES)</li>
-                                     
-                                         <li>crwoperator.v2.9.0 - (label=v4.6,max=not set,channels=[latest],head:NO)</li>
-                                     
-                                  </ul>
-                                </th>
-                            </tr>
-                        
-                            <tr>
-                                <th>fuse-online</th>
-                                <th>
-                                    <ul>
-                                    
-                                        <li>CRD</li>
-                                    
-                                    </ul>
-                                </th>
-                                 <th>
-                                     <ul>
-                                        
-                                            <li>fuse-online-v7.8.x</li>
-                                        
-                                            <li>7.9.x</li>
-                                        
-                                            <li>fuse-online-7.7.x</li>
-                                        
-                                     </ul>
-                                 </th>
-                                <th>
-                                  <ul>
-                                     
-                                         <li>fuse-online-operator.v7.7.1 - (label=v4.6,max=4.8,channels=[fuse-online-7.7.x],head:YES)</li>
-                                     
-                                         <li>fuse-online-operator.v7.8.1 - (label=v4.6,max=4.8,channels=[fuse-online-v7.8.x 7.9.x],head:YES)</li>
-                                     
-                                  </ul>
-                                </th>
-                                <th>
-                                  <ul>
-                                     
-                                         <li>fuse-online.v7.9.0 - (label=v4.6,max=not set,channels=[7.9.x],head:YES)</li>
-                                     
-                                  </ul>
-                                </th>
-                            </tr>
-                        
-                            <tr>
-                                <th>rhacs-operator</th>
-                                <th>
-                                    <ul>
-                                    
-                                    </ul>
-                                </th>
-                                 <th>
-                                     <ul>
-                                        
-                                            <li>latest</li>
-                                        
-                                     </ul>
-                                 </th>
-                                <th>
-                                  <ul>
-                                     
-                                  </ul>
-                                </th>
-                                <th>
-                                  <ul>
-                                     
-                                         <li>rhacs-operator.v3.62.0 - (label=v4.6,max=not set,channels=[latest],head:NO)</li>
-                                     
-                                         <li>rhacs-operator.v3.63.0 - (label=v4.6,max=not set,channels=[latest],head:NO)</li>
-                                     
-                                         <li>rhacs-operator.v3.64.0 - (label=v4.6,max=not set,channels=[latest],head:YES)</li>
-                                     
-                                  </ul>
-                                </th>
-                            </tr>
-                        
-                            <tr>
-                                <th>compliance-operator</th>
-                                <th>
-                                    <ul>
-                                    
-                                    </ul>
-                                </th>
-                                 <th>
-                                     <ul>
-                                        
-                                            <li>release-0.1</li>
-                                        
-                                            <li>4.6</li>
-                                        
-                                     </ul>
-                                 </th>
-                                <th>
-                                  <ul>
-                                     
-                                  </ul>
-                                </th>
-                                <th>
-                                  <ul>
-                                     
-                                         <li>compliance-operator.v0.1.32 - (label==v4.6,max=not set,channels=[4.6],head:YES)</li>
-                                     
-                                         <li>compliance-operator.v0.1.35 - (label=v4.6,max=not set,channels=[release-0.1],head:YES)</li>
-                                     
-                                  </ul>
-                                </th>
-                            </tr>
-                        
-                            <tr>
-                                <th>submariner</th>
-                                <th>
-                                    <ul>
-                                    
-                                        <li>CRD</li>
-                                    
-                                    </ul>
-                                </th>
-                                 <th>
-                                     <ul>
-                                        
-                                            <li>alpha</li>
-                                        
-                                            <li>alpha-0.9</li>
-                                        
-                                            <li>alpha-0.8</li>
-                                        
-                                     </ul>
-                                 </th>
-                                <th>
-                                  <ul>
-                                     
-                                         <li>submariner.v0.8.1 - (label=v4.5,v4.6,max=4.8,channels=[alpha],head:YES)</li>
-                                     
-                                  </ul>
-                                </th>
-                                <th>
-                                  <ul>
-                                     
-                                         <li>submariner.v0.8.2 - (label=v4.5-v4.7,max=not set,channels=[alpha-0.8],head:YES)</li>
-                                     
-                                         <li>submariner.v0.9.0 - (label=v4.6,max=not set,channels=[alpha-0.9],head:YES)</li>
-                                     
-                                  </ul>
-                                </th>
-                            </tr>
-                        
-                            <tr>
-                                <th>fuse-console</th>
-                                <th>
-                                    <ul>
-                                    
-                                        <li>CRD</li>
-                                    
-                                    </ul>
-                                </th>
-                                 <th>
-                                     <ul>
-                                        
-                                            <li>fuse-console-7.8.x</li>
-                                        
-                                            <li>7.9.x</li>
-                                        
-                                            <li>fuse-console-7.7.x</li>
-                                        
-                                     </ul>
-                                 </th>
-                                <th>
-                                  <ul>
-                                     
-                                         <li>fuse-console.v7.7.1 - (label=v4.6,max=4.8,channels=[fuse-console-7.7.x],head:YES)</li>
-                                     
-                                         <li>fuse-console.v7.8.2 - (label=v4.6,max=4.8,channels=[fuse-console-7.8.x],head:YES)</li>
-                                     
-                                  </ul>
-                                </th>
-                                <th>
-                                  <ul>
-                                     
-                                         <li>fuse-console.v7.9.0 - (label=v4.6,max=not set,channels=[7.9.x],head:YES)</li>
+                                         <li>rhpam-kogito-operator.v7.11.1-1 - (label=v4.6,max=not set,channels=[7.x],head:YES)</li>
                                      
                                   </ul>
                                 </th>
@@ -2550,7 +2316,7 @@
                             </tr>
                         
                             <tr>
-                                <th>skupper-operator</th>
+                                <th>integration-operator</th>
                                 <th>
                                     <ul>
                                     
@@ -2559,7 +2325,7 @@
                                  <th>
                                      <ul>
                                         
-                                            <li>alpha</li>
+                                            <li>1.x</li>
                                         
                                      </ul>
                                  </th>
@@ -2571,9 +2337,73 @@
                                 <th>
                                   <ul>
                                      
-                                         <li>skupper-operator.v0.6.0 - (label=v4.6,max=not set,channels=[alpha],head:NO)</li>
+                                         <li>integration-operator.v1.0.0 - (label=v4.6,max=not set,channels=[1.x],head:NO)</li>
                                      
-                                         <li>skupper-operator.v0.6.1 - (label=v4.6,max=not set,channels=[alpha],head:YES)</li>
+                                         <li>integration-operator.v1.0.1 - (label=v4.6,max=not set,channels=[1.x],head:NO)</li>
+                                     
+                                         <li>integration-operator.v1.0.4 - (label=v4.6,max=not set,channels=[1.x],head:NO)</li>
+                                     
+                                         <li>integration-operator.v1.0.5 - (label=v4.6,max=not set,channels=[1.x],head:YES)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>costmanagement-metrics-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>costmanagement-metrics-operator.1.0.0 - (label=v4.6,max=not set,channels=[stable],head:YES)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>rhacs-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>latest</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>rhacs-operator.v3.62.0 - (label=v4.6,max=not set,channels=[latest],head:NO)</li>
+                                     
+                                         <li>rhacs-operator.v3.63.0 - (label=v4.6,max=not set,channels=[latest],head:NO)</li>
+                                     
+                                         <li>rhacs-operator.v3.64.0 - (label=v4.6,max=not set,channels=[latest],head:YES)</li>
                                      
                                   </ul>
                                 </th>
@@ -2628,116 +2458,6 @@
                                          <li>amq-online.1.7.1 - (label=v4.6,max=not set,channels=[stable],head:NO)</li>
                                      
                                          <li>amq-online.1.7.1-0.1628610187.p - (label=v4.6,max=not set,channels=[stable],head:YES)</li>
-                                     
-                                  </ul>
-                                </th>
-                            </tr>
-                        
-                            <tr>
-                                <th>rhpam-kogito-operator</th>
-                                <th>
-                                    <ul>
-                                    
-                                    </ul>
-                                </th>
-                                 <th>
-                                     <ul>
-                                        
-                                            <li>7.x</li>
-                                        
-                                     </ul>
-                                 </th>
-                                <th>
-                                  <ul>
-                                     
-                                  </ul>
-                                </th>
-                                <th>
-                                  <ul>
-                                     
-                                         <li>rhpam-kogito-operator.v7.11.0 - (label=v4.6,v4.7,max=not set,channels=[7.x],head:NO)</li>
-                                     
-                                         <li>rhpam-kogito-operator.v7.11.1-1 - (label=v4.6,max=not set,channels=[7.x],head:YES)</li>
-                                     
-                                  </ul>
-                                </th>
-                            </tr>
-                        
-                            <tr>
-                                <th>klusterlet-product</th>
-                                <th>
-                                    <ul>
-                                    
-                                        <li>CRD</li>
-                                    
-                                    </ul>
-                                </th>
-                                 <th>
-                                     <ul>
-                                        
-                                            <li>release-2.3</li>
-                                        
-                                            <li>release-2.2</li>
-                                        
-                                     </ul>
-                                 </th>
-                                <th>
-                                  <ul>
-                                     
-                                         <li>klusterlet-product.v2.2.0 - (label=v4.5,v4.6,max=4.8,channels=[release-2.2],head:NO)</li>
-                                     
-                                         <li>klusterlet-product.v2.2.1 - (label=v4.5,v4.6,max=4.8,channels=[release-2.2],head:NO)</li>
-                                     
-                                         <li>klusterlet-product.v2.2.2 - (label=v4.5,v4.6,max=4.8,channels=[release-2.2],head:NO)</li>
-                                     
-                                         <li>klusterlet-product.v2.2.3 - (label=v4.5,v4.6,max=4.8,channels=[release-2.2],head:NO)</li>
-                                     
-                                         <li>klusterlet-product.v2.2.5 - (label=v4.6-v4.8,max=4.8,channels=[release-2.2],head:NO)</li>
-                                     
-                                         <li>klusterlet-product.v2.2.6 - (label=v4.6-v4.8,max=4.8,channels=[release-2.2],head:YES)</li>
-                                     
-                                  </ul>
-                                </th>
-                                <th>
-                                  <ul>
-                                     
-                                         <li>klusterlet-product.v2.3.0 - (label=v4.6-v4.9,max=not set,channels=[release-2.3],head:NO)</li>
-                                     
-                                         <li>klusterlet-product.v2.3.1 - (label=v4.6-v4.9,max=not set,channels=[release-2.3],head:YES)</li>
-                                     
-                                  </ul>
-                                </th>
-                            </tr>
-                        
-                            <tr>
-                                <th>integration-operator</th>
-                                <th>
-                                    <ul>
-                                    
-                                    </ul>
-                                </th>
-                                 <th>
-                                     <ul>
-                                        
-                                            <li>1.x</li>
-                                        
-                                     </ul>
-                                 </th>
-                                <th>
-                                  <ul>
-                                     
-                                  </ul>
-                                </th>
-                                <th>
-                                  <ul>
-                                     
-                                         <li>integration-operator.v1.0.0 - (label=v4.6,max=not set,channels=[1.x],head:NO)</li>
-                                     
-                                         <li>integration-operator.v1.0.1 - (label=v4.6,max=not set,channels=[1.x],head:NO)</li>
-                                     
-                                         <li>integration-operator.v1.0.4 - (label=v4.6,max=not set,channels=[1.x],head:NO)</li>
-                                     
-                                         <li>integration-operator.v1.0.5 - (label=v4.6,max=not set,channels=[1.x],head:YES)</li>
                                      
                                   </ul>
                                 </th>
@@ -2806,7 +2526,7 @@
                             </tr>
                         
                             <tr>
-                                <th>file-integrity-operator</th>
+                                <th>skupper-operator</th>
                                 <th>
                                     <ul>
                                     
@@ -2815,9 +2535,7 @@
                                  <th>
                                      <ul>
                                         
-                                            <li>release-0.1</li>
-                                        
-                                            <li>4.6</li>
+                                            <li>alpha</li>
                                         
                                      </ul>
                                  </th>
@@ -2829,9 +2547,9 @@
                                 <th>
                                   <ul>
                                      
-                                         <li>file-integrity-operator.v0.1.13 - (label=v4.6,max=not set,channels=[4.6],head:YES)</li>
+                                         <li>skupper-operator.v0.6.0 - (label=v4.6,max=not set,channels=[alpha],head:NO)</li>
                                      
-                                         <li>file-integrity-operator.v0.1.16 - (label=v4.6,max=not set,channels=[release-0.1],head:YES)</li>
+                                         <li>skupper-operator.v0.6.1 - (label=v4.6,max=not set,channels=[alpha],head:YES)</li>
                                      
                                   </ul>
                                 </th>
@@ -2874,6 +2592,152 @@
                                          <li>service-binding-operator.v0.9.0 - (label=v4.6,max=not set,channels=[preview beta],head:NO)</li>
                                      
                                          <li>service-binding-operator.v0.9.1 - (label=v4.6,max=not set,channels=[preview beta],head:YES)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>fuse-console</th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>CRD</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>fuse-console-7.8.x</li>
+                                        
+                                            <li>7.9.x</li>
+                                        
+                                            <li>fuse-console-7.7.x</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>fuse-console.v7.7.1 - (label=v4.6,max=4.8,channels=[fuse-console-7.7.x],head:YES)</li>
+                                     
+                                         <li>fuse-console.v7.8.2 - (label=v4.6,max=4.8,channels=[fuse-console-7.8.x],head:YES)</li>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>fuse-console.v7.9.0 - (label=v4.6,max=not set,channels=[7.9.x],head:YES)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>file-integrity-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>release-0.1</li>
+                                        
+                                            <li>4.6</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>file-integrity-operator.v0.1.13 - (label=v4.6,max=not set,channels=[4.6],head:YES)</li>
+                                     
+                                         <li>file-integrity-operator.v0.1.16 - (label=v4.6,max=not set,channels=[release-0.1],head:YES)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>submariner</th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>CRD</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>alpha</li>
+                                        
+                                            <li>alpha-0.9</li>
+                                        
+                                            <li>alpha-0.8</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>submariner.v0.8.1 - (label=v4.5,v4.6,max=4.8,channels=[alpha],head:YES)</li>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>submariner.v0.8.2 - (label=v4.5-v4.7,max=not set,channels=[alpha-0.8],head:YES)</li>
+                                     
+                                         <li>submariner.v0.9.0 - (label=v4.6,max=not set,channels=[alpha-0.9],head:YES)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>fuse-online</th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>CRD</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>fuse-online-v7.8.x</li>
+                                        
+                                            <li>7.9.x</li>
+                                        
+                                            <li>fuse-online-7.7.x</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>fuse-online-operator.v7.7.1 - (label=v4.6,max=4.8,channels=[fuse-online-7.7.x],head:YES)</li>
+                                     
+                                         <li>fuse-online-operator.v7.8.1 - (label=v4.6,max=4.8,channels=[fuse-online-v7.8.x 7.9.x],head:YES)</li>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>fuse-online.v7.9.0 - (label=v4.6,max=not set,channels=[7.9.x],head:YES)</li>
                                      
                                   </ul>
                                 </th>
@@ -2928,6 +2792,142 @@
                                          <li>service-registry-operator.v2.0.0 - (label=v4.6,max=not set,channels=[2.x 2.0.x],head:NO)</li>
                                      
                                          <li>service-registry-operator.v2.0.1 - (label=v4.6,max=not set,channels=[2.x 2.0.x],head:YES)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>compliance-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>release-0.1</li>
+                                        
+                                            <li>4.6</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>compliance-operator.v0.1.32 - (label==v4.6,max=not set,channels=[4.6],head:YES)</li>
+                                     
+                                         <li>compliance-operator.v0.1.35 - (label=v4.6,max=not set,channels=[release-0.1],head:YES)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>klusterlet-product</th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>CRD</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>release-2.3</li>
+                                        
+                                            <li>release-2.2</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>klusterlet-product.v2.2.0 - (label=v4.5,v4.6,max=4.8,channels=[release-2.2],head:NO)</li>
+                                     
+                                         <li>klusterlet-product.v2.2.1 - (label=v4.5,v4.6,max=4.8,channels=[release-2.2],head:NO)</li>
+                                     
+                                         <li>klusterlet-product.v2.2.2 - (label=v4.5,v4.6,max=4.8,channels=[release-2.2],head:NO)</li>
+                                     
+                                         <li>klusterlet-product.v2.2.3 - (label=v4.5,v4.6,max=4.8,channels=[release-2.2],head:NO)</li>
+                                     
+                                         <li>klusterlet-product.v2.2.5 - (label=v4.6-v4.8,max=4.8,channels=[release-2.2],head:NO)</li>
+                                     
+                                         <li>klusterlet-product.v2.2.6 - (label=v4.6-v4.8,max=4.8,channels=[release-2.2],head:YES)</li>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>klusterlet-product.v2.3.0 - (label=v4.6-v4.9,max=not set,channels=[release-2.3],head:NO)</li>
+                                     
+                                         <li>klusterlet-product.v2.3.1 - (label=v4.6-v4.9,max=not set,channels=[release-2.3],head:YES)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>codeready-workspaces</th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>CRD</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>latest</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>crwoperator.v2.0.0 - (label=v4.5,max=4.8,channels=[latest],head:NO)</li>
+                                     
+                                         <li>crwoperator.v2.1.0 - (label=v4.5,max=4.8,channels=[latest],head:NO)</li>
+                                     
+                                         <li>crwoperator.v2.1.1 - (label=v4.5,max=4.8,channels=[latest],head:NO)</li>
+                                     
+                                         <li>crwoperator.v2.2.0 - (label=v4.5,max=4.8,channels=[latest],head:NO)</li>
+                                     
+                                         <li>crwoperator.v2.3.0 - (label=v4.5,max=4.8,channels=[latest],head:NO)</li>
+                                     
+                                         <li>crwoperator.v2.4.0 - (label=v4.5,v4.6,max=4.8,channels=[latest],head:NO)</li>
+                                     
+                                         <li>crwoperator.v2.5.0 - (label=v4.5,v4.6,max=4.8,channels=[latest],head:NO)</li>
+                                     
+                                         <li>crwoperator.v2.5.1 - (label=v4.5,v4.6,max=4.8,channels=[latest],head:NO)</li>
+                                     
+                                         <li>crwoperator.v2.6.0 - (label=v4.5,v4.6,max=4.8,channels=[latest],head:NO)</li>
+                                     
+                                         <li>crwoperator.v2.7.0 - (label=v4.5,v4.6,max=4.8,channels=[latest],head:NO)</li>
+                                     
+                                         <li>crwoperator.v2.7.1 - (label=v4.5,v4.6,max=4.8,channels=[latest],head:NO)</li>
+                                     
+                                         <li>crwoperator.v2.8.0 - (label=v4.5,v4.6,max=4.8,channels=[latest],head:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>crwoperator.v2.10.0 - (label=v4.6,max=not set,channels=[latest],head:NO)</li>
+                                     
+                                         <li>crwoperator.v2.10.1 - (label=v4.6,max=not set,channels=[latest],head:YES)</li>
+                                     
+                                         <li>crwoperator.v2.9.0 - (label=v4.6,max=not set,channels=[latest],head:NO)</li>
                                      
                                   </ul>
                                 </th>
