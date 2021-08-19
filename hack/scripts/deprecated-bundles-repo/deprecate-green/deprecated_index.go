@@ -17,14 +17,20 @@
 // deprecated on 4.9. That will be removed as soon as possible and is just added
 // here in case it be required to be checked and used so far.
 // The following script uses the JSON format output image to
-// generates the deprecate.yml file with all bundles which requires
+// generates the yml file with all bundles which requires
 // to be deprecated because are using the APIs which will be removed on ocp 4.9 .
 // Note that is equals the deprecate-all but will only return the cases where
-// we can found a compatible path with 4.9
+// we can found a compatible distribution with 4.9
+// Example of usage: (see that we leave makefile target to help you out here)
+// nolint: lll
+// go run ./hack/scripts/deprecated-bundles-repo/deprecate-green/deprecated_index.go --image=testdata/reports/redhat_certified_operator_index/bundles_registry.redhat.io_redhat_certified_operator_index_v4.8_2021-08-10.json
+// go run ./hack/scripts/deprecated-bundles-repo/deprecate-green/deprecated_index.go --image=testdata/reports/redhat_redhat_marketplace_index/bundles_registry.redhat.io_redhat_redhat_marketplace_index_v4.8_2021-08-06.json
+// go run ./hack/scripts/deprecated-bundles-repo/deprecate-green/deprecated_index.go --image=testdata/reports/redhat_redhat_operator_index/bundles_registry.redhat.io_redhat_redhat_operator_index_v4.8_2021-08-15.json
 package main
 
 import (
 	"encoding/json"
+	"flag"
 	"log"
 	"os"
 	"path/filepath"
@@ -60,10 +66,17 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Update here the path of the JSON report for the image that you would like to be used
-	path := "testdata/reports/redhat_redhat_operator_index/bundles_registry.redhat.io_redhat_redhat_operator_index_v4.8_2021-08-07.json"
+	defaultOutputPath := "hack/scripts/deprecated-bundles-repo/deprecate-green"
 
-	byteValue, err := pkg.ReadFile(filepath.Join(currentPath, path))
+	var outputPath string
+	var jsonFile string
+
+	flag.StringVar(&outputPath, "output", defaultOutputPath, "Inform the path for output the report, if not informed it will be generated at hack/scripts/deprecated-bundles-repo/deprecate-green.")
+	flag.StringVar(&jsonFile, "image", "", "Inform the path for the JSON result which will be used to generate the report. ")
+
+	flag.Parse()
+
+	byteValue, err := pkg.ReadFile(filepath.Join(currentPath, jsonFile))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -109,7 +122,7 @@ func main() {
 		mapPackagesWithBundles[""] = all
 	}
 
-	apiDashReport, err := getAPIDashForImage(path)
+	apiDashReport, err := getAPIDashForImage(jsonFile)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -149,6 +162,13 @@ func main() {
 		})
 
 		for _, b := range bundles {
+
+			// skip the scenarios where deprecate apis were not found
+			if len(b.KindsDeprecateAPIs) == 0 ||
+				(len(b.KindsDeprecateAPIs) == 1 && b.KindsDeprecateAPIs[0] == pkg.Unknown) {
+				continue
+			}
+
 			deprecatedYaml.Bundles = append(deprecatedYaml.Bundles,
 				Bundles{
 					Paths:   strings.ReplaceAll(b.BundleImagePath, "registry.redhat.io/", ""),
@@ -162,7 +182,8 @@ func main() {
 		return allDeprecated[i].PackageName < allDeprecated[j].PackageName
 	})
 
-	f, err := os.Create(filepath.Join(currentPath, "hack/scripts/deprecated-bundles-repo/deprecate-green/deprecated.yml"))
+	fp := filepath.Join(currentPath, outputPath, pkg.GetReportName(apiDashReport.ImageName, "deprecated", "yml"))
+	f, err := os.Create(fp)
 	if err != nil {
 		log.Fatal(err)
 	}
