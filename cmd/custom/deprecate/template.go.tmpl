@@ -103,8 +103,8 @@
             <h5 class="display-12 fw-bold">3. What does it mean for a package to be in red, amber or green?</h5>
             <ul>
                 <li> <b>(Red) Not complying:</b> these are packages which have no head of channel bundles compatible with 4.9(uses removed API(s) on k8s 1.22/ocp 4.9), and no head of channel has a Max OCP annotation set </li>
-                <li> <b>(Green) Complying:</b> these are packages which have no head of channel bundles compatible with 4.9(uses removed API(s) in k8s 1.22/ocp 4.9) or at least has one of the head channel bundles compatible with 4.9 and the rest of the head channel bundles uses the Max OCP version annotation properly</li>
-                <li> <b>(Amber) Partially Complying:</b> these are packages which are not in red or green falls in the amber category. The ones that are partially complying with the requirements but not fully.</li>
+                <li> <b>(Green) Complying:</b> these are packages for which all head of channel bundles are compatible with 4.9(do not use removed API(s) in k8s 1.22/ocp 4.9) or at least has one of the head of channel bundles is compatible with 4.9 and the rest of the head of channel bundles use the Max OCP version annotation properly</li>
+                <li> <b>(Amber) Partially Complying:</b> these are packages which are not in red or green falls in the amber category. The ones that are partially complying with the requirements but not fully.  E.g. at least one head of channel bundles is not compatible with 4.9 and does not declare an appropriate Max OCP version, or none of the head of channel bundles are compatible with 4.9.</li>
             </ul>
 </div>
 
