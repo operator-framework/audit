@@ -88,7 +88,7 @@ func GetHeadOfChannelState(headOfChannels []bundles.Column) (int, int) {
 	var foundConfiguredAccordingly = 0
 	for _, v := range headOfChannels {
 		// In this case has a valid path
-		if len(v.KindsDeprecateAPIs) == 0 && !pkg.IsOcpLabelRangeLowerThan49(v.OCPLabel) {
+		if len(v.KindsDeprecateAPIs) == 0 {
 			foundOK++
 		}
 		// in this case will block the cluster upgrade at least
