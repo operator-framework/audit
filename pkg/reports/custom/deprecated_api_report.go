@@ -62,7 +62,7 @@ func NewAPIDashReport(bundlesReport bundles.Report) *APIDashReport {
 	apiDash := APIDashReport{}
 	apiDash.ImageName = bundlesReport.Flags.IndexImage
 	apiDash.ImageID = bundlesReport.IndexImageInspect.ID
-	apiDash.ImageBuild = bundlesReport.IndexImageInspect.DockerConfig.Labels["build-date"]
+	apiDash.ImageBuild = bundlesReport.IndexImageInspect.Created
 	apiDash.GeneratedAt = bundlesReport.GenerateAt
 
 	mapPackagesWithBundles := MapBundlesPerPackage(bundlesReport)
