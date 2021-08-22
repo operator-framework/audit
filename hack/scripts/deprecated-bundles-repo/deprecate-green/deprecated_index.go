@@ -56,6 +56,7 @@ type Deprecated struct {
 
 type File struct {
 	Deprecated []Deprecated
+	APIDashReport *custom.APIDashReport
 }
 
 //nolint: lll
@@ -191,7 +192,7 @@ func main() {
 	defer f.Close()
 
 	t := template.Must(template.ParseFiles(filepath.Join(currentPath, "hack/scripts/deprecated-bundles-repo/deprecate-green/template.go.tmpl")))
-	err = t.Execute(f, File{allDeprecated})
+	err = t.Execute(f, File{Deprecated: allDeprecated, APIDashReport: apiDashReport})
 	if err != nil {
 		panic(err)
 	}

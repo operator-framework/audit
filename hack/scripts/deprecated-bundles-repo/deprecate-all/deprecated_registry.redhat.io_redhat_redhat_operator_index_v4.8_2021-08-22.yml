@@ -1,0 +1,817 @@
+##############################################
+# - The following results were obtained programmatically from:
+# - Image name: registry.redhat.io/redhat/redhat-operator-index:v4.8
+# - Image ID: sha256:b88b8b3531b315848d5a4d53c6e376660547bdee84e07a06d07aa7406974dcc2
+# - Image Created at: 2021-08-19T18:05:29.215979732Z
+# - From JSON report generated at: 2021-08-21
+##############################################
+3scale-operator:
+    # Bundle: 3scale-operator.v0.3.0
+    - 3scale-amp2/3scale-rhel7-operator-metadata@sha256:55166d313d270ae4740a260149bfb41df1af8214744e9c38abef07add49c95de
+    # Bundle: 3scale-operator.v0.4.0
+    - 3scale-amp2/3scale-rhel7-operator-metadata@sha256:bb7dc249eb517b6e3ffd7d4ceb19884ad4af97f16835bf58e1930534ca7e4764
+    # Bundle: 3scale-operator.v0.4.1
+    - 3scale-amp2/3scale-rhel7-operator-metadata@sha256:523ca71b96847059b68f6def61e4735a52315757395556f37977e083aef305de
+    # Bundle: 3scale-operator.v0.4.2
+    - 3scale-amp2/3scale-rhel7-operator-metadata@sha256:9e2588646a095b3067cd785910c7cde820b7b7aaf864d5600a577a13a5bd69c4
+    # Bundle: 3scale-operator.v0.5.0
+    - 3scale-amp2/3scale-rhel7-operator-metadata@sha256:2d1d177e854d5065d872b63502b2ac08bbcb9855ab1f0609106c31ef13f8d67b
+    # Bundle: 3scale-operator.v0.5.1
+    - 3scale-amp2/3scale-rhel7-operator-metadata@sha256:3d51773c86faf0a06661d824d25e63bb704fdd45740131ab5c2c3cff2f3afe20
+    # Bundle: 3scale-operator.v0.5.2
+    - 3scale-amp2/3scale-rhel7-operator-metadata@sha256:361ee922e6460100781906421e3b4339850785fe1d1559b17be6555ab7684a52
+    # Bundle: 3scale-operator.v0.5.3
+    - 3scale-amp2/3scale-rhel7-operator-metadata@sha256:a4bd65860deeca86308b783186e34f7f947e5bfe072eee459091d698fac51409
+    # Bundle: 3scale-operator.v0.5.4
+    - 3scale-amp2/3scale-rhel7-operator-metadata@sha256:27a445a5c1950513cf5088dc96e6768c717f3079dfa445775768ea573a1436f7
+    # Bundle: 3scale-operator.v0.5.5
+    - 3scale-amp2/3scale-rhel7-operator-metadata@sha256:65f6dc458d864761dc05f265d2e679104510bb38c5a0e5a31e2268ec674b9ebe
+    # Bundle: 3scale-operator.v0.6.0
+    - 3scale-amp2/3scale-rhel7-operator-metadata@sha256:996c4b5c28ba35b640f2ccf12f49a477bdd65e69c3741f0253c850aaf14f0176
+    # Bundle: 3scale-operator.v0.6.1
+    - 3scale-amp2/3scale-rhel7-operator-metadata@sha256:d3f06246be00c7a0e8474eee22791a9b0fcd64863bcd45a19d84e5dc88bc075a
+    # Bundle: 3scale-operator.v0.7.0
+    - 3scale-amp2/3scale-rhel7-operator-metadata@sha256:f698cf1102a1847cba810f5be68c264223a37f6424c3e4902465111b5b74d496
+advanced-cluster-management:
+    # Bundle: advanced-cluster-management.v2.0.0
+    - rhacm2/acm-operator-bundle@sha256:280bf802843fab435a2946a49324900223f14ae01abbb113624bc056b5ab0188
+    # Bundle: advanced-cluster-management.v2.0.1
+    - rhacm2/acm-operator-bundle@sha256:1e1cd6a2950349e3e619e2ffe15cd10d36a5b15e1a9e3b0024bdb11a2355b7ca
+    # Bundle: advanced-cluster-management.v2.0.10
+    - rhacm2/acm-operator-bundle@sha256:ea42543f1127fd6ec53cf7f6c7f61f3e0b62f1b210844584d89d60c4bf53fef9
+    # Bundle: advanced-cluster-management.v2.0.2
+    - rhacm2/acm-operator-bundle@sha256:75c32ced4add3c6c583daf0bcf81b13cbeb99fd2e24f2c3261fb95ac7bcec4f1
+    # Bundle: advanced-cluster-management.v2.0.3
+    - rhacm2/acm-operator-bundle@sha256:c068e6f697764fe0aa82f5572450bbf6cc80d9670a7cb65a8753afa9fa9f8bf6
+    # Bundle: advanced-cluster-management.v2.0.4
+    - rhacm2/acm-operator-bundle@sha256:1af785b35226525dc1265123bc274bccb025439ea396e560d0a562791f2c8217
+    # Bundle: advanced-cluster-management.v2.0.5
+    - rhacm2/acm-operator-bundle@sha256:3a8c3261d61779907a9a86bb4a2699bd8c60f3ec6466cf6656034b7eda127bc6
+    # Bundle: advanced-cluster-management.v2.0.6
+    - rhacm2/acm-operator-bundle@sha256:d97ae02a20eaaa1a0770710a7b5808787d9617ce63c03d3c3f08a11f5bf41aa3
+    # Bundle: advanced-cluster-management.v2.0.7
+    - rhacm2/acm-operator-bundle@sha256:e77e15271554a64192f4c80a864efe4f082caeeb94d72f10165beb5cba043ebf
+    # Bundle: advanced-cluster-management.v2.0.8
+    - rhacm2/acm-operator-bundle@sha256:c86057b81e3f4a2979f6d5e2ddcbb9fc31549f8d528497a4924e53b26fd75c8c
+    # Bundle: advanced-cluster-management.v2.0.9
+    - rhacm2/acm-operator-bundle@sha256:a0a2be3279d03955acf2c2471384c819d45ee765401242eeac20751fe3c835fd
+    # Bundle: advanced-cluster-management.v2.1.0
+    - rhacm2/acm-operator-bundle@sha256:76435cfe5728bbcacabb1a444ca45df913a7d5a8541b0cc40496cd11d77865db
+    # Bundle: advanced-cluster-management.v2.1.1
+    - rhacm2/acm-operator-bundle@sha256:f02648187cb8cc1c34a6c463ce7f307cab7016da4c06e836971b9bd23d967394
+    # Bundle: advanced-cluster-management.v2.1.2
+    - rhacm2/acm-operator-bundle@sha256:9725b91409219faf9e37bab93529ca21bfd209aab3395403866275a3bd08f072
+    # Bundle: advanced-cluster-management.v2.1.3
+    - rhacm2/acm-operator-bundle@sha256:510b81899ac25c4318e31a7a44b5c2645fc14e24cc463847f19c5229e8d87c6f
+    # Bundle: advanced-cluster-management.v2.1.4
+    - rhacm2/acm-operator-bundle@sha256:5d6c8f7a046eaebd4cee3ad10151bfa3bb176df8e20cd475db66becdcd7356fd
+    # Bundle: advanced-cluster-management.v2.1.5
+    - rhacm2/acm-operator-bundle@sha256:4e4fc6cdfec03a175ada82a98044ba6ae80e5d7fc096a24bc5f2977f49d6c70b
+    # Bundle: advanced-cluster-management.v2.1.6
+    - rhacm2/acm-operator-bundle@sha256:55906425c2619315d98a9f2b3b014379bfa14875592d18a550a93344097c5496
+    # Bundle: advanced-cluster-management.v2.2.0
+    - rhacm2/acm-operator-bundle@sha256:96e323e923dfb556daadc87e990eb89277c21926e56e378bae60bf1d2a46931a
+    # Bundle: advanced-cluster-management.v2.2.1
+    - rhacm2/acm-operator-bundle@sha256:adba2e6b585bde1c05d041097a9f19b0753230480032aa44ad1b27fecbf819f5
+    # Bundle: advanced-cluster-management.v2.2.2
+    - rhacm2/acm-operator-bundle@sha256:82f8508111f307c25e458a2283e86a21eaeeaa2cd0b335766174f324f6bd392d
+    # Bundle: advanced-cluster-management.v2.2.3
+    - rhacm2/acm-operator-bundle@sha256:3560cfe5aa98787496ad1db0440c32a53c9f91ec6bf56fe674b44fcce0913fbc
+    # Bundle: advanced-cluster-management.v2.2.4
+    - rhacm2/acm-operator-bundle@sha256:5af9a80acccef3f230dca67538276c3777568cbc98b20d6018c5a9843ab18005
+    # Bundle: advanced-cluster-management.v2.2.5
+    - rhacm2/acm-operator-bundle@sha256:2dc9b26f20e89ab7faa9b6a4a4cdf3137061a5115447d0342de268b8fbdd34ad
+    # Bundle: advanced-cluster-management.v2.2.6
+    - rhacm2/acm-operator-bundle@sha256:5f9235a715e8091889aff5427683c6a529d222a8126a883da570fb531cb2771b
+    # Bundle: advanced-cluster-management.v2.2.7
+    - rhacm2/acm-operator-bundle@sha256:1292fa5177f41a96698a37a35a96d61c1e9c85934a71b4fe91ed9416e78658b3
+    # Bundle: advanced-cluster-management.v2.3.0
+    - rhacm2/acm-operator-bundle@sha256:595f4345c97f951c5733879f4d817668b9028805b1f2a158f915c19aa00f392c
+    # Bundle: advanced-cluster-management.v2.3.1
+    - rhacm2/acm-operator-bundle@sha256:8a3459a31961d38ca728a3d0915602189ff9510a1a45278ac00742cc319e844a
+amq-broker:
+    # Bundle: amq-broker-operator.v0.13.0
+    - amq7/amq-broker-operator-bundle@sha256:5a5f53ec96ddb46f6c25bf7319ecb1a86e6754da0d09927c917ecea037eb6d05
+    # Bundle: amq-broker-operator.v0.15.0
+    - amq7/amq-broker-operator-bundle@sha256:1d8aebf3ee175b795bb14c385d1183bd9da5c2fdce4005d09b01ddc2a3b1b0aa
+    # Bundle: amq-broker-operator.v0.17.0
+    - amq7/amq-broker-operator-bundle@sha256:86853f5d81be450a999ba261c60bfe1e429a4a8312d7ef5dedb2cd66be118147
+    # Bundle: amq-broker-operator.v0.18.0
+    - amq7/amq-broker-operator-bundle@sha256:93eb77beb3df602b64e59521459f4b389777ad3409e5dc5715e672af3e1059b2
+    # Bundle: amq-broker-operator.v0.19.0
+    - amq7/amq-broker-operator-bundle@sha256:63b9c3d4b7f7b06ce10f57afec75cb4c39470a800d7ab26d7cc5d9b5876ef347
+    # Bundle: amq-broker-operator.v0.9.1
+    - amq7/amq-broker-operator-bundle@sha256:4677056566e09daf0a316e24abdba542c29c2194cd98b6e8af50f654a930a97d
+    # Bundle: amq-broker-operator.v7.8.1-opr-3
+    - amq7/amq-broker-operator-bundle@sha256:e769ee90622890ba32b6f6aa98a9586d32323abb7867215954c7a4ac579e873b
+amq-broker-lts:
+    # Bundle: amq-broker-operator.v0.9.2
+    - amq7/amq-broker-lts-operator-bundle@sha256:154d343f8646c2fe8d35c235e1fa112ece443f08a9c18bf0029892741dd73b9c
+    # Bundle: amq-broker-operator.v0.9.3
+    - amq7/amq-broker-lts-operator-bundle@sha256:b480e64de68bbe7c271623cf9a9f88067fa7d1dd4dc54f192ca505ecfb25dd17
+amq-broker-rhel8:
+    # Bundle: amq-broker-operator.v7.8.1-opr-3-rhel8
+    - amq7/amq-broker-rhel8-operator-bundle@sha256:835143a542a09c511751f77a2c2fc643dc6d3060d74ea2c07d94b5681a4288a0
+amq-online:
+    # Bundle: amq-online.1.4.0
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:ed1658893b5e78ea6d684dac7f237a80eb1a5fe146996c39152c077ea59f0d61
+    # Bundle: amq-online.1.4.1
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:6195b018194b457eb6bad2c53381bdfa4d84329e86d561580a63a9c2faab66d9
+    # Bundle: amq-online.1.4.2
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:28157b46dcee1e5fffef9260aa9639df03cca2d8e84ccd63bf1fd966c17c10d5
+    # Bundle: amq-online.1.4.4
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:f0f899b90e0ab0e9cc9818e4181beccf178543388c14570da0fd8dda0b4abaa9
+    # Bundle: amq-online.1.5.0
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:b350796e748ac56aeaf71711f4eaae06d2b9f77fc1c9aeec1680c9ab096e663c
+    # Bundle: amq-online.1.5.1
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:609f34c93dfc53fb853c45d395fcb5c07b6d96e7ab075b036c785203415cfc11
+    # Bundle: amq-online.1.5.2
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:81fabc8e6bdc05a772fbf4401331e8ccc568593dafada38fff4c8aaf0565ba06
+    # Bundle: amq-online.1.5.3
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:e81aac14ba253b4a89370f8aabfebf491f34621cf8d54efd6b8b3796ca8732bb
+    # Bundle: amq-online.1.6.1
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:c5b5ba7265c5ac8e77ff9836746a8ac9ca5e1967270adffffdfe32d8a14968cf
+    # Bundle: amq-online.1.6.2
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:debf79ef45e0fdd229bdfae29ff9a40926854278b39b4aa0d364f5ae9c02c6dc
+    # Bundle: amq-online.1.7.0
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:5f582e82bd357530a7d66bdf25598b69ad75e79e2b28ca028cd656fb52a8259f
+    # Bundle: amq-online.1.7.1
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:c838ae843b44b9c812bb0f79002cefbc49e68a7eabcb96f242974bb606408a3f
+    # Bundle: amq-online.1.7.1-0.1628610187.p
+    - amq7/amq-online-1-controller-manager-rhel7-operator-metadata@sha256:74a449ae0c1c85c4c203e13b7d0ff489aa8769e3866e8dca9c784ea63a16c4c0
+amq-streams:
+    # Bundle: amqstreams.v1.6.3
+    - amq7/amqstreams-rhel7-operator-metadata@sha256:cc19289ff777153ca9ab3cebc45e4c98e9c083437d5e2b6407244aead6e89312
+    # Bundle: amqstreams.v1.7.0
+    - amq7/amqstreams-rhel7-operator-metadata@sha256:6ef3bf83ee075cff73ecc2df897d747b6d589df423dcb3ac1f493d1535e627eb
+    # Bundle: amqstreams.v1.7.1
+    - amq7/amqstreams-rhel7-operator-metadata@sha256:ec906a4abe8e72844e0fd0ebf0abdc312c0b599e22dc3b7c80b9543cdc76b622
+    # Bundle: amqstreams.v1.7.2
+    - amq7/amq-streams-rhel7-operator-metadata@sha256:4ae366be201075ebd86d5bf352d5c77cfa13b8faf5eee5093bfd480ca3a392a2
+    # Bundle: amqstreams.v1.7.3
+    - amq7/amq-streams-rhel7-operator-metadata@sha256:e07c00d943b6951f66c2b629f1086fc4357746b09f647856d8802c4fcb4105fc
+    # Bundle: amqstreams.v1.8.0
+    - amq7/amq-streams-operator-bundle@sha256:c25cce924c28e22c8c2edf9b71553f2399e091b9dd35dd596a54f26c24af2454
+amq7-cert-manager-operator:
+    # Bundle: amq7-cert-manager.v1.0.1
+    - amq7/amq-cert-manager-operator-bundle@sha256:31e6695655b03139afa3a5c82d1c8eaca8bcc526d04a058ab3b9cdcab598d324
+amq7-interconnect-operator:
+    # Bundle: amq7-interconnect-operator.v1.10.1
+    - amq7/amq-interconnect-operator-metadata@sha256:4e84d9b68d37e663025905e46245abc605d1354c61ccd2a7e1583961fde28eb5
+    # Bundle: amq7-interconnect-operator.v1.2.0
+    - amq7/amq-interconnect-operator-metadata@sha256:1470d60ca59fef22b776f1581c12d3bb06949d071d07a9cdd97a37a840ed905c
+    # Bundle: amq7-interconnect-operator.v1.2.1
+    - amq7/amq-interconnect-operator-metadata@sha256:afe43efe442ccd8d3c0d3181b5a23d683809703a0a374dbfecf91d0322cf9781
+    # Bundle: amq7-interconnect-operator.v1.2.2
+    - amq7/amq-interconnect-operator-metadata@sha256:15723f36c4ef130b25681367a8425f542475b0258122a04cc332872a4273eec7
+    # Bundle: amq7-interconnect-operator.v1.2.3
+    - amq7/amq-interconnect-operator-metadata@sha256:b2f1961f30a612edb84fac79211d5c54843c0478235839f83018c92cb428d165
+    # Bundle: amq7-interconnect-operator.v1.2.4
+    - amq7/amq-interconnect-operator-metadata@sha256:ec4cbd00237d61e552fe65804b569f78035eed09bdca47bdcdbff831d9484ca7
+ansible-automation-platform-operator:
+    # Bundle: ansible-automation-platform-operator.v2.0.0
+    - ansible-automation-platform/platform-operator-bundle@sha256:9f40ccd65788e8922606f9719849b094bcb088d3cd4789f2f532784d79e4543c
+apicast-operator:
+    # Bundle: apicast-operator.v0.2.0
+    - 3scale-amp2/apicast-rhel7-operator-metadata@sha256:95e057316c411a0add6ddc90f63500c17a288bbc9772d9e8b6a59a15cdcc824c
+    # Bundle: apicast-operator.v0.2.1
+    - 3scale-amp2/apicast-rhel7-operator-metadata@sha256:05f0817f38329cc1938e95932a504b9d94ac94544581d1352be9c225697e2204
+    # Bundle: apicast-operator.v0.2.2
+    - 3scale-amp2/apicast-rhel7-operator-metadata@sha256:35d94ce12486c78bf27583987afa63f0146173c25cf5715a7d62fd2e91b2414e
+    # Bundle: apicast-operator.v0.2.3
+    - 3scale-amp2/apicast-rhel7-operator-metadata@sha256:3f695c906f2baabe49af6353fc79140b1a45f2431bb10512ba83c7c7cabf88bd
+    # Bundle: apicast-operator.v0.2.4
+    - 3scale-amp2/apicast-rhel7-operator-metadata@sha256:69854f078065b711dbc9ca7b088fa0fe4cfbafa577450ff94578915f202e41c7
+    # Bundle: apicast-operator.v0.3.0
+    - 3scale-amp2/apicast-rhel7-operator-metadata@sha256:f66685c272d98de6e5c32f4090fc4dc84f0c94fa05a233b4f7737a31d478b983
+    # Bundle: apicast-operator.v0.3.1
+    - 3scale-amp2/apicast-rhel7-operator-metadata@sha256:da8930f0d4a627f323166fe8506f0a31e67c96cf258c548acc1cc60b461adc7f
+    # Bundle: apicast-operator.v0.4.0
+    - 3scale-amp2/apicast-rhel7-operator-metadata@sha256:65447df0f16603ea021eaae880865ccfcb4449aab6fc2fd519da554c46987e84
+awx-resource-operator:
+    # Bundle: awx-resource-operator.v0.1.0
+    - ansible-automation-platform/platform-resource-operator-bundle@sha256:4243b1ed45e18bdb42c17374d11e2f252a11457099740ca9e9ad9d430d1a02e0
+    # Bundle: awx-resource-operator.v0.1.1
+    - ansible-automation-platform/platform-resource-operator-bundle@sha256:1f31be82087b8d16953388696eff7ac7bfc93a507704ff10fe3db23eda1cd856
+businessautomation-operator:
+    # Bundle: businessautomation-operator.1.2.0
+    - rhpam-7/rhpam-operator-bundle@sha256:df348c6ad999c3be37ab19b3651b5a61ab1fa55f7b2ff02b1fea48bfad69ab4a
+    # Bundle: businessautomation-operator.1.2.1
+    - rhpam-7/rhpam-operator-bundle@sha256:a9d8ced4deb7113de7c97efc226cb9d2ee912be2ce6e67418ddcee423f2a9204
+    # Bundle: businessautomation-operator.1.3.0
+    - rhpam-7/rhpam-operator-bundle@sha256:c119d2dc15f7d0038623fc2d682e513bba0cbbc63e0095ab769bd119faf59b7f
+    # Bundle: businessautomation-operator.1.4.0
+    - rhpam-7/rhpam-operator-bundle@sha256:5929b5d30f2c3c215bf0c3052101b618d1e16c39f8b525a22ceb3541009c1a2c
+    # Bundle: businessautomation-operator.1.4.1
+    - rhpam-7/rhpam-operator-bundle@sha256:3e7da2092cffe5bd2161c98b86e26ce6107248ca52c94a3a333b180f623333de
+    # Bundle: businessautomation-operator.7.10.0-1
+    - rhpam-7/rhpam-operator-bundle@sha256:ee5ef1dfefb946f8eec41f05c0f7b496b431c04ddb16489ea4a0515a5a43f0c2
+    # Bundle: businessautomation-operator.7.10.0-2
+    - rhpam-7/rhpam-operator-bundle@sha256:42dd0fa00313fd075868fb81b07b1567169bd89b1168e1d4d29e8b62e63adfc4
+    # Bundle: businessautomation-operator.7.10.1-1
+    - rhpam-7/rhpam-operator-bundle@sha256:d59c5d8525cf543fc3c12ef631f9fa7a2dd59e2147cbd840437723bbeaa76008
+    # Bundle: businessautomation-operator.7.10.1-2
+    - rhpam-7/rhpam-operator-bundle@sha256:aa942303f701c3f484cd5ff75eb231dbb2c3d5d2a9a748d57bb5b6c1b34d05f7
+    # Bundle: businessautomation-operator.7.11.0-1
+    - rhpam-7/rhpam-operator-bundle@sha256:9d59749ec85ac601c326532492431cdabe86070bc2876ddf760daab08dd5e842
+    # Bundle: businessautomation-operator.7.11.0-2
+    - rhpam-7/rhpam-operator-bundle@sha256:5dc16930b4d2f061eb32698cdd1b108e6e2ceb72df319b0a212bc2e4131429d8
+    # Bundle: businessautomation-operator.7.11.1-1
+    - rhpam-7/rhpam-operator-bundle@sha256:f5819f66a1e6bbc890fa5e9529eca33154539dfe1a4ce35bdf681ebb1fd8f5b1
+    # Bundle: businessautomation-operator.7.8.0
+    - rhpam-7/rhpam-operator-bundle@sha256:8bd9ac4b1ddcc03f2e6beb131bcfaf0f65ba6b90039e7a1af9dda631ae8d37f8
+    # Bundle: businessautomation-operator.7.8.1
+    - rhpam-7/rhpam-operator-bundle@sha256:5a5429d84cc36ce29d95fe86d9b6a9eaef0c3ed3d1925fd9b653904c411cbcb4
+    # Bundle: businessautomation-operator.7.9.0
+    - rhpam-7/rhpam-operator-bundle@sha256:f486e4a3085ce9245a7d0eec827f97b6d7fac61eeeca01563288d0370370af83
+    # Bundle: businessautomation-operator.7.9.0-2
+    - rhpam-7/rhpam-operator-bundle@sha256:af5a192a66fd81506cc5361103d7e3d510992f207343f6580a91022dc1bce745
+    # Bundle: businessautomation-operator.7.9.1-1
+    - rhpam-7/rhpam-operator-bundle@sha256:ce102ebf04a9854a71b1fdac0d9d9e17580fa18d8cb9f6ee507abcd77e6efeac
+cincinnati-operator:
+    # Bundle: update-service-operator.v4.6.0
+    - openshift-update-service/cincinnati-operator-bundle@sha256:17c0fbd04db564c5e5b5ec1417274f9b719c87ba07391906e6b07d40bd2245c6
+clusterresourceoverride:
+    # Bundle: clusterresourceoverride-operator.4.8.0-202107291502
+    - openshift4/ose-clusterresourceoverride-operator-bundle@sha256:20d762ea843ebc46acfa3b092235e37ef80b5f5639a357642fdd242574c63451
+codeready-workspaces:
+    # Bundle: crwoperator.v2.0.0
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:7b7558c8d9170bd27c9dcf2e62df827d477dbbea694f7040f5cd5bcd0eb598a4
+    # Bundle: crwoperator.v2.1.0
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:af5795b85faa63523353eba59b244b94578eed6ee11d0a4f834e64009395a069
+    # Bundle: crwoperator.v2.1.1
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:aba490f87a1ed4c4a47cb5cb5a82ea1bd67031db0382df400d81e13a125f4aff
+    # Bundle: crwoperator.v2.10.0
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:55baa64259da5a50d9ee5e40f0177a3a73ad1f0e73459748ccf7e97ff91296bc
+    # Bundle: crwoperator.v2.10.1
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:71267d186d55327e25c0d9a74c21835257b7ed262b3b56319c7ff648e0be0395
+    # Bundle: crwoperator.v2.2.0
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:b9bc3d8fb71df47ef32e4f2c7d74b938887fbe2683b132d76e0215eb6cee4a9a
+    # Bundle: crwoperator.v2.3.0
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:1007e3de27d2235e319c23b08dce4ad83d3569f37fff37ad8174b29909e01f04
+    # Bundle: crwoperator.v2.4.0
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:289f77b62c012b6ef09930acf1466749327ef9a1594eb39e077ff7116f5be73b
+    # Bundle: crwoperator.v2.5.0
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:c48e4c3f85e30ab3a209369f7fd9212d34fbe2b97de5334439b06742e9cdec2a
+    # Bundle: crwoperator.v2.5.1
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:181dc432a5aa228ca57a4c23218391f846284e258f72ed306f15ef884e991ee8
+    # Bundle: crwoperator.v2.6.0
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:496aeecec52b0645cfcaa8b7ee7e71c55f823c7520ce3d2c9238d522c17a6e98
+    # Bundle: crwoperator.v2.7.0
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:357f830568a690ea194acdf2b1c5d66b54b10bf1a0dc58d1e771454692dc2270
+    # Bundle: crwoperator.v2.7.1
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:69761d7600d9602fd89f600d9670156e71f68c82802578b0db729cfa0087c89b
+    # Bundle: crwoperator.v2.8.0
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:080bc58804ca40380c5ed58a5bbdd5fe035fed84a07e58d1c590e06695bbb720
+    # Bundle: crwoperator.v2.9.0
+    - codeready-workspaces/crw-2-rhel8-operator-metadata@sha256:345073710fca51ab00006902064ab1f5a24db220498acfa7c92986696d33cb6f
+container-security-operator:
+    # Bundle: container-security-operator.v3.3.4
+    - quay/quay-container-security-rhel8-operator-metadata@sha256:87b32fd8753bc35f72a9087bd20c1de120094885ced267a0802f89b26283f828
+    # Bundle: container-security-operator.v3.4.1
+    - quay/quay-container-security-operator-bundle@sha256:69a08e9f1fb49347da86488c0d70aca5dbc6835665f2ac7d1069b39b3a852919
+    # Bundle: container-security-operator.v3.4.2
+    - quay/quay-container-security-operator-bundle@sha256:6a96cb52b92ad47871446ef04ed727e1e376c69456f370f40774b9c5b73f329b
+    # Bundle: container-security-operator.v3.4.3
+    - quay/quay-container-security-operator-bundle@sha256:b00993869900ac164a844d2be3c9957f0024eed3927bc45f239d8c11622678e6
+    # Bundle: container-security-operator.v3.4.4
+    - quay/quay-container-security-operator-bundle@sha256:2de8912c6f5adcf5af468d052105d46803b73b53b46e0f18ede5073d70fef96c
+    # Bundle: container-security-operator.v3.4.5
+    - quay/quay-container-security-operator-bundle@sha256:9d6e7fbde30bac8de713fce88887819327215046df585404141bf0ddd545290f
+    # Bundle: container-security-operator.v3.4.6
+    - quay/quay-container-security-operator-bundle@sha256:e1ecc2949bf4e612d77d378961c8f65b9f463064a50590ec3313897528a317cd
+    # Bundle: container-security-operator.v3.5.1
+    - quay/quay-container-security-operator-bundle@sha256:586af2816f9100d9357e7e42244e5760626412d971225bc0ad07fd0d2635718d
+    # Bundle: container-security-operator.v3.5.2
+    - quay/quay-container-security-operator-bundle@sha256:10d49d475b831f6a3e527098cd5e9328d97d4cda7ad366c491552cf3659776a0
+    # Bundle: container-security-operator.v3.5.3
+    - quay/quay-container-security-operator-bundle@sha256:83f9efe7b8b055bf9251360b2308014deb8ee8bf0063580acf5366a0d3264828
+    # Bundle: container-security-operator.v3.5.4
+    - quay/quay-container-security-operator-bundle@sha256:58a9d926ba50c0733a8578271ced7c642d8143c9e1dbcdff1eee9f385308de70
+    # Bundle: container-security-operator.v3.5.5
+    - quay/quay-container-security-operator-bundle@sha256:155068c60e308565513124b4f5bd683f72498ead51ff340403eb0015508a0464
+    # Bundle: container-security-operator.v3.5.6
+    - quay/quay-container-security-operator-bundle@sha256:6c5cfc41ee97e91dafc75ee466b88f755994c6406026de4d1a80256d6700a117
+datagrid:
+    # Bundle: datagrid-operator.v8.0.0
+    - datagrid/datagrid-8-prod-operator-bundle@sha256:7dd45b30f4ffc76846fb6841317c91d6c414b78e0ce10d64f8673447ac2a9066
+    # Bundle: datagrid-operator.v8.0.1
+    - datagrid/datagrid-8-prod-operator-bundle@sha256:7765bf223baf3e6fd3f5db725586888874280812f017bb01c0bd7714a8bab336
+    # Bundle: datagrid-operator.v8.0.2
+    - datagrid/datagrid-8-prod-operator-bundle@sha256:8a958713ec2b1f484a688b9dbab0158c6753d59b37dc41075c86dabe6c4eea56
+    # Bundle: datagrid-operator.v8.0.3
+    - datagrid/datagrid-8-prod-operator-bundle@sha256:7c133eb164050d4e13ff1edbf30394d34b985c313a8b2a333d6ac54e05b66889
+    # Bundle: datagrid-operator.v8.1.0
+    - datagrid/datagrid-8-prod-operator-bundle@sha256:14fd60e0b98aa6eceec076f5ca340610ff3f9e61a70ff6ebff3da3cc7f855514
+    # Bundle: datagrid-operator.v8.1.1
+    - datagrid/datagrid-8-prod-operator-bundle@sha256:eee656a31b8ef822fca8c25cc4d5efe11a07090d32410b3a016dd9204fa79247
+    # Bundle: datagrid-operator.v8.1.2
+    - datagrid/datagrid-8-prod-operator-bundle@sha256:c503cc820237d2aaaf4fa42145e05b3d49645485d343f0c0fa87baa6242a9fd1
+    # Bundle: datagrid-operator.v8.1.3
+    - datagrid/datagrid-8-prod-operator-bundle@sha256:cc0bb4989fe0e7107d07bcec39e5595291152d602652aa9b6d2a3b7fb24f86c4
+    # Bundle: datagrid-operator.v8.1.4
+    - datagrid/datagrid-8-prod-operator-bundle@sha256:ec6fd022c1d740c86ee449b1c29817bcf8a7002f62e8c95167b961f6a74a1730
+    # Bundle: datagrid-operator.v8.1.5
+    - datagrid/datagrid-8-prod-operator-bundle@sha256:37e5af4cf83db8ab63e6e6ddd39aa06100d2fc4110705e88ac9afb3a7abc15c4
+    # Bundle: datagrid-operator.v8.1.6
+    - datagrid/datagrid-8-prod-operator-bundle@sha256:17009de2d5a855a4570defc332378ce042630784bd29006740d34c435af9008c
+    # Bundle: datagrid-operator.v8.1.7
+    - datagrid/datagrid-8-prod-operator-bundle@sha256:fe608b121e62e77c39fc6abeb13d1618f2d593811f962e8e3ce477d927c821f1
+    # Bundle: datagrid-operator.v8.2.0
+    - datagrid/datagrid-8-prod-operator-bundle@sha256:b35b91095373da362968febdfe8d977930d4046e6cd3798960544ada025a665a
+    # Bundle: datagrid-operator.v8.2.1
+    - datagrid/datagrid-8-prod-operator-bundle@sha256:305c3e345af6adb5ad16c27035c7d4dd42f878dc566184946ce8e403bc83729b
+    # Bundle: datagrid-operator.v8.2.2
+    - datagrid/datagrid-8-prod-operator-bundle@sha256:52a65c00fed258ec9443c561f71acfdafc1891410451e7ea5a0ea55b72248430
+    # Bundle: datagrid-operator.v8.2.3
+    - datagrid/datagrid-8-prod-operator-bundle@sha256:517964e827e483f7bd2af4ed60bd23356f4a5d296b1401a14fac03ba7ec8619b
+eap:
+    # Bundle: eap-operator.v2.0.0
+    - jboss-eap-7/eap73-rhel8-operator-bundle@sha256:64ba482c95a252ef495483d898e5dc94adb95446f2f257e0ebe04c737163be40
+    # Bundle: eap-operator.v2.0.1
+    - jboss-eap-7/eap73-rhel8-operator-bundle@sha256:23c0de3059f16b616505be698252c314dd6c645f0820975f6d207ef1e9ce20de
+    # Bundle: eap-operator.v2.0.2
+    - jboss-eap-7/eap73-rhel8-operator-bundle@sha256:a1ae631ea20156c5c7b3c13109ec5a11eae50955eaf46f91dc6979a21b84cd63
+    # Bundle: eap-operator.v2.1.0
+    - jboss-eap-7/eap73-rhel8-operator-bundle@sha256:9915981fa22fce058f41b364fd26b22ed2bb43a21e9a17db97850b3a5c156baf
+    # Bundle: eap-operator.v2.1.1
+    - jboss-eap-7/eap73-rhel8-operator-bundle@sha256:dda936663249468e8a08673bdda90bac71c51983f65e811c87abd4885bc12759
+    # Bundle: eap-operator.v2.1.2
+    - jboss-eap-7/eap73-rhel8-operator-bundle@sha256:ce8976c30e638820ae66f6ff06dae996da407a8fb5512f43c8919a59a2bc5210
+    # Bundle: eap-operator.v2.1.3
+    - jboss-eap-7/eap73-rhel8-operator-bundle@sha256:e55f6412d4683b4376b21cfd5fe75559dd749746e1b7f7e6ee7518614fbc85ee
+    # Bundle: eap-operator.v2.1.4
+    - jboss-eap-7/eap73-rhel8-operator-bundle@sha256:80c4952d54adfc853560e60e8fe218ae9d74f7b34c96eebb95b87e6baeaaf268
+elasticsearch-operator:
+    # Bundle: elasticsearch-operator.4.6.0-202103010126.p0
+    - openshift4/ose-elasticsearch-operator-bundle@sha256:037eac94f8d1b63c52f09b0abafd48b7bb3a76db6d01b457fc3a16f63f60a639
+    # Bundle: elasticsearch-operator.5.0.6-40
+    - openshift-logging/elasticsearch-operator-bundle@sha256:de2098bea36e57810342ccc41a1c7af9a2549e0ac7b398f23d686dae776b6557
+    # Bundle: elasticsearch-operator.5.0.6-40
+    - openshift-logging/elasticsearch-operator-bundle@sha256:de2098bea36e57810342ccc41a1c7af9a2549e0ac7b398f23d686dae776b6557
+    # Bundle: elasticsearch-operator.5.0.6-40
+    - openshift-logging/elasticsearch-operator-bundle@sha256:de2098bea36e57810342ccc41a1c7af9a2549e0ac7b398f23d686dae776b6557
+    # Bundle: elasticsearch-operator.5.0.7-27
+    - openshift-logging/elasticsearch-operator-bundle@sha256:f271058551fbac79e94b897b5344c9fd94ff938a5e40e985eed9bdd5bfe5cdac
+    # Bundle: elasticsearch-operator.5.1.0-96
+    - openshift-logging/elasticsearch-operator-bundle@sha256:f5cebaa2582fee8e6420b009efb9f4d894a487ebf5ab8c717408442eb0cd9bc1
+    # Bundle: elasticsearch-operator.5.1.1-36
+    - openshift-logging/elasticsearch-operator-bundle@sha256:fed2865db0b9766c2b524c27ab055e7a5a7ae7c0f1d5397e6f77c1d9a30a8191
+fuse-apicurito:
+    # Bundle: apicuritooperator.v7.7.1
+    - fuse7/fuse-apicurito-operator-bundle@sha256:2c31a890dbd52578a8d1b64710bb96f4aa01eee88499fef2f798bc465971e314
+    # Bundle: fuse-apicurito.v7.8.1
+    - fuse7/fuse-apicurito-operator-bundle@sha256:e4dd3c3a1f31bf27fe67b4f0861200b896845451c4306c07a1a2528fc6a638bb
+    # Bundle: fuse-apicurito.v7.9.0
+    - fuse7/fuse-apicurito-rhel8-operator-bundle@sha256:80325732ab068d29eaef4c26fbd0f0325130439576951ad4a6f05572fd1585c1
+fuse-console:
+    # Bundle: fuse-console.v7.7.1
+    - fuse7/fuse-console-operator-bundle@sha256:5e3e9d565510c1a12351f89f912e21f318ee0d7ed52fc8cca6051a6dbf3a6e6d
+    # Bundle: fuse-console.v7.8.2
+    - fuse7/fuse-console-rhel7-operator-metadata@sha256:d207bf3721bdfb6d4d90cda5245b3c49cedef0ba2a308ed64cd00aa6fea7b152
+    # Bundle: fuse-console.v7.9.0
+    - fuse7/fuse-console-rhel8-operator-bundle@sha256:ddfdf850c9238a6988889e1840efe3175f03dad2489a5651e21cac62ac44e23e
+fuse-online:
+    # Bundle: fuse-online-operator.v7.7.1
+    - fuse7/fuse-online-operator-bundle@sha256:93d12b2fc2a2e0263890529e227dcb9e37172139f63a95d39b1dce4f19cee39c
+    # Bundle: fuse-online-operator.v7.8.1
+    - fuse7/fuse-online-operator-bundle@sha256:0161c67a3c6be92306f68c2a3b7d9ce3edcf57fdeb1bf2843f988cc85fefc89b
+    # Bundle: fuse-online.v7.9.0
+    - fuse7/fuse-online-rhel8-operator-bundle@sha256:7b5402b2bba9beaaa5dc2c08572f1c6daf52d83b17a5bcc28c96d15a571a7b4c
+gatekeeper-operator-product:
+    # Bundle: gatekeeper-operator-product.v0.1.1
+    - rhacm2/gatekeeper-operator-bundle@sha256:b48c02d6220e61460c908676d0ae75c7cd3f47645755a636f3329acb2d8a4760
+    # Bundle: gatekeeper-operator-product.v0.1.2
+    - rhacm2/gatekeeper-operator-bundle@sha256:b8c4694c5d948540c6c46d19610c11930a1bf8c76a84722119f9cb22cccfe55f
+    # Bundle: gatekeeper-operator-product.v0.1.2-0.1624366317.p
+    - rhacm2/gatekeeper-operator-bundle@sha256:8c68e899623c28c3274bd1a6b1bbf62adda125055e0f25db6024309158674f92
+    # Bundle: gatekeeper-operator-product.v0.1.2-0.1627931308
+    - rhacm2/gatekeeper-operator-bundle@sha256:803cd903a38f1366e861b0e757114c8c31176436b8f01e9bf120e387e7f5d57c
+jaeger-product:
+    # Bundle: jaeger-operator.v1.17.9
+    - distributed-tracing/jaeger-operator-bundle@sha256:708f9dba3e65601890b05716e658562093b83537f6f493aa6262fec9b6cab741
+    # Bundle: jaeger-operator.v1.20.5
+    - distributed-tracing/jaeger-operator-bundle@sha256:3208e981285012e8422213965f33ea47962d4e0c61cef157bc1607bc39fa7b31
+    # Bundle: jaeger-operator.v1.24.0
+    - distributed-tracing/jaeger-operator-bundle@sha256:1760d894216cd496083f3ccf5bdb44f313d04ef9cedff601b637e3f078cf92a9
+    # Bundle: jaeger-operator.v2.0.0-tp.1
+    - distributed-tracing/jaeger-operator-bundle@sha256:2d3b46a96af8b2455bb614ee6db92516a6d9d94e31fe6076acb6e9524c1cb25b
+jws-operator:
+    # Bundle: jws-operator.v1.0.0
+    - jboss-webserver-5/webserver-openjdk8-operator-bundle@sha256:fe31cbcbd11180a684437e5ccf819f4ffafa519e9fe1b5f5771a8d45cf7b7f75
+    # Bundle: jws-operator.v1.0.1
+    - jboss-webserver-5/webserver-openjdk8-operator-bundle@sha256:4eb2ce7385cf6dc0b30dcc05ec7bbe2269bf929b09dafa1a17b8446f6a4c631b
+    # Bundle: jws-operator.v1.0.2
+    - jboss-webserver-5/webserver-openjdk8-operator-bundle@sha256:d11107ea3abf1f7d07e4003738dab7244807dd11f60f8473fac03e586e799c42
+    # Bundle: jws-operator.v1.0.3
+    - jboss-webserver-5/webserver-openjdk8-operator-bundle@sha256:3142a3531f3d245abc93eda130edbd0ac7f4a69019a5e86a27a43dd27962e3bd
+kiali-ossm:
+    # Bundle: kiali-operator.v1.0.10
+    - openshift-istio/kiali-operator-metadata@sha256:3a1126c3df937ed08d32627e7af38632e06f6f905d5457a47fb59288041cd330
+    # Bundle: kiali-operator.v1.0.11
+    - openshift-istio/kiali-operator-metadata@sha256:2ab8d3a25f17000d57941bcc3bebddf54ecea85d69e3cf2f40b8411836d1b6e1
+    # Bundle: kiali-operator.v1.0.12
+    - openshift-istio/kiali-operator-metadata@sha256:fec8560f02a08585797895cb644c640132b79af0280158473e146954137e337b
+    # Bundle: kiali-operator.v1.0.5
+    - openshift-istio/kiali-operator-metadata@sha256:a96359d8c1c44f5c6881cfb44e5dbb0518d7ccd44b6e77116e9ed9a6d96dff2e
+    # Bundle: kiali-operator.v1.0.6
+    - openshift-istio/kiali-operator-metadata@sha256:cbc5dcb6332a5d8330a99130f18f87ded9cbc6935bfe2205ccddff4af808155c
+    # Bundle: kiali-operator.v1.0.7
+    - openshift-istio/kiali-operator-metadata@sha256:3747fa0ad6498d79a77be22a2bb42bfd22ca9fbe1aaff08e8b069433620e0258
+    # Bundle: kiali-operator.v1.0.8
+    - openshift-istio/kiali-operator-metadata@sha256:0dc2d3bc91aa5c05762c590816deb595ca588dee171631634078319fd22a81f4
+    # Bundle: kiali-operator.v1.0.9
+    - openshift-istio/kiali-operator-metadata@sha256:259877ab1bc66848ea8fd8b2847a4ff883575e2bf76d93cd717cea68ed27dcd7
+    # Bundle: kiali-operator.v1.12.11
+    - openshift-istio/kiali-operator-metadata@sha256:78d19b5112f9aaaff96e59ded7c3a2197910491df5512c3915fe0e5c7c449e59
+    # Bundle: kiali-operator.v1.12.12
+    - openshift-istio/kiali-operator-metadata@sha256:546d007d832f14cb03b2ba55b8c14bc66e3ac750a3698cf75b502ddcf7c8db2a
+    # Bundle: kiali-operator.v1.12.13
+    - openshift-istio/kiali-operator-metadata@sha256:4a5599af4f17c38412e05354e5de90fe07b423668ebf1997dafc7e4dafb62ffc
+    # Bundle: kiali-operator.v1.12.14
+    - openshift-istio/kiali-operator-metadata@sha256:b8d7fd645e4fcb864fe11c41d5b3e8040a5fc1dba1b6c4b027ef6f753325a57f
+    # Bundle: kiali-operator.v1.12.15
+    - openshift-istio/kiali-operator-metadata@sha256:1dc2e01b133860f5a0649517dd768b53033be6f20f1d676dc49927138984ec3f
+    # Bundle: kiali-operator.v1.12.16
+    - openshift-istio/kiali-operator-metadata@sha256:562027fcd20cff4b99dbbbe3447bac6132f1af4444229b0752189756b347b81d
+    # Bundle: kiali-operator.v1.12.7
+    - openshift-istio/kiali-operator-metadata@sha256:2ff3a1f5de8fa26c260f08fe5cd965006b66903bc0a56ca464bdf857e742988d
+    # Bundle: kiali-operator.v1.24.2
+    - openshift-istio/kiali-operator-metadata@sha256:ade6990aa57d2fd4dfdb80d401534a8130b380d356087ae3925606d7a47ac7b9
+    # Bundle: kiali-operator.v1.24.3
+    - openshift-istio/kiali-operator-metadata@sha256:6c3de8e02aa1be4b89fc6567e30ba78d8422099df9cd6368ce6b396d41cf1505
+    # Bundle: kiali-operator.v1.24.4
+    - openshift-istio/kiali-operator-metadata@sha256:90d85fe3e7561cb132e8074beaa2f84ec38d508cebac01b891dd5b470ac88250
+    # Bundle: kiali-operator.v1.24.5
+    - openshift-istio/kiali-operator-metadata@sha256:e50a8a6c367160590a73937a96990af9ad2352177b776d8611c3554f7ab1af27
+    # Bundle: kiali-operator.v1.24.6
+    - openshift-istio/kiali-operator-metadata@sha256:bf8f64d8663a8f9fc1f2bf61638905793ae466eeb3caf392c0d6c6c69c8611f4
+    # Bundle: kiali-operator.v1.24.7
+    - openshift-istio/kiali-operator-metadata@sha256:9eadcdefb6a8fdb16795b8749f2e9b4888d29beaab269498d9776a6d3145749c
+    # Bundle: kiali-operator.v1.24.8
+    - openshift-istio/kiali-operator-metadata@sha256:eabfc25ed9c169d1da84471d8cca387db44d27b523956d765a38d8a32e084ac8
+    # Bundle: kiali-operator.v1.24.9
+    - openshift-istio/kiali-operator-metadata@sha256:fcaa88dab30ec894006228fd60eec076c45b5321be46760c67ac743c6fd9ba61
+klusterlet-product:
+    # Bundle: klusterlet-product.v2.2.0
+    - rhacm2/klusterlet-operator-bundle@sha256:58b7976358bd5b30958602c820c5d3b0ba136e65fd7424ce92d23801dbd0976f
+    # Bundle: klusterlet-product.v2.2.1
+    - rhacm2/klusterlet-operator-bundle@sha256:dd102ee9ec3a32312e63309e5cd5526e8eb1eb7e7b5ee299b95302618c00a0cb
+    # Bundle: klusterlet-product.v2.2.2
+    - rhacm2/klusterlet-operator-bundle@sha256:d3b166fed222fbbcfe70e7a3872e8c1ac02a5ccd2cbf8585bedd29c005f6a16d
+    # Bundle: klusterlet-product.v2.2.3
+    - rhacm2/klusterlet-operator-bundle@sha256:33651be7274ff2cd66c9e23e7eb20d5d5ca9649aed6777bb8b0ec03dfc8b0707
+    # Bundle: klusterlet-product.v2.2.5
+    - rhacm2/klusterlet-operator-bundle@sha256:e5a7688faeb49b5ba135fb37251926c9d6c877c0793a1d88a786f0cd2efb03c1
+    # Bundle: klusterlet-product.v2.2.6
+    - rhacm2/klusterlet-operator-bundle@sha256:91e79536fefd2f5f6d4dde0a46441fa610c410c721bdfbc3f804da5e2e8c77ee
+    # Bundle: klusterlet-product.v2.2.7
+    - rhacm2/klusterlet-operator-bundle@sha256:5524fe5d379b9fd4351243ccd3c0acffef58055e0782a527a90fdd711e8d5044
+    # Bundle: klusterlet-product.v2.3.0
+    - rhacm2/klusterlet-operator-bundle@sha256:281fe57deda5c26e8861540513479fa08bc697eb35fb40544abf0fb697a73a16
+    # Bundle: klusterlet-product.v2.3.1
+    - rhacm2/klusterlet-operator-bundle@sha256:efa34206b0eea68fcec2e25788e73e98350f57915a128c41d1dcc4173a5c0302
+kubevirt-hyperconverged:
+    # Bundle: kubevirt-hyperconverged-operator.v2.5.0
+    - container-native-virtualization/hco-bundle-registry@sha256:546e4497d96fd0ef834acbe7dae2c7383d2e5325b14cdaec2e631560d102720f
+    # Bundle: kubevirt-hyperconverged-operator.v2.5.1
+    - container-native-virtualization/hco-bundle-registry@sha256:9811228cf63e2d85529410c0fcaa36999a25dcede649dc4d7d809b98b0a1c332
+    # Bundle: kubevirt-hyperconverged-operator.v2.5.2
+    - container-native-virtualization/hco-bundle-registry@sha256:90a1f9a2db2b0d1ac78586e79dd0ea3e1ca0a20300e4da95118d0bb77271b39b
+    # Bundle: kubevirt-hyperconverged-operator.v2.5.3
+    - container-native-virtualization/hco-bundle-registry@sha256:76402738a5a52397b164aa85850df9d5ffa446a2be4b0956d30120c1eade0848
+    # Bundle: kubevirt-hyperconverged-operator.v2.5.4
+    - container-native-virtualization/hco-bundle-registry@sha256:4ed94efd3ddf14dc111a473c891469f7251cd94ccf2046c96524d17ca82c6602
+    # Bundle: kubevirt-hyperconverged-operator.v2.6.0
+    - container-native-virtualization/hco-bundle-registry@sha256:1d08941f581ce9c39fde20ca1d6e17b2732b78504cd490ccaddc75e5db144a08
+    # Bundle: kubevirt-hyperconverged-operator.v2.6.1
+    - container-native-virtualization/hco-bundle-registry@sha256:e99ff69879859d0bf689e052839c47d95e47da44926f86240d8f833858af77a2
+    # Bundle: kubevirt-hyperconverged-operator.v2.6.2
+    - container-native-virtualization/hco-bundle-registry@sha256:6639ea7b8cf2d0f4a1df71116525c3383c9a55962403fee4bae461e1095d3718
+    # Bundle: kubevirt-hyperconverged-operator.v2.6.3
+    - container-native-virtualization/hco-bundle-registry@sha256:37bbf59bce47d6d469b908003f8545b4e2c87b52b274da59daa1993a22fe5591
+    # Bundle: kubevirt-hyperconverged-operator.v2.6.4
+    - container-native-virtualization/hco-bundle-registry@sha256:23dee295d93e7e917cefdbf0a6933bcf6136d0f44d723f03f0e533990ca8f14e
+    # Bundle: kubevirt-hyperconverged-operator.v2.6.5
+    - container-native-virtualization/hco-bundle-registry@sha256:4a64b511e6d455bc5bcbd821456b1f089cec9f902d90289dd89b8a923b09d803
+    # Bundle: kubevirt-hyperconverged-operator.v4.8.0
+    - container-native-virtualization/hco-bundle-registry@sha256:d0aea69adbe85ba64ec810d203e5207ece6b29c4e0a54cc6b2291671b2f50572
+mtc-operator:
+    # Bundle: mtc-operator.v1.2.5
+    - rhmtc/openshift-migration-operator-bundle@sha256:a3e42128d08e7f9586c506b5c7fa5155f0981de6ab46bd6ca78b161caaf352c9
+    # Bundle: mtc-operator.v1.3.0
+    - rhmtc/openshift-migration-operator-bundle@sha256:f53faabf65c9a610cc2c840db941a284ccc4a9665f9f16ae226a2ec8262dd17e
+    # Bundle: mtc-operator.v1.3.1
+    - rhmtc/openshift-migration-operator-bundle@sha256:8e75c98807166988536c695b5c46ec2fc1cc0fa793b6d5cb5200cc22c6af6249
+    # Bundle: mtc-operator.v1.3.2
+    - rhmtc/openshift-migration-operator-bundle@sha256:a2c3b92e69cd2d26d686e59c4b3f13c422576ac36bcf6b665150a12767735e85
+    # Bundle: mtc-operator.v1.4.0
+    - rhmtc/openshift-migration-operator-bundle@sha256:74e96547d0834cb32b9506b13e61e5e0353f83c5a3e58c2ff17ff41bf7d2c006
+    # Bundle: mtc-operator.v1.4.1
+    - rhmtc/openshift-migration-operator-bundle@sha256:1d3d63c721292e3596b871c0c10833fdecedacc4e3a09f25864740282a27f482
+    # Bundle: mtc-operator.v1.4.2
+    - rhmtc/openshift-migration-operator-bundle@sha256:f5f09c6157744828702b291049e4deecd7f98f63e912fee1cb6e55f04d7b8ce8
+    # Bundle: mtc-operator.v1.4.3
+    - rhmtc/openshift-migration-operator-bundle@sha256:1b0c9b3856ae4de8de26bb8317f00471e534794eef1edc595b107725dbae3774
+    # Bundle: mtc-operator.v1.4.4
+    - rhmtc/openshift-migration-operator-bundle@sha256:0f64bbc27f3de754b019c80bb567acb7cbc0898a2a76360b1e18a267c3cc29d1
+    # Bundle: mtc-operator.v1.4.5
+    - rhmtc/openshift-migration-operator-bundle@sha256:29e526311139d60c05548537006426084eddc575ddfe62d89bbf8606abe8cf26
+    # Bundle: mtc-operator.v1.4.6
+    - rhmtc/openshift-migration-operator-bundle@sha256:19f8a00034e63c8ed505b123ca224220695b043a825ffe55c32e5dd32dd05324
+    # Bundle: mtc-operator.v1.4.7
+    - rhmtc/openshift-migration-operator-bundle@sha256:16b5e74d6ba6fbf5492be37b11b2ba8b4de405f6f90165c8de39d735d18f663e
+    # Bundle: mtc-operator.v1.5.0
+    - rhmtc/openshift-migration-operator-bundle@sha256:d43fcd54fa4f3cbc56f5793bc28846b64d1cd4ca491af7eef2e2ea0c1cdb41bd
+ocs-operator:
+    # Bundle: ocs-operator.v4.7.2
+    - ocs4/ocs-operator-bundle@sha256:29e02f71823819e33008199efcc6ee66b9c06bdeb03ca6bfca1ccb934f33628a
+    # Bundle: ocs-operator.v4.7.3
+    - ocs4/ocs-operator-bundle@sha256:94bfd0bf3060761220c7cf59e229a91393bcea6203f0d0a62b4a6d8722d70c85
+    # Bundle: ocs-operator.v4.8.0
+    - ocs4/ocs-operator-bundle@sha256:91515bf10db2c19a059a16e4df1a331f4b919f2eb1ab11d2a09d054f38fe1fc7
+openshift-gitops-operator:
+    # Bundle: openshift-gitops-operator.v1.0.0
+    - openshift-gitops-1-tech-preview/gitops-operator-bundle@sha256:592a5248f1dc1e0167b951d8443d2bd3342e252ebf2046702ec675150b3f2786
+    # Bundle: openshift-gitops-operator.v1.0.1
+    - openshift-gitops-1-tech-preview/gitops-operator-bundle@sha256:0a432c618304f2d5ccfcc73ca03f32525939262cfd262c363b120847e71a29b4
+    # Bundle: openshift-gitops-operator.v1.1.0
+    - openshift-gitops-1/gitops-operator-bundle@sha256:849a346bb1faac6a76595a21ebbc424134f21fbaed693b8bde6490df6a46c6c0
+    # Bundle: openshift-gitops-operator.v1.1.1
+    - openshift-gitops-1/gitops-operator-bundle@sha256:1170e203046b1a08f851038c02e1175f93abe9ff57a1e5669b35ccfb87dc8644
+    # Bundle: openshift-gitops-operator.v1.1.2
+    - openshift-gitops-1/gitops-operator-bundle@sha256:433f19e7247d000b0001970b4584eff2933ef15d29f1f4e898592a6da72aec05
+    # Bundle: openshift-gitops-operator.v1.2.0
+    - openshift-gitops-1/gitops-operator-bundle@sha256:5553a411b4da3d8758f8fab6b51cbe279e70fad84c0d7c6be3baa7cbea9e1584
+openshift-jenkins-operator:
+    # Bundle: jenkins-operator.0.7.1
+    - ocp-tools-4-tech-preview/jenkins-operator-bundle@sha256:a5c0f38916348cd703383c810c93256dbebbed4a37ba21f352d39a8456ad4c0c
+openshift-pipelines-operator-rh:
+    # Bundle: redhat-openshift-pipelines-operator.v1.2.3
+    - openshift-pipelines-tech-preview/pipelines-rhel8-operator-metadata@sha256:0f4b4082d0b087da0a56cf43ce17763925ac2bca743bf1ef164a38375ae3c5a4
+    # Bundle: redhat-openshift-pipelines.v1.3.0
+    - openshift-pipelines-tech-preview/pipelines-rhel8-operator-metadata@sha256:4521df2f43b4b0d3d305c4a85621675b02da17c58d9f40a6f616bb40934c86f7
+    # Bundle: redhat-openshift-pipelines.v1.3.1
+    - openshift-pipelines-tech-preview/pipelines-rhel8-operator-metadata@sha256:ee6146e6d1e2417190f690ec9173c756b5115b36d450422aa2e94ad564cb51a5
+    # Bundle: redhat-openshift-pipelines.v1.4.0
+    - openshift-pipelines/pipelines-operator-bundle@sha256:4a8a4f4dc20909ad47a0e357f22a8d50763afd515c1c2c607a3df90f1dac0d34
+    # Bundle: redhat-openshift-pipelines.v1.5.0
+    - openshift-pipelines/pipelines-operator-bundle@sha256:d4c28d783105a9efae2bd20f199ad1b21904602cbefc3ba8c31a938ff49e7e9f
+performance-addon-operator:
+    # Bundle: performance-addon-operator.v4.4.1
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:52b92063ab262de4eccd82b3e276bc464448a552f47f019b13f5bc03603ab3a1
+    # Bundle: performance-addon-operator.v4.5.4
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:d822388c726075230f1eb6e9fd26a99291590bc267d76fde7b7137eb737e46fd
+    # Bundle: performance-addon-operator.v4.6.3
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:cb3c005ede341aba4e9c42b7461474e67ec810461287ca9f174565c12dced7f0
+    # Bundle: performance-addon-operator.v4.7.3
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:51eeb8f196464a6a0046984592701073b5788ab54420a097054909dbb926c8b1
+    # Bundle: performance-addon-operator.v4.8.0
+    - openshift4/performance-addon-operator-bundle-registry-container-rhel8@sha256:d1fd434f371a7c06d6a20b39297765858ba6579931946c86e7226d046bcd98c3
+quay-bridge-operator:
+    # Bundle: quay-bridge-operator.v3.3.4
+    - quay/quay-openshift-bridge-rhel8-operator-metadata@sha256:6e6b6b8c141ade81231d69ebe9b7eedbb60d32573cc0bf037040e64c304eff74
+    # Bundle: quay-bridge-operator.v3.4.1
+    - quay/quay-bridge-operator-bundle@sha256:f6a273c7e2c997dfd6c6f6a2f38a1aa406fd7b313bbd0400372f843ca8f715e1
+    # Bundle: quay-bridge-operator.v3.4.2
+    - quay/quay-bridge-operator-bundle@sha256:02bc935004d2bee5c6b53dc9730ce9eaf01509e3dcb0415d2abd18353d62e691
+    # Bundle: quay-bridge-operator.v3.4.3
+    - quay/quay-bridge-operator-bundle@sha256:4ca121b0cfceef38fd2c8256fa026bb4b705a696c2871c70157f4defa98278c2
+    # Bundle: quay-bridge-operator.v3.4.4
+    - quay/quay-bridge-operator-bundle@sha256:4434e099525d5b974c7a9262e5f202de3f4fba80c751cc79558923b2b44b36bd
+    # Bundle: quay-bridge-operator.v3.4.5
+    - quay/quay-bridge-operator-bundle@sha256:10a25b433a252946ddfdf26a99e07ec2d96d94b35f90c8b8d42abad36cd55848
+    # Bundle: quay-bridge-operator.v3.4.6
+    - quay/quay-bridge-operator-bundle@sha256:e21ee1efdff187ac2f8a6ae61e5e9001543a17072c5008a9c30c8649d48fc6d0
+    # Bundle: quay-bridge-operator.v3.5.1
+    - quay/quay-bridge-operator-bundle@sha256:58ee282fc7e1847fd547f6c71ad358482f5cb0ace2bfcdd04e1a4d5622f8e1cc
+    # Bundle: quay-bridge-operator.v3.5.2
+    - quay/quay-bridge-operator-bundle@sha256:b0ae23a6ddabfa5bee6445842ca0ff4d44f31ab83f50a5e0e9292381d5c9516d
+    # Bundle: quay-bridge-operator.v3.5.3
+    - quay/quay-bridge-operator-bundle@sha256:8f2e39673bfed746747fe6e5cd7f6c1e66da30d270234c7d8287bfd30ca4ef82
+    # Bundle: quay-bridge-operator.v3.5.4
+    - quay/quay-bridge-operator-bundle@sha256:c06ce684b96ada36a923456641fbc9d30d57c49eb0bf3779fa6b65ae1565893f
+    # Bundle: quay-bridge-operator.v3.5.5
+    - quay/quay-bridge-operator-bundle@sha256:b8a64c1ea334a97670756cc25501ea17bd1ef2aa51b3361f54ceed326027208c
+    # Bundle: quay-bridge-operator.v3.5.6
+    - quay/quay-bridge-operator-bundle@sha256:d0cbc8dc1577ec4b5812664d1c5ff7c6043057b21a8ccd8a0ffc09bf8002276f
+quay-operator:
+    # Bundle: quay-operator.v3.4.1
+    - quay/quay-operator-bundle@sha256:34f4bc4eb4a4d35c629a0ec99d4e6b26cc6e1fe8c4c4cb27372e4f6112ce4954
+    # Bundle: quay-operator.v3.4.2
+    - quay/quay-operator-bundle@sha256:3fd2bae6aee6015d085eb0f6dd3943aea1fff524ed4b2b30967d948f30d8b595
+    # Bundle: quay-operator.v3.4.3
+    - quay/quay-operator-bundle@sha256:4a2b3c089220d33a5d326bb7965c1db8756c7734e13895e821f694358f0bb45c
+    # Bundle: quay-operator.v3.4.4
+    - quay/quay-operator-bundle@sha256:82a5c7ad01ba4283752ce8364f17c591c4d73aeb712a37cc6ec731251587cd86
+    # Bundle: quay-operator.v3.4.5
+    - quay/quay-operator-bundle@sha256:cda00491693fe7a881789d48eef49adda369fdca3407cc711d4f8610b3d845e5
+    # Bundle: quay-operator.v3.4.6
+    - quay/quay-operator-bundle@sha256:69e10b27a15d15a17b09b381c40e4f984e16cbb88bdaec2ea581b5d2020c8376
+    # Bundle: quay-operator.v3.5.1
+    - quay/quay-operator-bundle@sha256:831f385afdd3f1fdd56175d41849dee9688527f51fddbde05064725d649389b7
+    # Bundle: quay-operator.v3.5.2
+    - quay/quay-operator-bundle@sha256:3140cdbead9357972f590fbb5a2cd6bb3062610e72c829b751cb066844551b9e
+    # Bundle: quay-operator.v3.5.3
+    - quay/quay-operator-bundle@sha256:b98d0dc174570a49ff8fe416cd8fecf7f3c3d1f961678cfd6c51c30d68ee052b
+    # Bundle: quay-operator.v3.5.4
+    - quay/quay-operator-bundle@sha256:7211fea49c5a539cc9db2af14a3b45793cab1ada45c9e81fb2e5e793b520673e
+    # Bundle: quay-operator.v3.5.5
+    - quay/quay-operator-bundle@sha256:cc5b7bca04a602c34b4d0e9dd624ba51212debd4826600b58e7dfce181a3d871
+    # Bundle: quay-operator.v3.5.6
+    - quay/quay-operator-bundle@sha256:1d91ca01625eed740e8ffb88074be8ae5dfa83b5e78aa097cb0b68aa48d226d9
+    # Bundle: red-hat-quay.v3.3.4
+    - quay/quay-operator-bundle@sha256:2dda41a155c4c05fb8781f262d7e99529fa7f8dd9f28eaeb120cd6f70946cf44
+red-hat-camel-k:
+    # Bundle: red-hat-camel-k-operator.v1.3.0
+    - integration-tech-preview/camel-k-rhel8-operator-metadata@sha256:7290c901a716ce5285659c69cc212f678f5e5c203fbdfef062307eb9aa8eb8ce
+    # Bundle: red-hat-camel-k-operator.v1.3.1
+    - integration-tech-preview/camel-k-rhel8-operator-metadata@sha256:684bd0865612137b06177054af618ac1cb800ec9e9f4fa08824068e71e5deb37
+    # Bundle: red-hat-camel-k-operator.v1.3.2
+    - integration-tech-preview/camel-k-rhel8-operator-metadata@sha256:bd035c4c61c5dd8a7e8b9420a296733c5c410aea5bf993f973d61dcb2042e998
+    # Bundle: red-hat-camel-k-operator.v1.3.3
+    - integration/camel-k-rhel8-operator-bundle@sha256:d133ea9aa66646d493443dcabccebcbdb1e7a70dd84939ed772e912f4b3090b5
+    # Bundle: red-hat-camel-k-operator.v1.4.0
+    - integration/camel-k-rhel8-operator-bundle@sha256:ad80937e3fd953972d69a0a2b6cab9d8dc6fded2dd60484d2cd05dfa8f7f5429
+rhmtv-operator:
+    # Bundle: rhmtv-operator.2.0.0-beta.1
+    - rhmtv-beta/rhmtv-operator-bundle@sha256:68b2aef42de74bef3502cfbb4c6a5af9092814629e6d946c92cf269fdd58b845
+rhsso-operator:
+    # Bundle: rhsso-operator.7.4.0
+    - rh-sso-7-tech-preview/sso74-rhel8-operator-bundle@sha256:1a7e24f1d76e670b32b19fa34deb48c27ae75757249e1dce0ef6515cf29cab46
+    # Bundle: rhsso-operator.7.4.1
+    - rh-sso-7-tech-preview/sso74-rhel8-operator-bundle@sha256:6c405f51d712ac8952c30d8e97aaef15f9cdf73061c6014b6d9b11c080fe1a04
+    # Bundle: rhsso-operator.7.4.8
+    - rh-sso-7-tech-preview/sso74-rhel8-operator-bundle@sha256:4a311e35960d173e155dfd0e5fdf179bd6a7ffe1905b0878cae6f4549c7fe3b5
+sandboxed-containers-operator:
+    # Bundle: sandboxed-containers-operator.v1.0.0
+    - openshift-sandboxed-containers-tech-preview/osc-operator-bundle@sha256:fb0e5274f4c1fd9de51068c7c342c12e862ca4b84e36ccd2b0fc1bd27cab304a
+serverless-operator:
+    # Bundle: serverless-operator.v1.0.0
+    - openshift-serverless-1/serverless-rhel8-operator-bundle-backfill@sha256:b1f90409e146f456c35927db9fa03681a06bc6588993820b5e7f23f41bcdd13d
+    # Bundle: serverless-operator.v1.1.0
+    - openshift-serverless-1/serverless-rhel8-operator-bundle-backfill@sha256:647cf102d13ef1e4db397f3f4a661ba18874ced4fe8a898872826d4cefe425e6
+    # Bundle: serverless-operator.v1.10.0
+    - openshift-serverless-1/serverless-operator-bundle@sha256:864547fac0966a74c2e1642bf7f4718fb8e449a094511df0dc0ae9a7119caf29
+    # Bundle: serverless-operator.v1.10.1
+    - openshift-serverless-1/serverless-operator-bundle@sha256:b494c1eb911e7949218ae8851b3df4d6d1c82c30249b032a16410e95b22b1425
+    # Bundle: serverless-operator.v1.10.2
+    - openshift-serverless-1/serverless-operator-bundle@sha256:c7ae914f498df12fae7e2b4ceed55ccea5047af7e0328ca480c8ec898d2e0d90
+    # Bundle: serverless-operator.v1.11.0
+    - openshift-serverless-1/serverless-operator-bundle@sha256:781665631ab00e0c1a68b932624d84da76b65e3f140cb6561084ce7b5d0b68ca
+    # Bundle: serverless-operator.v1.12.0
+    - openshift-serverless-1/serverless-operator-bundle@sha256:4084782075db365dc60e1cd142e60d699f2a5c28d7ed4c414b3fef5e79529cac
+    # Bundle: serverless-operator.v1.13.0
+    - openshift-serverless-1/serverless-operator-bundle@sha256:f51bf79d93c571064a8038cd7ab40ced67ab87d5e0063afe3dda47935cb1eda6
+    # Bundle: serverless-operator.v1.14.0
+    - openshift-serverless-1/serverless-operator-bundle@sha256:bb0f2c2f421501e12d559ae7d9247d084d020ec5a78c1b42f065edbccf45d69e
+    # Bundle: serverless-operator.v1.15.0
+    - openshift-serverless-1/serverless-operator-bundle@sha256:b8798424bb472c4f0b8dea86637d8d85f52e196a4d62393c71b1ac646c661a30
+    # Bundle: serverless-operator.v1.16.0
+    - openshift-serverless-1/serverless-operator-bundle@sha256:45419a1e5f451a457a763e8767873595bf1977aee9ee69b5a15eaade90faf0d0
+    # Bundle: serverless-operator.v1.2.0
+    - openshift-serverless-1/serverless-rhel8-operator-bundle-backfill@sha256:0ac3c8490a5426c9e0ffe5d48823108b122420b6991c08d342ccab1ac7559f21
+    # Bundle: serverless-operator.v1.3.0
+    - openshift-serverless-1/serverless-rhel8-operator-bundle-backfill@sha256:262beb6c4826ce26a43cafd2962ac058c6053606afeb64132e031188e6d7f929
+    # Bundle: serverless-operator.v1.4.0
+    - openshift-serverless-1/serverless-rhel8-operator-bundle-backfill@sha256:c55434f36e23c9e1edcc6e5dbc843c380745227cb7a0dcea38c34e94e616640a
+    # Bundle: serverless-operator.v1.4.1
+    - openshift-serverless-1/serverless-rhel8-operator-bundle-backfill@sha256:c1cb56d6188bf6622bdb05af087092ed9dbe3cc92645cba3e6289bb7d7eab7a1
+    # Bundle: serverless-operator.v1.5.0
+    - openshift-serverless-1/serverless-rhel8-operator-bundle-backfill@sha256:dcc60de51a12452dd1e470710daf2312917b720c2f5ced8874d4595d8760afb0
+    # Bundle: serverless-operator.v1.6.0
+    - openshift-serverless-1/serverless-rhel8-operator-bundle-backfill@sha256:7b43ec0c862eae649975e119bb122cc631be80ac117631dd4d3a31c761aa5810
+    # Bundle: serverless-operator.v1.7.0
+    - openshift-serverless-1/serverless-rhel8-operator-bundle-backfill@sha256:e30456268966cc10cf3648c386f680f728541cfd522123e59ed276e8e4bed55c
+    # Bundle: serverless-operator.v1.7.1
+    - openshift-serverless-1/serverless-rhel8-operator-bundle-backfill@sha256:3747ebff5550e9c04abb0f9f1909e9df9c0dd7b85a791994248a29a7f399e199
+    # Bundle: serverless-operator.v1.7.2
+    - openshift-serverless-1/serverless-rhel8-operator-bundle-backfill@sha256:70bb9a7a04774ff386c44889ba94811ac49829822aadd0970b1a55178afdb60f
+    # Bundle: serverless-operator.v1.8.0
+    - openshift-serverless-1/serverless-rhel8-operator@sha256:7ff51fbfc38689b72ad6c8591a8c7d21b32f48da3a6ca0ed27c3dc08af1a1738
+    # Bundle: serverless-operator.v1.9.0
+    - openshift-serverless-1/serverless-operator-bundle@sha256:f950157a8497edec98f412904ea80359f5b081873b5a79e72289d8db175e6da0
+service-registry-operator:
+    # Bundle: service-registry-operator.v1.0.0
+    - integration/service-registry-rhel8-operator-metadata@sha256:49b50e2b4cfe341a30f6d4f8e8a6d411da7926335bd22a2397ba37acaf1ce756
+    # Bundle: service-registry-operator.v1.0.1
+    - integration/service-registry-rhel8-operator-metadata@sha256:39b0ba26ea73c6ba54c8ce0c86c2563a3284e5690f091a0536c9722e4f11d62a
+    # Bundle: service-registry-operator.v1.0.2
+    - integration/service-registry-rhel8-operator-metadata@sha256:31c7dd275bc4c2b0d9ead9c2002963485791b279a90174191826236ac624a44b
+    # Bundle: service-registry-operator.v1.1.0
+    - integration/service-registry-rhel8-operator-metadata@sha256:720fd4d865f4e4a404d9a7846d5608b87d540f87a49cb5161ce383be0233d4b4
+    # Bundle: service-registry-operator.v1.1.1
+    - integration/service-registry-rhel8-operator-metadata@sha256:a4f5b333f7009001bc27849f752aaf71daf03a534e65b59b88463e2b8ddce8f4
+    # Bundle: service-registry-operator.v1.1.2
+    - integration/service-registry-rhel8-operator-metadata@sha256:6269cb4e07a545c4b06557e7a3f3e6969c51cbc4fb13efcd593b4c045207bd06
+    # Bundle: service-registry-operator.v1.1.3
+    - integration/service-registry-rhel8-operator-metadata@sha256:a21153027b7a1146752cabb02f53bd2e7f5b72af3af38bd822e214e83e046f31
+    # Bundle: service-registry-operator.v2.0.0
+    - integration/service-registry-rhel8-operator-metadata@sha256:93da36db720902a958cfe3df7b0c67a96bd0fc2cf57f52c205f1e0dde8764bcd
+    # Bundle: service-registry-operator.v2.0.1
+    - integration/service-registry-rhel8-operator-metadata@sha256:042a75d8910d68719bdc28a59d735a871986e3ceeb11ed135ebd1d7991a6df7c
+service-telemetry-operator:
+    # Bundle: service-telemetry-operator.v1.2.0
+    - stf/service-telemetry-operator-bundle@sha256:0dfb4f70ff662b3e900a019e8cc6c905d9640746915c8c540982b01db43d79de
+servicemeshoperator:
+    # Bundle: servicemeshoperator.v1.0.0
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:c3d70b97d83fd5515f59a3407930b2f348d154f3a91c55b99775ccd40c7a03eb
+    # Bundle: servicemeshoperator.v1.0.1
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:0c5bc7032405382c183c1d901da28c8010dcedb971bc41af4b9974672d5edb0f
+    # Bundle: servicemeshoperator.v1.0.10
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:e065720afc628e0218f56c52a72acb80edc498ef4c502ac3eb1d6a10d06e17eb
+    # Bundle: servicemeshoperator.v1.0.2
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:b9260547c3cbec27ff8c06c7a039cc5816bfb9eda34a8651a956e47961640d88
+    # Bundle: servicemeshoperator.v1.0.3
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:7fd11c843f707a7ab5593428e1f1694e739f795ced3a68b824c50c4efa589f6e
+    # Bundle: servicemeshoperator.v1.0.4
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:0a662a0d0ea3c7101100faf846750cdfcfb101d52542f400b0727b790226e52f
+    # Bundle: servicemeshoperator.v1.0.5
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:2b125380cda483bb7fa0dd44d0aa820ab7d35aa8d759b19b8147ff2b6e2b248a
+    # Bundle: servicemeshoperator.v1.0.6
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:f943aed689b4d320a6f5339f275d99e4b1b341857142373e82cc160f60eb9b99
+    # Bundle: servicemeshoperator.v1.0.7
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:2427453fd9de937fcc546c50541821232ce7ebe811b0faded24e04483232c51b
+    # Bundle: servicemeshoperator.v1.0.8
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:cb6dc8b72bd78b7c991a02eb97bd567507c78b5873e3aafd4c1bad50bc8c1f72
+    # Bundle: servicemeshoperator.v1.0.9
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:8daa9cb2fb63248b931c9b52307c6cc36bfb69f56275599d12325437331ffd5e
+    # Bundle: servicemeshoperator.v1.1.0
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:4fb42ad92227800d127894450e563b12fb9bae43a15e96768bf39841e4f58920
+    # Bundle: servicemeshoperator.v1.1.1
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:25646a4f821823dad46bd9085d70347302c44b4aa3c3efd075f489665dc4fff3
+    # Bundle: servicemeshoperator.v1.1.10
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:76d956130c3916e3fea16f22d6f2e89a01538964d4827aaa03ff7e85f440f064
+    # Bundle: servicemeshoperator.v1.1.2
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:781dd1d9a575d381f64c96a7ca9f4b3c03435e03cd9bc37aa92388730ec89075
+    # Bundle: servicemeshoperator.v1.1.2.2
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:520db9418a7a0c296d3d51f1cb52cd615ee85e349475fe96ce5ee9ca2343ee0a
+    # Bundle: servicemeshoperator.v1.1.2.3
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:10f9d6053445313f39debfc9f3c5ba8ce048797606d92cdc1a0d47c6d4e5f344
+    # Bundle: servicemeshoperator.v1.1.3
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:0b8e61ba6509f2e0c53d138b57f79099af0fd3d57a3a6620ff770354c905bcce
+    # Bundle: servicemeshoperator.v1.1.4
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:e43298496afd3f9ae121c3264e1b3dfb7b3be729cc05d78de190b0cda83f5c73
+    # Bundle: servicemeshoperator.v1.1.4.2
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:5bb7df9e5934c701cc558677d47e08cfbd72943d3b9da3c3ade1b327409716a9
+    # Bundle: servicemeshoperator.v1.1.5
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:5ee0be8435ba05729c4ce4570b9af5f8f37038bd17357dc120bdeaec48a9a58c
+    # Bundle: servicemeshoperator.v1.1.5.2
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:48e9f6686e659fc1c5afe22d93328318b8581daec8ccfd311f546e2dbf639382
+    # Bundle: servicemeshoperator.v1.1.6
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:1e467558e4e6e04c3ab886f87565fddf9dec2cf6a8993b54a212d0cbb462b99e
+    # Bundle: servicemeshoperator.v1.1.7
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:cf90097f2ef894bbf1778c647fb35988a5ff49e6fe0e064c34c6d6cea9ba6c61
+    # Bundle: servicemeshoperator.v1.1.8
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:2db6c35143b19817cf7a0cec6e63bd817eeca3b2d1da0d6dcfbb70bbe8d96b16
+    # Bundle: servicemeshoperator.v1.1.9
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:59cb2f1e42cf00401f6d468142fa0d5db042ec283b290c9e85821cac7a4fc183
+    # Bundle: servicemeshoperator.v2.0.0
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:7e63825458a736885cb651fbefab4a59ff12c4f80af6c75c94cc286ec662db32
+    # Bundle: servicemeshoperator.v2.0.0.1
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:3ce700eea13c1a10bd071ea0dba330fb6c643da093ff2f727af98bb91b4d3e78
+    # Bundle: servicemeshoperator.v2.0.0.2
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:ee82bef55db5e94eea952f948d4a45d7666041011062607b85dd78694e142a55
+    # Bundle: servicemeshoperator.v2.0.1
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:948914734cd5f38d7812eeeed5e3c41bd602d5157c3241f798f1e62cde64d494
+    # Bundle: servicemeshoperator.v2.0.1.1
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:169917409ad8a04d390277f32f05fdbcdfefdab9fd126433034644b7332ac744
+    # Bundle: servicemeshoperator.v2.0.2
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:9b5526585598cfca46e0bc9588ee0994dc4d0c41f6139c37fdc2ec99ddc4bc49
+    # Bundle: servicemeshoperator.v2.0.3
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:88eda5f019aa359c8656d4f1f9df8ab7a9738f959617129753b8ab020947a4bf
+    # Bundle: servicemeshoperator.v2.0.4
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:f51d78f84e9f1c2600b610b9e1ba8c9540c147d117a40acc5a3315e7929ebc1a
+    # Bundle: servicemeshoperator.v2.0.5
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:711c9f891dc6bab088f67d180bb04a030039704bc30faaa1cc53653a53622aff
+    # Bundle: servicemeshoperator.v2.0.5.1
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:720471763f774b6478a033d5ddf43b1e89e99734d58386cf89b231654d59f792
+    # Bundle: servicemeshoperator.v2.0.5.2
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:911e8c41e575560e88a20f4248c0b65a510b2f06224edad13e74639239d96222
+    # Bundle: servicemeshoperator.v2.0.6
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:91d14a238a3e3e3777e44ab74b3748711d251c153eb03ceaf2bb97a5de8c9dfb
+    # Bundle: servicemeshoperator.v2.0.6.1
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:ec7694fd6f2a5be5e82a1e4720b864b2b4e6c7d8d42bf57bb3a13c3c6de0b871
+    # Bundle: servicemeshoperator.v2.0.6.2
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:5819583c3c6854b4b4ef8c300375c8f0990831d8b8a8b261e9806fc857946575
+    # Bundle: servicemeshoperator.v2.0.7
+    - openshift-service-mesh/istio-rhel8-operator-metadata@sha256:23252eb43b702c175564d2814765f72690f1b1fadac4bc09fb302528d2ff193c
+smart-gateway-operator:
+    # Bundle: smart-gateway-operator.v2.2.0
+    - stf/smart-gateway-operator-bundle@sha256:320d8413adb0acdd9d7e157885191970ec3baa96cdb480e26e504d36fb1fa38c
+submariner:
+    # Bundle: submariner.v0.8.1
+    - rhacm2-tech-preview/submariner-operator-bundle@sha256:0de0f0ee7078e566f0ce21dcfb4eb9f0177ddc790a8a575b967635259df51da5
+    # Bundle: submariner.v0.9.0
+    - rhacm2-tech-preview/submariner-operator-bundle@sha256:7725b42971d6735cda68cac2cc46c39b972c8694d2ed21a203551912183aa90c
+web-terminal:
+    # Bundle: web-terminal.v1.0.1
+    - web-terminal-tech-preview/web-terminal-rhel8-operator-metadata@sha256:72654f9d638fc59231c4bfa75781aa2cf7ab911a3c42d6ba51232ee9894d54d5
+    # Bundle: web-terminal.v1.1.0
+    - web-terminal-tech-preview/web-terminal-rhel8-operator-metadata@sha256:320875845790b0da60dbfbe08fbd4112a80d47cd79510f16d2a1080c66420fd5
+    # Bundle: web-terminal.v1.2.0
+    - web-terminal-tech-preview/web-terminal-rhel8-operator-metadata@sha256:e08d38c7b0e585df1185d97890a8723827c47c6749e7d7cec0afa8c9359c3ff4
+    # Bundle: web-terminal.v1.2.1
+    - web-terminal-tech-preview/web-terminal-rhel8-operator-metadata@sha256:cbf74af4bf114e9207613a850a62116e99eb3148d3e27e3f7b540f39d6259234
+    # Bundle: web-terminal.v1.3.0
+    - web-terminal-tech-preview/web-terminal-rhel8-operator-metadata@sha256:e437111649abfadb422b093ca0ccba873d1d13736e90f2837609c9f4adcee2d1

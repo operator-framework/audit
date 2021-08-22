@@ -100,13 +100,19 @@ generate-dashboards:
 ## @Helpers - Deprecated implementations
 
 .PHONY: generate-deprecate-green ## This method should be remove soon. It is only an internal helper
-generate-deprecate-green: ## ensure that you have update the the date of the report.
-	go run ./hack/scripts/deprecated-bundles-repo/deprecate-green/deprecated_index.go --image=testdata/reports/redhat_certified_operator_index/bundles_registry.redhat.io_redhat_certified_operator_index_v4.8_2021-08-16.json
-	go run ./hack/scripts/deprecated-bundles-repo/deprecate-green/deprecated_index.go --image=testdata/reports/redhat_redhat_marketplace_index/bundles_registry.redhat.io_redhat_redhat_marketplace_index_v4.8_2021-08-16.json
-	go run ./hack/scripts/deprecated-bundles-repo/deprecate-green/deprecated_index.go --image=testdata/reports/redhat_redhat_operator_index/bundles_registry.redhat.io_redhat_redhat_operator_index_v4.8_2021-08-15.json
+generate-deprecate-green: install ## ensure that you have update the the date of the report.
+	go run ./hack/scripts/deprecated-bundles-repo/deprecate-green/deprecated_index.go --image=testdata/reports/redhat_certified_operator_index/bundles_registry.redhat.io_redhat_certified_operator_index_v4.9_2021-08-22.json
+	go run ./hack/scripts/deprecated-bundles-repo/deprecate-green/deprecated_index.go --image=testdata/reports/redhat_redhat_marketplace_index/bundles_registry.redhat.io_redhat_redhat_marketplace_index_v4.9_2021-08-22.json
+	go run ./hack/scripts/deprecated-bundles-repo/deprecate-green/deprecated_index.go --image=testdata/reports/redhat_redhat_operator_index/bundles_registry.redhat.io_redhat_redhat_operator_index_v4.8_2021-08-21.json
+
+.PHONY: generate-deprecate-all ## This method should be remove soon. It is only an internal helper
+generate-deprecate-all: install ## ensure that you have update the the date of the report.
+	go run ./hack/scripts/deprecated-bundles-repo/deprecate-all/deprecated_index.go --image=testdata/reports/redhat_certified_operator_index/bundles_registry.redhat.io_redhat_certified_operator_index_v4.9_2021-08-22.json
+	go run ./hack/scripts/deprecated-bundles-repo/deprecate-all/deprecated_index.go --image=testdata/reports/redhat_redhat_marketplace_index/bundles_registry.redhat.io_redhat_redhat_marketplace_index_v4.9_2021-08-22.json
+	go run ./hack/scripts/deprecated-bundles-repo/deprecate-all/deprecated_index.go --image=testdata/reports/redhat_redhat_operator_index/bundles_registry.redhat.io_redhat_redhat_operator_index_v4.8_2021-08-21.json
 
 .PHONY: generate-ivs-report ## This method should be remove soon. It is only an internal helper
 generate-ivs-report: ## ensure that you have the mongo json file and update the the date of the report.
-	go run hack/scripts/ivs-emails/generate.go --mongo=hack/scripts/ivs-emails/mongo-query-join-results-prod.json --image=testdata/reports/redhat_certified_operator_index/bundles_registry.redhat.io_redhat_certified_operator_index_v4.8_2021-08-16.json
-	go run hack/scripts/ivs-emails/generate.go --mongo=hack/scripts/ivs-emails/mongo-query-join-results-prod.json --image=testdata/reports/redhat_redhat_marketplace_index/bundles_registry.redhat.io_redhat_redhat_marketplace_index_v4.8_2021-08-16.json
+	go run hack/scripts/ivs-emails/generate.go --mongo=hack/scripts/ivs-emails/mongo-query-join-results-prod.json --image=testdata/reports/redhat_certified_operator_index/bundles_registry.redhat.io_redhat_certified_operator_index_v4.9_2021-08-22.json
+	go run hack/scripts/ivs-emails/generate.go --mongo=hack/scripts/ivs-emails/mongo-query-join-results-prod.json --image=testdata/reports/redhat_redhat_marketplace_index/bundles_registry.redhat.io_redhat_redhat_marketplace_index_v4.9_2021-08-22.json
 
