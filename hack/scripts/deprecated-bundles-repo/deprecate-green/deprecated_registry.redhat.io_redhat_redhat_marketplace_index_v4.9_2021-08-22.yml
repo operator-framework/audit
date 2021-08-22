@@ -1,0 +1,23 @@
+##############################################
+# - The following results were obtained programmatically from:
+# - Image name: registry.redhat.io/redhat/redhat-marketplace-index:v4.9
+# - Image ID: sha256:2469558a82f56cd0853578d0d8ff3f15bdcae83eabf3df6630080c3745a098ec
+# - Image Created at: 2021-08-18T22:00:24.074412133Z
+# - From JSON report generated at: 2021-08-22
+##############################################
+couchbase-enterprise-certified-rhmp:
+    # Bundle: couchbase-operator.v1.2.1 : Package has distributions compatible with 4.9
+    - registry.connect.redhat.com/couchbase/operator-bundle@sha256:e97934cd2d4218d63105de60bcc8872e3d5aefefe81536d815e29463b2b2dc50
+    # Bundle: couchbase-operator.v1.2.2 : Package has distributions compatible with 4.9
+    - registry.connect.redhat.com/couchbase/operator-bundle@sha256:6a5bda304437d7f303b09baf5f489654ca64b5ecbdc7c412798689c6392adcb6
+    # Bundle: couchbase-operator.v2.0.0 : Package has distributions compatible with 4.9
+    - registry.connect.redhat.com/couchbase/operator-bundle@sha256:0778f04a4ff5fdbbcd57abf6ad06f1f9081281873dd927e48ff4be288588135b
+    # Bundle: couchbase-operator.v2.0.1 : Package has distributions compatible with 4.9
+    - registry.connect.redhat.com/couchbase/operator-bundle@sha256:246ebf83967674dcdf0abb1553544690564927ea698dbf1928f3097f388ad677
+    # Bundle: couchbase-operator.v2.0.2 : Package has distributions compatible with 4.9
+    - registry.connect.redhat.com/couchbase/operator-bundle@sha256:27f2297c5bf84bf8c28dd67bf806436992400763ada87263ebf90abe6c3cb692
+    # Bundle: couchbase-operator.v2.1.0 : Package has distributions compatible with 4.9
+    - registry.connect.redhat.com/couchbase/operator-bundle@sha256:7d00537b2505fdb5418ad7a279451d5953f0b12b0223ac328ba885be73cbdbed
+seldon-deploy-operator-rhmp:
+    # Bundle: seldon-deploy-operator.v0.7.0 : Package has distributions compatible with 4.9
+    - registry.connect.redhat.com/seldonio/seldon-deploy-operator-bundle@sha256:ec4e1dd7d2049b5378e41987cec3fa36470aa20c89a98a96cb0ed433437afe34
