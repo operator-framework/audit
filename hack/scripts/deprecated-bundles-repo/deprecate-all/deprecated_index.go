@@ -53,7 +53,7 @@ type Deprecated struct {
 }
 
 type File struct {
-	Deprecated []Deprecated
+	Deprecated    []Deprecated
 	APIDashReport *custom.APIDashReport
 }
 
