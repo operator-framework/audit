@@ -5,7 +5,8 @@
 # - Image Created at: {{ .APIDashReport.ImageBuild }}
 # - From JSON report generated at: {{ .APIDashReport.GeneratedAt }}
 ##############################################
+# The following packages has distributions compatible with 4.9
 {{ with .Deprecated }}{{ range . }}{{ .PackageName }}:{{ with .Bundles }}{{ range . }}
-    # Bundle: {{ .Details }} : Package has distributions compatible with 4.9
+    # Bundle: {{ .Details }}
     - {{ .Paths }}{{ end }}{{ end }}
 {{ end }}{{ end }}
