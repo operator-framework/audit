@@ -58,30 +58,6 @@ func GetTheLatestBundleVersion(bundlesFromChannel []bundles.Column) string {
 	return latestVersion
 }
 
-// GetQtLatestVersionChannelsState returns the qtd. of channels which are OK and configured with max ocp version
-func GetQtLatestVersionChannelsState(bundlesPerChannels map[string][]bundles.Column) (int, int) {
-	qtChannelOK := 0
-	qtChannelConfiguredAccordingly := 0
-	for _, bundlesFromChannel := range bundlesPerChannels {
-		latest := GetTheLatestBundleVersion(bundlesFromChannel)
-		// check if latest is OK
-		for _, v := range bundlesFromChannel {
-			if v.BundleVersion == latest {
-				// In this case has a valid path
-				if len(v.KindsDeprecateAPIs) == 0 && !pkg.IsOcpLabelRangeLowerThan49(v.OCPLabel) {
-					qtChannelOK++
-				}
-				// in this case will block the cluster upgrade at least
-				if len(v.KindsDeprecateAPIs) > 0 && pkg.IsMaxOCPVersionLowerThan49(v.MaxOCPVersion) {
-					qtChannelConfiguredAccordingly++
-				}
-				break
-			}
-		}
-	}
-	return qtChannelOK, qtChannelConfiguredAccordingly
-}
-
 // GetHeadOfChannelState returns the qtd. of head of channels which are OK and configured with max ocp version
 func GetHeadOfChannelState(headOfChannels []bundles.Column) (int, int) {
 	var foundOK = 0
@@ -93,7 +69,7 @@ func GetHeadOfChannelState(headOfChannels []bundles.Column) (int, int) {
 		}
 		// in this case will block the cluster upgrade at least
 		if (len(v.KindsDeprecateAPIs) > 0 && pkg.IsMaxOCPVersionLowerThan49(v.MaxOCPVersion)) ||
-			(len(v.KindsDeprecateAPIs) == 0 && pkg.IsOcpLabelRangeLowerThan49(v.OCPLabel)) {
+			(len(v.KindsDeprecateAPIs) > 0 && pkg.IsOcpLabelRangeLowerThan49(v.OCPLabel)) {
 			foundConfiguredAccordingly++
 		}
 	}
