@@ -1,0 +1,40 @@
+##############################################
+# - The following results were obtained programmatically from:
+# - Image name: registry.redhat.io/redhat/redhat-operator-index:v4.8
+# - Image ID: sha256:b88b8b3531b315848d5a4d53c6e376660547bdee84e07a06d07aa7406974dcc2
+# - Image Created at: 2021-08-19T18:05:29.215979732Z
+# - From JSON report generated at: 2021-08-21
+##############################################
+3scale-operator
+amq-broker
+amq-broker-lts
+amq-broker-rhel8
+amq7-cert-manager-operator
+amq7-interconnect-operator
+ansible-automation-platform-operator
+apicast-operator
+awx-resource-operator
+cincinnati-operator
+clusterresourceoverride
+container-security-operator
+datagrid
+eap
+fuse-apicurito
+gatekeeper-operator-product
+jaeger-product
+jws-operator
+kiali-ossm
+mtc-operator
+ocs-operator
+openshift-gitops-operator
+openshift-jenkins-operator
+performance-addon-operator
+quay-bridge-operator
+quay-operator
+rhmtv-operator
+rhsso-operator
+sandboxed-containers-operator
+serverless-operator
+service-telemetry-operator
+servicemeshoperator
+smart-gateway-operator
