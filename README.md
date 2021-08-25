@@ -51,13 +51,13 @@ You must run `docker login` to have access to the images.
 Now, you can audit all operator bundles of an image catalog with: 
 
 ```sh 
-audit-tool index bundles --index-image=registry.redhat.io/redhat/redhat--operator-index:v4.7 --head-only --output-path=testdata/xls
+audit-tool index bundles --index-image=registry.redhat.io/redhat/redhat-operator-index:v4.7 --head-only --output-path=testdata/xls
 ```
 
 Now, you can audit all packages of an image catalog with: 
 
 ```sh 
-audit-tool index packages --index-image=registry.redhat.io/redhat/redhat--operator-index:v4.7 --output-path=testdata/xls
+audit-tool index packages --index-image=registry.redhat.io/redhat/redhat-operator-index:v4.7 --output-path=testdata/xls
 ```
 
 Note that you can also output the results in JSON format:
