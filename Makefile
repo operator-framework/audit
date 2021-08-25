@@ -113,8 +113,8 @@ generate-deprecate-all: install ## ensure that you have update the the date of t
 
 .PHONY: generate-pkgs ## This method should be remove soon. It is only an internal helper
 generate-pkgs: install ## ensure that you have update the the date of the report.
-	go run ./hack/scripts/packages/generate.go --image=testdata/reports/redhat_certified_operator_index/bundles_registry.redhat.io_redhat_certified_operator_index_v4.9_2021-08-22.json
-	go run ./hack/scripts/packages/generate.go --image=testdata/reports/redhat_redhat_marketplace_index/bundles_registry.redhat.io_redhat_redhat_marketplace_index_v4.9_2021-08-22.json
+	go run ./hack/scripts/packages/generate.go --image=testdata/reports/redhat_certified_operator_index/bundles_registry.redhat.io_redhat_certified_operator_index_v4.8_2021-08-21.json
+	go run ./hack/scripts/packages/generate.go --image=testdata/reports/redhat_redhat_marketplace_index/bundles_registry.redhat.io_redhat_redhat_marketplace_index_v4.8_2021-08-21.json
 	go run ./hack/scripts/packages/generate.go --image=testdata/reports/redhat_redhat_operator_index/bundles_registry.redhat.io_redhat_redhat_operator_index_v4.8_2021-08-21.json
 	go run ./hack/scripts/packages/generate.go --image=testdata/reports/redhat_community_operator_index/bundles_registry.redhat.io_redhat_community_operator_index_v4.8_2021-08-21.json
 

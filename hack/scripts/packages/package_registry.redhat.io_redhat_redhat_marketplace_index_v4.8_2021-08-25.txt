@@ -1,0 +1,282 @@
+##############################################
+# - The following results were obtained programmatically from:
+# - Image name: registry.redhat.io/redhat/redhat-marketplace-index:v4.8
+# - Image ID: sha256:f25a486affaf2c7c51762a2b3353a4116da9a0ad621a3a3b0eb4a3633b2e4b8b
+# - Image Created at: 2021-08-19T18:10:38.757587825Z
+# - From JSON report generated at: 2021-08-21
+##############################################
+-------------------------------------
+Packages which does not nave any compatible version with 4.9
+-------------------------------------
+aci-containers-operator
+akka-cluster-operator-certified-rhmp
+anaconda-team-edition-rhmp
+appdynamics-operator-rhmp
+appranix-cps-rhmp
+aqua-operator-certified-rhmp
+armory-operator-rhmp
+as400rpc-operator-rhmp
+atomicorp-helm-operator-certified-rhmp
+aws-event-sources-operator-certified-rhmp
+can-operator-rhmp
+cass-operator-rhmp
+cert-manager-operator-rhmp
+cic-operator-with-crds-rhmp
+citrix-cpx-with-ingress-controller-operator-rhmp
+citrix-ingress-controller-operator-rhmp
+cloudhedge-rhmp
+cnvrg-operator-marketplace-rhmp
+cortex-certifai-operator-rhmp
+cortex-fabric-operator-rhmp
+cortex-healthcare-hub-operator-rhmp
+cortex-hub-operator-rhmp
+cpx-cic-operator-rhmp
+crunchy-postgres-operator-rhmp
+cyberarmor-operator-certified-rhmp
+data-explorer-operator-certified-rhmp
+datadog-operator-certified-rhmp
+db2-zos-db-operator-rhmp
+densify-operator-rhmp
+eddi-operator-certified-rhmp
+enterprise-operator-rhmp
+federatorai-certified-rhmp
+fep-ansible-operator
+growth-stack-operator-certified-rhmp
+hazelcast-enterprise-certified-rhmp
+hazelcast-jet-enterprise-operator-rhmp
+hpe-ezmeral-csi-operator-rhmp
+insightedge-enterprise-operator2-rhmp
+instana-agent-rhmp
+ivory-server-app-rhmp
+joget-dx-operator-rhmp
+joget-openshift-operator-rhmp
+jtrac-app-operator-rhmp
+k10-kasten-operator-rhmp
+k8s-triliovault-rhmp
+kong-offline-operator-rhmp
+kpow-io-certified-rhmp
+kubemq-operator-marketplace-rhmp
+kubeplus-rhmp
+kubeturbo-certified-rhmp
+memql-certified-rhmp
+mf-cics-tg-operator-rhmp
+mf-cics-ts-operator-rhmp
+mongodb-enterprise-advanced-ibm-rhmp
+mongodb-enterprise-rhmp
+nastel-navigator-operator-certified-rhmp
+nastel-xray-operator-rhmp
+neuvector-certified-operator-rhmp
+node-red-operator-rhm-certified-rhmp
+oneagent-certified-rhmp
+open-enterprise-spinnaker-rhmp
+openunison-ocp-certified-rhmp
+orca-rhmp
+perceptilabs-operator-package-rhmp
+percona-server-mongodb-operator-certified-rhmp
+percona-xtradb-cluster-operator-certified-rhmp
+portshift-controller-operator-rhmp
+presto-operator-rhmp
+rapidbiz-operator-certified-rhmp
+redis-enterprise-operator-cert-rhmp
+robin-storage-enterprise-rhmp
+robin-storage-express-rhmp
+robin-storage-trial-rhmp
+rocketchat-operator-certified
+runtime-component-operator-certified-rhmp
+seldon-operator-certified-rhmp
+snyk-operator-marketplace-rhmp
+starburst-enterprise-helm-operator-rhmp
+stonebranch-universalagent-operator-certified-rhmp
+storageos2-rhmp
+sysdig-certified-rhmp
+t8c-certified-rhmp
+timemachine-operator-rhmp
+traefikee-redhat-certified-rhmp
+uma-operator-rhmp
+vprotect-operator-rhmp
+xcrypt-operator-rhmp
+yugabyte-platform-operator-bundle-rhmp
+zabbix-operator-certified-rhmp
+
+
+-------------------------------------
+Packages which does not nave any compatible version with 4.9 and has
+at least one head of channel using replaces
+-------------------------------------
+aws-event-sources-operator-certified-rhmp
+cass-operator-rhmp
+cert-manager-operator-rhmp
+cortex-certifai-operator-rhmp
+cortex-fabric-operator-rhmp
+cortex-healthcare-hub-operator-rhmp
+cortex-hub-operator-rhmp
+cpx-cic-operator-rhmp
+crunchy-postgres-operator-rhmp
+data-explorer-operator-certified-rhmp
+datadog-operator-certified-rhmp
+densify-operator-rhmp
+growth-stack-operator-certified-rhmp
+hazelcast-enterprise-certified-rhmp
+hazelcast-jet-enterprise-operator-rhmp
+hpe-ezmeral-csi-operator-rhmp
+instana-agent-rhmp
+joget-dx-operator-rhmp
+k10-kasten-operator-rhmp
+k8s-triliovault-rhmp
+kubemq-operator-marketplace-rhmp
+kubeturbo-certified-rhmp
+memql-certified-rhmp
+mongodb-enterprise-rhmp
+nastel-navigator-operator-certified-rhmp
+nastel-xray-operator-rhmp
+neuvector-certified-operator-rhmp
+oneagent-certified-rhmp
+orca-rhmp
+perceptilabs-operator-package-rhmp
+portshift-controller-operator-rhmp
+seldon-operator-certified-rhmp
+stonebranch-universalagent-operator-certified-rhmp
+t8c-certified-rhmp
+uma-operator-rhmp
+yugabyte-platform-operator-bundle-rhmp
+zabbix-operator-certified-rhmp
+
+
+-------------------------------------
+Packages which does not nave any compatible version with 4.9 and has
+at least one head of channel using skips
+-------------------------------------
+appdynamics-operator-rhmp
+cloudhedge-rhmp
+data-explorer-operator-certified-rhmp
+k8s-triliovault-rhmp
+kubemq-operator-marketplace-rhmp
+mongodb-enterprise-advanced-ibm-rhmp
+oneagent-certified-rhmp
+perceptilabs-operator-package-rhmp
+runtime-component-operator-certified-rhmp
+timemachine-operator-rhmp
+uma-operator-rhmp
+
+
+-------------------------------------
+Packages which does not nave any compatible version with 4.9 and has
+at least one head of channel using skipRange
+-------------------------------------
+densify-operator-rhmp
+
+
+-------------------------------------
+Packages which does not nave any compatible version with 4.9 and has
+all head of channel using replaces
+-------------------------------------
+aws-event-sources-operator-certified-rhmp
+cass-operator-rhmp
+cert-manager-operator-rhmp
+cortex-certifai-operator-rhmp
+cortex-fabric-operator-rhmp
+cortex-healthcare-hub-operator-rhmp
+cortex-hub-operator-rhmp
+cpx-cic-operator-rhmp
+crunchy-postgres-operator-rhmp
+data-explorer-operator-certified-rhmp
+growth-stack-operator-certified-rhmp
+hazelcast-enterprise-certified-rhmp
+hazelcast-jet-enterprise-operator-rhmp
+hpe-ezmeral-csi-operator-rhmp
+instana-agent-rhmp
+joget-dx-operator-rhmp
+kubemq-operator-marketplace-rhmp
+kubeturbo-certified-rhmp
+memql-certified-rhmp
+mongodb-enterprise-rhmp
+nastel-navigator-operator-certified-rhmp
+nastel-xray-operator-rhmp
+neuvector-certified-operator-rhmp
+oneagent-certified-rhmp
+orca-rhmp
+perceptilabs-operator-package-rhmp
+portshift-controller-operator-rhmp
+seldon-operator-certified-rhmp
+stonebranch-universalagent-operator-certified-rhmp
+t8c-certified-rhmp
+uma-operator-rhmp
+yugabyte-platform-operator-bundle-rhmp
+zabbix-operator-certified-rhmp
+
+
+-------------------------------------
+Packages which does not nave any compatible version with 4.9 and we could
+not find the configuration
+-------------------------------------
+aci-containers-operator
+akka-cluster-operator-certified-rhmp
+anaconda-team-edition-rhmp
+appranix-cps-rhmp
+aqua-operator-certified-rhmp
+armory-operator-rhmp
+as400rpc-operator-rhmp
+atomicorp-helm-operator-certified-rhmp
+can-operator-rhmp
+cic-operator-with-crds-rhmp
+citrix-cpx-with-ingress-controller-operator-rhmp
+citrix-ingress-controller-operator-rhmp
+cnvrg-operator-marketplace-rhmp
+cyberarmor-operator-certified-rhmp
+db2-zos-db-operator-rhmp
+eddi-operator-certified-rhmp
+enterprise-operator-rhmp
+federatorai-certified-rhmp
+fep-ansible-operator
+insightedge-enterprise-operator2-rhmp
+ivory-server-app-rhmp
+joget-openshift-operator-rhmp
+jtrac-app-operator-rhmp
+kong-offline-operator-rhmp
+kpow-io-certified-rhmp
+kubeplus-rhmp
+mf-cics-tg-operator-rhmp
+mf-cics-ts-operator-rhmp
+node-red-operator-rhm-certified-rhmp
+open-enterprise-spinnaker-rhmp
+openunison-ocp-certified-rhmp
+percona-server-mongodb-operator-certified-rhmp
+percona-xtradb-cluster-operator-certified-rhmp
+presto-operator-rhmp
+rapidbiz-operator-certified-rhmp
+redis-enterprise-operator-cert-rhmp
+robin-storage-enterprise-rhmp
+robin-storage-express-rhmp
+robin-storage-trial-rhmp
+rocketchat-operator-certified
+snyk-operator-marketplace-rhmp
+starburst-enterprise-helm-operator-rhmp
+storageos2-rhmp
+sysdig-certified-rhmp
+traefikee-redhat-certified-rhmp
+vprotect-operator-rhmp
+xcrypt-operator-rhmp
+
+
+-------------------------------------
+Packages which does not nave any compatible version with 4.9 and uses replaces
+with skips or skipsRange
+-------------------------------------
+
+
+
+-------------------------------------
+Packages which has compatible version but none of them will end up on 4.9
+-------------------------------------
+
+
+------------------ Totals -------------------
+- Packages which does not have any compatible version with 4.9 = 89
+- Packages which does not have any compatible version with 4.9 and we found the usage of replaces in at least 1 head of channel = 37
+- Packages which does not have any compatible version with 4.9 and we found the usage of skips in at least 1 head of channel = 11
+- Packages which does not have any compatible version with 4.9 and we found the usage of skipsRange in at least 1 head of channel = 1
+- Packages which does not have any compatible version with 4.9 and we found the replaces usage in all head of channels = 33
+- Packages which has compatible version but none of them will end up on 4.9 = 0
+- Total of packages working and published on 4.9 = 17
+- Total with skips and skipRange  = 0
+- Total unknow config = 47
