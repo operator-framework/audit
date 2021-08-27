@@ -28,6 +28,7 @@ type PartialComplying struct {
 	Channels        []string
 	Bundles         []string
 	BundlesMigrated []string
+	AllBundles      []bundles.Column
 }
 
 type OK struct {
@@ -36,6 +37,7 @@ type OK struct {
 	Bundles         []string
 	Channels        []string
 	BundlesMigrated []string
+	AllBundles      []bundles.Column
 }
 
 type NotComplying struct {
@@ -44,6 +46,7 @@ type NotComplying struct {
 	Channels        []string
 	Bundles         []string
 	BundlesMigrated []string
+	AllBundles      []bundles.Column
 }
 
 type APIDashReport struct {
@@ -78,6 +81,7 @@ func NewAPIDashReport(bundlesReport bundles.Report) *APIDashReport {
 			Channels:        pkg.GetUniqueValues(channels),
 			Bundles:         bundlesNotMigrated,
 			BundlesMigrated: bundlesMigrated,
+			AllBundles:      bundles,
 		})
 	}
 
@@ -89,6 +93,7 @@ func NewAPIDashReport(bundlesReport bundles.Report) *APIDashReport {
 			Channels:        pkg.GetUniqueValues(channels),
 			Bundles:         bundlesNotMigrated,
 			BundlesMigrated: bundlesMigrated,
+			AllBundles:      bundles,
 		})
 	}
 
@@ -100,6 +105,7 @@ func NewAPIDashReport(bundlesReport bundles.Report) *APIDashReport {
 			Channels:        pkg.GetUniqueValues(channels),
 			Bundles:         bundlesNotMigrated,
 			BundlesMigrated: bundlesMigrated,
+			AllBundles:      bundles,
 		})
 	}
 	return &apiDash
