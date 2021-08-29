@@ -26,6 +26,7 @@ package main
 import (
 	"encoding/json"
 	"flag"
+	"github.com/operator-framework/audit/hack"
 	"os"
 	"path/filepath"
 	"sort"
@@ -47,6 +48,12 @@ type File struct {
 	NotMigrateUnknow               []custom.PartialComplying
 	TotalWorking49                 int
 	NotMigratesMix                 []custom.PartialComplying
+}
+
+type ItemContact struct {
+	Name   string
+	Emails []string
+	Links  []string
 }
 
 //nolint: lll
@@ -241,6 +248,43 @@ func main() {
 		NotMigrateUnknow:               notMigrateUnknow})
 	if err != nil {
 		panic(err)
+	}
+
+	// Generate the json files with contacts
+	var all []ItemContact
+	for _, v := range apiDashReport.PartialComplying {
+		i := ItemContact{Name: v.Name}
+		var emails []string
+		var links []string
+		for _, b := range v.AllBundles {
+			emails = append(emails, b.MaintainersEmail...)
+			links = append(links, b.Links...)
+		}
+		i.Emails = pkg.GetUniqueValues(emails)
+		i.Links = pkg.GetUniqueValues(links)
+		all = append(all, i)
+	}
+
+	sort.Slice(all[:], func(i, j int) bool {
+		return all[i].Name < all[j].Name
+	})
+
+	fp = filepath.Join(currentPath, pkg.GetReportName(apiDashReport.ImageName, "contact", "json"))
+	f, err = os.Create(fp)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer f.Close()
+
+	jsonResult, err := json.MarshalIndent(all, "", "\t")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = hack.ReplaceInFile(fp, "", string(jsonResult))
+	if err != nil {
+		log.Fatal(err)
 	}
 
 }

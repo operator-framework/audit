@@ -73,6 +73,8 @@ type Column struct {
 	AuditErrors                 []string            `json:"errors,omitempty"`
 	Skips                       []string            `json:"skips,omitempty"`
 	DeprecateAPIsManifests      map[string][]string `json:"deprecateAPIsManifests,omitempty"`
+	MaintainersEmail            []string            `json:"maintainersEmail,omitempty"`
+	Links                       []string            `json:"links,omitempty"`
 	Certified                   bool                `json:"certified"`
 	HasWebhook                  bool                `json:"hasWebhook"`
 	IsSupportingAllNamespaces   bool                `json:"supportsAllNamespaces"`
@@ -238,6 +240,16 @@ func (c *Column) AddDataFromCSV(csv *v1alpha1.ClusterServiceVersion) {
 			}
 		}
 	}
+
+	for _, v := range csv.Spec.Maintainers {
+		c.MaintainersEmail = append(c.MaintainersEmail, v.Email)
+	}
+	c.MaintainersEmail = pkg.GetUniqueValues(c.MaintainersEmail)
+
+	for _, v := range csv.Spec.Links {
+		c.Links = append(c.Links, v.URL)
+	}
+	c.Links = pkg.GetUniqueValues(c.Links)
 }
 
 func (c *Column) AddDataFromBundle(bundle *apimanifests.Bundle) {

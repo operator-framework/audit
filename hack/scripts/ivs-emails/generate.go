@@ -57,6 +57,8 @@ type MongoItems struct {
 
 type Item struct {
 	MongoItem MongoItems
+	CSVEmails []string
+	CSVLinks  []string
 }
 
 type ImageData struct {
@@ -130,15 +132,24 @@ func getData(image string, mongoValues []MongoItems) ([]Item, ImageData) {
 	}
 
 	var items []Item
-	for _, pkg := range apiDashReport.PartialComplying {
-		mg := MongoItems{PackageName: pkg.Name, Association: "N/A"}
+	for _, pkgV := range apiDashReport.PartialComplying {
+		mg := MongoItems{PackageName: pkgV.Name, Association: "N/A"}
 		for _, m := range mongoValues {
-			if m.PackageName == pkg.Name {
+			if m.PackageName == pkgV.Name {
 				mg = m
 				break
 			}
 		}
-		items = append(items, Item{MongoItem: mg})
+		var emails []string
+		var links []string
+		for _, v := range pkgV.AllBundles {
+			emails = append(emails, v.MaintainersEmail...)
+			links = append(links, v.Links...)
+		}
+		emails = pkg.GetUniqueValues(emails)
+		links = pkg.GetUniqueValues(links)
+
+		items = append(items, Item{MongoItem: mg, CSVEmails: emails, CSVLinks: links})
 	}
 
 	sort.Slice(items[:], func(i, j int) bool {
