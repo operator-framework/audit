@@ -90,7 +90,7 @@ func main() {
 			// run report
 			command := exec.Command(binPath, "index", report,
 				fmt.Sprintf("--index-image=%s", image),
-				"--output=all",
+				"--output=json",
 				fmt.Sprintf("--output-path=%s", reportPathName),
 			)
 			_, err = pkg.RunCommand(command)
@@ -125,7 +125,7 @@ func main() {
 			// run report
 			command := exec.Command(binPath, "index", report,
 				fmt.Sprintf("--index-image=%s", image),
-				"--output=all",
+				"--output=json",
 				"--disable-scorecard",
 				fmt.Sprintf("--output-path=%s", reportPathName),
 			)
