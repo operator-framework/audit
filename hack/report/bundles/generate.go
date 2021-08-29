@@ -61,14 +61,14 @@ func main() {
 		"registry.redhat.io/redhat/redhat-marketplace-index:v4.8": "https://registry.redhat.io",
 		"registry.redhat.io/redhat/redhat-operator-index:v4.8":    "https://registry.redhat.io",
 		"quay.io/operatorhubio/catalog:latest":                    "https://registry.connect.redhat.com",
-		"registry.redhat.io/redhat/certified-operator-index:v4.7": "https://registry.redhat.io",
-		"registry.redhat.io/redhat/community-operator-index:v4.7": "https://registry.redhat.io",
-		"registry.redhat.io/redhat/redhat-marketplace-index:v4.7": "https://registry.redhat.io",
-		"registry.redhat.io/redhat/redhat-operator-index:v4.7":    "https://registry.redhat.io",
-		"registry.redhat.io/redhat/certified-operator-index:v4.6": "https://registry.redhat.io",
-		"registry.redhat.io/redhat/community-operator-index:v4.6": "https://registry.redhat.io",
-		"registry.redhat.io/redhat/redhat-marketplace-index:v4.6": "https://registry.redhat.io",
-		"registry.redhat.io/redhat/redhat-operator-index:v4.6":    "https://registry.redhat.io",
+		//"registry.redhat.io/redhat/certified-operator-index:v4.7": "https://registry.redhat.io",
+		//"registry.redhat.io/redhat/community-operator-index:v4.7": "https://registry.redhat.io",
+		//"registry.redhat.io/redhat/redhat-marketplace-index:v4.7": "https://registry.redhat.io",
+		//"registry.redhat.io/redhat/redhat-operator-index:v4.7":    "https://registry.redhat.io",
+		//"registry.redhat.io/redhat/certified-operator-index:v4.6": "https://registry.redhat.io",
+		//"registry.redhat.io/redhat/community-operator-index:v4.6": "https://registry.redhat.io",
+		//"registry.redhat.io/redhat/redhat-marketplace-index:v4.6": "https://registry.redhat.io",
+		//"registry.redhat.io/redhat/redhat-operator-index:v4.6":    "https://registry.redhat.io",
 	}
 
 	indexReportKinds := []string{"bundles"}
@@ -91,6 +91,42 @@ func main() {
 			command := exec.Command(binPath, "index", report,
 				fmt.Sprintf("--index-image=%s", image),
 				"--output=all",
+				fmt.Sprintf("--output-path=%s", reportPathName),
+			)
+			_, err = pkg.RunCommand(command)
+			if err != nil {
+				log.Errorf("running command :%s", err)
+			}
+		}
+	}
+
+	// Generate without run scorecard to be faster
+	images = map[string]string{
+		"registry.redhat.io/redhat/certified-operator-index:v4.7": "https://registry.redhat.io",
+		"registry.redhat.io/redhat/community-operator-index:v4.7": "https://registry.redhat.io",
+		"registry.redhat.io/redhat/redhat-marketplace-index:v4.7": "https://registry.redhat.io",
+		"registry.redhat.io/redhat/redhat-operator-index:v4.7":    "https://registry.redhat.io",
+		"registry.redhat.io/redhat/certified-operator-index:v4.6": "https://registry.redhat.io",
+		"registry.redhat.io/redhat/community-operator-index:v4.6": "https://registry.redhat.io",
+		"registry.redhat.io/redhat/redhat-marketplace-index:v4.6": "https://registry.redhat.io",
+		"registry.redhat.io/redhat/redhat-operator-index:v4.6":    "https://registry.redhat.io",
+	}
+
+	indexReportKinds = []string{"bundles"}
+	for image, registry := range images {
+		reportPathName := filepath.Join(reportPath, hack.GetImageNameToCreateDir(image))
+		command = exec.Command("docker", "login", registry)
+		_, err = pkg.RunCommand(command)
+		if err != nil {
+			log.Errorf("running command :%s", err)
+		}
+
+		for _, report := range indexReportKinds {
+			// run report
+			command := exec.Command(binPath, "index", report,
+				fmt.Sprintf("--index-image=%s", image),
+				"--output=all",
+				"--disable-scorecard",
 				fmt.Sprintf("--output-path=%s", reportPathName),
 			)
 			_, err = pkg.RunCommand(command)
