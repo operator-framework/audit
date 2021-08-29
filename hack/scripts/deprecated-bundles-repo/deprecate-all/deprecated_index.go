@@ -24,13 +24,16 @@
 // go run ./hack/scripts/deprecated-bundles-repo/deprecate-all/deprecated_index.go --image=testdata/reports/redhat_certified_operator_index/bundles_registry.redhat.io_redhat_certified_operator_index_v4.8_2021-08-10.json
 // go run ./hack/scripts/deprecated-bundles-repo/deprecate-all/deprecated_index.go --image=testdata/reports/redhat_redhat_marketplace_index/bundles_registry.redhat.io_redhat_redhat_marketplace_index_v4.8_2021-08-06.json
 // go run ./hack/scripts/deprecated-bundles-repo/deprecate-all/deprecated_index.go --image=testdata/reports/redhat_redhat_operator_index/bundles_registry.redhat.io_redhat_redhat_operator_index_v4.8_2021-08-15.json
+// todo: remove after 4.9-GA
 package main
 
 import (
 	"encoding/json"
 	"flag"
+	"github.com/operator-framework/audit/hack"
 	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -161,7 +164,11 @@ func main() {
 		return allDeprecated[i].PackageName < allDeprecated[j].PackageName
 	})
 
-	fp := filepath.Join(currentPath, outputPath, pkg.GetReportName(apiDashReport.ImageName, "deprecated", "yml"))
+	reportPath := filepath.Join(currentPath, hack.ReportsPath, "deprecate-all")
+	command := exec.Command("mkdir", reportPath)
+	_, _ = pkg.RunCommand(command)
+
+	fp := filepath.Join(reportPath, pkg.GetReportName(apiDashReport.ImageName, "deprecated", "yml"))
 	f, err := os.Create(fp)
 	if err != nil {
 		log.Fatal(err)

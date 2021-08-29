@@ -21,6 +21,7 @@
 // go run ./hack/scripts/packages/generate.go --image=testdata/reports/redhat_redhat_marketplace_index/bundles_registry.redhat.io_redhat_redhat_marketplace_index_v4.9_2021-08-22.json
 // go run ./hack/scripts/packages/generate.go --image=testdata/reports/redhat_redhat_operator_index/bundles_registry.redhat.io_redhat_redhat_operator_index_v4.8_2021-08-21.json
 // go run ./hack/scripts/packages/generate.go --image=testdata/reports/redhat_community_operator_index/bundles_registry.redhat.io_redhat_community_operator_index_v4.8_2021-08-21.json
+// todo: remove after 4.9-GA
 package main
 
 import (
@@ -28,6 +29,7 @@ import (
 	"flag"
 	"github.com/operator-framework/audit/hack"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"sort"
 	"text/template"
@@ -229,7 +231,14 @@ func main() {
 
 	totalWorking49 := len(apiDashReport.OK) - len(migrateNotIn49)
 
-	fp := filepath.Join(currentPath, outputPath, pkg.GetReportName(apiDashReport.ImageName, "package", "txt"))
+	reportPath := filepath.Join(currentPath, hack.ReportsPath, "packages")
+	command := exec.Command("mkdir", reportPath)
+	_, err = pkg.RunCommand(command)
+	if err != nil {
+		log.Errorf("running command :%s", err)
+	}
+
+	fp := filepath.Join(reportPath, pkg.GetReportName(apiDashReport.ImageName, "package", "txt"))
 	f, err := os.Create(fp)
 	if err != nil {
 		log.Fatal(err)
@@ -269,7 +278,14 @@ func main() {
 		return all[i].Name < all[j].Name
 	})
 
-	fp = filepath.Join(currentPath, pkg.GetReportName(apiDashReport.ImageName, "contact", "json"))
+	reportPath = filepath.Join(currentPath, hack.ReportsPath, "contacts")
+	command = exec.Command("mkdir", reportPath)
+	_, err = pkg.RunCommand(command)
+	if err != nil {
+		log.Errorf("running command :%s", err)
+	}
+
+	fp = filepath.Join(reportPath, pkg.GetReportName(apiDashReport.ImageName, "contact", "json"))
 	f, err = os.Create(fp)
 	if err != nil {
 		log.Fatal(err)

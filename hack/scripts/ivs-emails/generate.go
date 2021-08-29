@@ -24,7 +24,7 @@
 // nolint: lll
 // go run hack/scripts/ivs-emails/generate.go --mongo=mongo-query-join-results-prod.json --image=testdata/reports/redhat_certified_operator_index/bundles_registry.redhat.io_redhat_certified_operator_index_v4.8_2021-08-10.json
 // go run hack/scripts/ivs-emails/generate.go --mongo=mongo-query-join-results-prod.json --image=testdata/reports/redhat_redhat_marketplace_index/bundles_registry.redhat.io_redhat_redhat_marketplace_index_v4.8_2021-08-06.json
-
+// todo: remove after 4.9-GA
 package main
 
 import (
@@ -32,6 +32,7 @@ import (
 	"flag"
 	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"sort"
 
@@ -105,7 +106,11 @@ func main() {
 	result.Items = items
 	result.ImageData = image
 
-	fp := filepath.Join(currentPath, pkg.GetReportName(result.ImageData.ImageName, "ivs", "json"))
+	reportPath := filepath.Join(currentPath, hack.ReportsPath, "ivs")
+	command := exec.Command("mkdir", reportPath)
+	_, _ = pkg.RunCommand(command)
+
+	fp := filepath.Join(reportPath, pkg.GetReportName(result.ImageData.ImageName, "ivs", "json"))
 	f, err := os.Create(fp)
 	if err != nil {
 		log.Fatal(err)
