@@ -18,3 +18,4 @@
 # skip files used locally that cannot be commited
 **/mongo-query-join-results-prod.json
 *ivs_registry.*.json
+**contact_**
