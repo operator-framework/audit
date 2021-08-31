@@ -32,7 +32,6 @@ package main
 import (
 	"encoding/json"
 	"flag"
-	"github.com/operator-framework/audit/hack"
 	"log"
 	"os"
 	"os/exec"
@@ -40,6 +39,8 @@ import (
 	"sort"
 	"strings"
 	"text/template"
+
+	"github.com/operator-framework/audit/hack"
 
 	"github.com/operator-framework/audit/pkg/reports/custom"
 

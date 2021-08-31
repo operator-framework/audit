@@ -27,12 +27,13 @@ package main
 import (
 	"encoding/json"
 	"flag"
-	"github.com/operator-framework/audit/hack"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"sort"
 	"text/template"
+
+	"github.com/operator-framework/audit/hack"
 
 	"github.com/operator-framework/audit/pkg"
 	"github.com/operator-framework/audit/pkg/reports/bundles"
@@ -58,7 +59,7 @@ type ItemContact struct {
 	Links  []string
 }
 
-//nolint: lll
+//nolint: lll,gocyclo
 func main() {
 
 	currentPath, err := os.Getwd()
