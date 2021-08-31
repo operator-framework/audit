@@ -15,6 +15,15 @@
 # skip .out files (coverage tests)
 *.out
 
+# ignore json reports generate locally in the testdata reports
+**bundles_*.json
+
+## todo: remove after 4.9-GA
 # skip files used locally that cannot be commited
 **/mongo-query-join-results-prod.json
 *ivs_registry.*.json
+**/testdata/reports/packages/**
+**/testdata/reports/ivs/**
+**/testdata/reports/contacts/**
+**/testdata/reports/deprecate-all/**
+**/testdata/reports/deprecate-green/**

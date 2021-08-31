@@ -21,15 +21,19 @@
 // go run ./hack/scripts/packages/generate.go --image=testdata/reports/redhat_redhat_marketplace_index/bundles_registry.redhat.io_redhat_redhat_marketplace_index_v4.9_2021-08-22.json
 // go run ./hack/scripts/packages/generate.go --image=testdata/reports/redhat_redhat_operator_index/bundles_registry.redhat.io_redhat_redhat_operator_index_v4.8_2021-08-21.json
 // go run ./hack/scripts/packages/generate.go --image=testdata/reports/redhat_community_operator_index/bundles_registry.redhat.io_redhat_community_operator_index_v4.8_2021-08-21.json
+// todo: remove after 4.9-GA
 package main
 
 import (
 	"encoding/json"
 	"flag"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"sort"
 	"text/template"
+
+	"github.com/operator-framework/audit/hack"
 
 	"github.com/operator-framework/audit/pkg"
 	"github.com/operator-framework/audit/pkg/reports/bundles"
@@ -49,7 +53,13 @@ type File struct {
 	NotMigratesMix                 []custom.PartialComplying
 }
 
-//nolint: lll
+type ItemContact struct {
+	Name   string
+	Emails []string
+	Links  []string
+}
+
+//nolint: lll,gocyclo
 func main() {
 
 	currentPath, err := os.Getwd()
@@ -222,7 +232,14 @@ func main() {
 
 	totalWorking49 := len(apiDashReport.OK) - len(migrateNotIn49)
 
-	fp := filepath.Join(currentPath, outputPath, pkg.GetReportName(apiDashReport.ImageName, "package", "txt"))
+	reportPath := filepath.Join(currentPath, hack.ReportsPath, "packages")
+	command := exec.Command("mkdir", reportPath)
+	_, err = pkg.RunCommand(command)
+	if err != nil {
+		log.Errorf("running command :%s", err)
+	}
+
+	fp := filepath.Join(reportPath, pkg.GetReportName(apiDashReport.ImageName, "package", "txt"))
 	f, err := os.Create(fp)
 	if err != nil {
 		log.Fatal(err)
@@ -241,6 +258,50 @@ func main() {
 		NotMigrateUnknow:               notMigrateUnknow})
 	if err != nil {
 		panic(err)
+	}
+
+	// Generate the json files with contacts
+	var all []ItemContact
+	for _, v := range apiDashReport.PartialComplying {
+		i := ItemContact{Name: v.Name}
+		var emails []string
+		var links []string
+		for _, b := range v.AllBundles {
+			emails = append(emails, b.MaintainersEmail...)
+			links = append(links, b.Links...)
+		}
+		i.Emails = pkg.GetUniqueValues(emails)
+		i.Links = pkg.GetUniqueValues(links)
+		all = append(all, i)
+	}
+
+	sort.Slice(all[:], func(i, j int) bool {
+		return all[i].Name < all[j].Name
+	})
+
+	reportPath = filepath.Join(currentPath, hack.ReportsPath, "contacts")
+	command = exec.Command("mkdir", reportPath)
+	_, err = pkg.RunCommand(command)
+	if err != nil {
+		log.Errorf("running command :%s", err)
+	}
+
+	fp = filepath.Join(reportPath, pkg.GetReportName(apiDashReport.ImageName, "contact", "json"))
+	f, err = os.Create(fp)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer f.Close()
+
+	jsonResult, err := json.MarshalIndent(all, "", "\t")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = hack.ReplaceInFile(fp, "", string(jsonResult))
+	if err != nil {
+		log.Fatal(err)
 	}
 
 }
