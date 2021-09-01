@@ -103,7 +103,9 @@ func (r *Report) writeXls() error {
 		"AK": "Suggestion API(s) manifests",
 		"AL": "Max OCP Version",
 		"AM": "Has custom Scorecards",
-		"AN": "Issues (To process this report)",
+		"AN": "Is Default Channel",
+		"AO": "Is Deprecated",
+		"AP": "Issues (To process this report)",
 	}
 
 	// Header
@@ -330,7 +332,17 @@ func (r *Report) writeXls() error {
 				fmt.Sprintf("AM%d", line), styleGreen)
 		}
 
-		if err := f.SetCellValue(sheetName, fmt.Sprintf("AN%d", line), v.AuditErrors); err != nil {
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AN%d", line),
+			pkg.GetYesOrNo(v.IsFromDefaultChannel)); err != nil {
+			log.Errorf("to add IsFromDefaultChannel cell value: %s", err)
+		}
+
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AO%d", line),
+			pkg.GetYesOrNo(v.IsDeprecated)); err != nil {
+			log.Errorf("to add IsDeprecated cell value: %s", err)
+		}
+
+		if err := f.SetCellValue(sheetName, fmt.Sprintf("AP%d", line), v.AuditErrors); err != nil {
 			log.Errorf("to add AuditErrors cell value : %s", err)
 		}
 	}
@@ -358,7 +370,7 @@ func (r *Report) writeXls() error {
 		}
 	}
 
-	if err := f.AddTable(sheetName, "A5", "AN5", pkg.TableFormat); err != nil {
+	if err := f.AddTable(sheetName, "A5", "AP5", pkg.TableFormat); err != nil {
 		log.Errorf("unable to add table format : %s", err)
 	}
 

@@ -70,7 +70,8 @@ func main() {
 
 				// Ignore the tag images 4.6 and 4.7
 				if strings.Contains(info.Name(), "v4.7") ||
-					strings.Contains(info.Name(), "v4.6") {
+					strings.Contains(info.Name(), "v4.6") ||
+					strings.Contains(info.Name(), "v4.8") {
 					return nil
 				}
 
