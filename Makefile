@@ -94,6 +94,7 @@ generate-testdata:
 .PHONY: generate-dashboards ## Generate the testdata custom dashboards
 generate-dashboards:
 	go run ./hack/deprecate-api/generate.go
+	go run ./hack/maxocpversion/generate.go
 	go run ./hack/grade/generate.go
 	go run ./hack/index/generate.go
 

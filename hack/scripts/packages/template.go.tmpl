@@ -8,7 +8,7 @@
 -------------------------------------
 Packages which does not nave any compatible version with 4.9
 -------------------------------------
-{{ with .APIDashReport.PartialComplying }}{{ range . }}{{ .Name }}
+{{ with .APIDashReport.NotMigrated }}{{ range . }}{{ .Name }}
 {{ end }}{{ end }}
 
 -------------------------------------
@@ -67,7 +67,7 @@ Packages which has compatible version but none of them id from the default chann
 {{ end }}{{ end }}
 
 ------------------ Totals -------------------
-- Packages which does not have any compatible version with 4.9 = {{ len .APIDashReport.PartialComplying}}
+- Packages which does not have any compatible version with 4.9 = {{ len .APIDashReport.NotMigrated}}
 - Packages which does not have any compatible version with 4.9 and we found the usage of replaces in at least 1 head of channel = {{ len .NotMigrateWithReplaces}}
 - Packages which does not have any compatible version with 4.9 and we found the usage of skips in at least 1 head of channel = {{ len .NotMigrateWithSkips}}
 - Packages which does not have any compatible version with 4.9 and we found the usage of skipsRange in at least 1 head of channel = {{ len .NotMigrateWithSkipsRange}}

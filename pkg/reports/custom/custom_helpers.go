@@ -59,21 +59,14 @@ func GetTheLatestBundleVersion(bundlesFromChannel []bundles.Column) string {
 }
 
 // GetHeadOfChannelState returns the qtd. of head of channels which are OK and configured with max ocp version
-func GetHeadOfChannelState(headOfChannels []bundles.Column) (int, int) {
-	var foundOK = 0
-	var foundConfiguredAccordingly = 0
+func GetHeadOfChannelState(headOfChannels []bundles.Column) bool {
 	for _, v := range headOfChannels {
 		// In this case has a valid path
-		if len(v.KindsDeprecateAPIs) == 0 {
-			foundOK++
-		}
-		// in this case will block the cluster upgrade at least
-		if (len(v.KindsDeprecateAPIs) > 0 && pkg.IsMaxOCPVersionLowerThan49(v.MaxOCPVersion)) ||
-			(len(v.KindsDeprecateAPIs) > 0 && pkg.IsOcpLabelRangeLowerThan49(v.OCPLabel)) {
-			foundConfiguredAccordingly++
+		if len(v.KindsDeprecateAPIs) == 0 && !v.IsDeprecated {
+			return true
 		}
 	}
-	return foundOK, foundConfiguredAccordingly
+	return false
 }
 
 // BuildMapBundlesPerChannels returns a map of bundles per packages

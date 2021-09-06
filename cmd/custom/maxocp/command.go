@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package deprecate
+package maxocp
 
 import (
 	"html/template"
@@ -28,8 +28,9 @@ import (
 
 func NewCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "deprecate-apis",
-		Short: "generates a custom report based on defined criteria over the deprecated apis scenario for 1.22",
+		Use: "maxocp",
+		Short: "generates a custom report based on defined criteria over the max ocp version and the removed apis " +
+			"for 1.22",
 		Long: "use this command with the result of `audit index bundles [OPTIONS]` to check a dashboard in HTML format " +
 			"with the packages data",
 		PreRunE: validation,
@@ -76,10 +77,10 @@ func run(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	apiDashReport := custom.NewAPIDashReport(bundlesReport)
+	maxDashReport := custom.NewMaxDashReport(bundlesReport)
 
 	dashOutputPath := filepath.Join(custom.Flags.OutputPath,
-		pkg.GetReportName(apiDashReport.ImageName, "deprecate-apis", "html"))
+		pkg.GetReportName(maxDashReport.ImageName, "maxocp", "html"))
 
 	f, err := os.Create(dashOutputPath)
 	if err != nil {
@@ -91,7 +92,7 @@ func run(cmd *cobra.Command, args []string) error {
 	}
 
 	t := template.Must(template.ParseFiles(custom.Flags.Template))
-	err = t.Execute(f, apiDashReport)
+	err = t.Execute(f, maxDashReport)
 	if err != nil {
 		panic(err)
 	}
@@ -104,5 +105,5 @@ func run(cmd *cobra.Command, args []string) error {
 
 //todo: this template requires to be embed
 func getTemplatePath(currentPath string) string {
-	return filepath.Join(currentPath, "/cmd/custom/deprecate/template.go.tmpl")
+	return filepath.Join(currentPath, "/cmd/custom/maxocp/template.go.tmpl")
 }

@@ -44,15 +44,15 @@ import (
 
 type File struct {
 	APIDashReport                  *custom.APIDashReport
-	MigrateNotIn49                 []custom.OK
-	MigrateNotDefaultChannel       []custom.OK
-	NotMigrateWithReplaces         []custom.PartialComplying
-	NotMigrateWithReplacesAllHeads []custom.PartialComplying
-	NotMigrateWithSkips            []custom.PartialComplying
-	NotMigrateWithSkipsRange       []custom.PartialComplying
-	NotMigrateUnknow               []custom.PartialComplying
+	MigrateNotIn49                 []custom.Migrated
+	MigrateNotDefaultChannel       []custom.Migrated
+	NotMigrateWithReplaces         []custom.NotMigrated
+	NotMigrateWithReplacesAllHeads []custom.NotMigrated
+	NotMigrateWithSkips            []custom.NotMigrated
+	NotMigrateWithSkipsRange       []custom.NotMigrated
+	NotMigrateUnknow               []custom.NotMigrated
 	TotalWorking49                 int
-	NotMigratesMix                 []custom.PartialComplying
+	NotMigratesMix                 []custom.NotMigrated
 }
 
 type ItemContact struct {
@@ -97,8 +97,8 @@ func main() {
 	}
 
 	// Packages which has compatible version but none of them will end up on 4.9
-	var migrateNotIn49 []custom.OK
-	for _, v := range apiDashReport.OK {
+	var migrateNotIn49 []custom.Migrated
+	for _, v := range apiDashReport.Migrated {
 		foundIn49 := false
 		for _, b := range v.AllBundles {
 			if len(b.KindsDeprecateAPIs) == 0 && (len(b.OCPLabel) == 0 || !pkg.IsOcpLabelRangeLowerThan49(b.OCPLabel)) {
@@ -113,8 +113,8 @@ func main() {
 	}
 
 	// Packages which has compatible version but none of them will end up on 4.9
-	var migrateNotDefaultChannel []custom.OK
-	for _, v := range apiDashReport.OK {
+	var migrateNotDefaultChannel []custom.Migrated
+	for _, v := range apiDashReport.Migrated {
 		found := false
 		for _, b := range v.AllBundles {
 			if len(b.KindsDeprecateAPIs) == 0 && b.IsFromDefaultChannel {
@@ -129,8 +129,8 @@ func main() {
 	}
 
 	// Packages which does not nave any compatible version with 4.9 and are using replaces
-	var notMigrateWithReplaces []custom.PartialComplying
-	for _, v := range apiDashReport.PartialComplying {
+	var notMigrateWithReplaces []custom.NotMigrated
+	for _, v := range apiDashReport.NotMigrated {
 		foundReplace := false
 		headOfChannels := custom.GetHeadOfChannels(v.AllBundles)
 		for _, b := range headOfChannels {
@@ -145,8 +145,8 @@ func main() {
 		}
 	}
 
-	var notMigrateWithSkips []custom.PartialComplying
-	for _, v := range apiDashReport.PartialComplying {
+	var notMigrateWithSkips []custom.NotMigrated
+	for _, v := range apiDashReport.NotMigrated {
 		foundSkips := false
 		headOfChannels := custom.GetHeadOfChannels(v.AllBundles)
 		for _, b := range headOfChannels {
@@ -161,8 +161,8 @@ func main() {
 		}
 	}
 
-	var notMigrateWithSkipRange []custom.PartialComplying
-	for _, v := range apiDashReport.PartialComplying {
+	var notMigrateWithSkipRange []custom.NotMigrated
+	for _, v := range apiDashReport.NotMigrated {
 		foundSkipRange := false
 		headOfChannels := custom.GetHeadOfChannels(v.AllBundles)
 		for _, b := range headOfChannels {
@@ -177,8 +177,8 @@ func main() {
 		}
 	}
 
-	var notMigratesMix []custom.PartialComplying
-	for _, v := range apiDashReport.PartialComplying {
+	var notMigratesMix []custom.NotMigrated
+	for _, v := range apiDashReport.NotMigrated {
 		found := false
 		headOfChannels := custom.GetHeadOfChannels(v.AllBundles)
 		for _, b := range headOfChannels {
@@ -193,8 +193,8 @@ func main() {
 		}
 	}
 
-	var notMigrateUnknow []custom.PartialComplying
-	for _, v := range apiDashReport.PartialComplying {
+	var notMigrateUnknow []custom.NotMigrated
+	for _, v := range apiDashReport.NotMigrated {
 		found := false
 		headOfChannels := custom.GetHeadOfChannels(v.AllBundles)
 		for _, b := range headOfChannels {
@@ -208,8 +208,8 @@ func main() {
 		}
 	}
 
-	var notMigrateWithReplacesAllHeads []custom.PartialComplying
-	for _, v := range apiDashReport.PartialComplying {
+	var notMigrateWithReplacesAllHeads []custom.NotMigrated
+	for _, v := range apiDashReport.NotMigrated {
 		notFoundReplace := false
 		headOfChannels := custom.GetHeadOfChannels(v.AllBundles)
 		for _, b := range headOfChannels {
@@ -224,8 +224,8 @@ func main() {
 		}
 	}
 
-	sort.Slice(apiDashReport.PartialComplying[:], func(i, j int) bool {
-		return apiDashReport.PartialComplying[i].Name < apiDashReport.PartialComplying[j].Name
+	sort.Slice(apiDashReport.NotMigrated[:], func(i, j int) bool {
+		return apiDashReport.NotMigrated[i].Name < apiDashReport.NotMigrated[j].Name
 	})
 	sort.Slice(migrateNotIn49[:], func(i, j int) bool {
 		return migrateNotIn49[i].Name < migrateNotIn49[j].Name
@@ -252,7 +252,7 @@ func main() {
 		return notMigratesMix[i].Name < notMigratesMix[j].Name
 	})
 
-	totalWorking49 := len(apiDashReport.OK) - len(migrateNotIn49)
+	totalWorking49 := len(apiDashReport.Migrated) - len(migrateNotIn49)
 
 	reportPath := filepath.Join(currentPath, hack.ReportsPath, "packages")
 	command := exec.Command("mkdir", reportPath)
@@ -285,7 +285,7 @@ func main() {
 
 	// Generate the json files with contacts
 	var all []ItemContact
-	for _, v := range apiDashReport.PartialComplying {
+	for _, v := range apiDashReport.NotMigrated {
 		i := ItemContact{Name: v.Name}
 		var emails []string
 		var links []string

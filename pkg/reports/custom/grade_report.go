@@ -26,9 +26,6 @@ import (
 const DEPRECATED_API_NOT_COMPLY = "NOT COMPLY"
 
 // nolint:golint
-const DEPRECATED_API_PARTIAL_COMPLY = "PARTIAL COMPLY"
-
-// nolint:golint
 const DEPRECATED_API_COMPLY = "COMPLY"
 
 // nolint:golint
@@ -58,14 +55,13 @@ const ERRORS = "ONLY ERRORS"
 // DisconnectedAnnotation and SDK USAGE max total : 100
 // total : 1100
 var scoreMap = map[string]int{
-	DEPRECATED_API_COMPLY:         400,
-	DEPRECATED_API_PARTIAL_COMPLY: 100,
-	DEPRECATED_API_NOT_COMPLY:     0,
-	PASS:                          200,
-	WARNINGS:                      100,
-	FOUND:                         100,
-	USED:                          100,
-	NOT_USED:                      0,
+	DEPRECATED_API_COMPLY:     400,
+	DEPRECATED_API_NOT_COMPLY: 0,
+	PASS:                      200,
+	WARNINGS:                  100,
+	FOUND:                     100,
+	USED:                      100,
+	NOT_USED:                  0,
 }
 
 const RED = "red"
@@ -147,15 +143,19 @@ func NewGradeReport(bundlesReport bundles.Report) *GradeReport {
 	gradeReport.GeneratedAt = bundlesReport.GenerateAt
 
 	mapPackagesWithBundles := MapBundlesPerPackage(bundlesReport)
-	notComplying := MapPkgsNotComplyingWithDeprecateAPI122(mapPackagesWithBundles)
-	complying := MapPkgsComplyingWithDeprecateAPI122(mapPackagesWithBundles)
-	partialComplying := MapPkgsPartiallComplyingWithDeprecatedAPI122(mapPackagesWithBundles, complying, notComplying)
+	migrated := MapPkgsComplyingWithDeprecateAPI122(mapPackagesWithBundles)
+	notMigrated := make(map[string][]bundles.Column)
+	for key := range mapPackagesWithBundles {
+		if len(migrated[key]) == 0 {
+			notMigrated[key] = mapPackagesWithBundles[key]
+		}
+	}
 
 	for key, bds := range mapPackagesWithBundles {
 		if len(key) == 0 {
 			continue
 		}
-		pkgGrade := NewPkgGrade(key, bds, notComplying, partialComplying, complying)
+		pkgGrade := NewPkgGrade(key, bds, notMigrated, migrated)
 		gradeReport.PackageGrade = append(gradeReport.PackageGrade, pkgGrade)
 	}
 
@@ -163,7 +163,7 @@ func NewGradeReport(bundlesReport bundles.Report) *GradeReport {
 }
 
 func NewPkgGrade(pkgName string, bundlesOfPkg []bundles.Column,
-	notComplying, partialComplying, complying map[string][]bundles.Column) PackageGrade {
+	notMigrated, migrated map[string][]bundles.Column) PackageGrade {
 
 	pkgGrade := PackageGrade{PackageName: pkgName}
 
@@ -177,7 +177,7 @@ func NewPkgGrade(pkgName string, bundlesOfPkg []bundles.Column,
 
 	pkgGrade.HeadOfChannels = GetHeadOfChannels(bundlesOfPkg)
 
-	pkgGrade.checkDeprecatedAPIScore(notComplying, partialComplying, complying)
+	pkgGrade.checkDeprecatedAPIScore(notMigrated, migrated)
 	pkgGrade.checkDisconnectAnnotationScore()
 	pkgGrade.checkScorecardScore()
 	pkgGrade.checkValidatorsScore()
@@ -197,18 +197,13 @@ func NewPkgGrade(pkgName string, bundlesOfPkg []bundles.Column,
 	return pkgGrade
 }
 
-func (p *PackageGrade) checkDeprecatedAPIScore(notComplying map[string][]bundles.Column,
-	partialComplying map[string][]bundles.Column,
-	complying map[string][]bundles.Column) {
-	if notComplying[p.PackageName] != nil {
+func (p *PackageGrade) checkDeprecatedAPIScore(notMigrated map[string][]bundles.Column,
+	migrated map[string][]bundles.Column) {
+	if notMigrated[p.PackageName] != nil {
 		p.DeprecateAPI = DEPRECATED_API_NOT_COMPLY
-		p.DeprecateAPIColor = RED
-		p.Score += scoreMap[DEPRECATED_API_NOT_COMPLY]
-	} else if partialComplying[p.PackageName] != nil {
-		p.DeprecateAPI = DEPRECATED_API_PARTIAL_COMPLY
 		p.DeprecateAPIColor = YELLOW
-		p.Score += scoreMap[DEPRECATED_API_PARTIAL_COMPLY]
-	} else if complying[p.PackageName] != nil {
+		p.Score += scoreMap[DEPRECATED_API_NOT_COMPLY]
+	} else if migrated[p.PackageName] != nil {
 		p.DeprecateAPI = DEPRECATED_API_COMPLY
 		p.DeprecateAPIColor = GREEN
 		p.Score += scoreMap[DEPRECATED_API_COMPLY]

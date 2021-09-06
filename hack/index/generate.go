@@ -82,6 +82,8 @@ func main() {
 					kind = "Deprecated API(s) in 1.22/OCP 4.9"
 				} else if strings.Contains(info.Name(), "grade") {
 					kind = "Grade - Experimental"
+				} else if strings.Contains(info.Name(), "maxocp") {
+					kind = "Max OCP Version - Monitor"
 				}
 				tagValue := "latest"
 				if strings.Contains(info.Name(), "v") {

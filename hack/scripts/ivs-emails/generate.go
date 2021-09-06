@@ -141,7 +141,7 @@ func getData(image string, mongoValues []MongoItems) ([]Item, ImageData) {
 	}
 
 	var items []Item
-	for _, pkgV := range apiDashReport.PartialComplying {
+	for _, pkgV := range apiDashReport.NotMigrated {
 		mg := MongoItems{PackageName: pkgV.Name, Association: "N/A"}
 		for _, m := range mongoValues {
 			if m.PackageName == pkgV.Name {
