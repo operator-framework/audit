@@ -56,10 +56,7 @@ func main() {
 		//"registry.redhat.io/redhat/community-operator-index:v4.9": "https://registry.redhat.io",
 		"registry.redhat.io/redhat/redhat-marketplace-index:v4.9": "https://registry.redhat.io",
 		"registry.redhat.io/redhat/redhat-operator-index:v4.9":    "https://registry.redhat.io",
-		"registry.redhat.io/redhat/certified-operator-index:v4.8": "https://registry.redhat.io",
 		"registry.redhat.io/redhat/community-operator-index:v4.8": "https://registry.redhat.io",
-		"registry.redhat.io/redhat/redhat-marketplace-index:v4.8": "https://registry.redhat.io",
-		"registry.redhat.io/redhat/redhat-operator-index:v4.8":    "https://registry.redhat.io",
 		"quay.io/operatorhubio/catalog:latest":                    "https://registry.connect.redhat.com",
 	}
 
@@ -102,6 +99,9 @@ func main() {
 		"registry.redhat.io/redhat/community-operator-index:v4.6": "https://registry.redhat.io",
 		"registry.redhat.io/redhat/redhat-marketplace-index:v4.6": "https://registry.redhat.io",
 		"registry.redhat.io/redhat/redhat-operator-index:v4.6":    "https://registry.redhat.io",
+		"registry.redhat.io/redhat/redhat-marketplace-index:v4.8": "https://registry.redhat.io",
+		"registry.redhat.io/redhat/redhat-operator-index:v4.8":    "https://registry.redhat.io",
+		"registry.redhat.io/redhat/certified-operator-index:v4.8": "https://registry.redhat.io",
 	}
 
 	indexReportKinds = []string{"bundles"}

@@ -143,11 +143,13 @@ func getReportValues(bundles []bundles.Column) ([]string, []string, []string, []
 }
 
 func buildBundleString(b bundles.Column) string {
-	return fmt.Sprintf("%s - (label=%s,max=%s,channels=%s,head:%s)",
+	return fmt.Sprintf("%s - (label=%s,max=%s,channels=%s,head:%s,defaultChannel:%s, deprecated:%s)",
 		b.BundleName,
 		b.OCPLabel,
 		GetMaxOCPValue(b),
 		pkg.GetUniqueValues(b.Channels),
 		pkg.GetYesOrNo(b.IsHeadOfChannel),
+		pkg.GetYesOrNo(b.IsFromDefaultChannel),
+		pkg.GetYesOrNo(b.IsDeprecated),
 	)
 }

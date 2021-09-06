@@ -31,6 +31,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"sort"
+	"strings"
 	"text/template"
 
 	"github.com/operator-framework/audit/hack"
@@ -44,6 +45,7 @@ import (
 type File struct {
 	APIDashReport                  *custom.APIDashReport
 	MigrateNotIn49                 []custom.OK
+	MigrateNotDefaultChannel       []custom.OK
 	NotMigrateWithReplaces         []custom.PartialComplying
 	NotMigrateWithReplacesAllHeads []custom.PartialComplying
 	NotMigrateWithSkips            []custom.PartialComplying
@@ -54,9 +56,10 @@ type File struct {
 }
 
 type ItemContact struct {
-	Name   string
-	Emails []string
-	Links  []string
+	Name     string
+	Emails   []string
+	Links    []string
+	Warnings map[string]string
 }
 
 //nolint: lll,gocyclo
@@ -105,6 +108,22 @@ func main() {
 		}
 		if !foundIn49 {
 			migrateNotIn49 = append(migrateNotIn49, v)
+			continue
+		}
+	}
+
+	// Packages which has compatible version but none of them will end up on 4.9
+	var migrateNotDefaultChannel []custom.OK
+	for _, v := range apiDashReport.OK {
+		found := false
+		for _, b := range v.AllBundles {
+			if len(b.KindsDeprecateAPIs) == 0 && b.IsFromDefaultChannel {
+				found = true
+				break
+			}
+		}
+		if !found {
+			migrateNotDefaultChannel = append(migrateNotDefaultChannel, v)
 			continue
 		}
 	}
@@ -211,6 +230,9 @@ func main() {
 	sort.Slice(migrateNotIn49[:], func(i, j int) bool {
 		return migrateNotIn49[i].Name < migrateNotIn49[j].Name
 	})
+	sort.Slice(migrateNotDefaultChannel[:], func(i, j int) bool {
+		return migrateNotDefaultChannel[i].Name < migrateNotDefaultChannel[j].Name
+	})
 	sort.Slice(notMigrateWithReplaces[:], func(i, j int) bool {
 		return notMigrateWithReplaces[i].Name < notMigrateWithReplaces[j].Name
 	})
@@ -250,6 +272,7 @@ func main() {
 	t := template.Must(template.ParseFiles(filepath.Join(currentPath, "hack/scripts/packages/template.go.tmpl")))
 	err = t.Execute(f, File{APIDashReport: apiDashReport,
 		MigrateNotIn49:                 migrateNotIn49,
+		MigrateNotDefaultChannel:       migrateNotDefaultChannel,
 		NotMigrateWithReplaces:         notMigrateWithReplaces,
 		NotMigrateWithReplacesAllHeads: notMigrateWithReplacesAllHeads,
 		TotalWorking49:                 totalWorking49,
@@ -266,12 +289,23 @@ func main() {
 		i := ItemContact{Name: v.Name}
 		var emails []string
 		var links []string
+		warns := make(map[string]string, len(v.AllBundles))
+
 		for _, b := range v.AllBundles {
 			emails = append(emails, b.MaintainersEmail...)
 			links = append(links, b.Links...)
+			if len(b.BundleName) > 0 && b.ValidatorWarnings != nil {
+				for _, w := range b.ValidatorWarnings {
+					if strings.Contains(w, "1.22") {
+						warns[b.BundleName] = strings.ReplaceAll(w, "this bundle", "this distribution")
+					}
+				}
+			}
 		}
 		i.Emails = pkg.GetUniqueValues(emails)
 		i.Links = pkg.GetUniqueValues(links)
+		i.Warnings = warns
+
 		all = append(all, i)
 	}
 

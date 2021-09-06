@@ -30,17 +30,17 @@
 		"serverMode": false
 	},
 	"IndexImageInspect": {
-		"ID": "sha256:630f501eac27f5eff515b10254bdc1f52414dcc30e40636a4edcd1e705ba6364",
+		"ID": "sha256:7d33c0e3800d22b2383c4fa67809a30715d31d152d1e7c2ace0a5b7821ec37bd",
 		"RepoDigests": [
-			"registry.redhat.io/redhat/redhat-operator-index@sha256:079ac2a360da7955dc25bc97059f098ef728ca8623557d2b75ca8016fb4f126d"
+			"registry.redhat.io/redhat/redhat-operator-index@sha256:c89e21bea540eeb1046597f3f610ba3e22d1dc3dc8e1f9933e97d7050e6e1c27"
 		],
-		"Created": "2021-08-26T22:03:38.704968117Z",
+		"Created": "2021-09-02T07:48:17.149455702Z",
 		"Config": {
 			"Labels": {
 				"License": "GPLv2+",
 				"architecture": "x86_64",
-				"build-date": "2021-07-30T00:37:51.197328",
-				"com.redhat.build-host": "cpt-1006.osbs.prod.upshift.rdu2.redhat.com",
+				"build-date": "2021-08-16T01:46:39.500131",
+				"com.redhat.build-host": "cpt-1005.osbs.prod.upshift.rdu2.redhat.com",
 				"com.redhat.component": "operator-registry-container",
 				"com.redhat.index.delivery.distribution_scope": "prod",
 				"com.redhat.index.delivery.version": "v4.7",
@@ -60,15 +60,15 @@
 				"maintainer": "Odin Team \u003caos-odin@redhat.com\u003e",
 				"name": "openshift/ose-operator-registry",
 				"operators.operatorframework.io.index.database.v1": "/database/index.db",
-				"release": "202107292319.p0.git.06e950d.assembly.stream",
+				"release": "202108160002.p0.git.06e950d.assembly.stream",
 				"summary": "Operator Registry runs in a Kubernetes or OpenShift cluster to provide operator catalog data to Operator Lifecycle Manager.",
-				"url": "https://access.redhat.com/containers/#/registry.access.redhat.com/openshift/ose-operator-registry/images/v4.7.0-202107292319.p0.git.06e950d.assembly.stream",
-				"vcs-ref": "86ee713f24df90c65c343024780bbd18f3ca3263",
+				"url": "https://access.redhat.com/containers/#/registry.access.redhat.com/openshift/ose-operator-registry/images/v4.7.0-202108160002.p0.git.06e950d.assembly.stream",
+				"vcs-ref": "99d008c793dc58759efd2cd9ea519d6ae6627939",
 				"vcs-type": "git",
 				"vendor": "Red Hat, Inc.",
 				"version": "v4.7.0"
 			}
 		}
 	},
-	"GenerateAt": "2021-08-28"
+	"GenerateAt": "2021-09-04"
 }

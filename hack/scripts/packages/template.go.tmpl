@@ -60,6 +60,12 @@ Packages which has compatible version but none of them will end up on 4.9
 {{ with .MigrateNotIn49 }}{{ range . }}{{ .Name }}
 {{ end }}{{ end }}
 
+-------------------------------------
+Packages which has compatible version but none of them id from the default channel
+-------------------------------------
+{{ with .MigrateNotDefaultChannel }}{{ range . }}{{ .Name }}
+{{ end }}{{ end }}
+
 ------------------ Totals -------------------
 - Packages which does not have any compatible version with 4.9 = {{ len .APIDashReport.PartialComplying}}
 - Packages which does not have any compatible version with 4.9 and we found the usage of replaces in at least 1 head of channel = {{ len .NotMigrateWithReplaces}}
@@ -67,6 +73,7 @@ Packages which has compatible version but none of them will end up on 4.9
 - Packages which does not have any compatible version with 4.9 and we found the usage of skipsRange in at least 1 head of channel = {{ len .NotMigrateWithSkipsRange}}
 - Packages which does not have any compatible version with 4.9 and we found the replaces usage in all head of channels = {{ len .NotMigrateWithReplacesAllHeads }}
 - Packages which has compatible version but none of them will end up on 4.9 = {{ len .MigrateNotIn49 }}
+- Packages which has compatible version but none of them are in the default channel = {{ len .MigrateNotDefaultChannel }}
 - Total of packages working and published on 4.9 = {{ .TotalWorking49 }}
 - Total with skips and skipRange  = {{ len .NotMigratesMix }}
 - Total unknow config = {{ len .NotMigrateUnknow }}

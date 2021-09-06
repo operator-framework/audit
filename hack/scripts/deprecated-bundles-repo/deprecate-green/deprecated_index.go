@@ -63,7 +63,7 @@ type File struct {
 	APIDashReport *custom.APIDashReport
 }
 
-//nolint: lll
+//nolint: lll,gocyclo
 func main() {
 
 	currentPath, err := os.Getwd()
@@ -136,7 +136,9 @@ func main() {
 	hasDeprecated := make(map[string][]bundles.Column)
 	for key, bundles := range mapPackagesWithBundles {
 		for _, b := range bundles {
-			if len(b.KindsDeprecateAPIs) > 0 {
+			// If has UNKNOW status we need ignore that means an error when we tried to check
+			// the results
+			if len(b.KindsDeprecateAPIs) > 0 && len(b.DeprecateAPIsManifests[pkg.Unknown]) == 0 {
 				// Check if the bundle is from a pkg that is describe as
 				// green in the custom deprecate API dashboard. In this
 				// report we want only the cases that has a valid path for
@@ -155,10 +157,39 @@ func main() {
 		}
 	}
 
+	// filter to not add the scenarios that will fail because the
+	// migrated versions are not in the default channel
+	hasDeprecatedWithMigrateInDefaultChannel := make(map[string][]bundles.Column)
+	for key, bundles := range mapPackagesWithBundles {
+		found := false
+		for _, b := range bundles {
+			if len(b.KindsDeprecateAPIs) == 0 && b.IsFromDefaultChannel {
+				found = true
+				break
+			}
+		}
+		if found {
+			hasDeprecatedWithMigrateInDefaultChannel[key] = mapPackagesWithBundles[key]
+		}
+	}
+
 	// create the object with the bundle path
 	// see that we need to remove the redhat registry domain
 	allDeprecated := []Deprecated{}
-	for key, bundles := range hasDeprecated {
+	for key, bundles := range hasDeprecatedWithMigrateInDefaultChannel {
+
+		// do not add a package that has no bundles to be deprecated
+		found := false
+		for _, b := range bundles {
+			// We just ONLY the bundles which are using the removed APIS
+			if len(b.KindsDeprecateAPIs) > 0 && len(b.DeprecateAPIsManifests[pkg.Unknown]) == 0 {
+				found = true
+			}
+		}
+		if !found {
+			continue
+		}
+
 		deprecatedYaml := Deprecated{PackageName: key}
 
 		// nolint:scopelint
@@ -167,18 +198,14 @@ func main() {
 		})
 
 		for _, b := range bundles {
-
-			// skip the scenarios where deprecate apis were not found
-			if len(b.KindsDeprecateAPIs) == 0 ||
-				(len(b.KindsDeprecateAPIs) == 1 && b.KindsDeprecateAPIs[0] == pkg.Unknown) {
-				continue
+			// We just ONLY the bundles which are using the removed APIS
+			if len(b.KindsDeprecateAPIs) > 0 && len(b.DeprecateAPIsManifests[pkg.Unknown]) == 0 {
+				deprecatedYaml.Bundles = append(deprecatedYaml.Bundles,
+					Bundles{
+						Paths:   b.BundleImagePath,
+						Details: b.BundleName,
+					})
 			}
-
-			deprecatedYaml.Bundles = append(deprecatedYaml.Bundles,
-				Bundles{
-					Paths:   strings.ReplaceAll(b.BundleImagePath, "registry.redhat.io/", ""),
-					Details: b.BundleName,
-				})
 		}
 		allDeprecated = append(allDeprecated, deprecatedYaml)
 	}
@@ -203,6 +230,37 @@ func main() {
 	err = t.Execute(f, File{Deprecated: allDeprecated, APIDashReport: apiDashReport})
 	if err != nil {
 		panic(err)
+	}
+
+	//To generate in the JSON format to allow us to do the test
+	var onlyBundles []string
+	for _, a := range allDeprecated {
+		for _, ab := range a.Bundles {
+			onlyBundles = append(onlyBundles, ab.Paths)
+		}
+
+	}
+
+	reportPath = filepath.Join(currentPath, hack.ReportsPath, "deprecate-json")
+	command = exec.Command("mkdir", reportPath)
+	_, _ = pkg.RunCommand(command)
+
+	fp = filepath.Join(reportPath, pkg.GetReportName(apiDashReport.ImageName, "deprecate-green", "json"))
+	f, err = os.Create(fp)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer f.Close()
+
+	jsonResult, err := json.MarshalIndent(onlyBundles, "", "\t")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = hack.ReplaceInFile(fp, "", string(jsonResult))
+	if err != nil {
+		log.Fatal(err)
 	}
 
 }

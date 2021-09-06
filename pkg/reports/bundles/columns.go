@@ -39,6 +39,7 @@ const skipRangeAnnotation = "olm.skipRange"
 const sdkProjectLayoutAnnotation = "operators.operatorframework.io/project_layout"
 const infrastructureAnnotation = "operators.openshift.io/infrastructure-features"
 const olmproperties = "olm.properties"
+const olmpdeprecate = "olm.deprecate"
 const olmmaxOpenShiftVersion = "olm.maxOpenShiftVersion"
 
 type Column struct {
@@ -77,13 +78,15 @@ type Column struct {
 	Links                       []string            `json:"links,omitempty"`
 	Certified                   bool                `json:"certified"`
 	HasWebhook                  bool                `json:"hasWebhook"`
-	IsSupportingAllNamespaces   bool                `json:"supportsAllNamespaces"`
-	IsSupportingMultiNamespaces bool                `json:"supportsMultiNamespaces"`
-	IsSupportingSingleNamespace bool                `json:"supportSingleNamespaces"`
-	IsSupportingOwnNamespaces   bool                `json:"supportsOwnNamespaces"`
+	IsSupportingAllNamespaces   bool                `json:"isSupportingAllNamespaces"`
+	IsSupportingMultiNamespaces bool                `json:"isSupportingMultiNamespaces"`
+	IsSupportingSingleNamespace bool                `json:"isSupportingSingleNamespace"`
+	IsSupportingOwnNamespaces   bool                `json:"isSupportingOwnNamespaces"`
 	HasPossiblePerformIssues    bool                `json:"hasPossiblePerformIssues"`
 	HasCustomScorecardTests     bool                `json:"hasCustomScorecardTests"`
 	IsHeadOfChannel             bool                `json:"isHeadOfChannel"`
+	IsDeprecated                bool                `json:"isDeprecated"`
+	IsFromDefaultChannel        bool                `json:"isFromDefaultChannel"`
 }
 
 func NewColumn(v models.AuditBundle) *Column {
@@ -116,6 +119,14 @@ func NewColumn(v models.AuditBundle) *Column {
 	col.AddDataFromScorecard(v.ScorecardResults)
 	col.AddDataFromValidators(v.ValidatorsResults)
 	col.SetMaxOpenshiftVersion(csv, v.PropertiesDB)
+	col.SetIsDeprecated(csv, v.PropertiesDB)
+
+	for _, i := range v.Channels {
+		if i == v.DefaultChannel {
+			col.IsFromDefaultChannel = true
+			break
+		}
+	}
 
 	if len(col.BundleVersion) < 1 && len(v.VersionDB) > 0 {
 		col.BundleVersion = v.VersionDB
@@ -167,6 +178,37 @@ func (c *Column) SetMaxOpenshiftVersion(csv *v1alpha1.ClusterServiceVersion, pro
 	for _, v := range propertiesDB {
 		if v.Type == olmmaxOpenShiftVersion {
 			c.MaxOCPVersion = v.Value
+			break
+		}
+	}
+}
+
+func (c *Column) SetIsDeprecated(csv *v1alpha1.ClusterServiceVersion, propertiesDB []pkg.PropertiesAnnotation) {
+
+	if csv == nil {
+		return
+	}
+
+	cvsProperties := csv.Annotations[olmproperties]
+	if len(cvsProperties) > 0 {
+		var properList []pkg.PropertiesAnnotation
+		err := json.Unmarshal([]byte(cvsProperties), &properList)
+		if err != nil {
+			c.AuditErrors = append(c.AuditErrors, fmt.Errorf("csv.Annotations has an invalid value specified "+
+				"for %s", olmproperties).Error())
+		} else {
+			for _, v := range properList {
+				if v.Type == olmpdeprecate {
+					c.IsDeprecated = true
+					break
+				}
+			}
+		}
+	}
+
+	for _, v := range propertiesDB {
+		if v.Type == olmpdeprecate {
+			c.IsDeprecated = true
 			break
 		}
 	}

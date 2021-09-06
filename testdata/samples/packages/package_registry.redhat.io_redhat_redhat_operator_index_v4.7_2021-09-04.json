@@ -13,24 +13,16 @@
 				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"apimanagers.apps.3scale.net\" \"apis.capabilities.3scale.net\" \"bindings.capabilities.3scale.net\" \"limits.capabilities.3scale.net\" \"mappingrules.capabilities.3scale.net\" \"metrics.capabilities.3scale.net\" \"plans.capabilities.3scale.net\" \"tenants.capabilities.3scale.net\"])"
 			],
 			"scorecardErrors": [
-				"apis.capabilities.3scale.net does not have a status descriptor",
-				"bindings.capabilities.3scale.net does not have a status descriptor",
-				"limits.capabilities.3scale.net does not have a status descriptor",
-				"mappingrules.capabilities.3scale.net does not have a status descriptor",
-				"metrics.capabilities.3scale.net does not have a status descriptor",
-				"plans.capabilities.3scale.net does not have a status descriptor",
-				"tenants.capabilities.3scale.net does not have a status descriptor",
-				"Owned CRDs do not have resources specified",
 				"highAvailability does not have a spec descriptor",
 				"system does not have a spec descriptor",
 				"description does not have a spec descriptor",
 				"integrationMethod does not have a spec descriptor",
 				"APISelector does not have a spec descriptor",
 				"credentialsRef does not have a spec descriptor",
+				"period does not have a spec descriptor",
 				"description does not have a spec descriptor",
 				"maxValue does not have a spec descriptor",
 				"metricRef does not have a spec descriptor",
-				"period does not have a spec descriptor",
 				"increment does not have a spec descriptor",
 				"method does not have a spec descriptor",
 				"metricRef does not have a spec descriptor",
@@ -38,32 +30,38 @@
 				"description does not have a spec descriptor",
 				"incrementHits does not have a spec descriptor",
 				"unit does not have a spec descriptor",
-				"trialPeriod does not have a spec descriptor",
-				"approvalRequired does not have a spec descriptor",
 				"costs does not have a spec descriptor",
 				"default does not have a spec descriptor",
 				"limitSelector does not have a spec descriptor",
+				"trialPeriod does not have a spec descriptor",
+				"approvalRequired does not have a spec descriptor",
+				"username does not have a spec descriptor",
+				"email does not have a spec descriptor",
+				"masterCredentialsRef does not have a spec descriptor",
 				"organizationName does not have a spec descriptor",
 				"passwordCredentialsRef does not have a spec descriptor",
 				"systemMasterUrl does not have a spec descriptor",
 				"tenantSecretRef does not have a spec descriptor",
-				"username does not have a spec descriptor",
-				"email does not have a spec descriptor",
-				"masterCredentialsRef does not have a spec descriptor"
+				"Owned CRDs do not have resources specified",
+				"apis.capabilities.3scale.net does not have a status descriptor",
+				"bindings.capabilities.3scale.net does not have a status descriptor",
+				"limits.capabilities.3scale.net does not have a status descriptor",
+				"mappingrules.capabilities.3scale.net does not have a status descriptor",
+				"metrics.capabilities.3scale.net does not have a status descriptor",
+				"plans.capabilities.3scale.net does not have a status descriptor",
+				"tenants.capabilities.3scale.net does not have a status descriptor"
 			],
 			"scorecardSuggestions": [
-				"Add CRD validation for spec field `APISelector` in Binding/v1alpha1",
-				"Add CRD validation for spec field `description` in Limit/v1alpha1",
 				"Add a spec descriptor for highAvailability",
 				"Add a spec descriptor for system",
 				"Add a spec descriptor for description",
 				"Add a spec descriptor for integrationMethod",
 				"Add a spec descriptor for APISelector",
 				"Add a spec descriptor for credentialsRef",
+				"Add a spec descriptor for period",
 				"Add a spec descriptor for description",
 				"Add a spec descriptor for maxValue",
 				"Add a spec descriptor for metricRef",
-				"Add a spec descriptor for period",
 				"Add a spec descriptor for increment",
 				"Add a spec descriptor for method",
 				"Add a spec descriptor for metricRef",
@@ -71,23 +69,25 @@
 				"Add a spec descriptor for description",
 				"Add a spec descriptor for incrementHits",
 				"Add a spec descriptor for unit",
-				"Add a spec descriptor for trialPeriod",
-				"Add a spec descriptor for approvalRequired",
 				"Add a spec descriptor for costs",
 				"Add a spec descriptor for default",
 				"Add a spec descriptor for limitSelector",
+				"Add a spec descriptor for trialPeriod",
+				"Add a spec descriptor for approvalRequired",
+				"Add a spec descriptor for username",
+				"Add a spec descriptor for email",
+				"Add a spec descriptor for masterCredentialsRef",
 				"Add a spec descriptor for organizationName",
 				"Add a spec descriptor for passwordCredentialsRef",
 				"Add a spec descriptor for systemMasterUrl",
 				"Add a spec descriptor for tenantSecretRef",
-				"Add a spec descriptor for username",
-				"Add a spec descriptor for email",
-				"Add a spec descriptor for masterCredentialsRef"
+				"Add CRD validation for spec field `APISelector` in Binding/v1alpha1",
+				"Add CRD validation for spec field `description` in Limit/v1alpha1"
 			],
 			"scorecardFailingTests": [
-				"olm-status-descriptors",
+				"olm-spec-descriptors",
 				"olm-crds-have-resources",
-				"olm-spec-descriptors"
+				"olm-status-descriptors"
 			],
 			"hasSupportForSingleNamespaces": true,
 			"hasSupportForOwnNamespaces": true
@@ -105,19 +105,19 @@
 				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"activemqartemises.broker.amq.io\" \"activemqartemisaddresses.broker.amq.io\" \"activemqartemisscaledowns.broker.amq.io\"])"
 			],
 			"scorecardErrors": [
-				"Owned CRDs do not have resources specified",
 				"deploymentPlan does not have a spec descriptor",
+				"Owned CRDs do not have resources specified",
 				"activemqartemises.broker.amq.io does not have a status descriptor",
 				"activemqartemisaddresses.broker.amq.io does not have a status descriptor",
 				"activemqartemisscaledowns.broker.amq.io does not have a status descriptor"
 			],
 			"scorecardSuggestions": [
-				"Add CRD validation for spec field `deploymentPlan` in ActiveMQArtemis/v2alpha1",
-				"Add a spec descriptor for deploymentPlan"
+				"Add a spec descriptor for deploymentPlan",
+				"Add CRD validation for spec field `deploymentPlan` in ActiveMQArtemis/v2alpha1"
 			],
 			"scorecardFailingTests": [
-				"olm-crds-have-resources",
 				"olm-spec-descriptors",
+				"olm-crds-have-resources",
 				"olm-status-descriptors"
 			],
 			"hasSupportForOwnNamespaces": true
@@ -168,9 +168,9 @@
 			],
 			"scorecardErrors": [
 				"failed to parse alm-examples annotation: invalid character '}' looking for beginning of object key string",
+				"failed to parse alm-examples annotation: invalid character '}' looking for beginning of object key string",
+				"failed to parse alm-examples annotation: invalid character '}' looking for beginning of object key string",
 				"Owned CRDs do not have resources specified",
-				"failed to parse alm-examples annotation: invalid character '}' looking for beginning of object key string",
-				"failed to parse alm-examples annotation: invalid character '}' looking for beginning of object key string",
 				"error getting custom resources"
 			],
 			"scorecardSuggestions": [
@@ -178,10 +178,10 @@
 				"Warning: Value jenkins.io/v1alpha2, Kind=Restore: provided API should have an example annotation"
 			],
 			"scorecardFailingTests": [
+				"olm-spec-descriptors",
+				"olm-crds-have-validation",
 				"olm-status-descriptors",
 				"olm-crds-have-resources",
-				"olm-crds-have-validation",
-				"olm-spec-descriptors",
 				"basic-check-spec"
 			],
 			"hasSupportForSingleNamespaces": true,
@@ -209,11 +209,11 @@
 				"secret does not have a spec descriptor",
 				"url does not have a spec descriptor",
 				"plan does not have a spec descriptor",
-				"Owned CRDs do not have resources specified",
 				"forkliftcontrollers.forklift.konveyor.io does not have a status descriptor",
 				"providers.forklift.konveyor.io does not have a status descriptor",
 				"plans.forklift.konveyor.io does not have a status descriptor",
-				"migrations.forklift.konveyor.io does not have a status descriptor"
+				"migrations.forklift.konveyor.io does not have a status descriptor",
+				"Owned CRDs do not have resources specified"
 			],
 			"scorecardSuggestions": [
 				"Add a spec descriptor for type",
@@ -227,8 +227,8 @@
 			],
 			"scorecardFailingTests": [
 				"olm-spec-descriptors",
-				"olm-crds-have-resources",
-				"olm-status-descriptors"
+				"olm-status-descriptors",
+				"olm-crds-have-resources"
 			],
 			"hasSupportForOwnNamespaces": true
 		}
@@ -246,17 +246,17 @@
 		"serverMode": false
 	},
 	"IndexImageInspect": {
-		"ID": "sha256:630f501eac27f5eff515b10254bdc1f52414dcc30e40636a4edcd1e705ba6364",
+		"ID": "sha256:7d33c0e3800d22b2383c4fa67809a30715d31d152d1e7c2ace0a5b7821ec37bd",
 		"RepoDigests": [
-			"registry.redhat.io/redhat/redhat-operator-index@sha256:079ac2a360da7955dc25bc97059f098ef728ca8623557d2b75ca8016fb4f126d"
+			"registry.redhat.io/redhat/redhat-operator-index@sha256:c89e21bea540eeb1046597f3f610ba3e22d1dc3dc8e1f9933e97d7050e6e1c27"
 		],
-		"Created": "2021-08-26T22:03:38.704968117Z",
+		"Created": "2021-09-02T07:48:17.149455702Z",
 		"Config": {
 			"Labels": {
 				"License": "GPLv2+",
 				"architecture": "x86_64",
-				"build-date": "2021-07-30T00:37:51.197328",
-				"com.redhat.build-host": "cpt-1006.osbs.prod.upshift.rdu2.redhat.com",
+				"build-date": "2021-08-16T01:46:39.500131",
+				"com.redhat.build-host": "cpt-1005.osbs.prod.upshift.rdu2.redhat.com",
 				"com.redhat.component": "operator-registry-container",
 				"com.redhat.index.delivery.distribution_scope": "prod",
 				"com.redhat.index.delivery.version": "v4.7",
@@ -276,15 +276,15 @@
 				"maintainer": "Odin Team \u003caos-odin@redhat.com\u003e",
 				"name": "openshift/ose-operator-registry",
 				"operators.operatorframework.io.index.database.v1": "/database/index.db",
-				"release": "202107292319.p0.git.06e950d.assembly.stream",
+				"release": "202108160002.p0.git.06e950d.assembly.stream",
 				"summary": "Operator Registry runs in a Kubernetes or OpenShift cluster to provide operator catalog data to Operator Lifecycle Manager.",
-				"url": "https://access.redhat.com/containers/#/registry.access.redhat.com/openshift/ose-operator-registry/images/v4.7.0-202107292319.p0.git.06e950d.assembly.stream",
-				"vcs-ref": "86ee713f24df90c65c343024780bbd18f3ca3263",
+				"url": "https://access.redhat.com/containers/#/registry.access.redhat.com/openshift/ose-operator-registry/images/v4.7.0-202108160002.p0.git.06e950d.assembly.stream",
+				"vcs-ref": "99d008c793dc58759efd2cd9ea519d6ae6627939",
 				"vcs-type": "git",
 				"vendor": "Red Hat, Inc.",
 				"version": "v4.7.0"
 			}
 		}
 	},
-	"GenerateAt": "2021-08-28"
+	"GenerateAt": "2021-09-04"
 }
