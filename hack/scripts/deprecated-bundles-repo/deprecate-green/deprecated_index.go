@@ -198,6 +198,19 @@ func main() {
 		})
 
 		for _, b := range bundles {
+
+			// not set duplicates when the bundle is more than one channel
+			// for example.
+			found := false
+			for _, allD := range deprecatedYaml.Bundles {
+				if allD.Details == b.BundleName {
+					found = true
+				}
+			}
+			if found {
+				continue
+			}
+
 			// We just ONLY the bundles which are using the removed APIS
 			if len(b.KindsDeprecateAPIs) > 0 && len(b.DeprecateAPIsManifests[pkg.Unknown]) == 0 {
 				deprecatedYaml.Bundles = append(deprecatedYaml.Bundles,
@@ -207,6 +220,7 @@ func main() {
 					})
 			}
 		}
+
 		allDeprecated = append(allDeprecated, deprecatedYaml)
 	}
 
