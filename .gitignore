@@ -28,3 +28,4 @@
 **/testdata/reports/deprecate-all/**
 **/testdata/reports/deprecate-green/**
 **/testdata/reports/deprecate-json/**
+**compare.json**

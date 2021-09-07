@@ -15,14 +15,11 @@
 package custom
 
 import (
-	"fmt"
-	"sort"
-
 	"github.com/operator-framework/audit/pkg"
 	"github.com/operator-framework/audit/pkg/reports/bundles"
 )
 
-type Migrated struct {
+type OK struct {
 	Name            string
 	Kinds           []string
 	Bundles         []string
@@ -31,7 +28,7 @@ type Migrated struct {
 	AllBundles      []bundles.Column
 }
 
-type NotMigrated struct {
+type NotOK struct {
 	Name            string
 	Kinds           []string
 	Channels        []string
@@ -40,37 +37,37 @@ type NotMigrated struct {
 	AllBundles      []bundles.Column
 }
 
-type APIDashReport struct {
+type MaxDashReport struct {
 	ImageName   string
 	ImageID     string
 	ImageHash   string
 	ImageBuild  string
-	Migrated    []Migrated
-	NotMigrated []NotMigrated
+	OK          []OK
+	NotOK       []NotOK
 	GeneratedAt string
 }
 
 // NewAPIDashReport returns the structure to render the Deprecate API custom dashboard
 // nolint:dupl
-func NewAPIDashReport(bundlesReport bundles.Report) *APIDashReport {
-	apiDash := APIDashReport{}
+func NewMaxDashReport(bundlesReport bundles.Report) *MaxDashReport {
+	apiDash := MaxDashReport{}
 	apiDash.ImageName = bundlesReport.Flags.IndexImage
 	apiDash.ImageID = bundlesReport.IndexImageInspect.ID
 	apiDash.ImageBuild = bundlesReport.IndexImageInspect.Created
 	apiDash.GeneratedAt = bundlesReport.GenerateAt
 
 	mapPackagesWithBundles := MapBundlesPerPackage(bundlesReport)
-	migrated := MapPkgsComplyingWithDeprecateAPI122(mapPackagesWithBundles)
-	notMigrated := make(map[string][]bundles.Column)
+	isOK := mapPkgsComplyingMaxOcpVersion(mapPackagesWithBundles)
+	isNotOK := make(map[string][]bundles.Column)
 	for key := range mapPackagesWithBundles {
-		if len(migrated[key]) == 0 {
-			notMigrated[key] = mapPackagesWithBundles[key]
+		if len(isOK[key]) == 0 {
+			isNotOK[key] = mapPackagesWithBundles[key]
 		}
 	}
 
-	for k, bundles := range migrated {
+	for k, bundles := range isOK {
 		kinds, channels, bundlesNotMigrated, bundlesMigrated := getReportValues(bundles)
-		apiDash.Migrated = append(apiDash.Migrated, Migrated{
+		apiDash.OK = append(apiDash.OK, OK{
 			Name:            k,
 			Kinds:           pkg.GetUniqueValues(kinds),
 			Channels:        pkg.GetUniqueValues(channels),
@@ -80,9 +77,9 @@ func NewAPIDashReport(bundlesReport bundles.Report) *APIDashReport {
 		})
 	}
 
-	for k, bundles := range notMigrated {
+	for k, bundles := range isNotOK {
 		kinds, channels, bundlesNotMigrated, bundlesMigrated := getReportValues(bundles)
-		apiDash.NotMigrated = append(apiDash.NotMigrated, NotMigrated{
+		apiDash.NotOK = append(apiDash.NotOK, NotOK{
 			Name:            k,
 			Kinds:           pkg.GetUniqueValues(kinds),
 			Channels:        pkg.GetUniqueValues(channels),
@@ -96,44 +93,31 @@ func NewAPIDashReport(bundlesReport bundles.Report) *APIDashReport {
 
 }
 
-func getReportValues(bundles []bundles.Column) ([]string, []string, []string, []string) {
-	var kinds []string
-	var channels []string
-	for _, b := range bundles {
-		kinds = append(kinds, b.KindsDeprecateAPIs...)
-	}
-	for _, b := range bundles {
-		channels = append(channels, b.Channels...)
-	}
-	var bundlesNotMigrated []string
-	var bundlesMigrated []string
-	for _, b := range bundles {
-		if len(b.KindsDeprecateAPIs) > 0 {
-			bundlesNotMigrated = append(bundlesNotMigrated, buildBundleString(b))
-		} else {
-			bundlesMigrated = append(bundlesMigrated, buildBundleString(b))
+// (Green) Complying
+// Return all pkgs that has all bundles using the removed APIs set with max ocp version
+func mapPkgsComplyingMaxOcpVersion(
+	mapPackagesWithBundles map[string][]bundles.Column) map[string][]bundles.Column {
+	complying := make(map[string][]bundles.Column)
+	for key, bundlesPerPkg := range mapPackagesWithBundles {
+		// has bundlesPerPkg that we cannot find the package
+		// some inconsistency in the index db.
+		// So, we will ignore this cases
+		if key == "" {
+			continue
+		}
+
+		if !hasWrongMaxOcpVersion(bundlesPerPkg) {
+			complying[key] = mapPackagesWithBundles[key]
 		}
 	}
-
-	sort.Slice(bundlesNotMigrated[:], func(i, j int) bool {
-		return bundlesNotMigrated[i] < bundlesNotMigrated[j]
-	})
-
-	sort.Slice(bundlesMigrated[:], func(i, j int) bool {
-		return bundlesMigrated[i] < bundlesMigrated[j]
-	})
-
-	return kinds, channels, bundlesNotMigrated, bundlesMigrated
+	return complying
 }
 
-func buildBundleString(b bundles.Column) string {
-	return fmt.Sprintf("%s - (label=%s,max=%s,channels=%s,head:%s,defaultChannel:%s, deprecated:%s)",
-		b.BundleName,
-		b.OCPLabel,
-		GetMaxOCPValue(b),
-		pkg.GetUniqueValues(b.Channels),
-		pkg.GetYesOrNo(b.IsHeadOfChannel),
-		pkg.GetYesOrNo(b.IsFromDefaultChannel),
-		pkg.GetYesOrNo(b.IsDeprecated),
-	)
+func hasWrongMaxOcpVersion(bundlesPerPkg []bundles.Column) bool {
+	for _, v := range bundlesPerPkg {
+		if v.KindsDeprecateAPIs != nil && len(v.KindsDeprecateAPIs) > 0 && !pkg.IsMaxOCPVersionLowerThan49(v.MaxOCPVersion) {
+			return true
+		}
+	}
+	return false
 }

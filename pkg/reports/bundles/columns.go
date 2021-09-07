@@ -39,7 +39,7 @@ const skipRangeAnnotation = "olm.skipRange"
 const sdkProjectLayoutAnnotation = "operators.operatorframework.io/project_layout"
 const infrastructureAnnotation = "operators.openshift.io/infrastructure-features"
 const olmproperties = "olm.properties"
-const olmpdeprecate = "olm.deprecate"
+const olmpdeprecate = "olm.deprecated"
 const olmmaxOpenShiftVersion = "olm.maxOpenShiftVersion"
 
 type Column struct {

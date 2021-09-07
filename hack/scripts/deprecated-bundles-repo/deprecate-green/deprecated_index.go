@@ -144,7 +144,7 @@ func main() {
 				// report we want only the cases that has a valid path for
 				// 4.9
 				found := false
-				for _, v := range apiDashReport.OK {
+				for _, v := range apiDashReport.Migrated {
 					if v.Name == b.PackageName {
 						found = true
 						break
