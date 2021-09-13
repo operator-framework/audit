@@ -56,8 +56,6 @@ func main() {
 		//"registry.redhat.io/redhat/community-operator-index:v4.9": "https://registry.redhat.io",
 		"registry.redhat.io/redhat/redhat-marketplace-index:v4.9": "https://registry.redhat.io",
 		"registry.redhat.io/redhat/redhat-operator-index:v4.9":    "https://registry.redhat.io",
-		"registry.redhat.io/redhat/community-operator-index:v4.8": "https://registry.redhat.io",
-		"quay.io/operatorhubio/catalog:latest":                    "https://registry.connect.redhat.com",
 	}
 
 	indexReportKinds := []string{"bundles"}
@@ -102,11 +100,18 @@ func main() {
 		"registry.redhat.io/redhat/redhat-marketplace-index:v4.8": "https://registry.redhat.io",
 		"registry.redhat.io/redhat/redhat-operator-index:v4.8":    "https://registry.redhat.io",
 		"registry.redhat.io/redhat/certified-operator-index:v4.8": "https://registry.redhat.io",
+		"registry.redhat.io/redhat/community-operator-index:v4.8": "https://registry.redhat.io",
+		"quay.io/operatorhubio/catalog:latest":                    "https://registry.connect.redhat.com",
 	}
 
 	indexReportKinds = []string{"bundles"}
 	for image, registry := range images {
 		reportPathName := filepath.Join(reportPath, hack.GetImageNameToCreateDir(image))
+
+		// Create the dir if does not exist
+		command := exec.Command("mkdir", reportPathName)
+		_, _ = pkg.RunCommand(command)
+
 		command = exec.Command("docker", "login", registry)
 		_, err = pkg.RunCommand(command)
 		if err != nil {

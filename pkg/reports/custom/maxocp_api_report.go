@@ -66,14 +66,15 @@ func NewMaxDashReport(bundlesReport bundles.Report) *MaxDashReport {
 			// easier the report conference
 			var notOKBundles []bundles.Column
 			for _, b := range mapPackagesWithBundles[key] {
-				if b.KindsDeprecateAPIs != nil && b.KindsDeprecateAPIs[0] != pkg.Unknown && len(b.KindsDeprecateAPIs) > 0 && !pkg.IsMaxOCPVersionLowerThan49(b.MaxOCPVersion) {
+				if b.KindsDeprecateAPIs != nil &&
+					b.KindsDeprecateAPIs[0] != pkg.Unknown &&
+					len(b.KindsDeprecateAPIs) > 0 && !pkg.IsMaxOCPVersionLowerThan49(b.MaxOCPVersion) {
 					notOKBundles = append(notOKBundles, b)
 				}
 			}
 			isNotOK[key] = notOKBundles
 		}
 	}
-
 
 	for k, bundles := range isNotOK {
 		kinds, channels, bundlesNotMigrated, bundlesMigrated := getReportValues(bundles)
@@ -113,7 +114,10 @@ func mapPkgsComplyingMaxOcpVersion(
 
 func hasWrongMaxOcpVersion(bundlesPerPkg []bundles.Column) bool {
 	for _, v := range bundlesPerPkg {
-		if v.KindsDeprecateAPIs != nil && v.KindsDeprecateAPIs[0] != pkg.Unknown && len(v.KindsDeprecateAPIs) > 0 && !pkg.IsMaxOCPVersionLowerThan49(v.MaxOCPVersion) {
+		if v.KindsDeprecateAPIs != nil &&
+			v.KindsDeprecateAPIs[0] != pkg.Unknown &&
+			len(v.KindsDeprecateAPIs) > 0 &&
+			!pkg.IsMaxOCPVersionLowerThan49(v.MaxOCPVersion) {
 			return true
 		}
 	}

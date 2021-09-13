@@ -76,11 +76,11 @@ func main() {
 	var jsonFile string
 
 	flag.StringVar(&outputPath, "output", defaultOutputPath, "Inform the path for output the report, if not informed it will be generated at hack/scripts/deprecated-bundles-repo/deprecate-green.")
-	flag.StringVar(&jsonFile, "image", "", "Inform the path for the JSON result which will be used to generate the report. ")
+	flag.StringVar(&jsonFile, "file", "", "Inform the path for the JSON result which will be used to generate the report. ")
 
 	flag.Parse()
 
-	byteValue, err := pkg.ReadFile(filepath.Join(currentPath, jsonFile))
+	byteValue, err := pkg.ReadFile(jsonFile)
 	if err != nil {
 		log.Fatal(err)
 	}

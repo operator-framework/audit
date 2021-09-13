@@ -19,14 +19,17 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
 
+	"github.com/goccy/go-yaml"
+	log "github.com/sirupsen/logrus"
+
 	apimanifests "github.com/operator-framework/api/pkg/manifests"
 	"github.com/operator-framework/audit/pkg"
 	"github.com/operator-framework/audit/pkg/models"
-	log "github.com/sirupsen/logrus"
 )
 
 // Manifest define the manifest.json which is  required to read the bundle
@@ -82,6 +85,29 @@ func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 	if err != nil {
 		auditBundle.Errors = append(auditBundle.Errors, fmt.Errorf("unable to get the bundle: %s", err).Error())
 		return auditBundle
+	}
+
+	//todo:
+	//auditBundle.OCPLabelAnnotations
+	annotationsPath := filepath.Join(bundleDir, "metadata", "annotations.yaml")
+
+	// If find the annotations file then, check for the scorecard path on it.
+	if _, err := os.Stat(annotationsPath); err == nil && !os.IsNotExist(err) {
+		annFile, err := pkg.ReadFile(annotationsPath)
+		if err != nil {
+			msg := fmt.Errorf("unable to read annotations.yaml to check scorecard path: %s", err)
+			log.Error(msg)
+			auditBundle.Errors = append(auditBundle.Errors, msg.Error())
+		}
+		var bundleAnnotations BundleAnnotations
+		if err := yaml.Unmarshal(annFile, &bundleAnnotations); err != nil {
+			msg := fmt.Errorf("unable to Unmarshal annotations.yaml to check ocp label path: %s", err)
+			log.Error(msg)
+			auditBundle.Errors = append(auditBundle.Errors, msg.Error())
+		}
+		if len(bundleAnnotations.Annotations) > 0 {
+			auditBundle.OCPLabelAnnotations = bundleAnnotations.Annotations[ocpLabelAnnotation]
+		}
 	}
 
 	// Gathering data from scorecard
