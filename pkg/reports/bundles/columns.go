@@ -62,6 +62,7 @@ type Column struct {
 	Replace                     string              `json:"replace,omitempty"`
 	Infrastructure              string              `json:"infrastructure,omitempty"`
 	OCPLabel                    string              `json:"ocpLabel,omitempty"`
+	OCPLabelAnnotations         string              `json:"OCPLabelAnnotations,omitempty"`
 	MaxOCPVersion               string              `json:"maxOCPVersion,omitempty"`
 	KindsDeprecateAPIs          []string            `json:"kindsDeprecateAPIs,omitempty"`
 	Channels                    []string            `json:"bundleChannel,omitempty"`
@@ -103,6 +104,7 @@ func NewColumn(v models.AuditBundle) *Column {
 	col.Replace = v.ReplacesDB
 	col.BundleVersion = v.VersionDB
 	col.OCPLabel = v.OCPLabel
+	col.OCPLabelAnnotations = v.OCPLabelAnnotations
 	col.BundleImageBuildDate = v.BuildAt
 	col.HasCustomScorecardTests = v.HasCustomScorecardTests
 	col.IsHeadOfChannel = v.IsHeadOfChannel

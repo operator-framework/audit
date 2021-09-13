@@ -1,0 +1,12 @@
+##############################################
+# Verifies the community index - helper
+##############################################
+# Following what should exist
+{{ with .ShouldExist }}{{ range . }}{{ .PackageName }}:{{ with .Bundles }}{{ range . }}
+    - {{ .BundleName }}{{ end }}{{ end }}
+{{ end }}{{ end }}
+
+# Following what should NOT exist
+{{ with .ShouldNotExist }}{{ range . }}{{ .PackageName }}:{{ with .Bundles }}{{ range . }}
+    - {{ .BundleName }}{{ end }}{{ end }}
+{{ end }}{{ end }}

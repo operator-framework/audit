@@ -33,7 +33,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -89,9 +88,11 @@ func main() {
 
 	var mongoFile string
 	var jsonFile string
+	var outputPath string
 
+	flag.StringVar(&outputPath, "output", currentPath, "Inform the path for output the report")
 	flag.StringVar(&mongoFile, "mongo", "", "Inform the path for the mongo file with the reqqured data to generate the file. ")
-	flag.StringVar(&jsonFile, "image", "", "Inform the path for the JSON result which will be used to generate the report. ")
+	flag.StringVar(&jsonFile, "file", "", "Inform the path for the JSON result which will be used to generate the report. ")
 
 	flag.Parse()
 
@@ -106,15 +107,11 @@ func main() {
 	}
 	var result Output
 
-	items, image := getData(filepath.Join(currentPath, jsonFile), mongoValues)
+	items, image := getData(jsonFile, mongoValues)
 	result.Items = items
 	result.ImageData = image
 
-	reportPath := filepath.Join(currentPath, hack.ReportsPath, "ivs")
-	command := exec.Command("mkdir", reportPath)
-	_, _ = pkg.RunCommand(command)
-
-	fp := filepath.Join(reportPath, pkg.GetReportName(result.ImageData.ImageName, "ivs", "json"))
+	fp := filepath.Join(outputPath, pkg.GetReportName(result.ImageData.ImageName, "ivs", "json"))
 	f, err := os.Create(fp)
 	if err != nil {
 		log.Fatal(err)

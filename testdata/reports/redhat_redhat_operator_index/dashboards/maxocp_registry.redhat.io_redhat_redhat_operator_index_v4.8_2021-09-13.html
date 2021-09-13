@@ -9,7 +9,7 @@
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.24/datatables.min.css"/>
 
-    <!-- Bootstrap CSS -->
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 
 
@@ -56,7 +56,7 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 
-<!-- Option 1: Bootstrap Bundle with Popper -->
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 
 <script >
@@ -78,15 +78,15 @@
 <main>
 
         <h1>Max OCP version for 4.9 Dashboard </h1>
-        <p>The audit tool output for the following packages were obtained by checking the image and the bundle manifests distributed. This report aims to try to identify the package distributions that are missing the max ocp version as <= 4.8 because we can find the usage of these APIs in the manifests shipped.</p>
+        <p>The audit tool output for the following packages were obtained by checking the image and the bundle manifests distributed. This report aims to try to identify the package distributions that are missing the max ocp version as &lt;= 4.8 because we can find the usage of these APIs in the manifests shipped.</p>
 
         <div class="container-fluid themed-container">
             <h5 class="display-12 fw-bold">Data from the image used</h5>
             <ul>
-                <li>Image name: {{ .ImageName }} </li>
-                <li>Image ID: {{ .ImageID }} </li>
-                <li>Image Created at: {{ .ImageBuild }} </li>
-                <li>From JSON report generated at: {{ .GeneratedAt }} </li>
+                <li>Image name: registry.redhat.io/redhat/redhat-operator-index:v4.8 </li>
+                <li>Image ID: sha256:60ad3bd9b5a10de627ccc2f9972e22d5a8cb815cbbd7b9407819f5083e6cb548 </li>
+                <li>Image Created at: 2021-09-09T12:18:53.288182717Z </li>
+                <li>From JSON report generated at: 2021-09-12 </li>
             </ul>
         </div>
 
@@ -97,7 +97,7 @@
             <h5 class="display-12 fw-bold">2. What action(s) should I take?</h5>
             <ul>
                 <li>Check <a href="https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22"> Deprecated API Migration Guide (v1.22)</a> and ensure that your projects have been migrated and are not using any deprecated/removed API(s)</li>
-                <li>Ensure that any distribution which requires any deprecated API(s) in the OCP catalogs are configured with the Max OpenShift Version compatible (`olm.openShiftMaxVersion`)   so it will only be distributed on OCP version(s) <= 4.8. Also, control which version the bundle is deployed to from OLM via the annotation/label `com.redhat.openshift.versions`. More info see: <a href="https://github.com/operator-framework/community-operators/blob/master/docs/packaging-required-criteria-ocp.md"> OKD/OpenShift Catalogs criteria and options </a></li>
+                <li>Ensure that any distribution which requires any deprecated API(s) in the OCP catalogs are configured with the Max OpenShift Version compatible (`olm.openShiftMaxVersion`)   so it will only be distributed on OCP version(s) &lt;= 4.8. Also, control which version the bundle is deployed to from OLM via the annotation/label `com.redhat.openshift.versions`. More info see: <a href="https://github.com/operator-framework/community-operators/blob/master/docs/packaging-required-criteria-ocp.md"> OKD/OpenShift Catalogs criteria and options </a></li>
                 <li>OpenShift 4.8 introduces two new alerts that fire when an API that will be removed in the next release is in use. Check the event alerts of your Operators running on 4.8 and ensure that you do not find any warning about these API(s) still being used by it</li>
             </ul>
         </div>
@@ -115,41 +115,63 @@
                      </tr>
                 </thead>
                 <tbody>
-                {{ with .NotOK }}
-                    {{ range . }}
+                
+                    
                         <tr>
-                            <th>{{ .Name }}</th>
+                            <th>datagrid</th>
                             <th>
                                 <ul>
-                                {{ range .Kinds }}
-                                    <li>{{ . }}</li>
-                                {{ end }}
+                                
+                                    <li>CRD</li>
+                                
                                 </ul>
                             </th>
                              <th>
                                  <ul>
-                                    {{ range .Channels }}
-                                        <li>{{ . }}</li>
-                                    {{ end }}
+                                    
+                                        <li>8.2.x</li>
+                                    
                                  </ul>
                              </th>
                             <th>
                               <ul>
-                                 {{ range .Bundles }}
-                                     <li>{{ . }}</li>
-                                 {{ end }}
+                                 
+                                     <li>datagrid-operator.v8.2.3 - (label=v4.5,v4.6,max=not set,channels=[8.2.x],head:NO,defaultChannel:YES, deprecated:NO)</li>
+                                 
                               </ul>
                             </th>
                             <th>
                               <ul>
-                                 {{ range .BundlesMigrated }}
-                                     <li>{{ . }}</li>
-                                 {{ end }}
+                                 
                               </ul>
                             </th>
                         </tr>
-                    {{ end }}
-                {{ end }}
+                    
+                        <tr>
+                            <th></th>
+                            <th>
+                                <ul>
+                                
+                                </ul>
+                            </th>
+                             <th>
+                                 <ul>
+                                    
+                                 </ul>
+                             </th>
+                            <th>
+                              <ul>
+                                 
+                              </ul>
+                            </th>
+                            <th>
+                              <ul>
+                                 
+                              </ul>
+                            </th>
+                        </tr>
+                    
+                
                 </tbody>
             </table>
         </div>

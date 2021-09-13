@@ -34,7 +34,6 @@ import (
 	"flag"
 	"log"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -71,17 +70,15 @@ func main() {
 		log.Fatal(err)
 	}
 
-	defaultOutputPath := "hack/scripts/deprecated-bundles-repo/deprecate-green"
-
 	var outputPath string
 	var jsonFile string
 
-	flag.StringVar(&outputPath, "output", defaultOutputPath, "Inform the path for output the report, if not informed it will be generated at hack/scripts/deprecated-bundles-repo/deprecate-green.")
-	flag.StringVar(&jsonFile, "image", "", "Inform the path for the JSON result which will be used to generate the report. ")
+	flag.StringVar(&outputPath, "output", currentPath, "Inform the path for output the report, if not informed it will be generated at hack/scripts/deprecated-bundles-repo/deprecate-green.")
+	flag.StringVar(&jsonFile, "file", "", "Inform the path for the JSON result which will be used to generate the report. ")
 
 	flag.Parse()
 
-	byteValue, err := pkg.ReadFile(filepath.Join(currentPath, jsonFile))
+	byteValue, err := pkg.ReadFile(jsonFile)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -228,11 +225,7 @@ func main() {
 		return allDeprecated[i].PackageName < allDeprecated[j].PackageName
 	})
 
-	reportPath := filepath.Join(currentPath, hack.ReportsPath, "deprecate-green")
-	command := exec.Command("mkdir", reportPath)
-	_, _ = pkg.RunCommand(command)
-
-	fp := filepath.Join(reportPath, pkg.GetReportName(apiDashReport.ImageName, "deprecated", "yml"))
+	fp := filepath.Join(outputPath, pkg.GetReportName(apiDashReport.ImageName, "deprecated", "yml"))
 	f, err := os.Create(fp)
 	if err != nil {
 		log.Fatal(err)
@@ -255,11 +248,7 @@ func main() {
 
 	}
 
-	reportPath = filepath.Join(currentPath, hack.ReportsPath, "deprecate-json")
-	command = exec.Command("mkdir", reportPath)
-	_, _ = pkg.RunCommand(command)
-
-	fp = filepath.Join(reportPath, pkg.GetReportName(apiDashReport.ImageName, "deprecate-green", "json"))
+	fp = filepath.Join(outputPath, pkg.GetReportName(apiDashReport.ImageName, "deprecate-green", "json"))
 	f, err = os.Create(fp)
 	if err != nil {
 		log.Fatal(err)
