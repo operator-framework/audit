@@ -25,18 +25,24 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"os/exec"
+	"path/filepath"
+	"text/template"
 
+	"github.com/operator-framework/audit/hack"
 	log "github.com/sirupsen/logrus"
 
 	"os"
-	"os/exec"
-	"path/filepath"
 
-	"github.com/operator-framework/audit/hack"
 	"github.com/operator-framework/audit/pkg"
 	"github.com/operator-framework/audit/pkg/reports/bundles"
 	"github.com/operator-framework/audit/pkg/reports/custom"
 )
+
+type File struct {
+	UnableToReAdd []bundles.Column
+	NotDeprecated []bundles.Column
+}
 
 //nolint:lll,govet,gocyclo
 func main() {
@@ -48,14 +54,26 @@ func main() {
 
 	var deprecateFile string
 	var image string
+	var tag string
 	var outputPath string
 
 	flag.StringVar(&outputPath, "output", currentPath, "Inform the path for output the report, if not informed it will be generated at hack/scripts/deprecated-bundles-repo/deprecate-green.")
 
 	flag.StringVar(&deprecateFile, "deprecate", "", "Inform the path with the deprecate json file")
 	flag.StringVar(&image, "image", "", "inform the final image result")
+	flag.StringVar(&tag, "tag", "", "inform the tag value to test opm")
 
 	flag.Parse()
+	file := "testdata/reports/deprecate-green/deprecate-green_registry.redhat.io_redhat_redhat_operator_index_v4.9_2021-09-13.json"
+	byteValue, err := pkg.ReadFile(file)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var deprecatedBundles []string
+	if err = json.Unmarshal(byteValue, &deprecatedBundles); err != nil {
+		log.Fatal(err)
+	}
 
 	binPath := filepath.Join(currentPath, hack.BinPath)
 	command := exec.Command(binPath, "index", "bundles",
@@ -70,7 +88,7 @@ func main() {
 	}
 
 	nameFinalJSONReport := pkg.GetReportName(image, "bundles", "json")
-	file := filepath.Join(outputPath, nameFinalJSONReport)
+	file = filepath.Join(outputPath, nameFinalJSONReport)
 	apiDashReportFinalResult, err := getAPIDashForImage(file)
 	if err != nil {
 		log.Fatal(err)
@@ -84,16 +102,6 @@ func main() {
 	_, err = pkg.RunCommand(command)
 	if err != nil {
 		log.Errorf("running command :%s", err)
-	}
-
-	byteValue, err := pkg.ReadFile(deprecateFile)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	var deprecatedBundles []string
-	if err = json.Unmarshal(byteValue, &deprecatedBundles); err != nil {
-		log.Fatal(err)
 	}
 
 	// Get all and check if has any bundle that was configured to be deprecated
@@ -120,16 +128,51 @@ func main() {
 		}
 	}
 
-	if len(notDeprecated) == 0 {
-		log.Info("WORKED\n Not found any bundle informed to be deprecated that exists in the index or does not have the olm.deprecated property")
-	} else {
-		log.Errorf("ERROR: Following the bundles that seems not deprecated when should be\n")
-		for _, v := range notDeprecated {
-			log.Errorf("Bundle Name: (%s) / Bundle Path (%s) \n", v.BundleName, v.BundleImagePath)
+	// create a map with all bundles found per pkg name
+	migratedPkgs := make(map[string][]bundles.Column)
+	for _, v := range apiDashReportFinalResult.Migrated {
+		for _, b := range v.AllBundles {
+			migratedPkgs[b.PackageName] = append(migratedPkgs[b.PackageName], b)
+		}
+	}
+
+	var unableToReAdd []bundles.Column
+	for k, v := range migratedPkgs {
+		log.Infof("testing for the package %s", k)
+		headOfChannels := custom.GetHeadOfChannels(v)
+		for _, head := range headOfChannels {
+			log.Infof("testing to re-add with —overwrite-latest the bundle %s with path (%s)", head.BundleName, head.BundleImagePath)
+			command = exec.Command("sudo", "opm", "index", "add",
+				"--build-tool=docker",
+				fmt.Sprintf("--from-index=%s", image),
+				fmt.Sprintf("--tag=%s", tag),
+				fmt.Sprintf("--bundles='%s'", head.BundleImagePath),
+				"--—overwrite-latest",
+			)
+
+			_, err := pkg.RunCommand(command)
+			if err != nil {
+				log.Errorf("running command :%s", err)
+				unableToReAdd = append(unableToReAdd, head)
+			}
 		}
 	}
 
 	log.Infof("You can check the HTML report for the final result in %", filepath.Join(outputPath, pkg.GetReportName(image, "deprecate-apis", "html")))
+
+	fp := filepath.Join(outputPath, pkg.GetReportName(image, "validate", "yml"))
+	f, err := os.Create(fp)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	t := template.Must(template.ParseFiles(filepath.Join(currentPath, "hack/scripts/deprecated-bundles-repo/validate_deprecate/template.go.tmpl")))
+	err = t.Execute(f, File{NotDeprecated: notDeprecated, UnableToReAdd: unableToReAdd})
+	if err != nil {
+		panic(err)
+	}
+
+	defer f.Close()
 }
 
 func getAPIDashForImage(image string) (*custom.APIDashReport, error) {

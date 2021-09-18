@@ -105,8 +105,15 @@ generate-dashboards:
 generate-helpers:
 	go run ./hack/scripts/generate_helpers.go
 
-.PHONY: generate-all ## Generate all testdata
+.PHONY: generate-all ## Generate all testdata with the helpers which are only valid to address special needs to 4.9-GA
 generate-all:
 	make generate-testdata
+	make generate-dashboards
+	make generate-helpers
+
+.PHONY: generate-49-only ## Generate all testdata for 4.9 index only and without scorecard test. Then, it means that this info in the grade reports will not be valid and cannot be used. It is helpful for we have fast the results over 4.9 images and what should be deprecated or not
+generate-49-only: install
+	docker login https://registry.redhat.io
+	go run ./hack/scripts/report/bundles/generate-4.9.go
 	make generate-dashboards
 	make generate-helpers
