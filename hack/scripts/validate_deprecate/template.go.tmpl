@@ -1,0 +1,13 @@
+##############################################
+# Verifies the deprecation process
+##############################################
+# Following what should be deprecated and is not
+{{ with .NotDeprecated }}{{ range . }}{{ .PackageName }}:{{ with .Bundles }}{{ range . }}
+    - {{ .BundleName }}{{ end }}{{ end }}
+{{ end }}{{ end }}
+------------------------------
+# Following what should be re-added
+{{ with .UnableToReAdd }}{{ range . }}{{ .PackageName }}:{{ with .Bundles }}{{ range . }}
+    - {{ .BundleName }}{{ end }}{{ end }}
+{{ end }}{{ end }}
+------------------------------
