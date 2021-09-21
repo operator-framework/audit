@@ -14,6 +14,9 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+# Get the default container engine
+CONTAINER_ENGINE?=docker
+
 # Get the currently used golang install path (in GOPATH/bin, unless GOBIN is set)
 ifeq (,$(shell go env GOBIN))
 GOBIN=$(shell go env GOPATH)/bin
@@ -86,7 +89,7 @@ generate-samples: install
 
 .PHONY: generate-testdata ## Generate the full testdata directory
 generate-testdata:
-	docker login https://registry.redhat.io
+	$(CONTAINER_ENGINE) login https://registry.redhat.io
 	make generate-samples
 	go run ./hack/report/bundles/generate.go
 	make generate-dashboards

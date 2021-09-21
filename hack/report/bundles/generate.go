@@ -58,6 +58,8 @@ func main() {
 		"registry.redhat.io/redhat/redhat-operator-index:v4.9":    "https://registry.redhat.io",
 	}
 
+	ce := pkg.ContainerEngine()
+
 	indexReportKinds := []string{"bundles"}
 	for image, registry := range images {
 		reportPathName := filepath.Join(reportPath, hack.GetImageNameToCreateDir(image))
@@ -67,7 +69,7 @@ func main() {
 			log.Warnf("running command :%s", err)
 		}
 
-		command = exec.Command("docker", "login", registry)
+		command = exec.Command(ce, "login", registry)
 		_, err = pkg.RunCommand(command)
 		if err != nil {
 			log.Errorf("running command :%s", err)
@@ -112,7 +114,7 @@ func main() {
 		command := exec.Command("mkdir", reportPathName)
 		_, _ = pkg.RunCommand(command)
 
-		command = exec.Command("docker", "login", registry)
+		command = exec.Command(ce, "login", registry)
 		_, err = pkg.RunCommand(command)
 		if err != nil {
 			log.Errorf("running command :%s", err)

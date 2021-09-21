@@ -27,4 +27,5 @@ type BindFlags struct {
 	Filter            string `json:"filter"`
 	OutputPath        string `json:"outputPath"`
 	OutputFormat      string `json:"outputFormat"`
+	ContainerEngine   string `json:"containerEngine"`
 }

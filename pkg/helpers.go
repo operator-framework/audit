@@ -36,6 +36,7 @@ const Yes = "YES"
 const No = "NO"
 const Unknown = "UNKNOWN"
 const NotUsed = "NOT USED"
+const CONTAINER_ENGINE_DEFAULT = "docker"
 
 const TableFormat = `{
     "table_name": "table",
@@ -183,8 +184,8 @@ type DockerConfig struct {
 	Labels map[string]string `json:"Labels"`
 }
 
-func RunDockerInspect(image string) (DockerInspectManifest, error) {
-	cmd := exec.Command("docker", "inspect", image)
+func RunDockerInspect(image string, containerEngine string) (DockerInspectManifest, error) {
+	cmd := exec.Command(containerEngine, "inspect", image)
 	output, err := RunCommand(cmd)
 	if err != nil || len(output) < 1 {
 		return DockerInspectManifest{}, err
@@ -243,4 +244,12 @@ func IsFollowingChannelNameConventional(channel string) bool {
 	}
 
 	return true
+}
+
+// ContainerEngine retrieves the value of the environment variable and defaults to docker when not set
+func ContainerEngine() string {
+	if value, ok := os.LookupEnv("CONTAINER_ENGINE"); ok {
+		return value
+	}
+	return CONTAINER_ENGINE_DEFAULT
 }

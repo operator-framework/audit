@@ -15,10 +15,11 @@
 package channels
 
 type BindFlags struct {
-	IndexImage   string `json:"index-image"`
-	Limit        int32  `json:"limit"`
-	Filter       string `json:"filter"`
-	OutputPath   string `json:"outputPath"`
-	OutputFormat string `json:"outputFormat"`
-	ServerMode   bool   `json:"serverMode"`
+	IndexImage      string `json:"index-image"`
+	Limit           int32  `json:"limit"`
+	Filter          string `json:"filter"`
+	OutputPath      string `json:"outputPath"`
+	OutputFormat    string `json:"outputFormat"`
+	ServerMode      bool   `json:"serverMode"`
+	ContainerEngine string `json:"containerEngine"`
 }

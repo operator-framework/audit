@@ -22,7 +22,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"strings"
+	// "strings"
 
 	"github.com/goccy/go-yaml"
 	log "github.com/sirupsen/logrus"
@@ -40,7 +40,7 @@ type Manifest struct {
 
 // GetDataFromBundleImage returns the bundle from the image
 func GetDataFromBundleImage(auditBundle *models.AuditBundle,
-	disableScorecard, disableValidators, serverMode bool, label, labelValue string) *models.AuditBundle {
+	disableScorecard, disableValidators, serverMode bool, label, labelValue string, containerEngine string) *models.AuditBundle {
 
 	if len(auditBundle.OperatorBundleImagePath) < 1 {
 		auditBundle.Errors = append(auditBundle.Errors,
@@ -48,7 +48,7 @@ func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 		return auditBundle
 	}
 
-	err := DownloadImage(auditBundle.OperatorBundleImagePath)
+	err := DownloadImage(auditBundle.OperatorBundleImagePath, containerEngine)
 	if err != nil {
 		auditBundle.Errors = append(auditBundle.Errors,
 			fmt.Errorf("unable to download container image (%s): %s", auditBundle.OperatorBundleImagePath, err).Error())
@@ -56,9 +56,9 @@ func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 	}
 
 	bundleDir := createBundleDir(auditBundle)
-	extractBundleFromImage(auditBundle, bundleDir)
+	extractBundleFromImage(auditBundle, bundleDir, containerEngine)
 
-	inspectManifest, err := pkg.RunDockerInspect(auditBundle.OperatorBundleImagePath)
+	inspectManifest, err := pkg.RunDockerInspect(auditBundle.OperatorBundleImagePath, containerEngine)
 	if err != nil {
 		auditBundle.Errors = append(auditBundle.Errors, err.Error())
 	} else {
@@ -137,10 +137,11 @@ func createBundleDir(auditBundle *models.AuditBundle) string {
 	return dir
 }
 
-func extractBundleFromImage(auditBundle *models.AuditBundle, bundleDir string) {
-	imageName := strings.Split(auditBundle.OperatorBundleImagePath, "@")[0]
+func extractBundleFromImage(auditBundle *models.AuditBundle, bundleDir string, containerEngine string) {
+	// imageName := strings.Split(auditBundle.OperatorBundleImagePath, "@")[0]
+	imageName := auditBundle.OperatorBundleImagePath
 	tarPath := fmt.Sprintf("%s/%s.tar", bundleDir, auditBundle.OperatorBundleName)
-	cmd := exec.Command("docker", "save", imageName, "-o", tarPath)
+	cmd := exec.Command(containerEngine, "save", imageName, "-o", tarPath)
 	_, err := pkg.RunCommand(cmd)
 	if err != nil {
 		log.Errorf("unable to save the bundle image : %s", err)
@@ -215,13 +216,13 @@ func cleanupBundleDir(auditBundle *models.AuditBundle, dir string, serverMode bo
 	_, _ = pkg.RunCommand(cmd)
 
 	if !serverMode {
-		cmd = exec.Command("docker", "rmi", auditBundle.OperatorBundleImagePath)
+		cmd = exec.Command("podman", "rmi", auditBundle.OperatorBundleImagePath)
 		_, _ = pkg.RunCommand(cmd)
 	}
 }
 
-func DownloadImage(image string) error {
-	cmd := exec.Command("docker", "pull", image)
+func DownloadImage(image string, containerEngine string) error {
+	cmd := exec.Command(containerEngine, "pull", image)
 	_, err := pkg.RunCommand(cmd)
 	return err
 }
