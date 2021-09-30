@@ -208,6 +208,9 @@ func extractBundleFromImage(auditBundle *models.AuditBundle, bundleDir string) {
 
 	cmd = exec.Command("rm", "-rf", fmt.Sprintf("%s/bundle/root/", bundleDir))
 	_, _ = pkg.RunCommand(cmd)
+
+	cmd = exec.Command("rm", "-rf", fmt.Sprintf("%s/bundle/manifests/.DS_Store", bundleDir))
+	_, _ = pkg.RunCommand(cmd)
 }
 
 func cleanupBundleDir(auditBundle *models.AuditBundle, dir string, serverMode bool) {
