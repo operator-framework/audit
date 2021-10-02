@@ -78,6 +78,7 @@ func main() {
 			command := exec.Command(binPath, "index", report,
 				fmt.Sprintf("--index-image=%s", image),
 				"--output=json",
+				"--disable-scorecard",
 				fmt.Sprintf("--output-path=%s", reportPathName),
 			)
 			_, err = pkg.RunCommand(command)
