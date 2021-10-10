@@ -34,7 +34,7 @@ at least one head of channel using skipRange
 
 -------------------------------------
 Packages which does not nave any compatible version with 4.9 and has
-all head of channel using replaces
+at leas one head of channel using replaces
 -------------------------------------
 {{ with .NotMigrateWithReplacesAllHeads }}{{ range . }}{{ .Name }}
 {{ end }}{{ end }}
@@ -51,6 +51,12 @@ Packages which does not nave any compatible version with 4.9 and uses replaces
 with skips or skipsRange
 -------------------------------------
 {{ with .NotMigratesMix }}{{ range . }}{{ .Name }}
+{{ end }}{{ end }}
+
+Packages which does not nave any compatible version with 4.9 and uses only Skips
+or SkipRange
+-------------------------------------
+{{ with .NotMigrateWithSkipsAndRange }}{{ range . }}{{ .Name }}
 {{ end }}{{ end }}
 
 
