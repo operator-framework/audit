@@ -50,6 +50,7 @@ type File struct {
 	NotMigrateWithReplacesAllHeads []custom.NotMigrated
 	NotMigrateWithSkips            []custom.NotMigrated
 	NotMigrateWithSkipsRange       []custom.NotMigrated
+	NotMigrateWithSkipsAndRange    []custom.NotMigrated
 	NotMigrateUnknow               []custom.NotMigrated
 	TotalWorking49                 int
 	NotMigratesMix                 []custom.NotMigrated
@@ -150,7 +151,7 @@ func main() {
 		foundSkips := false
 		headOfChannels := custom.GetHeadOfChannels(v.AllBundles)
 		for _, b := range headOfChannels {
-			if len(b.Skips) > 0 {
+			if len(b.SkipRange) > 0 && len(b.Replace) < 1 {
 				foundSkips = true
 				break
 			}
@@ -166,13 +167,29 @@ func main() {
 		foundSkipRange := false
 		headOfChannels := custom.GetHeadOfChannels(v.AllBundles)
 		for _, b := range headOfChannels {
-			if len(b.SkipRange) > 0 {
+			if len(b.SkipRange) > 0 && len(b.Replace) < 1 {
 				foundSkipRange = true
 				break
 			}
 		}
 		if foundSkipRange {
 			notMigrateWithSkipRange = append(notMigrateWithSkipRange, v)
+			continue
+		}
+	}
+
+	var notMigrateWithSkipsAndRange []custom.NotMigrated
+	for _, v := range apiDashReport.NotMigrated {
+		foundSkips := false
+		headOfChannels := custom.GetHeadOfChannels(v.AllBundles)
+		for _, b := range headOfChannels {
+			if ((len(b.Skips) > 0) || len(b.SkipRange) > 0) && len(b.Replace) < 1 {
+				foundSkips = true
+				break
+			}
+		}
+		if foundSkips {
+			notMigrateWithSkipsAndRange = append(notMigrateWithSkipsAndRange, v)
 			continue
 		}
 	}
@@ -196,15 +213,21 @@ func main() {
 	var notMigrateUnknow []custom.NotMigrated
 	for _, v := range apiDashReport.NotMigrated {
 		found := false
-		headOfChannels := custom.GetHeadOfChannels(v.AllBundles)
-		for _, b := range headOfChannels {
-			if len(b.SkipRange) > 0 || len(b.Skips) > 0 || len(b.Replace) > 0 {
+		for _, r := range notMigrateWithReplaces {
+			if v.Name == r.Name {
+				found = true
+				break
+			}
+		}
+		for _, s := range notMigrateWithSkipsAndRange {
+			if v.Name == s.Name {
 				found = true
 				break
 			}
 		}
 		if !found {
 			notMigrateUnknow = append(notMigrateUnknow, v)
+			continue
 		}
 	}
 
@@ -251,6 +274,9 @@ func main() {
 	sort.Slice(notMigratesMix[:], func(i, j int) bool {
 		return notMigratesMix[i].Name < notMigratesMix[j].Name
 	})
+	sort.Slice(notMigrateWithSkipsAndRange[:], func(i, j int) bool {
+		return notMigrateWithSkipsAndRange[i].Name < notMigrateWithSkipsAndRange[j].Name
+	})
 
 	totalWorking49 := len(apiDashReport.Migrated) - len(migrateNotIn49)
 
@@ -278,6 +304,7 @@ func main() {
 		TotalWorking49:                 totalWorking49,
 		NotMigrateWithSkips:            notMigrateWithSkips,
 		NotMigrateWithSkipsRange:       notMigrateWithSkipRange,
+		NotMigrateWithSkipsAndRange:    notMigrateWithSkipsAndRange,
 		NotMigrateUnknow:               notMigrateUnknow})
 	if err != nil {
 		panic(err)
