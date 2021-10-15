@@ -52,8 +52,7 @@ func main() {
 	// Gen all Kinds for the latest
 	images := map[string]string{
 		"registry.redhat.io/redhat/certified-operator-index:v4.9": "https://registry.redhat.io",
-		//TODO: Add when created
-		"registry.redhat.io/redhat/community-operator-index:v4.8": "https://registry.redhat.io",
+		"registry.redhat.io/redhat/community-operator-index:v4.9": "https://registry.redhat.io",
 		"registry.redhat.io/redhat/redhat-marketplace-index:v4.9": "https://registry.redhat.io",
 		"registry.redhat.io/redhat/redhat-operator-index:v4.9":    "https://registry.redhat.io",
 	}
@@ -78,7 +77,6 @@ func main() {
 			command := exec.Command(binPath, "index", report,
 				fmt.Sprintf("--index-image=%s", image),
 				"--output=json",
-				"--disable-scorecard",
 				fmt.Sprintf("--output-path=%s", reportPathName),
 			)
 			_, err = pkg.RunCommand(command)
