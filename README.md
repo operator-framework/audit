@@ -23,7 +23,7 @@ For further information about its motivation see the [EP Audit command operation
 ## Pre-requirements
 
 - go 1.16
-- docker 
+- docker or podman
 - access to the registry where the index catalog and operator bundle images are distribute
 - access to a Kubernetes cluster
 - [operator-sdk][operator-sdk] installed >= `1.5.0
@@ -44,7 +44,18 @@ $ make install
 
 ### Ensure that you have access to pull the images
 
-You must run `docker login` to have access to the images.
+You may first need to run `docker login` or `podman login` to have access to the images.
+
+### Podman
+
+Per default the audit commands use docker for dealing with container images. If you wish to use podman instead
+
+- either set the environment variable `export CONTAINER_ENGINE=podman` beforehand.
+- or add `--container-engine=podman` to each command
+
+```sh
+export CONTAINER_ENGINE=podman
+```
 
 ### Generating the reports
 

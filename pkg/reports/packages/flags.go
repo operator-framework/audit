@@ -25,4 +25,5 @@ type BindFlags struct {
 	DisableScorecard  bool   `json:"disableScorecard"`
 	DisableValidators bool   `json:"disableValidators"`
 	ServerMode        bool   `json:"serverMode"`
+	ContainerEngine   string `json:"containerEngine"`
 }

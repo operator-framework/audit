@@ -14,6 +14,9 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+# Get the default container engine
+CONTAINER_ENGINE?=docker
+
 # Get the currently used golang install path (in GOPATH/bin, unless GOBIN is set)
 ifeq (,$(shell go env GOBIN))
 GOBIN=$(shell go env GOPATH)/bin
@@ -86,7 +89,7 @@ generate-samples: install
 
 .PHONY: generate-testdata ## Generate the full testdata directory
 generate-testdata:
-	docker login https://registry.redhat.io
+	$(CONTAINER_ENGINE) login https://registry.redhat.io
 	make generate-samples
 	go run ./hack/report/bundles/generate.go
 	make generate-dashboards
@@ -113,7 +116,7 @@ generate-all:
 
 .PHONY: generate-49-only ## Generate all testdata for 4.9 index only and without scorecard test. Then, it means that this info in the grade reports will not be valid and cannot be used. It is helpful for we have fast the results over 4.9 images and what should be deprecated or not
 generate-49-only: install
-	docker login https://registry.redhat.io
+	$(CONTAINER_ENGINE) login https://registry.redhat.io
 	go run ./hack/scripts/report/bundles/generate-4.9.go
 	make generate-dashboards
 	make generate-helpers
