@@ -57,7 +57,7 @@ func main() {
 		"registry.redhat.io/redhat/redhat-operator-index:v4.9":    "https://registry.redhat.io",
 	}
 
-	ce := pkg.ContainerEngine()
+	ce := pkg.GetContainerToolFromEnvVar()
 
 	indexReportKinds := []string{"bundles"}
 	for image, registry := range images {
