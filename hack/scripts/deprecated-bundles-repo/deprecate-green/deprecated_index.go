@@ -179,7 +179,7 @@ func main() {
 		found := false
 		for _, b := range bundles {
 			// We just ONLY the bundles which are using the removed APIS
-			if len(b.KindsDeprecateAPIs) > 0 && len(b.DeprecateAPIsManifests[pkg.Unknown]) == 0 {
+			if len(b.KindsDeprecateAPIs) > 0 && len(b.DeprecateAPIsManifests[pkg.Unknown]) == 0 && !b.IsDeprecated {
 				found = true
 			}
 		}
@@ -209,7 +209,7 @@ func main() {
 			}
 
 			// We just ONLY the bundles which are using the removed APIS
-			if len(b.KindsDeprecateAPIs) > 0 && len(b.DeprecateAPIsManifests[pkg.Unknown]) == 0 {
+			if len(b.KindsDeprecateAPIs) > 0 && len(b.DeprecateAPIsManifests[pkg.Unknown]) == 0 && !b.IsDeprecated {
 				deprecatedYaml.Bundles = append(deprecatedYaml.Bundles,
 					Bundles{
 						Paths:   b.BundleImagePath,

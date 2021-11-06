@@ -105,29 +105,29 @@
 				"provided API should have an example annotation"
 			],
 			"scorecardErrors": [
+				"Owned CRDs do not have resources specified",
 				"type does not have a spec descriptor",
 				"secret does not have a spec descriptor",
 				"url does not have a spec descriptor",
 				"plan does not have a spec descriptor",
-				"Owned CRDs do not have resources specified",
 				"forkliftcontrollers.forklift.konveyor.io does not have a status descriptor",
 				"providers.forklift.konveyor.io does not have a status descriptor",
 				"plans.forklift.konveyor.io does not have a status descriptor",
 				"migrations.forklift.konveyor.io does not have a status descriptor"
 			],
 			"scorecardSuggestions": [
-				"Add a spec descriptor for type",
-				"Add a spec descriptor for secret",
-				"Add a spec descriptor for url",
-				"Add a spec descriptor for plan",
+				"Warning: Value forklift.konveyor.io/v1alpha1, Kind=Host: provided API should have an example annotation",
 				"Warning: Value forklift.konveyor.io/v1alpha1, Kind=NetworkMap: provided API should have an example annotation",
 				"Warning: Value forklift.konveyor.io/v1alpha1, Kind=StorageMap: provided API should have an example annotation",
 				"Warning: Value forklift.konveyor.io/v1alpha1, Kind=Provisioner: provided API should have an example annotation",
-				"Warning: Value forklift.konveyor.io/v1alpha1, Kind=Host: provided API should have an example annotation"
+				"Add a spec descriptor for type",
+				"Add a spec descriptor for secret",
+				"Add a spec descriptor for url",
+				"Add a spec descriptor for plan"
 			],
 			"scorecardFailingTests": [
-				"olm-spec-descriptors",
 				"olm-crds-have-resources",
+				"olm-spec-descriptors",
 				"olm-status-descriptors"
 			],
 			"hasSupportForOwnNamespaces": true
@@ -148,9 +148,9 @@
 				"provided API should have an example annotation"
 			],
 			"scorecardErrors": [
-				"Owned CRDs do not have resources specified",
 				"routingClass does not have a spec descriptor",
-				"template does not have a spec descriptor"
+				"template does not have a spec descriptor",
+				"Owned CRDs do not have resources specified"
 			],
 			"scorecardSuggestions": [
 				"Warning: Value controller.devfile.io/v1alpha1, Kind=Component: provided API should have an example annotation",
@@ -159,8 +159,8 @@
 				"Add a spec descriptor for template"
 			],
 			"scorecardFailingTests": [
-				"olm-crds-have-resources",
-				"olm-spec-descriptors"
+				"olm-spec-descriptors",
+				"olm-crds-have-resources"
 			],
 			"hasSupportForAllNamespaces": true
 		}
@@ -171,24 +171,24 @@
 		"filter": "",
 		"label": "",
 		"labelValue": "",
-		"outputPath": "/Users/camilamacedo/go/src/github.com/operator-framework/audit-1/testdata/samples/packages",
+		"outputPath": "/Users/camilamacedo86/go/src/github.com/operator-framework/audit/testdata/samples/packages",
 		"outputFormat": "all",
 		"disableScorecard": false,
 		"disableValidators": false,
 		"serverMode": false
 	},
 	"IndexImageInspect": {
-		"ID": "sha256:80e2931e0c858f0fd95ca708b926ba21b5cc5709f81701ace5680a4ceb22cff4",
+		"ID": "sha256:d5bba6f12eed8e98f72c11ff411ebeeb397f348104ddba336a674d365ff0853f",
 		"RepoDigests": [
-			"registry.redhat.io/redhat/redhat-operator-index@sha256:6845be5285934a6a107cdb3cdbfe76f279f8c40565bc81f39064ec2a1dddd584"
+			"registry.redhat.io/redhat/redhat-operator-index@sha256:89a2b360f8a2aff63997e50d1498b926fdedc670628414ae895851fb86d1b5e7"
 		],
-		"Created": "2021-10-14T13:20:26.980491308Z",
+		"Created": "2021-10-25T22:42:24.868899467Z",
 		"Config": {
 			"Labels": {
 				"License": "GPLv2+",
 				"architecture": "x86_64",
-				"build-date": "2021-10-05T16:57:05.428269",
-				"com.redhat.build-host": "cpt-1002.osbs.prod.upshift.rdu2.redhat.com",
+				"build-date": "2021-10-12T18:28:42.383825",
+				"com.redhat.build-host": "cpt-1003.osbs.prod.upshift.rdu2.redhat.com",
 				"com.redhat.component": "operator-registry-container",
 				"com.redhat.index.delivery.distribution_scope": "prod",
 				"com.redhat.index.delivery.version": "v4.7",
@@ -208,15 +208,15 @@
 				"maintainer": "Odin Team \u003caos-odin@redhat.com\u003e",
 				"name": "openshift/ose-operator-registry",
 				"operators.operatorframework.io.index.database.v1": "/database/index.db",
-				"release": "202110051546.p0.git.06e950d.assembly.stream",
+				"release": "202110121415.p0.git.06e950d.assembly.stream",
 				"summary": "Operator Registry runs in a Kubernetes or OpenShift cluster to provide operator catalog data to Operator Lifecycle Manager.",
-				"url": "https://access.redhat.com/containers/#/registry.access.redhat.com/openshift/ose-operator-registry/images/v4.7.0-202110051546.p0.git.06e950d.assembly.stream",
-				"vcs-ref": "25685ea385b7732a0c07eace58829bf631da574f",
+				"url": "https://access.redhat.com/containers/#/registry.access.redhat.com/openshift/ose-operator-registry/images/v4.7.0-202110121415.p0.git.06e950d.assembly.stream",
+				"vcs-ref": "914924efb7fc75e1c0f57e662c657ad37d00c4b3",
 				"vcs-type": "git",
 				"vendor": "Red Hat, Inc.",
 				"version": "v4.7.0"
 			}
 		}
 	},
-	"GenerateAt": "2021-10-14"
+	"GenerateAt": "2021-10-26"
 }

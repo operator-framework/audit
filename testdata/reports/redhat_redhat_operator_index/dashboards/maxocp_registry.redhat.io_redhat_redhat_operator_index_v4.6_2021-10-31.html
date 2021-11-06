@@ -77,16 +77,16 @@
 
 <main>
 
-        <h1>Deprecated API(s) Dashboard </h1>
-        <p>The audit tool output for the following packages were obtained by checking the image and the bundle manifests distributed. This report aims to try to identify the package distributions that can impact the users on 4.9.</p>
+        <h1>Max OCP version for 4.9 Dashboard </h1>
+        <p>The audit tool output for the following packages were obtained by checking the image and the bundle manifests distributed. This report aims to try to identify the package distributions that are missing the max ocp version as &lt;= 4.8 because we can find the usage of these APIs in the manifests shipped.</p>
 
         <div class="container-fluid themed-container">
             <h5 class="display-12 fw-bold">Data from the image used</h5>
             <ul>
-                <li>Image name: registry.redhat.io/redhat/redhat-operator-index:v4.7 </li>
-                <li>Image ID: sha256:80e2931e0c858f0fd95ca708b926ba21b5cc5709f81701ace5680a4ceb22cff4 </li>
-                <li>Image Created at: 2021-10-14T13:20:26.980491308Z </li>
-                <li>From JSON report generated at: 2021-10-14 </li>
+                <li>Image name: registry.redhat.io/redhat/redhat-operator-index:v4.6 </li>
+                <li>Image ID: sha256:5804e466f8aa274bbc7defd03494c97bf4f94e03654e47ffdb542577c88281e3 </li>
+                <li>Image Created at: 2021-10-28T10:21:02.157261078Z </li>
+                <li>From JSON report generated at: 2021-10-31 </li>
             </ul>
         </div>
 
@@ -100,15 +100,10 @@
                 <li>Ensure that any distribution which requires any deprecated API(s) in the OCP catalogs are configured with the Max OpenShift Version compatible (`olm.openShiftMaxVersion`)   so it will only be distributed on OCP version(s) &lt;= 4.8. Also, control which version the bundle is deployed to from OLM via the annotation/label `com.redhat.openshift.versions`. More info see: <a href="https://github.com/operator-framework/community-operators/blob/master/docs/packaging-required-criteria-ocp.md"> OKD/OpenShift Catalogs criteria and options </a></li>
                 <li>OpenShift 4.8 introduces two new alerts that fire when an API that will be removed in the next release is in use. Check the event alerts of your Operators running on 4.8 and ensure that you do not find any warning about these API(s) still being used by it</li>
             </ul>
-            <h5 class="display-12 fw-bold">3. What does it mean for a package to be in amber or green?</h5>
-            <ul>
-                <li> <b>(Green) Complying:</b> these are packages that we cannot found the removed APIs in k8s 1.22/OCP 4.9 in at least one bundle version</li>
-                <li> <b>(Amber) Not complying:</b> these are the packages that we cannot found any versions which is not using the removed APIs in in k8s 1.22/OCP 4.9</li>
-            </ul>
         </div>
 
         <div class="container-fluid themed-container">
-            <h5 class="display-12 fw-bold">Using deprecated APIs</h5>
+            <h5 class="display-12 fw-bold">Missing Max OCP Version</h5>
             <table id="mechanism" class="minimalistBlack" style="background-color: #ec8f1c; width:98%">
                 <thead>
                      <tr>
@@ -122,7 +117,6 @@
                 <tbody>
                 
                     
-                        
                         <tr>
                             <th>apicast-operator</th>
                             <th>
@@ -148,13 +142,29 @@
                                  
                                      <li>apicast-operator.v0.2.0 - (label=v4.5,max=not set,channels=[threescale-2.8 threescale-2.9 threescale-2.10],head:NO,defaultChannel:NO, deprecated:NO)</li>
                                  
-                                     <li>apicast-operator.v0.2.1 - (label=v4.5,max=4.8,channels=[threescale-2.8 threescale-2.9 threescale-2.10],head:NO,defaultChannel:NO, deprecated:NO)</li>
+                              </ul>
+                            </th>
+                            <th>
+                              <ul>
                                  
-                                     <li>apicast-operator.v0.2.2 - (label=v4.5,max=4.8,channels=[threescale-2.8 threescale-2.9 threescale-2.10],head:NO,defaultChannel:NO, deprecated:NO)</li>
-                                 
-                                     <li>apicast-operator.v0.2.3 - (label=v4.5,max=4.8,channels=[threescale-2.8 threescale-2.9 threescale-2.10],head:NO,defaultChannel:NO, deprecated:NO)</li>
-                                 
-                                     <li>apicast-operator.v0.2.4 - (label=v4.5,max=4.8,channels=[threescale-2.8 threescale-2.9 threescale-2.10],head:YES,defaultChannel:NO, deprecated:NO)</li>
+                              </ul>
+                            </th>
+                        </tr>
+                    
+                        <tr>
+                            <th></th>
+                            <th>
+                                <ul>
+                                
+                                </ul>
+                            </th>
+                             <th>
+                                 <ul>
+                                    
+                                 </ul>
+                             </th>
+                            <th>
+                              <ul>
                                  
                               </ul>
                             </th>
@@ -164,28 +174,9 @@
                               </ul>
                             </th>
                         </tr>
-                         
                     
                 
                 </tbody>
-            </table>
-        </div>
-
-        <div class="container-fluid themed-container">
-            <h5 class="display-12 fw-bold">Has a bundle that we could not find the deprecate APIs</h5>
-            <table id="ok" class="minimalistBlack" style="background-color:#3FA91E;width:98%">
-                <thead>
-                     <tr>
-                         <th>Package Name</th>
-                         <th>Kinds to migrate</th>
-                         <th>Channels</th>
-                         <th>Bundles uses API(s)</th>
-                         <th>Bundles Migrated</th>
-                     </tr>
-                    </thead>
-                    <tbody>
-                    
-                    </tbody>
             </table>
         </div>
 </main>

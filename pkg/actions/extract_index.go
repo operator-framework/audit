@@ -23,20 +23,20 @@ import (
 
 const catalogIndex = "audit-catalog-index"
 
-func ExtractIndexDB(image string) error {
+func ExtractIndexDB(image string, containerEngine string) error {
 	// Remove image if exists already
-	command := exec.Command("docker", "rm", catalogIndex)
+	command := exec.Command(containerEngine, "rm", catalogIndex)
 	_, _ = pkg.RunCommand(command)
 
 	// Download the image
-	command = exec.Command("docker", "create", "--name", catalogIndex, image, "\"yes\"")
+	command = exec.Command(containerEngine, "create", "--name", catalogIndex, image, "\"yes\"")
 	_, err := pkg.RunCommand(command)
 	if err != nil {
 		return fmt.Errorf("unable to create container image %s : %s", image, err)
 	}
 
 	// Extract
-	command = exec.Command("docker", "cp", fmt.Sprintf("%s:/database/index.db", catalogIndex), "./output/")
+	command = exec.Command(containerEngine, "cp", fmt.Sprintf("%s:/database/index.db", catalogIndex), "./output/")
 	_, err = pkg.RunCommand(command)
 	if err != nil {
 		return fmt.Errorf("unable to extract the image for index.db %s : %s", image, err)

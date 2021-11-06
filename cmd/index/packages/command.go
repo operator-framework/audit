@@ -47,7 +47,7 @@ func NewCmd() *cobra.Command {
 			"which are ship in the index image informed " +
 			"according to the criteria defined via the flags.\n\n " +
 			"**When this report is useful?** \n\n" +
-			"This report is useful when is required to audit the packages as their latest state.",
+			"This report is useful when you need to audit the packages as their latest state.",
 		PreRunE: validation,
 		RunE:    run,
 	}
@@ -85,6 +85,8 @@ func NewCmd() *cobra.Command {
 	cmd.Flags().BoolVar(&flags.ServerMode, "server-mode", false,
 		"if set, the images which are downloaded will not be removed. This flag should be used on dedicated "+
 			"environments and reduce the cost to generate the reports periodically")
+	cmd.Flags().StringVar(&flags.ContainerEngine, "container-engine", "",
+		"specifies the container engine to use, defaults to the environment variable CONTAINER_ENGINE and fails back to docker if not specified. Currently supported values are docker and podman.")
 
 	return cmd
 }
@@ -125,6 +127,12 @@ func validation(cmd *cobra.Command, args []string) error {
 		}
 	}
 
+	if len(flags.ContainerEngine) == 0 {
+		flags.ContainerEngine = pkg.ContainerEngine()
+	} else if flags.ContainerEngine != "docker" && flags.ContainerEngine != "podman" {
+		return errors.New("Valid values for --container-engine are docker and podman")
+	}
+
 	return nil
 }
 
@@ -136,18 +144,18 @@ func run(cmd *cobra.Command, args []string) error {
 	reportData.Flags.Filter = strings.ReplaceAll(reportData.Flags.Filter, "”", "")
 	pkg.GenerateTemporaryDirs()
 
-	if err := actions.DownloadImage(flags.IndexImage); err != nil {
+	if err := actions.DownloadImage(flags.IndexImage, flags.ContainerEngine); err != nil {
 		return err
 	}
 
 	// Inspect the OLM index image
 	var err error
-	reportData.IndexImageInspect, err = pkg.RunDockerInspect(flags.IndexImage)
+	reportData.IndexImageInspect, err = pkg.RunDockerInspect(flags.IndexImage, flags.ContainerEngine)
 	if err != nil {
 		log.Errorf("unable to inspect the index image: %s", err)
 	}
 
-	if err := actions.ExtractIndexDB(flags.IndexImage); err != nil {
+	if err := actions.ExtractIndexDB(flags.IndexImage, flags.ContainerEngine); err != nil {
 		return err
 	}
 
@@ -258,7 +266,7 @@ func getDataFromIndexDB(report packages.Data) (packages.Data, error) {
 
 			auditBundle = actions.GetDataFromBundleImage(auditBundle,
 				report.Flags.DisableScorecard, report.Flags.DisableValidators, report.Flags.ServerMode,
-				report.Flags.Label, report.Flags.LabelValue)
+				report.Flags.Label, report.Flags.LabelValue, flags.ContainerEngine)
 
 			if len(strings.TrimSpace(auditBundle.PackageName)) == 0 && auditBundle.Bundle != nil {
 				auditBundle.PackageName = auditBundle.Bundle.Package
