@@ -46,7 +46,7 @@ func MapPkgsComplyingWithDeprecateAPI122(
 func hasNotMigrated(bundlesPerPkg []bundles.Column) bool {
 	foundNotMigrated := false
 	for _, v := range bundlesPerPkg {
-		if len(v.KindsDeprecateAPIs) > 0 {
+		if len(v.KindsDeprecateAPIs) > 0 && !v.IsDeprecated {
 			foundNotMigrated = true
 			break
 		}
@@ -56,7 +56,7 @@ func hasNotMigrated(bundlesPerPkg []bundles.Column) bool {
 
 func hasHeadOfChannelMigrated(bundlesPerPkg []bundles.Column) bool {
 	for _, v := range bundlesPerPkg {
-		if (v.KindsDeprecateAPIs == nil || len(v.KindsDeprecateAPIs) < 1) && v.IsHeadOfChannel {
+		if (v.KindsDeprecateAPIs == nil || len(v.KindsDeprecateAPIs) < 1) && v.IsHeadOfChannel && !v.IsDeprecated {
 			return true
 		}
 	}
