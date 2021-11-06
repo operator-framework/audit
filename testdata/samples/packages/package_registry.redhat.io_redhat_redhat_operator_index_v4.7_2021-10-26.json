@@ -1,0 +1,222 @@
+{
+	"columns": [
+		{
+			"packageName": "amq-broker-lts",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(amq-broker-operator.v0.9.3) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"activemqartemises.broker.amq.io\" \"activemqartemisaddresses.broker.amq.io\" \"activemqartemisscaledowns.broker.amq.io\"])"
+			],
+			"scorecardErrors": [
+				"deploymentPlan does not have a spec descriptor",
+				"Owned CRDs do not have resources specified",
+				"activemqartemises.broker.amq.io does not have a status descriptor",
+				"activemqartemisaddresses.broker.amq.io does not have a status descriptor",
+				"activemqartemisscaledowns.broker.amq.io does not have a status descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for deploymentPlan",
+				"Add CRD validation for spec field `deploymentPlan` in ActiveMQArtemis/v2alpha1"
+			],
+			"scorecardFailingTests": [
+				"olm-spec-descriptors",
+				"olm-crds-have-resources",
+				"olm-status-descriptors"
+			],
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "awx-resource-operator",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(awx-resource-operator.v0.1.1) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"ansiblejobs.tower.ansible.com\" \"jobtemplates.tower.ansible.com\"])"
+			],
+			"scorecardErrors": [
+				"ansiblejobs.tower.ansible.com does not have a status descriptor",
+				"jobtemplates.tower.ansible.com does not have a status descriptor",
+				"Owned CRDs do not have resources specified",
+				"extra_vars does not have a spec descriptor",
+				"job_template_name does not have a spec descriptor",
+				"tower_auth_secret does not have a spec descriptor",
+				"job_template_inventory does not have a spec descriptor",
+				"job_template_name does not have a spec descriptor",
+				"job_template_playbook does not have a spec descriptor",
+				"job_template_project does not have a spec descriptor",
+				"tower_auth_secret does not have a spec descriptor"
+			],
+			"scorecardSuggestions": [
+				"Add a spec descriptor for extra_vars",
+				"Add a spec descriptor for job_template_name",
+				"Add a spec descriptor for tower_auth_secret",
+				"Add a spec descriptor for job_template_inventory",
+				"Add a spec descriptor for job_template_name",
+				"Add a spec descriptor for job_template_playbook",
+				"Add a spec descriptor for job_template_project",
+				"Add a spec descriptor for tower_auth_secret"
+			],
+			"scorecardFailingTests": [
+				"olm-status-descriptors",
+				"olm-crds-have-resources",
+				"olm-spec-descriptors"
+			],
+			"hasSupportForSingleNamespaces": true,
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "openshift-pipelines-operator-rh",
+			"multipleArchitectures": [
+				"amd64",
+				"ppc64le",
+				"s390x"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": false,
+			"hasScorecardSuggestions": false,
+			"validatorWarnings": [
+				"(redhat-openshift-pipelines.v1.4.1) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects."
+			],
+			"hasSupportForAllNamespaces": true
+		},
+		{
+			"packageName": "rhmtv-operator",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(rhmtv-operator.2.0.0-beta.1) csv.metadata.Name rhmtv-operator.2.0.0-beta.1 is not following the recommended naming convention: \u003coperator-name\u003e.v\u003csemver\u003e e.g. memcached-operator.v0.0.1",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"forkliftcontrollers.forklift.konveyor.io\" \"hosts.forklift.konveyor.io\" \"migrations.forklift.konveyor.io\" \"networkmaps.forklift.konveyor.io\" \"plans.forklift.konveyor.io\" \"providers.forklift.konveyor.io\" \"provisioners.forklift.konveyor.io\" \"storagemaps.forklift.konveyor.io\"])",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation"
+			],
+			"scorecardErrors": [
+				"Owned CRDs do not have resources specified",
+				"type does not have a spec descriptor",
+				"secret does not have a spec descriptor",
+				"url does not have a spec descriptor",
+				"plan does not have a spec descriptor",
+				"forkliftcontrollers.forklift.konveyor.io does not have a status descriptor",
+				"providers.forklift.konveyor.io does not have a status descriptor",
+				"plans.forklift.konveyor.io does not have a status descriptor",
+				"migrations.forklift.konveyor.io does not have a status descriptor"
+			],
+			"scorecardSuggestions": [
+				"Warning: Value forklift.konveyor.io/v1alpha1, Kind=Host: provided API should have an example annotation",
+				"Warning: Value forklift.konveyor.io/v1alpha1, Kind=NetworkMap: provided API should have an example annotation",
+				"Warning: Value forklift.konveyor.io/v1alpha1, Kind=StorageMap: provided API should have an example annotation",
+				"Warning: Value forklift.konveyor.io/v1alpha1, Kind=Provisioner: provided API should have an example annotation",
+				"Add a spec descriptor for type",
+				"Add a spec descriptor for secret",
+				"Add a spec descriptor for url",
+				"Add a spec descriptor for plan"
+			],
+			"scorecardFailingTests": [
+				"olm-crds-have-resources",
+				"olm-spec-descriptors",
+				"olm-status-descriptors"
+			],
+			"hasSupportForOwnNamespaces": true
+		},
+		{
+			"packageName": "web-terminal",
+			"kindsDeprecateAPIs": [
+				"CRD"
+			],
+			"hasValidatorWarnings": true,
+			"hasScorecardFailingTests": true,
+			"hasScorecardSuggestions": true,
+			"validatorWarnings": [
+				"(web-terminal.v1.2.1) csv.Spec.Icon not specified",
+				"(web-terminal.v1.2.1) csv.Spec.minKubeVersion is not informed. It is recommended you provide this information. Otherwise, it would mean that your operator project can be distributed and installed in any cluster version available, which is not necessarily the case for all projects.",
+				"this bundle is using APIs which were deprecated and removed in v1.22. More info: https://kubernetes.io/docs/reference/using-api/deprecation-guide/#v1-22. Migrate the API(s) for CRD: ([\"components.controller.devfile.io\" \"workspaceroutings.controller.devfile.io\" \"devworkspaces.workspace.devfile.io\"])",
+				"provided API should have an example annotation",
+				"provided API should have an example annotation"
+			],
+			"scorecardErrors": [
+				"routingClass does not have a spec descriptor",
+				"template does not have a spec descriptor",
+				"Owned CRDs do not have resources specified"
+			],
+			"scorecardSuggestions": [
+				"Warning: Value controller.devfile.io/v1alpha1, Kind=Component: provided API should have an example annotation",
+				"Warning: Value controller.devfile.io/v1alpha1, Kind=WorkspaceRouting: provided API should have an example annotation",
+				"Add a spec descriptor for routingClass",
+				"Add a spec descriptor for template"
+			],
+			"scorecardFailingTests": [
+				"olm-spec-descriptors",
+				"olm-crds-have-resources"
+			],
+			"hasSupportForAllNamespaces": true
+		}
+	],
+	"flags": {
+		"index-image": "registry.redhat.io/redhat/redhat-operator-index:v4.7",
+		"limit": 5,
+		"filter": "",
+		"label": "",
+		"labelValue": "",
+		"outputPath": "/Users/camilamacedo86/go/src/github.com/operator-framework/audit/testdata/samples/packages",
+		"outputFormat": "all",
+		"disableScorecard": false,
+		"disableValidators": false,
+		"serverMode": false
+	},
+	"IndexImageInspect": {
+		"ID": "sha256:d5bba6f12eed8e98f72c11ff411ebeeb397f348104ddba336a674d365ff0853f",
+		"RepoDigests": [
+			"registry.redhat.io/redhat/redhat-operator-index@sha256:89a2b360f8a2aff63997e50d1498b926fdedc670628414ae895851fb86d1b5e7"
+		],
+		"Created": "2021-10-25T22:42:24.868899467Z",
+		"Config": {
+			"Labels": {
+				"License": "GPLv2+",
+				"architecture": "x86_64",
+				"build-date": "2021-10-12T18:28:42.383825",
+				"com.redhat.build-host": "cpt-1003.osbs.prod.upshift.rdu2.redhat.com",
+				"com.redhat.component": "operator-registry-container",
+				"com.redhat.index.delivery.distribution_scope": "prod",
+				"com.redhat.index.delivery.version": "v4.7",
+				"com.redhat.license_terms": "https://www.redhat.com/agreements",
+				"description": "This is a component of OpenShift Operator Lifecycle Manager and is the base for operator catalog API containers.",
+				"distribution-scope": "public",
+				"io.buildah.version": "1.16.7",
+				"io.k8s.description": "This is a component of OpenShift Operator Lifecycle Manager and is the base for operator catalog API containers.",
+				"io.k8s.display-name": "OpenShift Operator Registry",
+				"io.openshift.build.commit.id": "06e950de5ebca66e493f6cd2414e73c8978090d3",
+				"io.openshift.build.commit.url": "https://github.com/operator-framework/operator-registry/commit/06e950de5ebca66e493f6cd2414e73c8978090d3",
+				"io.openshift.build.source-location": "https://github.com/operator-framework/operator-registry",
+				"io.openshift.expose-services": "",
+				"io.openshift.maintainer.component": "OLM",
+				"io.openshift.maintainer.product": "OpenShift Container Platform",
+				"io.openshift.tags": "openshift,base",
+				"maintainer": "Odin Team \u003caos-odin@redhat.com\u003e",
+				"name": "openshift/ose-operator-registry",
+				"operators.operatorframework.io.index.database.v1": "/database/index.db",
+				"release": "202110121415.p0.git.06e950d.assembly.stream",
+				"summary": "Operator Registry runs in a Kubernetes or OpenShift cluster to provide operator catalog data to Operator Lifecycle Manager.",
+				"url": "https://access.redhat.com/containers/#/registry.access.redhat.com/openshift/ose-operator-registry/images/v4.7.0-202110121415.p0.git.06e950d.assembly.stream",
+				"vcs-ref": "914924efb7fc75e1c0f57e662c657ad37d00c4b3",
+				"vcs-type": "git",
+				"vendor": "Red Hat, Inc.",
+				"version": "v4.7.0"
+			}
+		}
+	},
+	"GenerateAt": "2021-10-26"
+}
