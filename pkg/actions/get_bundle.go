@@ -22,6 +22,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+
 	// "strings"
 
 	"github.com/goccy/go-yaml"
@@ -40,7 +41,12 @@ type Manifest struct {
 
 // GetDataFromBundleImage returns the bundle from the image
 func GetDataFromBundleImage(auditBundle *models.AuditBundle,
-	disableScorecard, disableValidators, serverMode bool, label, labelValue string, containerEngine string) *models.AuditBundle {
+	disableScorecard,
+	disableValidators,
+	serverMode bool,
+	label,
+	labelValue string,
+	containerEngine string) *models.AuditBundle {
 
 	if len(auditBundle.OperatorBundleImagePath) < 1 {
 		auditBundle.Errors = append(auditBundle.Errors,
@@ -227,5 +233,12 @@ func cleanupBundleDir(auditBundle *models.AuditBundle, dir string, serverMode bo
 func DownloadImage(image string, containerEngine string) error {
 	cmd := exec.Command(containerEngine, "pull", image)
 	_, err := pkg.RunCommand(cmd)
+	// if found an error try again
+	// Sometimes it faces issues to download the image
+	if err != nil {
+		log.Warnf("error %s faced to downlad the image. Let's try more one time.", err)
+		cmd := exec.Command(containerEngine, "pull", image)
+		_, err = pkg.RunCommand(cmd)
+	}
 	return err
 }

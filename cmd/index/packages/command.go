@@ -69,7 +69,7 @@ func NewCmd() *cobra.Command {
 	cmd.Flags().Int32Var(&flags.Limit, "limit", 0,
 		"limit the num of packages to be audit")
 	cmd.Flags().StringVar(&flags.OutputFormat, "output", pkg.Xls,
-		fmt.Sprintf("inform the output format. [Flags: %s, %s, %s]", pkg.JSON,
+		fmt.Sprintf("inform the output format. [Options: %s, %s, %s]", pkg.JSON,
 			pkg.Xls, pkg.All))
 	cmd.Flags().StringVar(&flags.OutputPath, "output-path", currentPath,
 		"inform the path of the directory to output the report. (Default: current directory)")
@@ -85,8 +85,10 @@ func NewCmd() *cobra.Command {
 	cmd.Flags().BoolVar(&flags.ServerMode, "server-mode", false,
 		"if set, the images which are downloaded will not be removed. This flag should be used on dedicated "+
 			"environments and reduce the cost to generate the reports periodically")
-	cmd.Flags().StringVar(&flags.ContainerEngine, "container-engine", "",
-		"specifies the container engine to use, defaults to the environment variable CONTAINER_ENGINE and fails back to docker if not specified. Currently supported values are docker and podman.")
+	cmd.Flags().StringVar(&flags.ContainerEngine, "container-engine", pkg.Docker,
+		fmt.Sprintf("specifies the container tool to use. If not set, the default value is docker. "+
+			"Note that you can use the environment variable CONTAINER_ENGINE to inform this option. "+
+			"[Options: %s and %s]", pkg.Docker, pkg.Podman))
 
 	return cmd
 }
@@ -128,9 +130,11 @@ func validation(cmd *cobra.Command, args []string) error {
 	}
 
 	if len(flags.ContainerEngine) == 0 {
-		flags.ContainerEngine = pkg.ContainerEngine()
-	} else if flags.ContainerEngine != "docker" && flags.ContainerEngine != "podman" {
-		return errors.New("Valid values for --container-engine are docker and podman")
+		flags.ContainerEngine = pkg.GetContainerToolFromEnvVar()
+	}
+	if flags.ContainerEngine != pkg.Docker && flags.ContainerEngine != pkg.Podman {
+		return fmt.Errorf("invalid value for the flag --container-engine (%s). "+
+			"The valid options are %s and %s", flags.ContainerEngine, pkg.Docker, pkg.Podman)
 	}
 
 	return nil

@@ -36,7 +36,9 @@ const Yes = "YES"
 const No = "NO"
 const Unknown = "UNKNOWN"
 const NotUsed = "NOT USED"
-const CONTAINER_ENGINE_DEFAULT = "docker"
+const DefaultContainerTool = Docker
+const Docker = "docker"
+const Podman = "podman"
 
 const TableFormat = `{
     "table_name": "table",
@@ -246,10 +248,10 @@ func IsFollowingChannelNameConventional(channel string) bool {
 	return true
 }
 
-// ContainerEngine retrieves the value of the environment variable and defaults to docker when not set
-func ContainerEngine() string {
+// GetContainerToolFromEnvVar retrieves the value of the environment variable and defaults to docker when not set
+func GetContainerToolFromEnvVar() string {
 	if value, ok := os.LookupEnv("CONTAINER_ENGINE"); ok {
 		return value
 	}
-	return CONTAINER_ENGINE_DEFAULT
+	return DefaultContainerTool
 }
