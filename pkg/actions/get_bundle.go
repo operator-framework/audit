@@ -22,6 +22,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+
 	// "strings"
 
 	"github.com/goccy/go-yaml"
@@ -40,7 +41,12 @@ type Manifest struct {
 
 // GetDataFromBundleImage returns the bundle from the image
 func GetDataFromBundleImage(auditBundle *models.AuditBundle,
-	disableScorecard, disableValidators, serverMode bool, label, labelValue string, containerEngine string) *models.AuditBundle {
+	disableScorecard,
+	disableValidators,
+	serverMode bool,
+	label,
+	labelValue string,
+	containerEngine string) *models.AuditBundle {
 
 	if len(auditBundle.OperatorBundleImagePath) < 1 {
 		auditBundle.Errors = append(auditBundle.Errors,

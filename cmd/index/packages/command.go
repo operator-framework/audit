@@ -86,7 +86,9 @@ func NewCmd() *cobra.Command {
 		"if set, the images which are downloaded will not be removed. This flag should be used on dedicated "+
 			"environments and reduce the cost to generate the reports periodically")
 	cmd.Flags().StringVar(&flags.ContainerEngine, "container-engine", pkg.Docker,
-		fmt.Sprintf("specifies the container tool to use. If not set, the default value is docker. Note that you can use the environment variable CONTAINER_ENGINE to inform this option. [Options: %s and %s]", pkg.Docker, pkg.Podman))
+		fmt.Sprintf("specifies the container tool to use. If not set, the default value is docker. "+
+			"Note that you can use the environment variable CONTAINER_ENGINE to inform this option. "+
+			"[Options: %s and %s]", pkg.Docker, pkg.Podman))
 
 	return cmd
 }
@@ -131,7 +133,8 @@ func validation(cmd *cobra.Command, args []string) error {
 		flags.ContainerEngine = pkg.GetContainerToolFromEnvVar()
 	}
 	if flags.ContainerEngine != pkg.Docker && flags.ContainerEngine != pkg.Podman {
-		return errors.New(fmt.Sprintf("invalid value for the flag --container-engine (%s). The valid options are %s and %s", flags.ContainerEngine, pkg.Docker, pkg.Podman))
+		return fmt.Errorf("invalid value for the flag --container-engine (%s). "+
+			"The valid options are %s and %s", flags.ContainerEngine, pkg.Docker, pkg.Podman)
 	}
 
 	return nil

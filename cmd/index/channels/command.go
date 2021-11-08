@@ -16,7 +16,6 @@ package channels
 
 import (
 	"database/sql"
-	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -71,7 +70,9 @@ func NewCmd() *cobra.Command {
 	cmd.Flags().StringVar(&flags.OutputPath, "output-path", currentPath,
 		"inform the path of the directory to output the report. (Default: current directory)")
 	cmd.Flags().StringVar(&flags.ContainerEngine, "container-engine", pkg.Docker,
-		fmt.Sprintf("specifies the container tool to use. If not set, the default value is docker. Note that you can use the environment variable CONTAINER_ENGINE to inform this option. [Options: %s and %s]", pkg.Docker, pkg.Podman))
+		fmt.Sprintf("specifies the container tool to use. If not set, the default value is docker. "+
+			"Note that you can use the environment variable CONTAINER_ENGINE to inform this option. "+
+			"[Options: %s and %s]", pkg.Docker, pkg.Podman))
 
 	return cmd
 }
@@ -99,7 +100,8 @@ func validation(cmd *cobra.Command, args []string) error {
 		flags.ContainerEngine = pkg.GetContainerToolFromEnvVar()
 	}
 	if flags.ContainerEngine != pkg.Docker && flags.ContainerEngine != pkg.Podman {
-		return errors.New(fmt.Sprintf("invalid value for the flag --container-engine (%s). The valid options are %s and %s", flags.ContainerEngine, pkg.Docker, pkg.Podman))
+		return fmt.Errorf("invalid value for the flag --container-engine (%s). "+
+			"The valid options are %s and %s", flags.ContainerEngine, pkg.Docker, pkg.Podman)
 	}
 
 	return nil
