@@ -4,7 +4,7 @@
 ---
 # Audit
 
-**IMPORTANT** This project is a POC. Before running the reports, ensure that you have its latest version by running `git pull` and `git status`.
+**IMPORTANT** This project is a POC. Before running the reports, ensure that you have its latest version by running `git pull` and `git status` if your installing from the source.
 
 ## Overview
 
@@ -22,7 +22,7 @@ For further information about its motivation see the [EP Audit command operation
 
 ## Pre-requirements
 
-- go 1.16
+- go 1.16 (only if you would like to install from the source)
 - docker or podman
 - access to the registry where the index catalog and operator bundle images are distribute
 - access to a Kubernetes cluster
@@ -30,7 +30,11 @@ For further information about its motivation see the [EP Audit command operation
 
 **NOTE** that you can run the reports without SDK and the cluster running with by using the flag `--disable-scorecard`. That is only required for the scorecard results.  
 
-## Install
+## Install binary:
+
+Check the release binaries provided in the [release page](https://github.com/operator-framework/audit/releases).
+
+## Install from the source
 
 To get the project and install the binary:
 
@@ -173,3 +177,7 @@ If you see a column with this information than that means that the specific crit
 [scorecard-config]: https://github.com/operator-framework/operator-sdk/blob/v1.5.0/testdata/go/v3/memcached-operator/bundle/tests/scorecard/config.yaml
 [operator-sdk]: https://github.com/operator-framework/operator-sdk
 [audit-ep]: https://github.com/operator-framework/enhancements/blob/master/enhancements/audit-command.md
+
+### Release Process
+
+Only creates and push a new tag then, the github actions will build and add the artefacts in the release page. 
