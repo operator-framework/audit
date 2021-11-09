@@ -22,7 +22,7 @@ For further information about its motivation see the [EP Audit command operation
 
 ## Pre-requirements
 
-- go 1.16
+- go 1.16 (only if you would like to install from the source)
 - docker or podman
 - access to the registry where the index catalog and operator bundle images are distribute
 - access to a Kubernetes cluster
@@ -30,7 +30,11 @@ For further information about its motivation see the [EP Audit command operation
 
 **NOTE** that you can run the reports without SDK and the cluster running with by using the flag `--disable-scorecard`. That is only required for the scorecard results.  
 
-## Install
+## Install binary:
+
+Check the release binaries provided in the [release page](https://github.com/operator-framework/audit/releases).
+
+## Install from the source
 
 To get the project and install the binary:
 
