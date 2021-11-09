@@ -177,3 +177,7 @@ If you see a column with this information than that means that the specific crit
 [scorecard-config]: https://github.com/operator-framework/operator-sdk/blob/v1.5.0/testdata/go/v3/memcached-operator/bundle/tests/scorecard/config.yaml
 [operator-sdk]: https://github.com/operator-framework/operator-sdk
 [audit-ep]: https://github.com/operator-framework/enhancements/blob/master/enhancements/audit-command.md
+
+### Release Process
+
+Only creates and push a new tag then, the github actions will build and add the artefacts in the release page. 
