@@ -64,9 +64,8 @@ func NewCmd() *cobra.Command {
 
 	cmd.Flags().StringVar(&flags.Filter, "filter", "",
 		"filter by the packages names which are like *filter*")
-	cmd.Flags().StringVar(&flags.OutputFormat, "output", pkg.Xls,
-		fmt.Sprintf("inform the output format. [Options: %s, %s, %s]", pkg.JSON,
-			pkg.Xls, pkg.All))
+	cmd.Flags().StringVar(&flags.OutputFormat, "output", pkg.JSON,
+		fmt.Sprintf("inform the output format. [Options: %s]", pkg.JSON))
 	cmd.Flags().StringVar(&flags.OutputPath, "output-path", currentPath,
 		"inform the path of the directory to output the report. (Default: current directory)")
 	cmd.Flags().Int32Var(&flags.Limit, "limit", 0,
@@ -99,10 +98,9 @@ func validation(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("invalid value informed via the --limit flag :%v", flags.Limit)
 	}
 
-	if len(flags.OutputFormat) > 0 && flags.OutputFormat != pkg.JSON &&
-		flags.OutputFormat != pkg.Xls && flags.OutputFormat != pkg.All {
+	if len(flags.OutputFormat) > 0 && flags.OutputFormat != pkg.JSON {
 		return fmt.Errorf("invalid value informed via the --output flag :%v. "+
-			"The available options are: %s, %s and %s", flags.OutputFormat, pkg.JSON, pkg.Xls, pkg.All)
+			"The available option is: %s", flags.OutputFormat, pkg.JSON)
 	}
 
 	if len(flags.OutputPath) > 0 {
@@ -164,18 +162,19 @@ func run(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
+	log.Info("Gathering data...")
 	reportData, err = getDataFromIndexDB(reportData)
 	if err != nil {
 		return err
 	}
 
-	log.Infof("Start to generate the reportData")
+	log.Info("Generating output...")
 	if err := reportData.OutputReport(); err != nil {
 		return err
 	}
 
 	pkg.CleanupTemporaryDirs()
-	log.Infof("Operation completed.")
+	log.Info("Operation completed.")
 
 	return nil
 }
@@ -202,17 +201,13 @@ func getDataFromIndexDB(report index.Data) (index.Data, error) {
 		var bundleName string
 		var csv *string
 		var bundlePath string
-		var skipRange string
-		var version string
-		var replaces string
-		var skips string
 		var csvStruct *v1alpha1.ClusterServiceVersion
 
-		err = row.Scan(&bundleName, &csv, &bundlePath, &version, &skipRange, &replaces, &skips)
+		err = row.Scan(&bundleName, &csv, &bundlePath)
 		if err != nil {
 			log.Errorf("unable to scan data from index %s\n", err.Error())
 		}
-
+		log.Infof("Generating data from the bundle (%s)", bundleName)
 		auditBundle := models.NewAuditBundle(bundleName, bundlePath)
 
 		// the csv is pruned from the database to save space.
@@ -227,11 +222,6 @@ func getDataFromIndexDB(report index.Data) (index.Data, error) {
 					fmt.Errorf("unable to parse the csv from the index.db: %s", err).Error())
 			}
 		}
-
-		auditBundle.VersionDB = version
-		auditBundle.SkipRangeDB = skipRange
-		auditBundle.ReplacesDB = replaces
-		auditBundle.SkipsDB = skips
 
 		auditBundle = actions.GetDataFromBundleImage(auditBundle, report.Flags.DisableScorecard,
 			report.Flags.DisableValidators, report.Flags.ServerMode, report.Flags.Label,

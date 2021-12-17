@@ -15,6 +15,9 @@
 package custom
 
 import (
+	"strings"
+
+	"github.com/blang/semver/v4"
 	"github.com/operator-framework/audit/pkg"
 	"github.com/operator-framework/audit/pkg/reports/bundles"
 )
@@ -25,7 +28,7 @@ type OK struct {
 	Bundles         []string
 	Channels        []string
 	BundlesMigrated []string
-	AllBundles      []bundles.Column
+	AllBundles      []BundleDeprecate
 }
 
 type NotOK struct {
@@ -34,7 +37,7 @@ type NotOK struct {
 	Channels        []string
 	Bundles         []string
 	BundlesMigrated []string
-	AllBundles      []bundles.Column
+	AllBundles      []BundleDeprecate
 }
 
 type MaxDashReport struct {
@@ -56,19 +59,25 @@ func NewMaxDashReport(bundlesReport bundles.Report) *MaxDashReport {
 	apiDash.ImageBuild = bundlesReport.IndexImageInspect.Created
 	apiDash.GeneratedAt = bundlesReport.GenerateAt
 
-	mapPackagesWithBundles := MapBundlesPerPackage(bundlesReport)
+	var allBundles []BundleDeprecate
+	for _, v := range bundlesReport.Columns {
+		bd := BundleDeprecate{BundleData: v}
+		bd.AddDeprecateDataFromValidators()
+		allBundles = append(allBundles, bd)
+	}
+
+	mapPackagesWithBundles := MapBundlesPerPackage(allBundles)
 	isOK := mapPkgsComplyingMaxOcpVersion(mapPackagesWithBundles)
-	isNotOK := make(map[string][]bundles.Column)
+	isNotOK := make(map[string][]BundleDeprecate)
 	for key := range mapPackagesWithBundles {
 		if len(isOK[key]) == 0 {
 
 			// Filter the bundles to output only what is not OK to make
 			// easier the report conference
-			var notOKBundles []bundles.Column
+			var notOKBundles []BundleDeprecate
 			for _, b := range mapPackagesWithBundles[key] {
-				if b.KindsDeprecateAPIs != nil &&
-					b.KindsDeprecateAPIs[0] != pkg.Unknown &&
-					len(b.KindsDeprecateAPIs) > 0 && !pkg.IsMaxOCPVersionLowerThan49(b.MaxOCPVersion) {
+				if !b.BundleData.IsDeprecated && len(b.ApisRemoved1_22) > 0 &&
+					!isMaxOCPVersionLowerThan49(b.BundleData.MaxOCPVersion) {
 					notOKBundles = append(notOKBundles, b)
 				}
 			}
@@ -95,8 +104,8 @@ func NewMaxDashReport(bundlesReport bundles.Report) *MaxDashReport {
 // (Green) Complying
 // Return all pkgs that has all bundles using the removed APIs set with max ocp version
 func mapPkgsComplyingMaxOcpVersion(
-	mapPackagesWithBundles map[string][]bundles.Column) map[string][]bundles.Column {
-	complying := make(map[string][]bundles.Column)
+	mapPackagesWithBundles map[string][]BundleDeprecate) map[string][]BundleDeprecate {
+	complying := make(map[string][]BundleDeprecate)
 	for key, bundlesPerPkg := range mapPackagesWithBundles {
 		// has bundlesPerPkg that we cannot find the package
 		// some inconsistency in the index db.
@@ -112,14 +121,29 @@ func mapPkgsComplyingMaxOcpVersion(
 	return complying
 }
 
-func hasWrongMaxOcpVersion(bundlesPerPkg []bundles.Column) bool {
+func hasWrongMaxOcpVersion(bundlesPerPkg []BundleDeprecate) bool {
 	for _, v := range bundlesPerPkg {
-		if v.KindsDeprecateAPIs != nil &&
-			v.KindsDeprecateAPIs[0] != pkg.Unknown &&
-			len(v.KindsDeprecateAPIs) > 0 &&
-			!pkg.IsMaxOCPVersionLowerThan49(v.MaxOCPVersion) {
+		if !v.BundleData.IsDeprecated && len(v.ApisRemoved1_22) > 0 &&
+			!isMaxOCPVersionLowerThan49(v.BundleData.MaxOCPVersion) {
 			return true
 		}
 	}
 	return false
+}
+
+func isMaxOCPVersionLowerThan49(maxOCPVersion string) bool {
+	if len(maxOCPVersion) == 0 {
+		return false
+	}
+
+	maxOCPVersion = strings.ReplaceAll(maxOCPVersion, "\"", "")
+	semVerVersionMaxOcp, err := semver.ParseTolerant(maxOCPVersion)
+	if err != nil {
+		return false
+	}
+
+	// OCP version where the apis v1beta1 is no longer supported
+	const ocpVerV1beta1Unsupported = "4.9"
+	semVerOCPV1beta1Unsupported, _ := semver.ParseTolerant(ocpVerV1beta1Unsupported)
+	return !semVerVersionMaxOcp.GE(semVerOCPV1beta1Unsupported)
 }

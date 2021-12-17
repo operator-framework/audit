@@ -79,11 +79,13 @@ func main() {
 			if info != nil && !info.IsDir() && strings.HasSuffix(info.Name(), "html") {
 				var kind = "UNKNOWN"
 				if strings.Contains(info.Name(), "deprecate") {
-					kind = "Deprecated API(s) in 1.22/OCP 4.9"
+					kind = "Removed API(s) in 1.22/OCP 4.9"
 				} else if strings.Contains(info.Name(), "grade") {
 					kind = "Grade - Experimental"
 				} else if strings.Contains(info.Name(), "maxocp") {
 					kind = "Max OCP Version - Monitor"
+				} else if strings.Contains(info.Name(), "multiarch") {
+					kind = "Multi-Arch"
 				}
 				tagValue := "latest"
 				if strings.Contains(info.Name(), "v") {

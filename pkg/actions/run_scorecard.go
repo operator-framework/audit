@@ -33,7 +33,6 @@ import (
 
 const defaultSDKScorecardImageName = "quay.io/operator-framework/scorecard-test"
 const scorecardAnnotation = "operators.operatorframework.io.test.config.v1"
-const ocpLabelAnnotation = "com.redhat.openshift.versions"
 
 type BundleAnnotations struct {
 	Annotations map[string]string `yaml:"annotations,omitempty"`

@@ -52,7 +52,8 @@ func NewCmd() *cobra.Command {
 		"inform the path of the directory to output the report. (Default: current directory)")
 	cmd.Flags().StringVar(&custom.Flags.Template, "template", "",
 		"inform the path of the template that should be used. If not informed the default will be used")
-
+	cmd.Flags().StringVar(&custom.Flags.Filter, "filter", "",
+		"filter by the packages names which are like *filter*")
 	return cmd
 }
 
@@ -78,7 +79,7 @@ func run(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	apiDashReport := custom.NewGradeReport(bundlesReport)
+	apiDashReport := custom.NewGradeReport(bundlesReport, custom.Flags.Filter)
 
 	dashOutputPath := filepath.Join(custom.Flags.OutputPath,
 		pkg.GetReportName(apiDashReport.ImageName, "grade", "html"))

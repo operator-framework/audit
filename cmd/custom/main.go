@@ -16,6 +16,7 @@ package custom
 
 import (
 	"github.com/operator-framework/audit/cmd/custom/maxocp"
+	"github.com/operator-framework/audit/cmd/custom/multiarch"
 	"github.com/spf13/cobra"
 
 	"github.com/operator-framework/audit/cmd/custom/deprecate"
@@ -32,6 +33,7 @@ func NewCmd() *cobra.Command {
 		deprecate.NewCmd(),
 		grade.NewCmd(),
 		maxocp.NewCmd(),
+		multiarch.NewCmd(),
 	)
 
 	return indexCmd

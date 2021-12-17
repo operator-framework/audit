@@ -18,8 +18,6 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/operator-framework/audit/cmd/index/bundles"
-	"github.com/operator-framework/audit/cmd/index/channels"
-	"github.com/operator-framework/audit/cmd/index/packages"
 )
 
 func NewCmd() *cobra.Command {
@@ -31,8 +29,6 @@ func NewCmd() *cobra.Command {
 
 	indexCmd.AddCommand(
 		bundles.NewCmd(),
-		packages.NewCmd(),
-		channels.NewCmd(),
 	)
 
 	return indexCmd

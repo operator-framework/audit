@@ -88,7 +88,7 @@ generate-samples: install
 	go run ./hack/samples/generate_samples.go
 
 .PHONY: generate-testdata ## Generate the full testdata directory
-generate-testdata:
+generate-testdata: install
 	$(CONTAINER_ENGINE) login https://registry.redhat.io
 	make generate-samples
 	go run ./hack/report/bundles/generate.go
@@ -99,24 +99,11 @@ generate-dashboards:
 	go run ./hack/deprecate-api/generate.go
 	go run ./hack/maxocpversion/generate.go
 	go run ./hack/grade/generate.go
+	go run ./hack/muiltarch/generate.go
 	go run ./hack/index/generate.go
-
-## todo: remove after 4.9-GA
-## @Helpers - Deprecated implementations
-
-.PHONY: generate-helpers ## run all reports that we are using to gathering the data to help out
-generate-helpers:
-	go run ./hack/scripts/generate_helpers.go
 
 .PHONY: generate-all ## Generate all testdata with the helpers which are only valid to address special needs to 4.9-GA
 generate-all:
 	make generate-testdata
 	make generate-dashboards
-	make generate-helpers
 
-.PHONY: generate-49-only ## Generate all testdata for 4.9 index only and without scorecard test. Then, it means that this info in the grade reports will not be valid and cannot be used. It is helpful for we have fast the results over 4.9 images and what should be deprecated or not
-generate-49-only: install
-	$(CONTAINER_ENGINE) login https://registry.redhat.io
-	go run ./hack/scripts/report/bundles/generate-4.9.go
-	make generate-dashboards
-	make generate-helpers
