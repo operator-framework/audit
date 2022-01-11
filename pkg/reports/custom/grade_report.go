@@ -158,7 +158,8 @@ func NewGradeReport(bundlesReport bundles.Report, filter string) *GradeReport {
 	}
 
 	mapPackagesWithBundles := MapBundlesPerPackage(allBundles)
-	migrated := MapPkgsComplyingWithDeprecateAPI122(mapPackagesWithBundles)
+	//todo: fix to check 1.25 and 1.26 as well
+	migrated := MapPkgsComplyingWithDeprecateAPI(mapPackagesWithBundles, "1.22")
 	notMigrated := make(map[string][]BundleDeprecate)
 	for key := range mapPackagesWithBundles {
 		if len(migrated[key]) == 0 {

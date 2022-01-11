@@ -26,6 +26,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/blang/semver/v4"
+
 	log "github.com/sirupsen/logrus"
 )
 
@@ -270,4 +272,69 @@ func GetContainerToolFromEnvVar() string {
 		return value
 	}
 	return DefaultContainerTool
+}
+
+// RangeContainsVersion expected the range and the targetVersion version and returns true
+// when the targetVersion version contains in the range
+func RangeContainsVersion(r string, v string, tolerantParse bool) (bool, error) {
+	if len(r) == 0 {
+		return false, errors.New("range is empty")
+	}
+	if len(v) == 0 {
+		return false, errors.New("version is empty")
+	}
+
+	v = strings.TrimPrefix(v, "v")
+	compV, err := semver.Parse(v + ".0")
+	if err != nil {
+		splitTarget := strings.Split(v, ".")
+		if tolerantParse {
+			compV, err = semver.Parse(splitTarget[0] + "." + splitTarget[1] + ".0")
+			if err != nil {
+				return false, fmt.Errorf("invalid truncated version %q: %t", compV, err)
+			}
+		} else {
+			return false, fmt.Errorf("invalid version %q: %t", v, err)
+		}
+	}
+
+	// special legacy cases
+	if r == "v4.5,v4.6" || r == "v4.6,v4.5" {
+		semverRange := semver.MustParseRange(">=4.5.0")
+		return semverRange(compV), nil
+	}
+
+	var semverRange semver.Range
+	rs := strings.SplitN(r, "-", 2)
+	switch len(rs) {
+	case 1:
+		// Range specify exact version
+		if strings.HasPrefix(r, "=") {
+			trimmed := strings.TrimPrefix(r, "=v")
+			semverRange, err = semver.ParseRange(fmt.Sprintf("%s.0", trimmed))
+		} else {
+			trimmed := strings.TrimPrefix(r, "v")
+			// Range specifies minimum version
+			semverRange, err = semver.ParseRange(fmt.Sprintf(">=%s.0", trimmed))
+		}
+		if err != nil {
+			return false, fmt.Errorf("invalid range %q: %v", r, err)
+		}
+	case 2:
+		min := rs[0]
+		max := rs[1]
+		if strings.HasPrefix(min, "=") || strings.HasPrefix(max, "=") {
+			return false, fmt.Errorf("invalid range %q: cannot use equal prefix with range", r)
+		}
+		min = strings.TrimPrefix(min, "v")
+		max = strings.TrimPrefix(max, "v")
+		semverRangeStr := fmt.Sprintf(">=%s.0 <=%s.0", min, max)
+		semverRange, err = semver.ParseRange(semverRangeStr)
+		if err != nil {
+			return false, fmt.Errorf("invalid range %q: %v", r, err)
+		}
+	default:
+		return false, fmt.Errorf("invalid range %q", r)
+	}
+	return semverRange(compV), nil
 }

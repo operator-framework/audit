@@ -86,7 +86,7 @@ func NewMaxDashReport(bundlesReport bundles.Report) *MaxDashReport {
 	}
 
 	for k, bundles := range isNotOK {
-		kinds, channels, bundlesNotMigrated, bundlesMigrated := getReportValues(bundles)
+		kinds, channels, bundlesNotMigrated, bundlesMigrated := getReportValues(bundles, "1.22")
 		apiDash.NotOK = append(apiDash.NotOK, NotOK{
 			Name:            k,
 			Kinds:           pkg.GetUniqueValues(kinds),

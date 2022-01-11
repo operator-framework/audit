@@ -16,6 +16,7 @@ package custom
 
 import (
 	"encoding/json"
+	"strings"
 
 	"github.com/blang/semver/v4"
 	"github.com/operator-framework/audit/pkg"
@@ -33,6 +34,29 @@ func ParseBundlesJSONReport() (bundles.Report, error) {
 		return bundles.Report{}, err
 	}
 	return bundlesReport, err
+}
+
+// ParseBundlesJSONReport parse the JSON result from the audit-tool index bundle report and return its structure
+func ParseMultiBundlesJSONReport() ([]bundles.Report, error) {
+
+	allFiles := strings.Split(Flags.Files, ";")
+	var all []bundles.Report
+	for _, file := range allFiles {
+		if len(file) == 0 {
+			continue
+		}
+		byteValue, err := pkg.ReadFile(file)
+		if err != nil {
+			return all, err
+		}
+		var bundlesReport bundles.Report
+		if err = json.Unmarshal(byteValue, &bundlesReport); err != nil {
+			return all, err
+		}
+		all = append(all, bundlesReport)
+	}
+
+	return all, nil
 }
 
 // GetMaxOCPValue returns the Max OCP annotation find on the bundle or an string not set to define

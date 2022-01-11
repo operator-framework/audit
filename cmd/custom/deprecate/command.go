@@ -15,6 +15,7 @@
 package deprecate
 
 import (
+	"fmt"
 	"html/template"
 	"os"
 	"path/filepath"
@@ -28,9 +29,11 @@ import (
 
 func NewCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "deprecate-apis",
-		Short: "generates a custom report based on defined criteria over the deprecated apis scenario for 1.22",
-		Long: "use this command with the result of `audit index bundles [OPTIONS]` to check a dashboard in HTML format " +
+		Use: "deprecate-apis",
+		Short: "generates a custom report based on defined criteria over the " +
+			"deprecated apis scenario for 1.22 by default or the version informed",
+		Long: "use this command with the result of `audit index bundles [OPTIONS]` " +
+			"to check a dashboard in HTML format " +
 			"with the packages data",
 		PreRunE: validation,
 		RunE:    run,
@@ -51,6 +54,12 @@ func NewCmd() *cobra.Command {
 		"inform the path of the directory to output the report. (Default: current directory)")
 	cmd.Flags().StringVar(&custom.Flags.Template, "template", "",
 		"inform the path of the template that should be used. If not informed the default will be used")
+	optionalValueEmpty := map[string]string{}
+	cmd.Flags().StringToStringVarP(&custom.Flags.OptionalValues, "optional-values", "", optionalValueEmpty,
+		"Inform a []string map of key=values which can be used by the report. e.g. to check the usage of deprecated APIs "+
+			"against an Kubernetes version that it is intended to be distributed use `--optional-values=k8s-version=1.22`")
+	cmd.Flags().StringVar(&custom.Flags.Filter, "filter", "",
+		"filter by the packages names which are like *filter*")
 	return cmd
 }
 
@@ -76,10 +85,10 @@ func run(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	apiDashReport := custom.NewAPIDashReport(bundlesReport)
+	apiDashReport := custom.NewAPIDashReport(bundlesReport, custom.Flags.OptionalValues, custom.Flags.Filter)
 
 	dashOutputPath := filepath.Join(custom.Flags.OutputPath,
-		pkg.GetReportName(apiDashReport.ImageName, "deprecate-apis", "html"))
+		pkg.GetReportName(apiDashReport.ImageName, fmt.Sprintf("deprecate-apis-%s", apiDashReport.K8SVersion), "html"))
 
 	f, err := os.Create(dashOutputPath)
 	if err != nil {

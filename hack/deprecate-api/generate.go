@@ -81,6 +81,33 @@ func main() {
 				if _, errC := pkg.RunCommand(command); errC != nil {
 					log.Errorf("running command :%s", errC)
 				}
+
+				// Ignore the tag images 4.9 and OperatorHub
+				if strings.Contains(info.Name(), "v4.9") ||
+					strings.Contains(info.Name(), "v4.10") ||
+					strings.Contains(info.Name(), "operatorhubio") {
+
+					// run report
+					command = exec.Command(binPath, "dashboard", "deprecate-apis",
+						fmt.Sprintf("--file=%s", path),
+						fmt.Sprintf("--output-path=%s", dashboardPath),
+						"--optional-values=k8s-version=1.25",
+					)
+					if _, errC := pkg.RunCommand(command); errC != nil {
+						log.Errorf("running command :%s", errC)
+					}
+
+					// run report
+					command = exec.Command(binPath, "dashboard", "deprecate-apis",
+						fmt.Sprintf("--file=%s", path),
+						fmt.Sprintf("--output-path=%s", dashboardPath),
+						"--optional-values=k8s-version=1.26",
+					)
+					if _, errC := pkg.RunCommand(command); errC != nil {
+						log.Errorf("running command :%s", errC)
+					}
+				}
+
 			}
 			return nil
 		})

@@ -17,6 +17,8 @@ package custom
 import (
 	"strings"
 
+	"github.com/operator-framework/api/pkg/operators/v1alpha1"
+
 	"github.com/operator-framework/audit/pkg/reports/bundles"
 )
 
@@ -26,49 +28,77 @@ type BundleDeprecate struct {
 	ApisRemoved1_22   []string
 	ApisRemoved1_25   []string
 	ApisRemoved1_26   []string
+	Permissions1_25   []string
+	Permissions1_26   []string
 }
 
 // (Green) Complying
 // If is not using deprecated API(s) at all in the head channels
 // If has at least one channel head which is compatible with 4.9 (migrated)
 // and the other head channels are with max ocp version
-func MapPkgsComplyingWithDeprecateAPI122(
-	mapPackagesWithBundles map[string][]BundleDeprecate) map[string][]BundleDeprecate {
+func MapPkgsComplyingWithDeprecateAPI(
+	mapPackagesWithBundles map[string][]BundleDeprecate, k8sVersion string) map[string][]BundleDeprecate {
 	complying := make(map[string][]BundleDeprecate)
 	for key, bundlesPerPkg := range mapPackagesWithBundles {
 		// has bundlesPerPkg that we cannot find the package
 		// some inconsistency in the index db.
 		// So, this scenario can only be added to the complying if all is migrated
 		if key == "" {
-			if !hasNotMigrated1_22(bundlesPerPkg) {
+			if !hasNotMigratedAPIFor(bundlesPerPkg, k8sVersion) {
 				complying[key] = mapPackagesWithBundles[key]
 			}
 			continue
 		}
 
-		if hasHeadOfChannelMigrated1_22(bundlesPerPkg) {
+		if hasHeadOfChannelMigratedAPIFor(bundlesPerPkg, k8sVersion) {
 			complying[key] = mapPackagesWithBundles[key]
 		}
 	}
 	return complying
 }
 
-func hasNotMigrated1_22(bundlesPerPkg []BundleDeprecate) bool {
+func hasNotMigratedAPIFor(bundlesPerPkg []BundleDeprecate, k8sVersion string) bool {
 	foundNotMigrated := false
 	for _, v := range bundlesPerPkg {
-		if len(v.ApisRemoved1_22) > 0 && !v.BundleData.IsDeprecated {
-			foundNotMigrated = true
-			break
+		switch k8sVersion {
+		case "1.26":
+			if len(v.ApisRemoved1_26) > 0 && !v.BundleData.IsDeprecated {
+				foundNotMigrated = true
+				break
+			}
+		case "1.25":
+			if len(v.ApisRemoved1_25) > 0 && !v.BundleData.IsDeprecated {
+				foundNotMigrated = true
+				break
+			}
+		default:
+			if len(v.ApisRemoved1_22) > 0 && !v.BundleData.IsDeprecated {
+				foundNotMigrated = true
+				break
+			}
 		}
 	}
 	return foundNotMigrated
 }
 
-func hasHeadOfChannelMigrated1_22(bundlesPerPkg []BundleDeprecate) bool {
+func hasHeadOfChannelMigratedAPIFor(bundlesPerPkg []BundleDeprecate, k8sversion string) bool {
 	for _, v := range bundlesPerPkg {
-		if (v.ApisRemoved1_22 == nil || len(v.ApisRemoved1_22) < 1) &&
-			v.BundleData.IsHeadOfChannel && !v.BundleData.IsDeprecated {
-			return true
+		switch k8sversion {
+		case k8s126:
+			if (v.ApisRemoved1_26 == nil || len(v.ApisRemoved1_26) < 1) &&
+				v.BundleData.IsHeadOfChannel && !v.BundleData.IsDeprecated {
+				return true
+			}
+		case k8s125:
+			if (v.ApisRemoved1_25 == nil || len(v.ApisRemoved1_25) < 1) &&
+				v.BundleData.IsHeadOfChannel && !v.BundleData.IsDeprecated {
+				return true
+			}
+		default:
+			if (v.ApisRemoved1_22 == nil || len(v.ApisRemoved1_22) < 1) &&
+				v.BundleData.IsHeadOfChannel && !v.BundleData.IsDeprecated {
+				return true
+			}
 		}
 	}
 	return false
@@ -80,6 +110,78 @@ func (bd *BundleDeprecate) AddDeprecateDataFromValidators() {
 	}
 	for _, result := range bd.BundleData.ValidatorWarnings {
 		bd.setDeprecateMsg(result)
+	}
+}
+
+func (bd *BundleDeprecate) AddPotentialWarning() {
+
+	if bd == nil || bd.BundleData.BundleCSV == nil {
+		return
+	}
+
+	// We need looking for clusterPermissions and permissions
+	apis125 := map[string][]string{
+		"batch":            {"CronJob"},
+		"discovery.k8s.io": {"EndpointSlice"},
+		"events.k8s.io":    {"events"},
+		"autoscaling":      {"HorizontalPodAutoscaler"},
+		"policy":           {"PodDisruptionBudget", "PodSecurityPolicy"},
+		"node.k8s.io":      {"RuntimeClass"},
+	}
+
+	apis126 := map[string][]string{
+		"flowcontrol.apiserver.k8s.io": {"FlowSchema", "PriorityLevelConfiguration"},
+		"autoscaling":                  {"HorizontalPodAutoscaler"},
+	}
+
+	for _, perm := range bd.BundleData.BundleCSV.Spec.InstallStrategy.StrategySpec.Permissions {
+		bd.addFromRules(perm, apis125, apis126)
+	}
+
+	for _, perm := range bd.BundleData.BundleCSV.Spec.InstallStrategy.StrategySpec.ClusterPermissions {
+		bd.addFromRules(perm, apis125, apis126)
+	}
+}
+
+func (bd *BundleDeprecate) addFromRules(perm v1alpha1.StrategyDeploymentPermissions,
+	apis125 map[string][]string, apis126 map[string][]string) {
+	if perm.Rules == nil {
+		return
+	}
+	for _, rule := range perm.Rules {
+		for _, api := range rule.APIGroups {
+			if api == "" || api == "*" {
+				for _, res := range rule.Resources {
+					for _, resources := range apis125 {
+						for _, value := range resources {
+							if strings.Contains(strings.ToLower(res), strings.ToLower(value)) {
+								bd.Permissions1_25 = append(bd.Permissions1_25, value)
+							}
+						}
+					}
+
+					for _, resources := range apis126 {
+						for _, value := range resources {
+							if strings.Contains(strings.ToLower(res), strings.ToLower(value)) {
+								bd.Permissions1_26 = append(bd.Permissions1_26, value)
+							}
+						}
+					}
+				}
+			}
+
+			for apiMap := range apis125 {
+				if strings.Contains(strings.ToLower(api), strings.ToLower(apiMap)) {
+					bd.Permissions1_25 = append(bd.Permissions1_25, apiMap)
+				}
+			}
+
+			for apiMap := range apis126 {
+				if strings.Contains(strings.ToLower(api), strings.ToLower(apiMap)) {
+					bd.Permissions1_26 = append(bd.Permissions1_26, apiMap)
+				}
+			}
+		}
 	}
 }
 
