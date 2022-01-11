@@ -16,9 +16,10 @@ package custom
 
 // BindFlags define the Flags used to generate the bundle report
 type BindFlags struct {
-	File       string `json:"file"`
-	Template   string `json:"template"`
-	OutputPath string `json:"outputPath"`
+	File       string `json:"file,omitempty"`
+	Template   string `json:"template,omitempty"`
+	OutputPath string `json:"outputPath,omitempty"`
+	Filter     string `json:"filter,omitempty"`
 }
 
 var Flags = BindFlags{}

@@ -212,11 +212,11 @@
                                       {{ with .HeadOfChannels }}
                                        {{ range . }}
                                        </br>
-                                       <p>For {{ .BundleName }}: <p>
-                                      {{ range .ScorecardErrors }}
+                                       <p>For {{ .BundleData.BundleCSV.ObjectMeta.Name }}: <p>
+                                      {{ range .BundleData.ScorecardErrors }}
                                           <li style="color: red"> "ERROR" {{ . }}</li>
                                       {{ end }}
-                                      {{ range .ScorecardSuggestions }}
+                                      {{ range .BundleData.ScorecardSuggestions }}
                                           <li style="color: orange"> "WARNING" {{ . }}</li>
                                       {{ end }}
                                       {{ end }}
@@ -243,11 +243,11 @@
                                       {{ with .HeadOfChannels }}
                                       {{ range . }}
                                       </br>
-                                      <p>For {{ .BundleName }}: <p>
-                                      {{ range .ValidatorErrors }}
+                                      <p>For {{ .BundleData.BundleCSV.ObjectMeta.Name }}: <p>
+                                      {{ range .BundleData.ValidatorErrors }}
                                           <li style="color: red"> "ERROR" {{ . }}</li>
                                       {{ end }}
-                                      {{ range .ValidatorWarnings }}
+                                      {{ range .BundleData.ValidatorWarnings }}
                                           <li style="color: orange"> "WARNING" {{ . }}</li>
                                       {{ end }}
                                       {{ end }}

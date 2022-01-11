@@ -31,7 +31,7 @@ import (
 type Data struct {
 	AuditBundle       []models.AuditBundle
 	Flags             BindFlags
-	IndexImageInspect pkg.DockerInspectManifest
+	IndexImageInspect pkg.DockerInspect
 }
 
 func (d *Data) PrepareReport() Report {
@@ -93,22 +93,9 @@ func (d *Data) fixPackageNameInconsistency() {
 }
 
 func (d *Data) OutputReport() error {
-
 	report := d.PrepareReport()
-
 	switch d.Flags.OutputFormat {
-	case pkg.Xls:
-		if err := report.writeXls(); err != nil {
-			return err
-		}
 	case pkg.JSON:
-		if err := report.writeJSON(); err != nil {
-			return err
-		}
-	case pkg.All:
-		if err := report.writeXls(); err != nil {
-			return err
-		}
 		if err := report.writeJSON(); err != nil {
 			return err
 		}
@@ -119,11 +106,11 @@ func (d *Data) OutputReport() error {
 }
 
 func (d *Data) BuildBundlesQuery() (string, error) {
-	query := sq.Select("o.name, o.csv, o.bundlepath, o.version, o.skiprange, o.replaces, o.skips").From(
+	query := sq.Select("o.name, o.csv, o.bundlepath").From(
 		"operatorbundle o")
 
 	if d.Flags.HeadOnly {
-		query = sq.Select("o.name, o.csv, o.bundlepath, o.version, o.skiprange, o.replaces, o.skips").From(
+		query = sq.Select("o.name, o.csv, o.bundlepath").From(
 			"operatorbundle o, channel c")
 		query = query.Where("c.head_operatorbundle_name == o.name")
 	}
@@ -131,7 +118,7 @@ func (d *Data) BuildBundlesQuery() (string, error) {
 		query = query.Limit(uint64(d.Flags.Limit))
 	}
 	if len(d.Flags.Filter) > 0 {
-		query = sq.Select("o.name, o.csv, o.bundlepath, o.version, o.skiprange, o.replaces, o.skips").From(
+		query = sq.Select("o.name, o.csv, o.bundlepath").From(
 			"operatorbundle o, channel_entry c")
 		like := "'%" + d.Flags.Filter + "%'"
 		query = query.Where(fmt.Sprintf("c.operatorbundle_name == o.name AND c.package_name like %s", like))

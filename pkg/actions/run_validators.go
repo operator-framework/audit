@@ -15,21 +15,30 @@
 package actions
 
 import (
+	"path/filepath"
+
 	apivalidation "github.com/operator-framework/api/pkg/validation"
 	"github.com/operator-framework/api/pkg/validation/errors"
 	"github.com/operator-framework/audit/pkg/models"
+	ocp "github.com/redhat-openshift-ecosystem/ocp-olm-catalog-validator/pkg/validation"
 )
 
-func RunValidators(auditBundle *models.AuditBundle) *models.AuditBundle {
+func RunValidators(bundlePath string, auditBundle *models.AuditBundle) *models.AuditBundle {
+	checkBundleAgainstCommonCriteria(auditBundle)
+	fromOCPValidator(auditBundle, bundlePath)
+	return auditBundle
+}
+
+// checkBundleAgainstCommonCriteria will check the bundle against the criteria defined in the
+// https://github.com/operator-framework/api
+func checkBundleAgainstCommonCriteria(auditBundle *models.AuditBundle) {
 	validators := apivalidation.DefaultBundleValidators
 	validators = validators.WithValidators(apivalidation.OperatorHubValidator)
 	validators = validators.WithValidators(apivalidation.ObjectValidator)
-	// todo: check how can we call the community validator since it will make all bundles
-	// shipped previously fail
-	// validators = validators.WithValidators(apivalidation.CommunityOperatorValidator)
+	validators = validators.WithValidators(apivalidation.AlphaDeprecatedAPIsValidator)
+	validators = validators.WithValidators(apivalidation.GoodPracticesValidator)
 
 	objs := auditBundle.Bundle.ObjectsToValidate()
-
 	results := validators.Validate(objs...)
 	nonEmptyResults := []errors.ManifestResult{}
 
@@ -39,6 +48,33 @@ func RunValidators(auditBundle *models.AuditBundle) *models.AuditBundle {
 		}
 	}
 
-	auditBundle.ValidatorsResults = nonEmptyResults
-	return auditBundle
+	auditBundle.ValidatorsResults = append(auditBundle.ValidatorsResults, nonEmptyResults...)
+}
+
+// checkBundleAgainstCommonCriteria will check the bundle against the criteria defined in the
+// https://github.com/redhat-openshift-ecosystem/ocp-olm-catalog-validator which is OCP
+// specific
+func fromOCPValidator(auditBundle *models.AuditBundle, bundlePath string) {
+	validators := ocp.OpenShiftValidator
+	objs := auditBundle.Bundle.ObjectsToValidate()
+
+	nonEmptyResults := []errors.ManifestResult{}
+
+	annotationsPath := filepath.Join(bundlePath, "/metadata/annotations.yaml")
+
+	// Pass the --optional-values. e.g. --optional-values="k8s-version=1.22"
+	// or --optional-values="image-path=bundle.Dockerfile"
+	var optionalValues = map[string]string{
+		"file": annotationsPath,
+	}
+	objs = append(objs, optionalValues)
+	results := validators.Validate(objs...)
+
+	for _, result := range results {
+		if result.HasError() || result.HasWarn() {
+			nonEmptyResults = append(nonEmptyResults, result)
+		}
+	}
+
+	auditBundle.ValidatorsResults = append(auditBundle.ValidatorsResults, nonEmptyResults...)
 }

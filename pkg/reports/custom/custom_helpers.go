@@ -17,7 +17,7 @@ package custom
 import (
 	"encoding/json"
 
-	"github.com/blang/semver"
+	"github.com/blang/semver/v4"
 	"github.com/operator-framework/audit/pkg"
 	"github.com/operator-framework/audit/pkg/reports/bundles"
 )
@@ -46,34 +46,21 @@ func GetMaxOCPValue(b bundles.Column) string {
 }
 
 // GetTheLatestBundleVersion returns the latest/upper semversion
-func GetTheLatestBundleVersion(bundlesFromChannel []bundles.Column) string {
-	var latestVersion string
+func GetTheLatestBundleVersion(bundlesFromChannel []BundleDeprecate) string {
+	latestVersion, _ := semver.ParseTolerant("0.0.0")
 	for _, v := range bundlesFromChannel {
-		bundleVersionSemVer, _ := semver.ParseTolerant(v.BundleVersion)
-		latestVersionSemVer, _ := semver.ParseTolerant(latestVersion)
-		if bundleVersionSemVer.GT(latestVersionSemVer) {
-			latestVersion = v.BundleVersion
+		if v.BundleData.BundleCSV.Spec.Version.Version.GT(latestVersion) {
+			latestVersion = v.BundleData.BundleCSV.Spec.Version.Version
 		}
 	}
-	return latestVersion
-}
-
-// GetHeadOfChannelState returns the qtd. of head of channels which are OK and configured with max ocp version
-func GetHeadOfChannelState(headOfChannels []bundles.Column) bool {
-	for _, v := range headOfChannels {
-		// In this case has a valid path
-		if len(v.KindsDeprecateAPIs) == 0 && !v.IsDeprecated {
-			return true
-		}
-	}
-	return false
+	return latestVersion.String()
 }
 
 // BuildMapBundlesPerChannels returns a map of bundles per packages
-func BuildMapBundlesPerChannels(bundlesPerPkg []bundles.Column) map[string][]bundles.Column {
-	bundlesPerChannels := make(map[string][]bundles.Column)
+func BuildMapBundlesPerChannels(bundlesPerPkg []BundleDeprecate) map[string][]BundleDeprecate {
+	bundlesPerChannels := make(map[string][]BundleDeprecate)
 	for _, b := range bundlesPerPkg {
-		for _, c := range b.Channels {
+		for _, c := range b.BundleData.Channels {
 			bundlesPerChannels[c] = append(bundlesPerChannels[c], b)
 		}
 	}
@@ -81,19 +68,19 @@ func BuildMapBundlesPerChannels(bundlesPerPkg []bundles.Column) map[string][]bun
 }
 
 // MapBundlesPerPackage returns map with all bundles found per pkg name
-func MapBundlesPerPackage(bundlesReport bundles.Report) map[string][]bundles.Column {
-	mapPackagesWithBundles := make(map[string][]bundles.Column)
-	for _, v := range bundlesReport.Columns {
-		mapPackagesWithBundles[v.PackageName] = append(mapPackagesWithBundles[v.PackageName], v)
+func MapBundlesPerPackage(bundlesReport []BundleDeprecate) map[string][]BundleDeprecate {
+	mapPackagesWithBundles := make(map[string][]BundleDeprecate)
+	for _, v := range bundlesReport {
+		mapPackagesWithBundles[v.BundleData.PackageName] = append(mapPackagesWithBundles[v.BundleData.PackageName], v)
 	}
 	return mapPackagesWithBundles
 }
 
-func GetHeadOfChannels(bundlesOfPackage []bundles.Column) []bundles.Column {
-	var headOfChannels []bundles.Column
+func GetHeadOfChannels(bundlesOfPackage []BundleDeprecate) []BundleDeprecate {
+	var headOfChannels []BundleDeprecate
 	qtdHeads := 0
 	for _, v := range bundlesOfPackage {
-		if v.IsHeadOfChannel {
+		if v.BundleData.IsHeadOfChannel {
 			qtdHeads++
 			headOfChannels = append(headOfChannels, v)
 		}
@@ -111,12 +98,12 @@ func GetHeadOfChannels(bundlesOfPackage []bundles.Column) []bundles.Column {
 }
 
 // GetQtLatestVersionChannelsState returns the qtd. of channels which are OK and configured with max ocp version
-func GetLatestBundlesVersions(bundlesPerChannels map[string][]bundles.Column) []bundles.Column {
-	var latestBundlesVersionsPerChannel []bundles.Column
+func GetLatestBundlesVersions(bundlesPerChannels map[string][]BundleDeprecate) []BundleDeprecate {
+	var latestBundlesVersionsPerChannel []BundleDeprecate
 	for _, bundlesFromChannel := range bundlesPerChannels {
 		latest := GetTheLatestBundleVersion(bundlesFromChannel)
 		for _, bd := range bundlesFromChannel {
-			if bd.BundleVersion == latest {
+			if bd.BundleData.BundleCSV.Spec.Version.String() == latest {
 				latestBundlesVersionsPerChannel = append(latestBundlesVersionsPerChannel, bd)
 				continue
 			}

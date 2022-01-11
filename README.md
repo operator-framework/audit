@@ -12,12 +12,6 @@ The audit is an **experimental** analytic tool which uses the Operator Framework
 
 Note that the latest version of the reports generated for all images can be checked in [testdata/report](testdata/reports). The file names are create by using the kind/type of the report, image name and date. (E.g. `testdata/report/bundles_quay.io_operatorhubio_catalog_latest_2021-04-22.xlsx`).
 
-### Goals
-
-- Be able to audit and gathering aspects all bundles, packages and channel of an OLM index catalog and output a report
-- Be able to extract a report with the audit results and in some formats such as json. 
-- Be able to perform validations and analyses in the index catalog for the bundle and catalog level.
-
 For further information about its motivation see the [EP Audit command operation][audit-ep]. 
 
 ## Pre-requirements
@@ -66,25 +60,9 @@ export CONTAINER_ENGINE=podman
 Now, you can audit all operator bundles of an image catalog with: 
 
 ```sh 
-audit-tool index bundles --index-image=registry.redhat.io/redhat/redhat-operator-index:v4.7 --head-only --output-path=testdata/xls
+audit-tool index bundles --index-image=registry.redhat.io/redhat/redhat-operator-index:v4.7 --head-only 
 ```
 
-Now, you can audit all packages of an image catalog with: 
-
-```sh 
-audit-tool index packages --index-image=registry.redhat.io/redhat/redhat-operator-index:v4.7 --output-path=testdata/xls
-```
-
-Note that you can also output the results in JSON format:
-
-```sh 
-audit-tool index bundles \
-    --index-image=registry.redhat.io/redhat/redhat-operator-index:v4.7 \
-    --limit=3 \
-    --head-only \
-    --output=json \  
-    --output-path=testdata/json
-``` 
 
 ### Options
 
@@ -110,7 +88,7 @@ Flags:
 See that you can use the `--filter` --flag to filter the results by the package name:
 
 ```sh
-audit-tool index [bundles|packages|channels] --index-image=registry.redhat.io/redhat/redhat-operator-index:v4.5 --filter="mypackagename"
+audit-tool index [bundles] --index-image=registry.redhat.io/redhat/redhat-operator-index:v4.5 --filter="mypackagename"
 ```
 
 ### Option to run in dedicated environments
@@ -125,8 +103,6 @@ Also, ensure that you have enough space to store all images. Note that the defau
 | Report Type | Command | Description |
 | ------ | ----- |  ------ |
 | bundles | `audit index bundle --index-image [OPTIONS]` | Audit all Bundles |
-| packages | `audit index packages --index-image [OPTIONS]` | Audit all Packages |
-| channels | `audit index channels --index-image [OPTIONS]` | Audit all Channels |
 
 ## Testdata
 

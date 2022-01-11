@@ -22,13 +22,15 @@ import (
 	"github.com/operator-framework/audit/pkg/reports/bundles"
 )
 
+const OCPLabel = "com.redhat.openshift.versions"
+
 type Migrated struct {
 	Name            string
 	Kinds           []string
 	Bundles         []string
 	Channels        []string
 	BundlesMigrated []string
-	AllBundles      []bundles.Column
+	AllBundles      []BundleDeprecate
 }
 
 type NotMigrated struct {
@@ -37,7 +39,7 @@ type NotMigrated struct {
 	Channels        []string
 	Bundles         []string
 	BundlesMigrated []string
-	AllBundles      []bundles.Column
+	AllBundles      []BundleDeprecate
 }
 
 type APIDashReport struct {
@@ -59,9 +61,16 @@ func NewAPIDashReport(bundlesReport bundles.Report) *APIDashReport {
 	apiDash.ImageBuild = bundlesReport.IndexImageInspect.Created
 	apiDash.GeneratedAt = bundlesReport.GenerateAt
 
-	mapPackagesWithBundles := MapBundlesPerPackage(bundlesReport)
+	var allBundles []BundleDeprecate
+	for _, v := range bundlesReport.Columns {
+		bd := BundleDeprecate{BundleData: v}
+		bd.AddDeprecateDataFromValidators()
+		allBundles = append(allBundles, bd)
+	}
+
+	mapPackagesWithBundles := MapBundlesPerPackage(allBundles)
 	migrated := MapPkgsComplyingWithDeprecateAPI122(mapPackagesWithBundles)
-	notMigrated := make(map[string][]bundles.Column)
+	notMigrated := make(map[string][]BundleDeprecate)
 	for key := range mapPackagesWithBundles {
 		if len(migrated[key]) == 0 {
 			notMigrated[key] = mapPackagesWithBundles[key]
@@ -96,22 +105,25 @@ func NewAPIDashReport(bundlesReport bundles.Report) *APIDashReport {
 
 }
 
-func getReportValues(bundles []bundles.Column) ([]string, []string, []string, []string) {
-	var kinds []string
+func getReportValues(bundles []BundleDeprecate) ([]string, []string, []string, []string) {
+	var mgs1_22 []string
 	var channels []string
 	for _, b := range bundles {
-		kinds = append(kinds, b.KindsDeprecateAPIs...)
+		mgs1_22 = append(mgs1_22, b.ApisRemoved1_22...)
 	}
 	for _, b := range bundles {
-		channels = append(channels, b.Channels...)
+		channels = append(channels, b.BundleData.Channels...)
 	}
 	var bundlesNotMigrated []string
 	var bundlesMigrated []string
 	for _, b := range bundles {
-		if len(b.KindsDeprecateAPIs) > 0 {
-			bundlesNotMigrated = append(bundlesNotMigrated, buildBundleString(b))
+		if b.BundleData.BundleCSV == nil || len(b.BundleData.PackageName) == 0 {
+			continue
+		}
+		if len(b.ApisRemoved1_22) > 0 {
+			bundlesNotMigrated = append(bundlesNotMigrated, buildBundleString(b.BundleData))
 		} else {
-			bundlesMigrated = append(bundlesMigrated, buildBundleString(b))
+			bundlesMigrated = append(bundlesMigrated, buildBundleString(b.BundleData))
 		}
 	}
 
@@ -123,13 +135,13 @@ func getReportValues(bundles []bundles.Column) ([]string, []string, []string, []
 		return bundlesMigrated[i] < bundlesMigrated[j]
 	})
 
-	return kinds, channels, bundlesNotMigrated, bundlesMigrated
+	return mgs1_22, channels, bundlesNotMigrated, bundlesMigrated
 }
 
 func buildBundleString(b bundles.Column) string {
 	return fmt.Sprintf("%s - (label=%s,max=%s,channels=%s,head:%s,defaultChannel:%s, deprecated:%s)",
-		b.BundleName,
-		b.OCPLabel,
+		b.BundleCSV.Name,
+		b.BundleImageLabels[OCPLabel],
 		GetMaxOCPValue(b),
 		pkg.GetUniqueValues(b.Channels),
 		pkg.GetYesOrNo(b.IsHeadOfChannel),

@@ -55,27 +55,36 @@ func main() {
 		log.Errorf("running command :%s", err)
 	}
 
-	indexReportKinds := []string{"bundles", "channels", "packages"}
-	indexImage := "registry.redhat.io/redhat/redhat-operator-index:v4.7"
+	indexImage := "registry.redhat.io/redhat/redhat-operator-index:v4.9"
+	indexImage47 := "registry.redhat.io/redhat/redhat-operator-index:v4.7"
 
-	for _, v := range indexReportKinds {
-		// create dir
-		command = exec.Command("mkdir", filepath.Join(samplesDir, v))
-		_, err = pkg.RunCommand(command)
-		if err != nil {
-			log.Errorf("running command :%s", err)
-		}
-		// run report
-		command = exec.Command(binPath, "index", v,
-			fmt.Sprintf("--index-image=%s", indexImage),
-			"--limit=5",
-			"--output=all",
-			fmt.Sprintf("--output-path=%s", filepath.Join(samplesDir, v)),
-		)
-		_, err = pkg.RunCommand(command)
-		if err != nil {
-			log.Errorf("running command :%s", err)
-		}
+	// create dir
+	command = exec.Command("mkdir", filepath.Join(samplesDir, "bundles"))
+	_, err = pkg.RunCommand(command)
+	if err != nil {
+		log.Errorf("running command :%s", err)
+	}
+
+	// run report with a scenario that supports disconnect
+	command = exec.Command(binPath, "index", "bundles",
+		fmt.Sprintf("--index-image=%s", indexImage),
+		"--filter=elasticsearch",
+		fmt.Sprintf("--output-path=%s", filepath.Join(samplesDir, "bundles")),
+	)
+	_, err = pkg.RunCommand(command)
+	if err != nil {
+		log.Errorf("running command :%s", err)
+	}
+
+	// run report with a scenario that contains removed APIs on 4.9
+	command = exec.Command(binPath, "index", "bundles",
+		fmt.Sprintf("--index-image=%s", indexImage47),
+		"--filter=cincinnati-operator",
+		fmt.Sprintf("--output-path=%s", filepath.Join(samplesDir, "bundles")),
+	)
+	_, err = pkg.RunCommand(command)
+	if err != nil {
+		log.Errorf("running command :%s", err)
 	}
 
 	customPath := filepath.Join(samplesDir, "dashboard")

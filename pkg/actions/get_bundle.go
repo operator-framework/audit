@@ -75,15 +75,8 @@ func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 				auditBundle.FoundLabel = true
 			}
 		}
+		auditBundle.BundleImageLabels = inspectManifest.DockerConfig.Labels
 
-		// 4.8 images has note the build-date in the label
-		if len(inspectManifest.Created) > 0 {
-			auditBundle.BuildAt = inspectManifest.Created
-		} else {
-			auditBundle.BuildAt = inspectManifest.DockerConfig.Labels["build-date"]
-		}
-
-		auditBundle.OCPLabel = inspectManifest.DockerConfig.Labels["com.redhat.openshift.versions"]
 	}
 
 	// Read the bundle
@@ -93,9 +86,7 @@ func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 		return auditBundle
 	}
 
-	//todo:
-	//auditBundle.OCPLabelAnnotations
-	annotationsPath := filepath.Join(bundleDir, "metadata", "annotations.yaml")
+	annotationsPath := filepath.Join(bundleDir, "bundle/metadata/annotations.yaml")
 
 	// If find the annotations file then, check for the scorecard path on it.
 	if _, err := os.Stat(annotationsPath); err == nil && !os.IsNotExist(err) {
@@ -112,7 +103,7 @@ func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 			auditBundle.Errors = append(auditBundle.Errors, msg.Error())
 		}
 		if len(bundleAnnotations.Annotations) > 0 {
-			auditBundle.OCPLabelAnnotations = bundleAnnotations.Annotations[ocpLabelAnnotation]
+			auditBundle.BundleAnnotations = bundleAnnotations.Annotations
 		}
 	}
 
@@ -123,7 +114,7 @@ func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 
 	// Run validators
 	if !disableValidators {
-		auditBundle = RunValidators(auditBundle)
+		auditBundle = RunValidators(filepath.Join(bundleDir, "bundle"), auditBundle)
 
 	}
 
@@ -133,9 +124,15 @@ func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 }
 
 func createBundleDir(auditBundle *models.AuditBundle) string {
-	dir := fmt.Sprintf("./tmp/%s", auditBundle.OperatorBundleName)
+	currentPath, err := os.Getwd()
+	if err != nil {
+		log.Error(err)
+		os.Exit(1)
+	}
+
+	dir := fmt.Sprintf("%s/tmp/%s", currentPath, auditBundle.OperatorBundleName)
 	cmd := exec.Command("mkdir", dir)
-	_, err := pkg.RunCommand(cmd)
+	_, err = pkg.RunCommand(cmd)
 	if err != nil {
 		auditBundle.Errors = append(auditBundle.Errors,
 			fmt.Errorf("unable to create the dir for the bundle: %s", err).Error())
@@ -231,6 +228,7 @@ func cleanupBundleDir(auditBundle *models.AuditBundle, dir string, serverMode bo
 }
 
 func DownloadImage(image string, containerEngine string) error {
+	log.Infof("Downloading image %s to audit...", image)
 	cmd := exec.Command(containerEngine, "pull", image)
 	_, err := pkg.RunCommand(cmd)
 	// if found an error try again

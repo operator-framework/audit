@@ -18,12 +18,15 @@ import (
 	"fmt"
 	"os/exec"
 
+	log "github.com/sirupsen/logrus"
+
 	"github.com/operator-framework/audit/pkg"
 )
 
 const catalogIndex = "audit-catalog-index"
 
 func ExtractIndexDB(image string, containerEngine string) error {
+	log.Info("Extracting database...")
 	// Remove image if exists already
 	command := exec.Command(containerEngine, "rm", catalogIndex)
 	_, _ = pkg.RunCommand(command)

@@ -49,6 +49,8 @@ const ERRORS_WARNINGS = "ERRORS AND WARNINGS"
 // nolint:golint
 const ERRORS = "ONLY ERRORS"
 
+const sdkBuilderAnnotation = "operators.operatorframework.io/builder"
+
 // DeprecateAPI max total : 400
 // Scorecard and Validators max total for each: 200 - PASS or WARNINGS
 // Scorecard checks can bring extra 100+ (optional for A+) - if FOUND custom tests
@@ -123,7 +125,7 @@ type PackageGrade struct {
 	Grade                       string
 	ChannelNamesNotComply       []string
 	BundlesWithoutDisconnect    []string
-	HeadOfChannels              []bundles.Column
+	HeadOfChannels              []BundleDeprecate
 }
 
 type GradeReport struct {
@@ -135,16 +137,29 @@ type GradeReport struct {
 	PackageGrade []PackageGrade
 }
 
-func NewGradeReport(bundlesReport bundles.Report) *GradeReport {
+func NewGradeReport(bundlesReport bundles.Report, filter string) *GradeReport {
 	gradeReport := GradeReport{}
 	gradeReport.ImageName = bundlesReport.Flags.IndexImage
 	gradeReport.ImageID = bundlesReport.IndexImageInspect.ID
 	gradeReport.ImageBuild = bundlesReport.IndexImageInspect.DockerConfig.Labels["build-date"]
 	gradeReport.GeneratedAt = bundlesReport.GenerateAt
 
-	mapPackagesWithBundles := MapBundlesPerPackage(bundlesReport)
+	var allBundles []BundleDeprecate
+	for _, v := range bundlesReport.Columns {
+		// filter by the name
+		if len(filter) > 0 {
+			if !strings.Contains(v.PackageName, filter) {
+				continue
+			}
+		}
+		bd := BundleDeprecate{BundleData: v}
+		bd.AddDeprecateDataFromValidators()
+		allBundles = append(allBundles, bd)
+	}
+
+	mapPackagesWithBundles := MapBundlesPerPackage(allBundles)
 	migrated := MapPkgsComplyingWithDeprecateAPI122(mapPackagesWithBundles)
-	notMigrated := make(map[string][]bundles.Column)
+	notMigrated := make(map[string][]BundleDeprecate)
 	for key := range mapPackagesWithBundles {
 		if len(migrated[key]) == 0 {
 			notMigrated[key] = mapPackagesWithBundles[key]
@@ -162,8 +177,8 @@ func NewGradeReport(bundlesReport bundles.Report) *GradeReport {
 	return &gradeReport
 }
 
-func NewPkgGrade(pkgName string, bundlesOfPkg []bundles.Column,
-	notMigrated, migrated map[string][]bundles.Column) PackageGrade {
+func NewPkgGrade(pkgName string, bundlesOfPkg []BundleDeprecate,
+	notMigrated, migrated map[string][]BundleDeprecate) PackageGrade {
 
 	pkgGrade := PackageGrade{PackageName: pkgName}
 
@@ -197,8 +212,8 @@ func NewPkgGrade(pkgName string, bundlesOfPkg []bundles.Column,
 	return pkgGrade
 }
 
-func (p *PackageGrade) checkDeprecatedAPIScore(notMigrated map[string][]bundles.Column,
-	migrated map[string][]bundles.Column) {
+func (p *PackageGrade) checkDeprecatedAPIScore(notMigrated map[string][]BundleDeprecate,
+	migrated map[string][]BundleDeprecate) {
 	if notMigrated[p.PackageName] != nil {
 		p.DeprecateAPI = DEPRECATED_API_NOT_COMPLY
 		p.DeprecateAPIColor = YELLOW
@@ -215,7 +230,11 @@ func (p *PackageGrade) checkDeprecatedAPIScore(notMigrated map[string][]bundles.
 func (p *PackageGrade) checkSDKUsageScore() {
 	found := false
 	for _, v := range p.HeadOfChannels {
-		if strings.Contains(v.Builder, "operator-sdk") {
+		builder := v.BundleData.BundleCSV.Annotations[sdkBuilderAnnotation]
+		if len(builder) < 1 {
+			builder = v.BundleData.BundleAnnotations[sdkBuilderAnnotation]
+		}
+		if strings.Contains(builder, "operator-sdk") {
 			found = true
 			break
 		}
@@ -234,7 +253,7 @@ func (p *PackageGrade) checkSDKUsageScore() {
 func (p *PackageGrade) checkScorecardCustom() {
 	found := false
 	for _, v := range p.HeadOfChannels {
-		if v.HasCustomScorecardTests {
+		if v.BundleData.HasCustomScorecardTests {
 			found = true
 			break
 		}
@@ -253,7 +272,7 @@ func (p *PackageGrade) checkScorecardCustom() {
 func (p *PackageGrade) checkChannelNamingScore() {
 	var foundErrors []string
 	for _, v := range p.HeadOfChannels {
-		for _, c := range v.Channels {
+		for _, c := range v.BundleData.Channels {
 			if !pkg.IsFollowingChannelNameConventional(c) {
 				foundErrors = append(foundErrors, c)
 			}
@@ -275,11 +294,11 @@ func (p *PackageGrade) checkScorecardScore() {
 	foundErrors := false
 	foundWarnings := false
 	for _, v := range p.HeadOfChannels {
-		if len(v.ScorecardErrors) > 0 {
+		if len(v.BundleData.ScorecardErrors) > 0 {
 			foundErrors = true
 		}
 
-		if len(v.ScorecardSuggestions) > 0 {
+		if len(v.BundleData.ScorecardSuggestions) > 0 {
 			foundWarnings = true
 		}
 	}
@@ -305,11 +324,11 @@ func (p *PackageGrade) checkValidatorsScore() {
 	foundErrors := false
 	foundWarnings := false
 	for _, v := range p.HeadOfChannels {
-		if len(v.ValidatorErrors) > 0 {
+		if len(v.BundleData.ValidatorErrors) > 0 {
 			foundErrors = true
 		}
 
-		if len(v.ValidatorWarnings) > 0 {
+		if len(v.BundleData.ValidatorWarnings) > 0 {
 			foundWarnings = true
 		}
 	}
@@ -340,8 +359,9 @@ func (p *PackageGrade) checkDisconnectAnnotationScore() {
 		}
 	}
 	for _, b := range p.HeadOfChannels {
-		if b.Infrastructure != "[\"Disconnected\"]" {
-			p.BundlesWithoutDisconnect = append(p.BundlesWithoutDisconnect, b.BundleName)
+		infra := b.BundleData.BundleCSV.ObjectMeta.Annotations[pkg.InfrastructureAnnotation]
+		if !strings.Contains(infra, "Disconnected") && !strings.Contains(infra, "disconnected") {
+			p.BundlesWithoutDisconnect = append(p.BundlesWithoutDisconnect, b.BundleData.BundleCSV.Name)
 		}
 	}
 

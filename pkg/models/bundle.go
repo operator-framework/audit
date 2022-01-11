@@ -26,24 +26,19 @@ import (
 type AuditBundle struct {
 	Bundle                  *apimanifests.Bundle
 	FoundLabel              bool
-	OCPLabel                string
-	OCPLabelAnnotations     string
-	BuildAt                 string
-	SkipRangeDB             string
-	VersionDB               string
-	SkipsDB                 string
-	ReplacesDB              string
-	ScorecardResults        v1alpha3.TestList
-	ValidatorsResults       []errors.ManifestResult
 	OperatorBundleName      string
 	OperatorBundleImagePath string
-	CSVFromIndexDB          *v1alpha1.ClusterServiceVersion
-	Channels                []string
 	PackageName             string
 	DefaultChannel          string
+	ScorecardResults        v1alpha3.TestList
+	ValidatorsResults       []errors.ManifestResult
+	CSVFromIndexDB          *v1alpha1.ClusterServiceVersion
 	PropertiesDB            []pkg.PropertiesAnnotation
+	Channels                []string
 	HasCustomScorecardTests bool
 	IsHeadOfChannel         bool
+	BundleImageLabels       map[string]string `json:"bundleImageLabels,omitempty"`
+	BundleAnnotations       map[string]string `json:"bundleAnnotations,omitempty"`
 	Errors                  []string
 }
 

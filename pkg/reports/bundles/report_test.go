@@ -31,12 +31,12 @@ func TestBuildQuery(t *testing.T) {
 		{
 			name: "should build only the select when has not flags values",
 			args: args{report: Data{Flags: BindFlags{}}},
-			want: "SELECT o.name, o.csv, o.bundlepath, o.version, o.skiprange, o.replaces, o.skips FROM operatorbundle o",
+			want: "SELECT o.name, o.csv, o.bundlepath FROM operatorbundle o",
 		},
 		{
 			name: "should build sql for head only",
 			args: args{report: Data{Flags: BindFlags{HeadOnly: true}}},
-			want: "SELECT o.name, o.csv, o.bundlepath, o.version, o.skiprange, o.replaces, o.skips FROM operatorbundle o, channel c WHERE c.head_operatorbundle_name == o.name",
+			want: "SELECT o.name, o.csv, o.bundlepath FROM operatorbundle o, channel c WHERE c.head_operatorbundle_name == o.name",
 		},
 		{
 			name: "should build sql for head only with limit",
@@ -46,7 +46,7 @@ func TestBuildQuery(t *testing.T) {
 				OutputPath: "../testdata/xls",
 				Limit:      int32(3),
 			}}},
-			want: "SELECT o.name, o.csv, o.bundlepath, o.version, o.skiprange, o.replaces, o.skips FROM operatorbundle o, channel c WHERE c.head_operatorbundle_name == o.name LIMIT 3",
+			want: "SELECT o.name, o.csv, o.bundlepath FROM operatorbundle o, channel c WHERE c.head_operatorbundle_name == o.name LIMIT 3",
 		},
 	}
 	for _, tt := range tests {

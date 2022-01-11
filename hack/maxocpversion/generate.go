@@ -67,6 +67,14 @@ func main() {
 		err := filepath.Walk(pathToWalk, func(path string, info os.FileInfo, err error) error {
 			if info != nil && !info.IsDir() && strings.HasPrefix(info.Name(), "bundles") &&
 				strings.HasSuffix(info.Name(), "json") {
+
+				// Ignore the tag images 4.9 and OperatorHub
+				if strings.Contains(info.Name(), "v4.9") ||
+					strings.Contains(info.Name(), "v4.10") ||
+					strings.Contains(info.Name(), "operatorhubio") {
+					return nil
+				}
+
 				// run report
 				command := exec.Command(binPath, "dashboard", "maxocp",
 					fmt.Sprintf("--file=%s", path),

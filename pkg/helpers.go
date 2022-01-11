@@ -30,24 +30,13 @@ import (
 )
 
 const JSON = "json"
-const Xls = "xls"
-const All = "all"
 const Yes = "YES"
 const No = "NO"
-const Unknown = "UNKNOWN"
-const NotUsed = "NOT USED"
 const DefaultContainerTool = Docker
 const Docker = "docker"
 const Podman = "podman"
 
-const TableFormat = `{
-    "table_name": "table",
-    "table_style": "TableStyleMedium2",
-    "show_first_column": true,
-    "show_last_column": true,
-    "show_row_stripes": false,
-    "show_column_stripes": false
-}`
+const InfrastructureAnnotation = "operators.openshift.io/infrastructure-features"
 
 // PropertiesAnnotation used to Unmarshal the JSON in the CSV annotation
 type PropertiesAnnotation struct {
@@ -175,29 +164,56 @@ func CleanupTemporaryDirs() {
 	_, _ = RunCommand(command)
 }
 
-type DockerInspectManifest struct {
+type DockerInspect struct {
 	ID           string       `json:"ID"`
 	RepoDigests  []string     `json:"RepoDigests"`
 	Created      string       `json:"Created"`
 	DockerConfig DockerConfig `json:"Config"`
 }
 
+type DockerManifestInspect struct {
+	ManifestData []ManifestData `json:"manifests"`
+}
+
+type ManifestData struct {
+	Platform Platform `json:"platform"`
+}
+
+type Platform struct {
+	Architecture string `json:"architecture"`
+	SO           string `json:"so"`
+}
+
 type DockerConfig struct {
 	Labels map[string]string `json:"Labels"`
 }
 
-func RunDockerInspect(image string, containerEngine string) (DockerInspectManifest, error) {
+func RunDockerInspect(image string, containerEngine string) (DockerInspect, error) {
 	cmd := exec.Command(containerEngine, "inspect", image)
 	output, err := RunCommand(cmd)
 	if err != nil || len(output) < 1 {
-		return DockerInspectManifest{}, err
+		return DockerInspect{}, err
 	}
 
-	var dockerInspect []DockerInspectManifest
+	var dockerInspect []DockerInspect
 	if err := json.Unmarshal(output, &dockerInspect); err != nil {
-		return DockerInspectManifest{}, err
+		return DockerInspect{}, err
 	}
 	return dockerInspect[0], nil
+}
+
+func RunDockerManifestInspect(image string, containerEngine string) (DockerManifestInspect, error) {
+	cmd := exec.Command(containerEngine, "manifest", "inspect", image)
+	output, err := RunCommand(cmd)
+	if err != nil || len(output) < 1 {
+		return DockerManifestInspect{}, err
+	}
+
+	var dockerInspect DockerManifestInspect
+	if err := json.Unmarshal(output, &dockerInspect); err != nil {
+		return DockerManifestInspect{}, err
+	}
+	return dockerInspect, nil
 }
 
 // HasClusterRunning will return true when is possible to check that the env has a cluster running
