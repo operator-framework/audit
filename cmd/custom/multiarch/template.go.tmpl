@@ -87,11 +87,9 @@
         <div class="container-fluid themed-container">
             <h5 class="display-12 fw-bold">FAQ</h5>
             <h5 class="display-12 fw-bold">1. What is checked?</h5>
-            <li> If all install images (CSV.Spec.InstallStrategy.StrategySpec.DeploymentSpecs) defined in the deployment are using SHA </li>
-            <li> If all RELATED IMAGES defined in the CSV are using SHA</li>
             <li> If the CSV has the labels with all architectures found by inspecting the images</li>
-            <li> If the CSV has the the annotation: `operators.openshift.io/infrastructure-features:disconnected`</li>
             <li> If all install images and related images are with all supported architectures found`</li>
+            <li> If any label which contains arch (operatorframework.io/arch.VALUE) has an arch not valid (! of amd64, ppc64le, ppc64le, s390x)</li>
         </div>
 
          <div class="container-fluid themed-container">
@@ -112,10 +110,12 @@
                                      <table id="{{ .Name }}" class="minimalistBlack" style="width: 100%">
                                       <thead>
                                           <tr style="background-color: #004C99;">
-                                              <th align="center">Head of Channels</th>
-                                              <th align="center">Has Support</th>
-                                              <th align="center">Architectures</th>
-                                              <th align="center">Errors</th>
+                                               <th align="center">Head of Channels</th>
+                                                  <th align="center">amd64</th>
+                                                  <th align="center">ppc64le</th>
+                                                  <th align="center">arm64</th>
+                                                  <th align="center">s390x</th>
+                                                  <th align="center">Errors</th>
                                           </tr>
                                      </thead>
                                      <tbody style="background-color: white;">
@@ -124,19 +124,34 @@
                                               <tr>
                                                   <th>{{ .BundleData.BundleCSV.ObjectMeta.Name }}</th>
                                                   <th>
-                                                  {{if .HasMultArchSupport}}
+                                                  {{if .HasAMD64Support}}
                                                         <p align="center" style="text-color: green;"> YES </p>
                                                   {{else}}
                                                         <p align="center" style="text-color: orange;"> NO </p>
                                                   {{end}}
-
-                                                  <th>
-                                                  {{ range .Supported }}
-                                                     <li> {{ . }}</li>
-                                                  {{ end }}
                                                   </th>
+                                                  <th>
+                                                  {{if .HasPPC64leSupport}}
+                                                       <p align="center" style="text-color: green;"> YES </p>
+                                                  {{else}}
+                                                       <p align="center" style="text-color: orange;"> NO </p>
+                                                  {{end}}
+                                                  </th>
+                                                  <th>
+                                                  {{if .HasARM64Support}}
+                                                       <p align="center" style="text-color: green;"> YES </p>
+                                                  {{else}}
+                                                       <p align="center" style="text-color: orange;"> NO </p>
+                                                  {{end}}
+                                                  </th>
+                                                  <th>
+                                                {{if .Has390xSupport}}
+                                                     <p align="center" style="text-color: green;"> YES </p>
+                                                {{else}}
+                                                     <p align="center" style="text-color: orange;"> NO </p>
+                                                {{end}}
+                                                </th>
                                                    <th>
-
                                                     {{ range .Validations }}
                                                       <li> {{ . }}</li>
                                                     {{ end }}
