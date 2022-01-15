@@ -38,6 +38,10 @@ type MultiArchBundle struct {
 	Validations        []string
 	Supported          map[string]string
 	HasMultArchSupport bool
+	HasAMD64Support    bool
+	HasPPC64leSupport  bool
+	HasARM64Support    bool
+	Has390xSupport     bool
 }
 
 type MultiArchPkg struct {
@@ -75,12 +79,23 @@ func NewMultiArchReport(bundlesReport bundles.Report, filter string) *MultiArchR
 			}
 			mb := MultiArchBundle{BundleData: bundle}
 			mb.addInfraLabels()
-			mb.addDisconnectAnnotationValue()
 			mb.addDataFromInstallImages(bundlesReport)
 			mb.addDataFromRelateImages(bundlesReport)
 			mb.checkSupport()
 			if len(mb.Supported) > 1 {
 				mb.HasMultArchSupport = true
+			}
+			if len(mb.Supported["amd64"]) > 0 {
+				mb.HasAMD64Support = true
+			}
+			if len(mb.Supported["arm64"]) > 0 {
+				mb.HasARM64Support = true
+			}
+			if len(mb.Supported["ppc64le"]) > 0 {
+				mb.HasPPC64leSupport = true
+			}
+			if len(mb.Supported["s390x"]) > 0 {
+				mb.Has390xSupport = true
 			}
 			mb.validate()
 			mapPackagesWithMultData[pkg] = append(mapPackagesWithMultData[pkg], mb)
@@ -98,13 +113,6 @@ func (mb *MultiArchBundle) addInfraLabels() {
 		if strings.Contains(k, "arch") && v == "supported" {
 			mb.InfraLabels = append(mb.InfraLabels, k)
 		}
-	}
-}
-
-func (mb *MultiArchBundle) addDisconnectAnnotationValue() {
-	infra := mb.BundleData.BundleCSV.ObjectMeta.Annotations[pkg.InfrastructureAnnotation]
-	if strings.Contains(infra, "Disconnected") || strings.Contains(infra, "disconnected") {
-		mb.HasDisconnectAnnotation = true
 	}
 }
 
@@ -157,9 +165,8 @@ func (mb *MultiArchBundle) addDataFromRelateImages(bundlesReport bundles.Report)
 }
 
 func (mb *MultiArchBundle) validate() {
-	mb.checkSHA()
 	mb.checkLabels()
-	mb.checkAnnotation()
+	mb.checkValidLabels()
 	mb.checkMissingArchtype()
 }
 
@@ -167,6 +174,7 @@ func (mb *MultiArchBundle) validate() {
 func (mb *MultiArchBundle) checkMissingArchtype() {
 	if mb.HasMultArchSupport {
 		for image, arc := range mb.RelateImages {
+			notFound := []string{}
 			for su := range mb.Supported {
 				found := false
 				for _, t := range arc {
@@ -176,14 +184,18 @@ func (mb *MultiArchBundle) checkMissingArchtype() {
 					}
 				}
 				if !found {
-					mb.Validations = append(mb.Validations,
-						fmt.Errorf("[bundle %s]: related image (%s) is missing manifest archetype for %s",
-							mb.BundleData.BundleCSV.Name, image, su).Error())
+					notFound = append(notFound, su)
 				}
+			}
+			if len(notFound) > 0 {
+				mb.Validations = append(mb.Validations,
+					fmt.Errorf("[bundle %s]: related image (%s) is missing manifest archetype for %q",
+						mb.BundleData.BundleCSV.Name, image, notFound).Error())
 			}
 		}
 
 		for image, arc := range mb.InstallImages {
+			notFound := []string{}
 			for su := range mb.Supported {
 				found := false
 				for _, t := range arc {
@@ -193,41 +205,37 @@ func (mb *MultiArchBundle) checkMissingArchtype() {
 					}
 				}
 				if !found {
-					mb.Validations = append(mb.Validations,
-						fmt.Errorf("[bundle %s]: install image (%s) is missing manifest archetype for %s",
-							mb.BundleData.BundleCSV.Name, image, su).Error())
+					notFound = append(notFound, su)
 				}
 			}
-		}
-	}
-}
-
-// check if all images are using SHA
-func (mb *MultiArchBundle) checkSHA() {
-	if mb.HasMultArchSupport {
-		for image := range mb.RelateImages {
-			if !strings.Contains(image, "@sha256") {
+			if len(notFound) > 0 {
 				mb.Validations = append(mb.Validations,
-					fmt.Errorf("[bundle %s]: releated image (%s) is not set using SHA",
-						mb.BundleData.BundleCSV.Name, image).Error())
-			}
-		}
-
-		for image := range mb.InstallImages {
-			if !strings.Contains(image, "@sha256") {
-				mb.Validations = append(mb.Validations,
-					fmt.Errorf("[bundle %s]: install image (%s) is not set using SHA",
-						mb.BundleData.BundleCSV.Name, image).Error())
+					fmt.Errorf("[bundle %s]: install image (%s) is missing manifest archetype for %q",
+						mb.BundleData.BundleCSV.Name, image, notFound).Error())
 			}
 		}
 	}
 }
 
-func (mb *MultiArchBundle) checkAnnotation() {
-	if mb.HasMultArchSupport && !mb.HasDisconnectAnnotation {
+func (mb *MultiArchBundle) checkValidLabels() {
+	supportedArchs := []string{"amd64", "ppc64le", "arm64", "s390x"}
+	notOK := []string{}
+	for _, infra := range mb.InfraLabels {
+		ok := false
+		for _, arch := range supportedArchs {
+			label := fmt.Sprintf("operatorframework.io/arch.%s", arch)
+			if infra == label {
+				ok = true
+				break
+			}
+		}
+		if !ok {
+			notOK = append(notOK, infra)
+		}
+	}
+	if len(notOK) > 0 {
 		mb.Validations = append(mb.Validations,
-			fmt.Errorf("found multiacrh support for the bundle (%q), however "+
-				"it is missing the CSV disconnected annotation", mb.BundleData.BundleCSV.Name).Error())
+			fmt.Errorf("[bundle %s]: invalid labels: %q", mb.BundleData.BundleCSV.Name, notOK).Error())
 	}
 }
 
