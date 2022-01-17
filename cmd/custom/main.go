@@ -17,6 +17,7 @@ package custom
 import (
 	"github.com/operator-framework/audit/cmd/custom/maxocp"
 	"github.com/operator-framework/audit/cmd/custom/multiarch"
+	"github.com/operator-framework/audit/cmd/custom/validator"
 	"github.com/spf13/cobra"
 
 	"github.com/operator-framework/audit/cmd/custom/deprecate"
@@ -34,6 +35,7 @@ func NewCmd() *cobra.Command {
 		grade.NewCmd(),
 		maxocp.NewCmd(),
 		multiarch.NewCmd(),
+		validator.NewCmd(),
 	)
 
 	return indexCmd
