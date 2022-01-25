@@ -1,0 +1,1722 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Deprecated API(s) Dashboard</title>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.24/datatables.min.css"/>
+
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+
+    <style>
+        div.dataTables_wrapper {
+            width: 98%;
+            margin: 0 auto;
+        }
+
+        table.minimalistBlack {
+            border: 3px solid #000000;
+        }
+        table.minimalistBlack td, table.minimalistBlack th {
+            border: 1px solid #000000;
+            font-size: 10px;
+            text-align: left;
+        }
+        table.minimalistBlack tbody td {
+            font-size: 10px;
+        }
+        table.minimalistBlack thead {
+            border-bottom: 3px solid #000000;
+            text-align: center;
+        }
+        table.minimalistBlack thead th {
+            font-size: 12px;
+            color: white;
+            text-align: center;
+        }
+
+        .themed-container {
+            padding: .75rem;
+            margin-bottom: 1.5rem;
+            background-color: #F0F0F0;
+            border: 1px solid #0D0C0C;
+        }
+    </style>
+
+
+</head>
+<body class="py-4">
+
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.24/datatables.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+<script >
+
+    $(document).ready(function() {
+        $('#list').DataTable( {
+            "scrollX": true
+        } );
+        $('#list1').DataTable( {
+            "scrollX": true
+        });
+        $('#list2').DataTable( {
+            "scrollX": true
+        });
+
+    } );
+
+</script>
+
+<main>
+
+        <h1>Catalog Conflicts Dashboard - OCP v4.10</h1>
+        <p>This report aims to try to identify the package distributions that are duplicated in the index informed.</p>
+
+        <div class="container-fluid themed-container">
+            <h5 class="display-12 fw-bold">Data from:</h5>
+            <p>Image names: </p>
+                <ul>
+                
+                    <li>registry.redhat.io/redhat/certified-operator-index:v4.10</li>
+                
+                    <li>registry.redhat.io/redhat/community-operator-index:v4.10</li>
+                
+                    <li>registry.redhat.io/redhat/redhat-marketplace-index:v4.10</li>
+                
+                    <li>registry.redhat.io/redhat/redhat-operator-index:v4.10</li>
+                
+                </ul>
+            <p>GeneratedAt : 2022-01-25 </p>
+
+        </div>
+
+          <div class="container-fluid themed-container">
+                <h5 class="display-12 fw-bold">Same Package Name:</h5>
+                <p>The following are the packages found in more than one index with the same package name</p>
+                <table id="list1" class="minimalistBlack" style="background-color: #ec8f1c; width:98%">
+                    <thead>
+                         <tr>
+                             <th>Package Name</th>
+                             <th>Catalogs</th>
+                         </tr>
+                    </thead>
+                    <tbody>
+                    
+                        
+                            
+                            <tr>
+                                <th>node-healthcheck-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>RedHat Community Index</li>
+                                    
+                                        <li>RedHat Index</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                             
+                        
+                    
+                    </tbody>
+                </table>
+            </div>
+
+             <div class="container-fluid themed-container">
+                <h5 class="display-12 fw-bold">Same APIs:</h5>
+                <p>The following are the packages found in more than one index which are using the same apis</p>
+                <table id="list2" class="minimalistBlack" style="background-color: #ec8f1c; width:98%">
+                    <thead>
+                         <tr>
+                             <th>Packages</th>
+                             <th>Catalogs</th>
+                             <th>GKVs</th>
+                         </tr>
+                    </thead>
+                    <tbody>
+                    
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>k8s-triliovault</li>
+                                    
+                                        <li>k8s-triliovault-rhmp</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>Certified Index</li>
+                                    
+                                        <li>Marketplace Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;triliovault.trilio.io&#34;,&#34;kind&#34;:&#34;Restore&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;triliovault.trilio.io&#34;,&#34;kind&#34;:&#34;License&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;triliovault.trilio.io&#34;,&#34;kind&#34;:&#34;Backup&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;triliovault.trilio.io&#34;,&#34;kind&#34;:&#34;ClusterBackupPlan&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;triliovault.trilio.io&#34;,&#34;kind&#34;:&#34;Policy&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;triliovault.trilio.io&#34;,&#34;kind&#34;:&#34;Hook&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;triliovault.trilio.io&#34;,&#34;kind&#34;:&#34;ClusterBackup&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;triliovault.trilio.io&#34;,&#34;kind&#34;:&#34;Target&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;triliovault.trilio.io&#34;,&#34;kind&#34;:&#34;ClusterRestore&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;triliovault.trilio.io&#34;,&#34;kind&#34;:&#34;BackupPlan&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>citrix-cpx-with-ingress-controller-operator</li>
+                                    
+                                        <li>citrix-cpx-with-ingress-controller-operator-rhmp</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>Certified Index</li>
+                                    
+                                        <li>Marketplace Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;citrix.com&#34;,&#34;kind&#34;:&#34;CitrixCpxWithIngressController&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>kubeturbo</li>
+                                    
+                                        <li>kubeturbo-certified-rhmp</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>RedHat Community Index</li>
+                                    
+                                        <li>Marketplace Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;charts.helm.k8s.io&#34;,&#34;kind&#34;:&#34;Kubeturbo&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;charts.helm.k8s.io&#34;,&#34;kind&#34;:&#34;Kubeturbo&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>crane-operator</li>
+                                    
+                                        <li>oadp-operator</li>
+                                    
+                                        <li>mtc-operator</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>RedHat Community Index</li>
+                                    
+                                        <li>RedHat Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;velero.io&#34;,&#34;kind&#34;:&#34;BackupStorageLocation&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;migration.openshift.io&#34;,&#34;kind&#34;:&#34;DirectImageMigration&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;velero.io&#34;,&#34;kind&#34;:&#34;ServerStatusRequest&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;velero.io&#34;,&#34;kind&#34;:&#34;Restore&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;velero.io&#34;,&#34;kind&#34;:&#34;Schedule&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;migration.openshift.io&#34;,&#34;kind&#34;:&#34;MigMigration&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;velero.io&#34;,&#34;kind&#34;:&#34;PodVolumeBackup&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;migration.openshift.io&#34;,&#34;kind&#34;:&#34;DirectVolumeMigrationProgress&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;migration.openshift.io&#34;,&#34;kind&#34;:&#34;DirectImageStreamMigration&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;migration.openshift.io&#34;,&#34;kind&#34;:&#34;MigHook&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;velero.io&#34;,&#34;kind&#34;:&#34;Backup&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;migration.openshift.io&#34;,&#34;kind&#34;:&#34;MigAnalytic&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;migration.openshift.io&#34;,&#34;kind&#34;:&#34;DirectVolumeMigration&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;velero.io&#34;,&#34;kind&#34;:&#34;DeleteBackupRequest&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;migration.openshift.io&#34;,&#34;kind&#34;:&#34;MigCluster&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;velero.io&#34;,&#34;kind&#34;:&#34;PodVolumeRestore&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;migration.openshift.io&#34;,&#34;kind&#34;:&#34;MigStorage&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;velero.io&#34;,&#34;kind&#34;:&#34;VolumeSnapshotLocation&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;migration.openshift.io&#34;,&#34;kind&#34;:&#34;MigPlan&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;migration.openshift.io&#34;,&#34;kind&#34;:&#34;MigrationController&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;velero.io&#34;,&#34;kind&#34;:&#34;ResticRepository&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;velero.io&#34;,&#34;kind&#34;:&#34;DownloadRequest&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>couchbase-enterprise-certified</li>
+                                    
+                                        <li>couchbase-enterprise-certified-rhmp</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>Certified Index</li>
+                                    
+                                        <li>Marketplace Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;couchbase.com&#34;,&#34;kind&#34;:&#34;CouchbaseEphemeralBucket&#34;,&#34;version&#34;:&#34;v2&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;couchbase.com&#34;,&#34;kind&#34;:&#34;CouchbaseBackupRestore&#34;,&#34;version&#34;:&#34;v2&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;couchbase.com&#34;,&#34;kind&#34;:&#34;CouchbaseMemcachedBucket&#34;,&#34;version&#34;:&#34;v2&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;couchbase.com&#34;,&#34;kind&#34;:&#34;CouchbaseGroup&#34;,&#34;version&#34;:&#34;v2&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;couchbase.com&#34;,&#34;kind&#34;:&#34;CouchbaseAutoscaler&#34;,&#34;version&#34;:&#34;v2&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;couchbase.com&#34;,&#34;kind&#34;:&#34;CouchbaseCluster&#34;,&#34;version&#34;:&#34;v2&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;couchbase.com&#34;,&#34;kind&#34;:&#34;CouchbaseRoleBinding&#34;,&#34;version&#34;:&#34;v2&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;couchbase.com&#34;,&#34;kind&#34;:&#34;CouchbaseUser&#34;,&#34;version&#34;:&#34;v2&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;couchbase.com&#34;,&#34;kind&#34;:&#34;CouchbaseBackup&#34;,&#34;version&#34;:&#34;v2&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;couchbase.com&#34;,&#34;kind&#34;:&#34;CouchbaseReplication&#34;,&#34;version&#34;:&#34;v2&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;couchbase.com&#34;,&#34;kind&#34;:&#34;CouchbaseBucket&#34;,&#34;version&#34;:&#34;v2&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>apicurio-registry</li>
+                                    
+                                        <li>service-registry-operator</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>RedHat Community Index</li>
+                                    
+                                        <li>RedHat Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;registry.apicur.io&#34;,&#34;kind&#34;:&#34;ApicurioRegistry&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>eclipse-che</li>
+                                    
+                                        <li>codeready-workspaces</li>
+                                    
+                                        <li>codeready-workspaces2</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>RedHat Community Index</li>
+                                    
+                                        <li>RedHat Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;org.eclipse.che&#34;,&#34;kind&#34;:&#34;CheClusterBackup&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;org.eclipse.che&#34;,&#34;kind&#34;:&#34;CheCluster&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;org.eclipse.che&#34;,&#34;kind&#34;:&#34;CheClusterRestore&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;org.eclipse.che&#34;,&#34;kind&#34;:&#34;CheBackupServerConfiguration&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>cloudbees-ci</li>
+                                    
+                                        <li>cloudbees-ci-rhmp</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>Certified Index</li>
+                                    
+                                        <li>Marketplace Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;charts.cloudbees.com&#34;,&#34;kind&#34;:&#34;CloudBeesCI&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>portworx-certified</li>
+                                    
+                                        <li>portworx-essentials</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>Certified Index</li>
+                                    
+                                        <li>RedHat Community Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;core.libopenstorage.org&#34;,&#34;kind&#34;:&#34;StorageNode&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;core.libopenstorage.org&#34;,&#34;kind&#34;:&#34;StorageCluster&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;core.libopenstorage.org&#34;,&#34;kind&#34;:&#34;StorageCluster&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;core.libopenstorage.org&#34;,&#34;kind&#34;:&#34;StorageNode&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>community-kubevirt-hyperconverged</li>
+                                    
+                                        <li>kubevirt-hyperconverged</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>RedHat Community Index</li>
+                                    
+                                        <li>RedHat Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;v2v.kubevirt.io&#34;,&#34;kind&#34;:&#34;VMImportConfig&#34;,&#34;version&#34;:&#34;v1beta1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;kubevirt.io&#34;,&#34;kind&#34;:&#34;KubeVirt&#34;,&#34;version&#34;:&#34;v1alpha3&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;v2v.kubevirt.io&#34;,&#34;kind&#34;:&#34;VMImportConfig&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;ssp.kubevirt.io&#34;,&#34;kind&#34;:&#34;SSP&#34;,&#34;version&#34;:&#34;v1beta1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;hostpathprovisioner.kubevirt.io&#34;,&#34;kind&#34;:&#34;HostPathProvisioner&#34;,&#34;version&#34;:&#34;v1beta1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;cdi.kubevirt.io&#34;,&#34;kind&#34;:&#34;CDI&#34;,&#34;version&#34;:&#34;v1beta1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;nodemaintenance.kubevirt.io&#34;,&#34;kind&#34;:&#34;NodeMaintenance&#34;,&#34;version&#34;:&#34;v1beta1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;v2v.kubevirt.io&#34;,&#34;kind&#34;:&#34;V2VVmware&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;hco.kubevirt.io&#34;,&#34;kind&#34;:&#34;HyperConverged&#34;,&#34;version&#34;:&#34;v1beta1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;networkaddonsoperator.network.kubevirt.io&#34;,&#34;kind&#34;:&#34;NetworkAddonsConfig&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;cdi.kubevirt.io&#34;,&#34;kind&#34;:&#34;CDI&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;v2v.kubevirt.io&#34;,&#34;kind&#34;:&#34;OVirtProvider&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;networkaddonsoperator.network.kubevirt.io&#34;,&#34;kind&#34;:&#34;NetworkAddonsConfig&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;hostpathprovisioner.kubevirt.io&#34;,&#34;kind&#34;:&#34;HostPathProvisioner&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;kubevirt.io&#34;,&#34;kind&#34;:&#34;KubeVirt&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>jaeger</li>
+                                    
+                                        <li>jaeger-product</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>RedHat Community Index</li>
+                                    
+                                        <li>RedHat Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;jaegertracing.io&#34;,&#34;kind&#34;:&#34;Jaeger&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>syndesis</li>
+                                    
+                                        <li>fuse-online</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>RedHat Community Index</li>
+                                    
+                                        <li>RedHat Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;syndesis.io&#34;,&#34;kind&#34;:&#34;Syndesis&#34;,&#34;version&#34;:&#34;v1beta2&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;syndesis.io&#34;,&#34;kind&#34;:&#34;Syndesis&#34;,&#34;version&#34;:&#34;v1beta1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;syndesis.io&#34;,&#34;kind&#34;:&#34;Syndesis&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>infinispan</li>
+                                    
+                                        <li>datagrid</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>RedHat Community Index</li>
+                                    
+                                        <li>RedHat Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;infinispan.org&#34;,&#34;kind&#34;:&#34;Infinispan&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;infinispan.org&#34;,&#34;kind&#34;:&#34;Batch&#34;,&#34;version&#34;:&#34;v2alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;infinispan.org&#34;,&#34;kind&#34;:&#34;Restore&#34;,&#34;version&#34;:&#34;v2alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;infinispan.org&#34;,&#34;kind&#34;:&#34;Backup&#34;,&#34;version&#34;:&#34;v2alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;infinispan.org&#34;,&#34;kind&#34;:&#34;Cache&#34;,&#34;version&#34;:&#34;v2alpha1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>entando-k8s-operator</li>
+                                    
+                                        <li>entando-k8s-operator-rhmp</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>Certified Index</li>
+                                    
+                                        <li>Marketplace Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;entando.org&#34;,&#34;kind&#34;:&#34;EntandoDeBundle&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;entando.org&#34;,&#34;kind&#34;:&#34;EntandoAppPluginLink&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;entando.org&#34;,&#34;kind&#34;:&#34;EntandoKeycloakServer&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;entando.org&#34;,&#34;kind&#34;:&#34;EntandoCompositeApp&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;entando.org&#34;,&#34;kind&#34;:&#34;EntandoApp&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;entando.org&#34;,&#34;kind&#34;:&#34;EntandoPlugin&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;entando.org&#34;,&#34;kind&#34;:&#34;EntandoClusterInfrastructure&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;entando.org&#34;,&#34;kind&#34;:&#34;EntandoDatabaseService&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>opentelemetry-operator</li>
+                                    
+                                        <li>opentelemetry-product</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>RedHat Community Index</li>
+                                    
+                                        <li>RedHat Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;opentelemetry.io&#34;,&#34;kind&#34;:&#34;OpenTelemetryCollector&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>neuvector-certified-operator</li>
+                                    
+                                        <li>neuvector-community-operator</li>
+                                    
+                                        <li>neuvector-certified-operator-rhmp</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>Certified Index</li>
+                                    
+                                        <li>RedHat Community Index</li>
+                                    
+                                        <li>Marketplace Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;apm.neuvector.com&#34;,&#34;kind&#34;:&#34;Neuvector&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>minio-operator</li>
+                                    
+                                        <li>minio-operator-rhmp</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>Certified Index</li>
+                                    
+                                        <li>Marketplace Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;minio.min.io&#34;,&#34;kind&#34;:&#34;Tenant&#34;,&#34;version&#34;:&#34;v2&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>citrix-ingress-controller-operator</li>
+                                    
+                                        <li>citrix-ingress-controller-operator-rhmp</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>Certified Index</li>
+                                    
+                                        <li>Marketplace Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;citrix.com&#34;,&#34;kind&#34;:&#34;CitrixIngressController&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>strimzi-kafka-operator</li>
+                                    
+                                        <li>amq-streams</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>RedHat Community Index</li>
+                                    
+                                        <li>RedHat Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;kafka.strimzi.io&#34;,&#34;kind&#34;:&#34;KafkaBridge&#34;,&#34;version&#34;:&#34;v1beta2&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;kafka.strimzi.io&#34;,&#34;kind&#34;:&#34;KafkaMirrorMaker2&#34;,&#34;version&#34;:&#34;v1beta2&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;kafka.strimzi.io&#34;,&#34;kind&#34;:&#34;KafkaTopic&#34;,&#34;version&#34;:&#34;v1beta2&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;kafka.strimzi.io&#34;,&#34;kind&#34;:&#34;KafkaConnector&#34;,&#34;version&#34;:&#34;v1beta2&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;kafka.strimzi.io&#34;,&#34;kind&#34;:&#34;KafkaTopic&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;kafka.strimzi.io&#34;,&#34;kind&#34;:&#34;KafkaRebalance&#34;,&#34;version&#34;:&#34;v1beta2&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;kafka.strimzi.io&#34;,&#34;kind&#34;:&#34;KafkaUser&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;kafka.strimzi.io&#34;,&#34;kind&#34;:&#34;KafkaConnectS2I&#34;,&#34;version&#34;:&#34;v1beta2&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;kafka.strimzi.io&#34;,&#34;kind&#34;:&#34;KafkaTopic&#34;,&#34;version&#34;:&#34;v1beta1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;kafka.strimzi.io&#34;,&#34;kind&#34;:&#34;Kafka&#34;,&#34;version&#34;:&#34;v1beta2&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;kafka.strimzi.io&#34;,&#34;kind&#34;:&#34;KafkaUser&#34;,&#34;version&#34;:&#34;v1beta1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;kafka.strimzi.io&#34;,&#34;kind&#34;:&#34;KafkaUser&#34;,&#34;version&#34;:&#34;v1beta2&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;kafka.strimzi.io&#34;,&#34;kind&#34;:&#34;KafkaConnect&#34;,&#34;version&#34;:&#34;v1beta2&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;kafka.strimzi.io&#34;,&#34;kind&#34;:&#34;KafkaMirrorMaker&#34;,&#34;version&#34;:&#34;v1beta2&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>sysdig-certified</li>
+                                    
+                                        <li>sysdig-certified-rhmp</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>Certified Index</li>
+                                    
+                                        <li>Marketplace Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;sysdig.com&#34;,&#34;kind&#34;:&#34;SysdigAgent&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>vfunction-server-operator</li>
+                                    
+                                        <li>vfunction-server-operator-rhmp</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>Certified Index</li>
+                                    
+                                        <li>Marketplace Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;vfunction.com&#34;,&#34;kind&#34;:&#34;VfunctionServer&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>camel-k</li>
+                                    
+                                        <li>red-hat-camel-k</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>RedHat Community Index</li>
+                                    
+                                        <li>RedHat Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;camel.apache.org&#34;,&#34;kind&#34;:&#34;IntegrationPlatform&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;camel.apache.org&#34;,&#34;kind&#34;:&#34;KameletBinding&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;camel.apache.org&#34;,&#34;kind&#34;:&#34;Integration&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;camel.apache.org&#34;,&#34;kind&#34;:&#34;Kamelet&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;camel.apache.org&#34;,&#34;kind&#34;:&#34;Build&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;camel.apache.org&#34;,&#34;kind&#34;:&#34;IntegrationKit&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;camel.apache.org&#34;,&#34;kind&#34;:&#34;CamelCatalog&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>kubemq-operator-marketplace</li>
+                                    
+                                        <li>kubemq-operator-marketplace-rhmp</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>Certified Index</li>
+                                    
+                                        <li>Marketplace Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;core.k8s.kubemq.io&#34;,&#34;kind&#34;:&#34;KubemqDashboard&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;core.k8s.kubemq.io&#34;,&#34;kind&#34;:&#34;KubemqConnector&#34;,&#34;version&#34;:&#34;v1beta1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;core.k8s.kubemq.io&#34;,&#34;kind&#34;:&#34;KubemqCluster&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;core.k8s.kubemq.io&#34;,&#34;kind&#34;:&#34;KubemqCluster&#34;,&#34;version&#34;:&#34;v1beta1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;core.k8s.kubemq.io&#34;,&#34;kind&#34;:&#34;KubemqDashboard&#34;,&#34;version&#34;:&#34;v1beta1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;core.k8s.kubemq.io&#34;,&#34;kind&#34;:&#34;KubemqConnector&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>keycloak-operator</li>
+                                    
+                                        <li>rhsso-operator</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>RedHat Community Index</li>
+                                    
+                                        <li>RedHat Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;keycloak.org&#34;,&#34;kind&#34;:&#34;KeycloakClient&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;keycloak.org&#34;,&#34;kind&#34;:&#34;KeycloakUser&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;keycloak.org&#34;,&#34;kind&#34;:&#34;Keycloak&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;keycloak.org&#34;,&#34;kind&#34;:&#34;KeycloakRealm&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;keycloak.org&#34;,&#34;kind&#34;:&#34;KeycloakBackup&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>linstor-operator</li>
+                                    
+                                        <li>linstor-operator-rhmp</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>Certified Index</li>
+                                    
+                                        <li>Marketplace Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;linstor.linbit.com&#34;,&#34;kind&#34;:&#34;LinstorCSIDriver&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;linstor.linbit.com&#34;,&#34;kind&#34;:&#34;LinstorController&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;linstor.linbit.com&#34;,&#34;kind&#34;:&#34;LinstorSatelliteSet&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>marketplace-games-operator</li>
+                                    
+                                        <li>marketplace-games-operator-rhmp</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>Certified Index</li>
+                                    
+                                        <li>Marketplace Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;game.marketplace.redhat.com&#34;,&#34;kind&#34;:&#34;Arcade&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>ovms-operator</li>
+                                    
+                                        <li>ovms-operator-rhmp</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>Certified Index</li>
+                                    
+                                        <li>Marketplace Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;intel.com&#34;,&#34;kind&#34;:&#34;ModelServer&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;intel.com&#34;,&#34;kind&#34;:&#34;Notebook&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>zabbix-operator-certified</li>
+                                    
+                                        <li>zabbix-operator-certified-rhmp</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>Certified Index</li>
+                                    
+                                        <li>Marketplace Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;kubernetes.zabbix.com&#34;,&#34;kind&#34;:&#34;ZabbixFull&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;kubernetes.zabbix.com&#34;,&#34;kind&#34;:&#34;ZabbixServer&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;kubernetes.zabbix.com&#34;,&#34;kind&#34;:&#34;ZabbixAgent&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;kubernetes.zabbix.com&#34;,&#34;kind&#34;:&#34;ZabbixProxySqlite&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;kubernetes.zabbix.com&#34;,&#34;kind&#34;:&#34;ZabbixProxyMysql&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;kubernetes.zabbix.com&#34;,&#34;kind&#34;:&#34;ZabbixAppliance&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>maistraoperator</li>
+                                    
+                                        <li>servicemeshoperator</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>RedHat Community Index</li>
+                                    
+                                        <li>RedHat Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;maistra.io&#34;,&#34;kind&#34;:&#34;ServiceMeshMember&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;maistra.io&#34;,&#34;kind&#34;:&#34;ServiceMeshMemberRoll&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;maistra.io&#34;,&#34;kind&#34;:&#34;ServiceMeshControlPlane&#34;,&#34;version&#34;:&#34;v2&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;maistra.io&#34;,&#34;kind&#34;:&#34;ServiceMeshControlPlane&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>argocd-operator</li>
+                                    
+                                        <li>openshift-gitops-operator</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>RedHat Community Index</li>
+                                    
+                                        <li>RedHat Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;argoproj.io&#34;,&#34;kind&#34;:&#34;Application&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;argoproj.io&#34;,&#34;kind&#34;:&#34;AppProject&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;argoproj.io&#34;,&#34;kind&#34;:&#34;ArgoCD&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;argoproj.io&#34;,&#34;kind&#34;:&#34;ApplicationSet&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>dynatrace-operator</li>
+                                    
+                                        <li>dynatrace-operator-rhmp</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>Certified Index</li>
+                                    
+                                        <li>Marketplace Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;dynatrace.com&#34;,&#34;kind&#34;:&#34;DynaKube&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>xcrypt-operator</li>
+                                    
+                                        <li>xcrypt-operator-rhmp</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>Certified Index</li>
+                                    
+                                        <li>Marketplace Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;xcrypt.zettaset.com&#34;,&#34;kind&#34;:&#34;XCrypt&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>hpe-csi-operator</li>
+                                    
+                                        <li>hpe-csi-operator-rhmp</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>Certified Index</li>
+                                    
+                                        <li>Marketplace Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;storage.hpe.com&#34;,&#34;kind&#34;:&#34;HPECSIDriver&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>anzo-operator</li>
+                                    
+                                        <li>anzo-operator-rhmp</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>Certified Index</li>
+                                    
+                                        <li>Marketplace Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;anzo.cambridgesemantics.com&#34;,&#34;kind&#34;:&#34;Anzo&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>anzograph-operator</li>
+                                    
+                                        <li>anzograph-operator-rhmp</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>Certified Index</li>
+                                    
+                                        <li>Marketplace Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;anzograph.clusters.cambridgesemantics.com&#34;,&#34;kind&#34;:&#34;AnzoGraph&#34;,&#34;version&#34;:&#34;v2&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>joget-dx-operator</li>
+                                    
+                                        <li>joget-dx-operator-rhmp</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>Certified Index</li>
+                                    
+                                        <li>Marketplace Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;app.joget.com&#34;,&#34;kind&#34;:&#34;JogetDX&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>node-healthcheck-operator</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>RedHat Community Index</li>
+                                    
+                                        <li>RedHat Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;remediation.medik8s.io&#34;,&#34;kind&#34;:&#34;NodeHealthCheck&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>apicurito</li>
+                                    
+                                        <li>fuse-apicurito</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>RedHat Community Index</li>
+                                    
+                                        <li>RedHat Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;apicur.io&#34;,&#34;kind&#34;:&#34;Apicurito&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>hazelcast-enterprise-certified</li>
+                                    
+                                        <li>hazelcast-enterprise-certified-rhmp</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>Certified Index</li>
+                                    
+                                        <li>Marketplace Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;hazelcast.com&#34;,&#34;kind&#34;:&#34;HazelcastEnterprise&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>poison-pill-operator</li>
+                                    
+                                        <li>poison-pill-manager</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>RedHat Community Index</li>
+                                    
+                                        <li>RedHat Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;poison-pill.medik8s.io&#34;,&#34;kind&#34;:&#34;PoisonPillConfig&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;poison-pill.medik8s.io&#34;,&#34;kind&#34;:&#34;PoisonPillRemediation&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;poison-pill.medik8s.io&#34;,&#34;kind&#34;:&#34;PoisonPillRemediationTemplate&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>crunchy-postgres-operator</li>
+                                    
+                                        <li>postgresql</li>
+                                    
+                                        <li>crunchy-postgres-operator-rhmp</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>Certified Index</li>
+                                    
+                                        <li>RedHat Community Index</li>
+                                    
+                                        <li>Marketplace Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;postgres-operator.crunchydata.com&#34;,&#34;kind&#34;:&#34;PostgresCluster&#34;,&#34;version&#34;:&#34;v1beta1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>anzounstructured-operator</li>
+                                    
+                                        <li>anzounstructured-operator-rhmp</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>Certified Index</li>
+                                    
+                                        <li>Marketplace Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;anzounstructured.clusters.cambridgesemantics.com&#34;,&#34;kind&#34;:&#34;AnzoUnstructured&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>kiali</li>
+                                    
+                                        <li>kiali-ossm</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>RedHat Community Index</li>
+                                    
+                                        <li>RedHat Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;kiali.io&#34;,&#34;kind&#34;:&#34;Kiali&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;monitoring.kiali.io&#34;,&#34;kind&#34;:&#34;MonitoringDashboard&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>aikit-operator</li>
+                                    
+                                        <li>aikit-operator-rhmp</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>Certified Index</li>
+                                    
+                                        <li>Marketplace Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;aikit.intel&#34;,&#34;kind&#34;:&#34;AIKitContainer&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>iomesh-operator</li>
+                                    
+                                        <li>iomesh-operator-rhmp</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>Certified Index</li>
+                                    
+                                        <li>Marketplace Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;iomesh.com&#34;,&#34;kind&#34;:&#34;IOMeshCluster&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>t8c</li>
+                                    
+                                        <li>t8c-certified-rhmp</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>RedHat Community Index</li>
+                                    
+                                        <li>Marketplace Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;charts.helm.k8s.io&#34;,&#34;kind&#34;:&#34;Xl&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                        <li>{&#34;group&#34;:&#34;charts.helm.k8s.io&#34;,&#34;kind&#34;:&#34;Xl&#34;,&#34;version&#34;:&#34;v1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>hawtio-operator</li>
+                                    
+                                        <li>fuse-console</li>
+                                    
+                                    </ul>
+                                </th>
+                                <th>
+                                    <ul>
+                                    
+                                        <li>RedHat Community Index</li>
+                                    
+                                        <li>RedHat Index</li>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                    <ul>
+                                    
+                                        <li>{&#34;group&#34;:&#34;hawt.io&#34;,&#34;kind&#34;:&#34;Hawtio&#34;,&#34;version&#34;:&#34;v1alpha1&#34;}</li>
+                                    
+                                    </ul>
+                                </th>
+                            </tr>
+                        
+                    
+                    </tbody>
+                </table>
+            </div>
+</main>
+
+</body>
+</html>

@@ -15,6 +15,7 @@
 package custom
 
 import (
+	"github.com/operator-framework/audit/cmd/custom/catalogs"
 	"github.com/operator-framework/audit/cmd/custom/maxocp"
 	"github.com/operator-framework/audit/cmd/custom/multiarch"
 	"github.com/operator-framework/audit/cmd/custom/validator"
@@ -36,6 +37,7 @@ func NewCmd() *cobra.Command {
 		maxocp.NewCmd(),
 		multiarch.NewCmd(),
 		validator.NewCmd(),
+		catalogs.NewCmd(),
 	)
 
 	return indexCmd

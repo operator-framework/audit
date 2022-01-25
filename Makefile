@@ -99,6 +99,7 @@ generate-dashboards:
 	go run ./hack/deprecate-api/generate.go
 	go run ./hack/maxocpversion/generate.go
 	go run ./hack/grade/generate.go
+	go run ./hack/catalogs/generate.go
 	go run ./hack/muiltarch/generate.go
 	go run ./hack/index/generate.go
 
@@ -107,3 +108,8 @@ generate-all:
 	make generate-testdata
 	make generate-dashboards
 
+.PHONY: generate-test ## Generate the full testdata directory
+generate-test: install
+	$(CONTAINER_ENGINE) login https://registry.redhat.io
+	go run ./hack/report/bundles/generate.go
+	go run ./hack/deprecate-api/generate.go
