@@ -38,11 +38,8 @@ func main() {
 	fullReportsPath := filepath.Join(currentPath, hack.ReportsPath)
 
 	dirs := map[string]string{
-		"redhat_certified_operator_index": "registry.redhat.io/redhat/certified-operator-index",
 		"redhat_community_operator_index": "registry.redhat.io/redhat/community-operator-index",
-		"redhat_redhat_marketplace_index": "registry.redhat.io/redhat/redhat-marketplace-index",
 		"redhat_redhat_operator_index":    "registry.redhat.io/redhat/redhat-operator-index",
-		"operatorhubio_catalog":           "quay.io/operatorhubio/catalog",
 	}
 
 	binPath := filepath.Join(currentPath, hack.BinPath)
@@ -91,7 +88,7 @@ func main() {
 
 	for k, v := range allPaths {
 		// run report
-		command = exec.Command(binPath, "dashboard", "catalogs",
+		command = exec.Command(binPath, "alpha", "catalogs",
 			fmt.Sprintf("--files=%s", v),
 			fmt.Sprintf("--output-path=%s", catalogsPath),
 			fmt.Sprintf("--name=%s", fmt.Sprintf("OCP %s", k)),

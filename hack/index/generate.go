@@ -85,8 +85,8 @@ func main() {
 					kind = "Removed API(s) in 1.25/OCP 4.12"
 				} else if strings.Contains(info.Name(), "deprecate-apis-1.26") {
 					kind = "Removed API(s) in 1.26/OCP 4.13"
-				} else if strings.Contains(info.Name(), "grade") {
-					kind = "Grade - Experimental"
+				} else if strings.Contains(info.Name(), "qa") {
+					kind = "Projects QA"
 				} else if strings.Contains(info.Name(), "maxocp") {
 					kind = "Max OCP Version - Monitor"
 				} else if strings.Contains(info.Name(), "multiarch") {
@@ -123,7 +123,7 @@ func main() {
 
 	pathToWalk := filepath.Join(fullReportsPath, "catalogs")
 	if _, err := os.Stat(pathToWalk); err == nil && !os.IsNotExist(err) {
-		dash := DashboardPerCatalog{Name: "Catalogs Conflicts"}
+		dash := DashboardPerCatalog{Name: "Catalogs (RedHat vs Community)"}
 		err = filepath.Walk(pathToWalk, func(path string, info os.FileInfo, err error) error {
 			if info != nil && !info.IsDir() && strings.HasSuffix(info.Name(), "html") {
 				tagValue := "latest"

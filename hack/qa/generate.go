@@ -42,6 +42,7 @@ func main() {
 		"redhat_community_operator_index": "registry.redhat.io/redhat/community-operator-index",
 		"redhat_redhat_marketplace_index": "registry.redhat.io/redhat/redhat-marketplace-index",
 		"redhat_redhat_operator_index":    "registry.redhat.io/redhat/redhat-operator-index",
+		"operatorhubio_catalog":           "quay.io/operatorhubio/catalog",
 	}
 
 	binPath := filepath.Join(currentPath, hack.BinPath)
@@ -71,12 +72,13 @@ func main() {
 				if strings.Contains(info.Name(), "v4.7") ||
 					strings.Contains(info.Name(), "v4.6") ||
 					strings.Contains(info.Name(), "v4.8") ||
-					strings.Contains(info.Name(), "v4.9") {
+					strings.Contains(info.Name(), "v4.9") ||
+					strings.Contains(info.Name(), "operatorhubio") {
 					return nil
 				}
 
 				// run report
-				command := exec.Command(binPath, "dashboard", "multiarch",
+				command := exec.Command(binPath, "dashboard", "qa",
 					fmt.Sprintf("--file=%s", path),
 					fmt.Sprintf("--output-path=%s", dashboardPath),
 				)

@@ -118,7 +118,7 @@ func NewAPIDashReport(bundlesReport bundles.Report, optionalValues map[string]st
 	}
 
 	for k, bundles := range migrated {
-		kinds, channels, bundlesNotMigrated, bundlesMigrated := getReportValues(bundles, apiDash.K8SVersion)
+		kinds, channels, bundlesNotMigrated, bundlesMigrated := GetReportValues(bundles, apiDash.K8SVersion)
 		apiDash.Migrated = append(apiDash.Migrated, Migrated{
 			Name:            k,
 			Kinds:           pkg.GetUniqueValues(kinds),
@@ -130,7 +130,7 @@ func NewAPIDashReport(bundlesReport bundles.Report, optionalValues map[string]st
 	}
 
 	for k, bundles := range notMigrated {
-		kinds, channels, bundlesNotMigrated, bundlesMigrated := getReportValues(bundles, apiDash.K8SVersion)
+		kinds, channels, bundlesNotMigrated, bundlesMigrated := GetReportValues(bundles, apiDash.K8SVersion)
 		apiDash.NotMigrated = append(apiDash.NotMigrated, NotMigrated{
 			Name:            k,
 			Kinds:           pkg.GetUniqueValues(kinds),
@@ -220,7 +220,7 @@ func NewAPIDashReport(bundlesReport bundles.Report, optionalValues map[string]st
 
 }
 
-func getReportValues(bundles []BundleDeprecate, k8sVersion string) ([]string, []string, []string, []string) {
+func GetReportValues(bundles []BundleDeprecate, k8sVersion string) ([]string, []string, []string, []string) {
 	var msg []string
 	var channels []string
 	for _, b := range bundles {

@@ -1,0 +1,3270 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Deprecated API(s) Dashboard</title>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.24/datatables.min.css"/>
+
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+
+    <style>
+        div.dataTables_wrapper {
+            width: 98%;
+            margin: 0 auto;
+        }
+
+        table.minimalistBlack {
+            border: 3px solid #000000;
+        }
+        table.minimalistBlack td, table.minimalistBlack th {
+            border: 1px solid #000000;
+            font-size: 10px;
+            text-align: left;
+        }
+        table.minimalistBlack tbody td {
+            font-size: 10px;
+        }
+        table.minimalistBlack thead {
+            border-bottom: 3px solid #000000;
+            text-align: center;
+        }
+        table.minimalistBlack thead th {
+            font-size: 12px;
+            color: white;
+            text-align: center;
+        }
+
+        .themed-container {
+            padding: .75rem;
+            margin-bottom: 1.5rem;
+            background-color: #F0F0F0;
+            border: 1px solid #0D0C0C;
+        }
+    </style>
+
+
+</head>
+<body class="py-4">
+
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.24/datatables.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+<script >
+
+    $(document).ready(function() {
+        $('#orange').DataTable( {
+            "scrollX": true
+        } );
+        $('#green').DataTable( {
+            "scrollX": true
+        } );
+        $('#blue').DataTable( {
+            "scrollX": true
+        } );
+    } );
+
+</script>
+
+<main>
+
+        <h1>Removed API(s) in 1.25/OCP 4.12 Dashboard</h1>
+        <p>The audit tool output for the following packages were obtained by checking the image and the bundle manifests distributed. This report aims to try to identify the package distributions that can impact the users on 4.9.</p>
+
+        <div class="container-fluid themed-container">
+            <h5 class="display-12 fw-bold">Data from the image used</h5>
+            <ul>
+                <li>Image name: registry.redhat.io/redhat/certified-operator-index:v4.10 </li>
+                <li>Image ID: sha256:6df4d623651198dce5ef09bd26ef0fa11ada0351c4c4f990f29bf861ba53b655 </li>
+                <li>Image Created at: 2022-03-17T07:04:31.630356234Z </li>
+                <li>From JSON report generated at: 2022-03-17 </li>
+            </ul>
+        </div>
+
+        <div class="container-fluid themed-container">
+            <h5 class="display-12 fw-bold">FAQ</h5>
+            <h5 class="display-12 fw-bold">1. Can my package still have bundles using deprecated API(s) that are not found by this check?</h5>
+            <p>Yes. The check can only be made by looking at the manifests shipped in the bundle. Your operator might be using the deprecated/removed API(s) but not shipping its manifests on the bundle or have a dependency on another operator that is using them.</p>
+            <h5 class="display-12 fw-bold">2. What action(s) should I take?</h5>
+            <ul>
+                <li>Check <a href="https://kubernetes.io/docs/reference/using-api/deprecation-guide"> Deprecated API Migration Guide (1.25)</a> and ensure that your projects have been migrated and are not using any deprecated/removed API(s)</li>
+                <li>Ensure that any distribution which requires any deprecated API(s) in the OCP catalogs are configured with the Max OpenShift Version compatible (`olm.openShiftMaxVersion`)   so it will only be distributed on OCP version(s) &lt;= 4.8. Also, control which version the bundle is deployed to from OLM via the annotation/label `com.redhat.openshift.versions`. More info see: <a href="https://github.com/operator-framework/community-operators/blob/master/docs/packaging-required-criteria-ocp.md"> OKD/OpenShift Catalogs criteria and options </a></li>
+                <li>OpenShift 4.12 introduces two new alerts that fire when an API that will be removed in the next release is in use. Check the event alerts of your Operators running on 4.8 and ensure that you do not find any warning about these API(s) still being used by it</li>
+            </ul>
+            <h5 class="display-12 fw-bold">3. What does it mean for a package to be in amber or green?</h5>
+            <ul>
+                <li> <b>(Green) Complying:</b> these are packages that we cannot found the removed APIs in k8s 1.22/OCP 4.9 in at least one bundle version</li>
+                <li> <b>(Amber) Not complying:</b> these are the packages that we cannot found any versions which is not using the removed APIs in in k8s 1.25/OCP 4.12</li>
+                
+                <li> <b>(Blue) Potentially Impacted By:</b> these are the packages that we could find RBAC permissions requested for these removed API versions on k8s 1.25/OCP 4.12. Note that we are technically unable to check the versions used to of these APIs/resources by looking at the bundle manifests and permissions to let you know if these packages/bundles will or not fail because of those APIs usage. </li>
+                
+            </ul>
+        </div>
+
+        <div class="container-fluid themed-container">
+            <h5 class="display-12 fw-bold">Using deprecated APIs:</h5>
+            <p>Packages which has bundles which we found manifests in using the APIs/versions that will be removed</p>
+
+            <table id="orange" class="minimalistBlack" style="background-color: #ec8f1c; width:98%">
+                <thead>
+                     <tr>
+                         <th>Package Name</th>
+                         <th>Kinds to migrate</th>
+                         <th>Channels</th>
+                         <th>Bundles uses API(s)</th>
+                         <th>Bundles Migrated</th>
+                     </tr>
+                </thead>
+                <tbody>
+                
+                </tbody>
+            </table>
+        </div>
+
+        <div class="container-fluid themed-container">
+            <h5 class="display-12 fw-bold">Removal APIs not found in the bundle manifests:</h5>
+            <p>Packages that where we could not find the APIs/versions which will be removed in the bundles manifests</p>
+            <table id="green" class="minimalistBlack" style="background-color:#3FA91E;width:98%">
+                <thead>
+                     <tr>
+                         <th>Package Name</th>
+                         <th>Findings</th>
+                         <th>Channels</th>
+                         <th>Bundles uses API(s)</th>
+                         <th>Bundles Migrated</th>
+                     </tr>
+                    </thead>
+                    <tbody>
+                    
+                        
+                            <tr>
+                                <th>federatorai-certified</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>federatorai.v4.6.1-4 - (label=v4.5,v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                         <li>federatorai.v4.7.1-1 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>redhat-marketplace-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                            <li>beta</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>redhat-marketplace-operator.v2.6.3 - (label=v4.6-v4.10,max=not set,channels=[stable beta],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>ibm-security-verify-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>ibm-security-verify-operator.v21.11.1 - (label=v4.7,max=4.9,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>hazelcast-enterprise-certified</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>alpha</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>hazelcast-enterprise-operator.v0.3.7 - (label=v4.5,v4.6,max=4.8,channels=[alpha],head:NO,defaultChannel:YES, deprecated:YES)</li>
+                                     
+                                         <li>hazelcast-enterprise-operator.v0.3.8 - (label=v4.5,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>pachyderm-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>pachyderm-operator.v0.1.0 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>seldon-operator-certified</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>seldon-operator.v1.12.0 - (label=v4.8,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>nginx-ingress-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>alpha</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>nginx-ingress-operator.v0.2.0 - (label=v4.5,v4.6,max=4.8,channels=[alpha],head:NO,defaultChannel:YES, deprecated:YES)</li>
+                                     
+                                         <li>nginx-ingress-operator.v0.4.0 - (label=v4.5,max=not set,channels=[alpha],head:NO,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                         <li>nginx-ingress-operator.v0.5.0 - (label=v4.6,max=not set,channels=[alpha],head:NO,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                         <li>nginx-ingress-operator.v0.5.1 - (label=v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>couchbase-enterprise-certified</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>couchbase-operator.v2.1.0 - (label=v4.6,max=4.8,channels=[stable],head:NO,defaultChannel:YES, deprecated:YES)</li>
+                                     
+                                         <li>couchbase-operator.v2.2.0-1 - (label=v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                         <li>couchbase-operator.v2.2.1-1 - (label=v4.6,v4.7,v4.8,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>open-liberty-certified</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>beta2</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>open-liberty-operator.v0.8.0 - (label=v4.6,max=not set,channels=[beta2],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>elasticsearch-eck-operator-certified</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>elasticsearch-eck-operator-certified.v2.0.0 - (label=v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                         <li>elasticsearch-eck-operator-certified.v2.1.0 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>hazelcast-platform-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>alpha</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>hazelcast-platform-operator.v5.1.0 - (label=v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>hpe-csi-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>hpe-csi-operator.v2.0.0 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>smilecdr-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>alpha</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>smilecdr-operator.v0.0.1 - (label=v4.8,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>citrix-ingress-controller-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>alpha</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>citrix-ingress-controller-operator.v1.18.5 - (label=v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>dynatrace-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>alpha</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>dynatrace-operator.v0.2.2 - (label=v4.5,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>crunchy-postgres-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>v5</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>postgresoperator.v5.0.2 - (label=v4.6,max=not set,channels=[v5],head:NO,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                         <li>postgresoperator.v5.0.3 - (label=v4.6,max=not set,channels=[v5],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>memory-machine-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>alpha</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>memory-machine-operator.v0.0.7 - (label=v4.8,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>entando-k8s-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>alpha</li>
+                                        
+                                            <li>beta</li>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>entando-k8s-operator.v6.3.2 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                         <li>entando-k8s-operator.v6.3.2-pr2 - (label=v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:NO, deprecated:NO)</li>
+                                     
+                                         <li>entando-k8s-operator.v6.3.2-pr4 - (label=v4.6,max=not set,channels=[beta],head:YES,defaultChannel:NO, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th></th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>openshiftxray-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>alpha</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>xray-operator.v2.0.9 - (label=v4.5,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>joget-dx-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>alpha</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>joget-dx-openshift-operator.v0.0.20 - (label=v4.5,max=not set,channels=[alpha],head:NO,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                         <li>joget-dx-openshift-operator.v0.0.21 - (label=v4.5,max=not set,channels=[alpha],head:NO,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                         <li>joget-dx-openshift-operator.v0.0.22 - (label=v4.5,max=not set,channels=[alpha],head:NO,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                         <li>joget-dx-openshift-operator.v0.0.23 - (label=v4.5,max=not set,channels=[alpha],head:NO,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                         <li>joget-dx-openshift-operator.v0.0.24 - (label=v4.5,max=not set,channels=[alpha],head:NO,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                         <li>joget-dx-openshift-operator.v0.0.25 - (label=v4.5,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>ako-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>beta</li>
+                                        
+                                            <li>alpha</li>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>ako-operator.v1.6.2-alpha - (label=v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:NO, deprecated:NO)</li>
+                                     
+                                         <li>ako-operator.v1.6.2-beta - (label=v4.6,max=not set,channels=[beta],head:YES,defaultChannel:NO, deprecated:NO)</li>
+                                     
+                                         <li>ako-operator.v1.6.2-stable - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>aikit-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>alpha</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>aikit-operator.v2021.2.100410 - (label=v4.7,max=not set,channels=[alpha],head:NO,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                         <li>aikit-operator.v2021.2.102120 - (label=v4.7,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                         <li>aikit-operator.v2021.2.92808-dev-a60e5ba - (label=v4.8,max=not set,channels=[alpha],head:NO,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                         <li>aikit-operator.v2021.2.92814 - (label=v4.8,max=not set,channels=[alpha],head:NO,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                         <li>aikit-operator.v2021.2.92911 - (label=v4.7,max=not set,channels=[alpha],head:NO,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>openshiftartifactoryha-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                            <li>alpha</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>artifactory-ha-operator.v1.1.14 - (label=v4.5,v4.6,max=4.8,channels=[alpha stable],head:NO,defaultChannel:YES, deprecated:YES)</li>
+                                     
+                                         <li>artifactory-ha-operator.v1.1.15 - (label=v4.5,v4.6,max=not set,channels=[alpha],head:NO,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                         <li>artifactory-ha-operator.v1.1.18 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:NO, deprecated:NO)</li>
+                                     
+                                         <li>artifactory-ha-operator.v1.1.20 - (label=v4.6,v4.7,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>k10-kasten-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>k10-kasten-operator.v4.5.8 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>instana-agent-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>instana-agent-operator.v2.0.4 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>zabbix-operator-certified</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>lts</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>zabbix-operator-certified.v0.0.2 - (label=v4.5,v4.6,max=4.8,channels=[lts],head:NO,defaultChannel:YES, deprecated:YES)</li>
+                                     
+                                         <li>zabbix-operator-certified.v0.0.3 - (label=v4.5,v4.6,max=not set,channels=[lts],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>vfunction-server-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>vfunction-server-operator.v2.2.469 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>runtime-component-operator-certified</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>beta2</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>runtime-component.v0.8.0 - (label=v4.6,max=not set,channels=[beta2],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>anchore-engine</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>alpha</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>anchore-engine.v1.0.1 - (label=v4.6,v4.7,v4.8,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>infoscale-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>infoscale-operator.v7.9.1 - (label=v4.8,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>k8s-triliovault-ibm</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>k8s-triliovault-ibm-stable.2.7.0 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>pcc-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>pcc-operator.v0.2.1 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>installkit-customer</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>preview</li>
+                                        
+                                            <li>fast</li>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>installkit-customer.v2.0.15 - (label=v4.6,v4.7,max=not set,channels=[preview fast stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>xcrypt-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>alpha</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>zts-xcrypt-operator.v0.0.17 - (label=v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>sanstoragecsi-operator-bundle</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>sanstoragecsi-operator-bundle.v1.0.0 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>ibm-block-csi-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>ibm-block-csi-operator.v1.5.0 - (label=v4.6,4.7,max=4.8,channels=[stable],head:NO,defaultChannel:YES, deprecated:YES)</li>
+                                     
+                                         <li>ibm-block-csi-operator.v1.6.0 - (label=v4.7,v4.8,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>linstor-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                            <li>alpha</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>linstor-operator.v1.5.1 - (label=v4.6,max=not set,channels=[stable alpha],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>citrix-cpx-istio-sidecar-injector-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>alpha</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>citrix-cpx-istio-sidecar-injector-operator.v0.9.9 - (label=v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>citrix-adc-istio-ingress-gateway-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>alpha</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>citrix-adc-istio-ingress-gateway-operator.v0.9.9 - (label=v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>iomesh-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>iomesh-operator.0.10.1-rc4 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>anzounstructured-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>anzounstructured-operator.v2.0.101 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>gitlab-runner-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>gitlab-runner-operator.v1.2.0 - (label=v4.5,v4.6,max=4.8,channels=[stable],head:NO,defaultChannel:YES, deprecated:YES)</li>
+                                     
+                                         <li>gitlab-runner-operator.v1.4.0 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>tigera-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>release-v1.23</li>
+                                        
+                                            <li>release-v1.20</li>
+                                        
+                                            <li>release-v1.25</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>tigera-operator.v1.20.1 - (label=v4.5,max=not set,channels=[release-v1.20],head:NO,defaultChannel:NO, deprecated:NO)</li>
+                                     
+                                         <li>tigera-operator.v1.20.2 - (label=v4.5,max=not set,channels=[release-v1.20],head:NO,defaultChannel:NO, deprecated:NO)</li>
+                                     
+                                         <li>tigera-operator.v1.20.3 - (label=v4.5,max=not set,channels=[release-v1.20],head:NO,defaultChannel:NO, deprecated:NO)</li>
+                                     
+                                         <li>tigera-operator.v1.20.4 - (label=v4.5,max=not set,channels=[release-v1.20],head:YES,defaultChannel:NO, deprecated:NO)</li>
+                                     
+                                         <li>tigera-operator.v1.23.0 - (label=v4.6,max=not set,channels=[release-v1.23],head:NO,defaultChannel:NO, deprecated:NO)</li>
+                                     
+                                         <li>tigera-operator.v1.23.1 - (label=v4.6,max=not set,channels=[release-v1.23],head:NO,defaultChannel:NO, deprecated:NO)</li>
+                                     
+                                         <li>tigera-operator.v1.23.2 - (label=v4.6,max=not set,channels=[release-v1.23],head:NO,defaultChannel:NO, deprecated:NO)</li>
+                                     
+                                         <li>tigera-operator.v1.23.3 - (label=v4.6,max=not set,channels=[release-v1.23],head:NO,defaultChannel:NO, deprecated:NO)</li>
+                                     
+                                         <li>tigera-operator.v1.23.4 - (label=v4.6,max=not set,channels=[release-v1.23],head:YES,defaultChannel:NO, deprecated:NO)</li>
+                                     
+                                         <li>tigera-operator.v1.25.1 - (label=v4.6,max=not set,channels=[release-v1.25],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>hpe-ezmeral-csi-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>hpe-ezmeral-csi-operator.v1.0.9 - (label=v4.10,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>cass-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>cass-operator.v1.10.2 - (label=v4.7-v4.10,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>ccm-node-agent-dcap-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>alpha</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>ccm-node-agent-dcap-operator.v0.0.1 - (label=v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>cloudbees-ci</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>alpha</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>cloudbees-ci.v3.34.1 - (label=v4.7,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>anzograph-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>anzograph-operator.v2.0.102 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>eamli-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>candidate</li>
+                                        
+                                            <li>fast</li>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>eamli-operator.v0.8.12 - (label=v4.6,max=not set,channels=[candidate fast stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>cilium</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>cilium.v1.10.4-x5bfd7b3 - (label=v4.5,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>marketplace-games-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>alpha</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>marketplace-games-operator.v1.0.0 - (label=v4.6,v4.7,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>portworx-certified</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>alpha</li>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>portworx-operator.v1.6.1 - (label=v4.6,max=not set,channels=[alpha stable],head:NO,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                         <li>portworx-operator.v1.7.1 - (label=v4.6,max=not set,channels=[alpha stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>memcached-operator-ogaye</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>alpha</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>memcached-operator.v0.0.1 - (label=v4.5,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>grafana-cloud-log-forwarder-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>alpha</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>grafana-cloud-log-forwarder-operator.v1.0.2 - (label=v4.9-v4.11,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>k8s-triliovault</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>k8s-triliovault-stable.2.7.1 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>kubemq-operator-marketplace</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>alpha</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>kubemq-operator.v1.7.8 - (label=v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>nutanixcsioperator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>nutanixcsioperator.v2.5.2 - (label=v4.6-v4.10,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>pmem-csi-operator-os</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>alpha</li>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>pmem-csi-operator.v1.0.0 - (label=v4.6,max=not set,channels=[alpha stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>neuvector-certified-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>beta</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>neuvector-operator.v1.2.8 - (label=v4.5,v4.6,max=4.8,channels=[beta],head:NO,defaultChannel:YES, deprecated:YES)</li>
+                                     
+                                         <li>neuvector-operator.v1.2.9 - (label=v4.5,v4.6,max=not set,channels=[beta],head:NO,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                         <li>neuvector-operator.v1.3.0 - (label=v4.5,v4.6,max=not set,channels=[beta],head:NO,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                         <li>neuvector-operator.v1.3.1 - (label=v4.4,max=not set,channels=[beta],head:NO,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                         <li>neuvector-operator.v1.3.2 - (label=v4.4,max=not set,channels=[beta],head:NO,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                         <li>neuvector-operator.v1.3.3 - (label=v4.4,max=not set,channels=[beta],head:NO,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                         <li>neuvector-operator.v1.3.4 - (label=v4.4,max=not set,channels=[beta],head:NO,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                         <li>neuvector-operator.v1.3.5 - (label=v4.6,max=not set,channels=[beta],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>sysdig-certified</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>sysdig-certified.v1.12.43 - (label=v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                         <li>sysdig-certified.v1.12.44 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>minio-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>minio-operator.v4.0.2 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>ccm-node-agent-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>alpha</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>ccm-node-agent-operator.v0.0.1 - (label=0.0.1,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>anzo-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>stable</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>anzo-operator.v2.0.101 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>ovms-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>alpha</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>openvino-operator.v0.0.1 - (label=v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                            <tr>
+                                <th>citrix-cpx-with-ingress-controller-operator</th>
+                                <th>
+                                    <ul>
+                                    
+                                    </ul>
+                                </th>
+                                 <th>
+                                     <ul>
+                                        
+                                            <li>alpha</li>
+                                        
+                                     </ul>
+                                 </th>
+                                <th>
+                                  <ul>
+                                     
+                                  </ul>
+                                </th>
+                                <th>
+                                  <ul>
+                                     
+                                         <li>citrix-cpx-with-ingress-controller-operator.v1.18.5 - (label=v4.5,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO)</li>
+                                     
+                                  </ul>
+                                </th>
+                            </tr>
+                        
+                    
+                    </tbody>
+            </table>
+        </div>
+
+        
+          <div class="container-fluid themed-container">
+                    <h5 class="display-12 fw-bold">Potentially Impacted By:</h5>
+                    <p>Packages which has bundles which might be impacted because we found related RBAC permissions for these APIGroups/resources</p>
+                    <table id="blue" class="minimalistBlack" style="background-color:#1e89a9;width:98%">
+                        <thead>
+                             <tr>
+                                 <th>Package Name</th>
+                                 <th>RBAC APIGroups/Resource(s)</th>
+                                 <th>Bundles</th>
+                             </tr>
+                            </thead>
+                            <tbody style="background-color:white">
+                            
+                                
+                                    <tr>
+                                        <th>cloudbees-ci</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>cloudbees-ci.v3.34.1 - (label=v4.7,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>instana-agent-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                                <li>batch</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>instana-agent-operator.v2.0.4 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34; &#34;batch&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>joget-dx-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>joget-dx-openshift-operator.v0.0.20 - (label=v4.5,max=not set,channels=[alpha],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                                 <li>joget-dx-openshift-operator.v0.0.21 - (label=v4.5,max=not set,channels=[alpha],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                                 <li>joget-dx-openshift-operator.v0.0.22 - (label=v4.5,max=not set,channels=[alpha],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                                 <li>joget-dx-openshift-operator.v0.0.23 - (label=v4.5,max=not set,channels=[alpha],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                                 <li>joget-dx-openshift-operator.v0.0.24 - (label=v4.5,max=not set,channels=[alpha],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                                 <li>joget-dx-openshift-operator.v0.0.25 - (label=v4.5,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>citrix-cpx-istio-sidecar-injector-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>citrix-cpx-istio-sidecar-injector-operator.v0.9.9 - (label=v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>ako-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                                <li>policy</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>ako-operator.v1.6.2-alpha - (label=v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:NO, deprecated:NO, RBAC: [&#34;events&#34; &#34;policy&#34;])</li>
+                                             
+                                                 <li>ako-operator.v1.6.2-beta - (label=v4.6,max=not set,channels=[beta],head:YES,defaultChannel:NO, deprecated:NO, RBAC: [&#34;events&#34; &#34;policy&#34;])</li>
+                                             
+                                                 <li>ako-operator.v1.6.2-stable - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34; &#34;policy&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>k8s-triliovault</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                                <li>batch</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>k8s-triliovault-stable.2.7.1 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34; &#34;batch&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>neuvector-certified-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>CronJob</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>neuvector-operator.v1.2.9 - (label=v4.5,v4.6,max=not set,channels=[beta],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;CronJob&#34;])</li>
+                                             
+                                                 <li>neuvector-operator.v1.3.0 - (label=v4.5,v4.6,max=not set,channels=[beta],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;CronJob&#34;])</li>
+                                             
+                                                 <li>neuvector-operator.v1.3.1 - (label=v4.4,max=not set,channels=[beta],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;CronJob&#34;])</li>
+                                             
+                                                 <li>neuvector-operator.v1.3.2 - (label=v4.4,max=not set,channels=[beta],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;CronJob&#34;])</li>
+                                             
+                                                 <li>neuvector-operator.v1.3.3 - (label=v4.4,max=not set,channels=[beta],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;CronJob&#34;])</li>
+                                             
+                                                 <li>neuvector-operator.v1.3.4 - (label=v4.4,max=not set,channels=[beta],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;CronJob&#34;])</li>
+                                             
+                                                 <li>neuvector-operator.v1.3.5 - (label=v4.6,max=not set,channels=[beta],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;CronJob&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>anzograph-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                                <li>policy</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>anzograph-operator.v2.0.102 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34; &#34;policy&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>couchbase-enterprise-certified</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>batch</li>
+                                            
+                                                <li>events</li>
+                                            
+                                                <li>policy</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>couchbase-operator.v2.2.0-1 - (label=v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;batch&#34; &#34;events&#34; &#34;policy&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>entando-k8s-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>entando-k8s-operator.v6.3.2 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                                 <li>entando-k8s-operator.v6.3.2-pr2 - (label=v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:NO, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                                 <li>entando-k8s-operator.v6.3.2-pr4 - (label=v4.6,max=not set,channels=[beta],head:YES,defaultChannel:NO, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>hazelcast-platform-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>hazelcast-platform-operator.v5.1.0 - (label=v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>cilium</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                                <li>discovery.k8s.io</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>cilium.v1.10.4-x5bfd7b3 - (label=v4.5,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34; &#34;discovery.k8s.io&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>sysdig-certified</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                                <li>policy</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>sysdig-certified.v1.12.43 - (label=v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34; &#34;policy&#34;])</li>
+                                             
+                                                 <li>sysdig-certified.v1.12.44 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34; &#34;policy&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>kubemq-operator-marketplace</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>kubemq-operator.v1.7.8 - (label=v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>hpe-csi-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>batch</li>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>hpe-csi-operator.v2.0.0 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;batch&#34; &#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>citrix-adc-istio-ingress-gateway-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                                <li>autoscaling</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>citrix-adc-istio-ingress-gateway-operator.v0.9.9 - (label=v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34; &#34;autoscaling&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>k8s-triliovault-ibm</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                                <li>batch</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>k8s-triliovault-ibm-stable.2.7.0 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34; &#34;batch&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>open-liberty-certified</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                                <li>autoscaling</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>open-liberty-operator.v0.8.0 - (label=v4.6,max=not set,channels=[beta2],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34; &#34;autoscaling&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>openshiftartifactoryha-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                                <li>policy</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>artifactory-ha-operator.v1.1.15 - (label=v4.5,v4.6,max=not set,channels=[alpha],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34; &#34;policy&#34;])</li>
+                                             
+                                                 <li>artifactory-ha-operator.v1.1.18 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:NO, deprecated:NO, RBAC: [&#34;events&#34; &#34;policy&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>pcc-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>pcc-operator.v0.2.1 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>aikit-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>aikit-operator.v2021.2.100410 - (label=v4.7,max=not set,channels=[alpha],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                                 <li>aikit-operator.v2021.2.102120 - (label=v4.7,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                                 <li>aikit-operator.v2021.2.92808-dev-a60e5ba - (label=v4.8,max=not set,channels=[alpha],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                                 <li>aikit-operator.v2021.2.92814 - (label=v4.8,max=not set,channels=[alpha],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                                 <li>aikit-operator.v2021.2.92911 - (label=v4.7,max=not set,channels=[alpha],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>k10-kasten-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>k10-kasten-operator.v4.5.8 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>minio-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                                <li>batch</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>minio-operator.v4.0.2 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34; &#34;batch&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>pmem-csi-operator-os</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>pmem-csi-operator.v1.0.0 - (label=v4.6,max=not set,channels=[alpha stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>sanstoragecsi-operator-bundle</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>sanstoragecsi-operator-bundle.v1.0.0 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>smilecdr-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>smilecdr-operator.v0.0.1 - (label=v4.8,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>zabbix-operator-certified</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>zabbix-operator-certified.v0.0.3 - (label=v4.5,v4.6,max=not set,channels=[lts],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>ibm-security-verify-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>ibm-security-verify-operator.v21.11.1 - (label=v4.7,max=4.9,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>iomesh-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>iomesh-operator.0.10.1-rc4 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>memcached-operator-ogaye</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>memcached-operator.v0.0.1 - (label=v4.5,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>vfunction-server-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                                <li>batch</li>
+                                            
+                                                <li>autoscaling</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>vfunction-server-operator.v2.2.469 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34; &#34;batch&#34; &#34;autoscaling&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>eamli-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                                <li>batch</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>eamli-operator.v0.8.12 - (label=v4.6,max=not set,channels=[candidate fast stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34; &#34;batch&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>ovms-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>openvino-operator.v0.0.1 - (label=v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>anzounstructured-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                                <li>policy</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>anzounstructured-operator.v2.0.101 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34; &#34;policy&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>citrix-cpx-with-ingress-controller-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>citrix-cpx-with-ingress-controller-operator.v1.18.5 - (label=v4.5,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>crunchy-postgres-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                                <li>batch</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>postgresoperator.v5.0.2 - (label=v4.6,max=not set,channels=[v5],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34; &#34;batch&#34;])</li>
+                                             
+                                                 <li>postgresoperator.v5.0.3 - (label=v4.6,max=not set,channels=[v5],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34; &#34;batch&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>gitlab-runner-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>gitlab-runner-operator.v1.4.0 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>runtime-component-operator-certified</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                                <li>autoscaling</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>runtime-component.v0.8.0 - (label=v4.6,max=not set,channels=[beta2],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34; &#34;autoscaling&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>xcrypt-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>zts-xcrypt-operator.v0.0.17 - (label=v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>memory-machine-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>memory-machine-operator.v0.0.7 - (label=v4.8,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>hazelcast-enterprise-certified</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>hazelcast-enterprise-operator.v0.3.8 - (label=v4.5,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>elasticsearch-eck-operator-certified</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                                <li>policy</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>elasticsearch-eck-operator-certified.v2.0.0 - (label=v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34; &#34;policy&#34;])</li>
+                                             
+                                                 <li>elasticsearch-eck-operator-certified.v2.1.0 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34; &#34;policy&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>dynatrace-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                                <li>CronJob</li>
+                                            
+                                                <li>batch</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>dynatrace-operator.v0.2.2 - (label=v4.5,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34; &#34;CronJob&#34; &#34;batch&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>pachyderm-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                                <li>batch</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>pachyderm-operator.v0.1.0 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34; &#34;batch&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>seldon-operator-certified</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                                <li>autoscaling</li>
+                                            
+                                                <li>policy</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>seldon-operator.v1.12.0 - (label=v4.8,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34; &#34;autoscaling&#34; &#34;policy&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>tigera-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                                <li>policy</li>
+                                            
+                                                <li>batch</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>tigera-operator.v1.20.1 - (label=v4.5,max=not set,channels=[release-v1.20],head:NO,defaultChannel:NO, deprecated:NO, RBAC: [&#34;events&#34; &#34;policy&#34; &#34;batch&#34;])</li>
+                                             
+                                                 <li>tigera-operator.v1.20.2 - (label=v4.5,max=not set,channels=[release-v1.20],head:NO,defaultChannel:NO, deprecated:NO, RBAC: [&#34;events&#34; &#34;policy&#34; &#34;batch&#34;])</li>
+                                             
+                                                 <li>tigera-operator.v1.20.3 - (label=v4.5,max=not set,channels=[release-v1.20],head:NO,defaultChannel:NO, deprecated:NO, RBAC: [&#34;events&#34; &#34;policy&#34; &#34;batch&#34;])</li>
+                                             
+                                                 <li>tigera-operator.v1.20.4 - (label=v4.5,max=not set,channels=[release-v1.20],head:YES,defaultChannel:NO, deprecated:NO, RBAC: [&#34;events&#34; &#34;policy&#34; &#34;batch&#34;])</li>
+                                             
+                                                 <li>tigera-operator.v1.23.0 - (label=v4.6,max=not set,channels=[release-v1.23],head:NO,defaultChannel:NO, deprecated:NO, RBAC: [&#34;events&#34; &#34;policy&#34; &#34;batch&#34;])</li>
+                                             
+                                                 <li>tigera-operator.v1.23.1 - (label=v4.6,max=not set,channels=[release-v1.23],head:NO,defaultChannel:NO, deprecated:NO, RBAC: [&#34;events&#34; &#34;policy&#34; &#34;batch&#34;])</li>
+                                             
+                                                 <li>tigera-operator.v1.23.2 - (label=v4.6,max=not set,channels=[release-v1.23],head:NO,defaultChannel:NO, deprecated:NO, RBAC: [&#34;events&#34; &#34;policy&#34; &#34;batch&#34;])</li>
+                                             
+                                                 <li>tigera-operator.v1.23.3 - (label=v4.6,max=not set,channels=[release-v1.23],head:NO,defaultChannel:NO, deprecated:NO, RBAC: [&#34;events&#34; &#34;policy&#34; &#34;batch&#34;])</li>
+                                             
+                                                 <li>tigera-operator.v1.23.4 - (label=v4.6,max=not set,channels=[release-v1.23],head:YES,defaultChannel:NO, deprecated:NO, RBAC: [&#34;events&#34; &#34;policy&#34; &#34;batch&#34;])</li>
+                                             
+                                                 <li>tigera-operator.v1.25.1 - (label=v4.6,max=not set,channels=[release-v1.25],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34; &#34;policy&#34; &#34;batch&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>citrix-ingress-controller-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>citrix-ingress-controller-operator.v1.18.5 - (label=v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>ccm-node-agent-dcap-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>ccm-node-agent-dcap-operator.v0.0.1 - (label=v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>hpe-ezmeral-csi-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>hpe-ezmeral-csi-operator.v1.0.9 - (label=v4.10,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>linstor-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>linstor-operator.v1.5.1 - (label=v4.6,max=not set,channels=[stable alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>nginx-ingress-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>nginx-ingress-operator.v0.4.0 - (label=v4.5,max=not set,channels=[alpha],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                                 <li>nginx-ingress-operator.v0.5.0 - (label=v4.6,max=not set,channels=[alpha],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                                 <li>nginx-ingress-operator.v0.5.1 - (label=v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>openshiftxray-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                                <li>policy</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>xray-operator.v2.0.9 - (label=v4.5,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34; &#34;policy&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>federatorai-certified</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                                <li>batch</li>
+                                            
+                                                <li>autoscaling</li>
+                                            
+                                                <li>policy</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>federatorai.v4.6.1-4 - (label=v4.5,v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34; &#34;batch&#34; &#34;autoscaling&#34; &#34;policy&#34;])</li>
+                                             
+                                                 <li>federatorai.v4.7.1-1 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34; &#34;batch&#34; &#34;autoscaling&#34; &#34;policy&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>infoscale-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>infoscale-operator.v7.9.1 - (label=v4.8,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                                    <tr>
+                                        <th>anzo-operator</th>
+                                        <th>
+                                            <ul>
+                                            
+                                                <li>events</li>
+                                            
+                                                <li>policy</li>
+                                            
+                                            </ul>
+                                        </th>
+                                        <th>
+                                          <ul>
+                                             
+                                                 <li>anzo-operator.v2.0.101 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;events&#34; &#34;policy&#34;])</li>
+                                             
+                                          </ul>
+                                        </th>
+                                    </tr>
+                                
+                            
+                            </tbody>
+                    </table>
+                </div>
+
+           
+</main>
+
+</body>
+</html>

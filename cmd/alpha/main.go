@@ -12,28 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package custom
+package alpha
 
 import (
-	"github.com/spf13/cobra"
+	"strings"
 
-	"github.com/operator-framework/audit/cmd/custom/deprecate"
-	"github.com/operator-framework/audit/cmd/custom/multiarch"
-	"github.com/operator-framework/audit/cmd/custom/qa"
-	"github.com/operator-framework/audit/cmd/custom/validator"
+	"github.com/operator-framework/audit/cmd/alpha/catalogs"
+	"github.com/operator-framework/audit/cmd/alpha/maxocp"
+	"github.com/spf13/cobra"
 )
 
 func NewCmd() *cobra.Command {
 	indexCmd := &cobra.Command{
-		Use:   "dashboard",
-		Short: "generate specific custom reports based on the audit JSONs output",
+		Use:        "alpha",
+		SuggestFor: []string{"experimental"},
+		Short:      "Alpha-stage subcommands",
+		Long: strings.TrimSpace(`
+Alpha subcommands are for unstable features.
+- Alpha subcommands are exploratory and may be removed without warning.
+- No backwards compatibility is provided for any alpha subcommands.
+`),
 	}
 
 	indexCmd.AddCommand(
-		deprecate.NewCmd(),
-		qa.NewCmd(),
-		multiarch.NewCmd(),
-		validator.NewCmd(),
+		catalogs.NewCmd(),
+		maxocp.NewCmd(),
 	)
 
 	return indexCmd
