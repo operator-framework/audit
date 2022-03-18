@@ -1,19 +1,8 @@
-name: build
-
-on:
-  push:
-    branches:
-      - '**'
-  pull_request:
-    paths:
-      - '**'
-      - '!doc/**'
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-go@v2
-        with:
-          go-version: '~1.17'
-      - run: make build
+properties:
+  - type: 'olm.discontinued'
+    value:
+      message: 'This package is discontinued and will no longer be provided in future releases. Please, ensure that you use its Backup Service in favour to move forward and began to use the project SQLite Operator.'
+      moreInfoURL: 'https://github.com/myorg/my-operator-repo/deprecation.md'
+      replacement:
+        name: 'SQLite Operator'
+        moreInfoURL: 'https://github.com/myorg/sqlite-operator-repo'

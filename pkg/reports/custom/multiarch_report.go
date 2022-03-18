@@ -24,7 +24,6 @@ import (
 )
 
 type MultiArchBundle struct {
-	HasDisconnectAnnotation bool
 	// InfraLabels store the labels
 	// "operatorframework.io/arch.amd64": "supported",
 	// "operatorframework.io/arch.ppc64le": "supported",

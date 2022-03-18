@@ -76,7 +76,7 @@ func main() {
 				}
 
 				// run report
-				command := exec.Command(binPath, "dashboard", "maxocp",
+				command := exec.Command(binPath, "alpha", "maxocp",
 					fmt.Sprintf("--file=%s", path),
 					fmt.Sprintf("--output-path=%s", dashboardPath),
 				)

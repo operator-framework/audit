@@ -98,7 +98,7 @@ generate-testdata: install
 generate-dashboards:
 	go run ./hack/deprecate-api/generate.go
 	go run ./hack/maxocpversion/generate.go
-	go run ./hack/grade/generate.go
+	go run ./hack/qa/generate.go
 	go run ./hack/catalogs/generate.go
 	go run ./hack/muiltarch/generate.go
 	go run ./hack/index/generate.go

@@ -17,6 +17,7 @@ package main
 import (
 	"log"
 
+	"github.com/operator-framework/audit/cmd/alpha"
 	"github.com/operator-framework/audit/cmd/custom"
 	"github.com/operator-framework/audit/cmd/index"
 
@@ -38,6 +39,7 @@ func main() {
 			"For further information use the --help and check : https://github.com/operator-framework/audit",
 	}
 
+	rootCmd.AddCommand(alpha.NewCmd())
 	rootCmd.AddCommand(index.NewCmd())
 	rootCmd.AddCommand(custom.NewCmd())
 
