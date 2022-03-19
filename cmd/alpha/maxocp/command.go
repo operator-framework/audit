@@ -107,5 +107,5 @@ func run(cmd *cobra.Command, args []string) error {
 
 //todo: this template requires to be embed
 func getTemplatePath(currentPath string) string {
-	return filepath.Join(currentPath, "/cmd/custom/maxocp/template.go.tmpl")
+	return filepath.Join(currentPath, "/cmd/alpha/maxocp/template.go.tmpl")
 }
