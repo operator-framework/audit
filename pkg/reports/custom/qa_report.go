@@ -107,6 +107,7 @@ type PackageQA struct {
 	Validators                  string
 	ValidatorsColor             string
 	ChannelNamesNotComply       []string
+	ChannelNamesComply          []string
 	BundlesWithoutDisconnect    []string
 	HeadOfChannels              []BundleDeprecate
 	Capabilities                []string
@@ -272,10 +273,13 @@ func (p *PackageQA) checkRemovalAPIs1_25_26() {
 
 func (p *PackageQA) checkChannelNamingScore() {
 	var foundErrors []string
+	var OK []string
 	for _, v := range p.HeadOfChannels {
 		for _, c := range v.BundleData.Channels {
 			if !pkg.IsFollowingChannelNameConventional(c) {
 				foundErrors = append(foundErrors, c)
+			} else {
+				OK = append(OK, c)
 			}
 		}
 	}
@@ -286,8 +290,9 @@ func (p *PackageQA) checkChannelNamingScore() {
 		p.ChannelNaming = "NOT COMPLY"
 	} else {
 		p.ChannelNamingColor = GREEN
-		p.ChannelNaming = "COMPLY"
+		p.ChannelNaming = "PROBABLY COMPLY"
 	}
+	p.ChannelNamesComply = pkg.GetUniqueValues(OK)
 }
 
 func (p *PackageQA) checkScorecard() {
