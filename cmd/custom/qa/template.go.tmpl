@@ -110,17 +110,7 @@
                              <th>{{ .PackageName}}</th>
                              <th>
                                 <p style="color: {{ .ChannelNamingColor}}"> {{ .ChannelNaming}} </p>
-                                <style>
-                                     #channel-name-show{{ .PackageName}} {
-                                         display: none;
-                                     }
-
-                                     #channel-name-show{{ .PackageName}}:target {
-                                         display: block;
-                                     }
-                                 </style>
-                                 {{if ne .ChannelNaming "COMPLY"}}
-                                 <a href="#channel-name-show{{ .PackageName}}">+Info to fix</a>
+                                {{if ne .ChannelNaming "PROBABLY COMPLY"}}
                                  <div class="html" id="channel-name-show{{ .PackageName}}">
                                     <p>Following the channels names which does not comply. For further information see <a href="https://olm.operatorframework.io/docs/best-practices/channel-naming/"> Channel Naming </a> doc. </p>
                                     <ul>
@@ -130,6 +120,16 @@
                                     </ul>
                                  </div>
                                  {{ end }}
+                                 {{if gt (len .ChannelNamesComply) 0}}
+                                  <div class="html" id="channel-name-show{{ .PackageName}}">
+                                     <p>Following the channels which probably complies: </p>
+                                     <ul>
+                                     {{ range .ChannelNamesComply }}
+                                         <li>{{ . }}</li>
+                                     {{ end }}
+                                     </ul>
+                                  </div>
+                                  {{ end }}
                              </th>
                              <th>
                                 <p style="color: {{ .DisconnectedAnnotationColor}}"> {{ .DisconnectedAnnotation }} </p>
@@ -253,18 +253,18 @@
                               </style>
                              {{ if gt (len .DeprecateAPI) 0 }}
                                 RBAC requested for the API(s):
-                             {{ end }}
-                             <ul>
+                                <ul>
                                   {{ range .DeprecateAPI }}
                                      <li> {{ . }}</li>
                                   {{ end }}
-                              </ul>
-                              <a href="#info-show{{ .PackageName}}">+Info</a>
-                              <div class="html" id="info-show{{ .PackageName }}">
-                              {{ if gt (len .DeprecateAPI) 0 }}
-                                <p style="color: orange" > ATTENTION: See the <a href="https://kubernetes.io/docs/reference/using-api/deprecation-guide/https://kubernetes.io/docs/reference/using-api/deprecation-guide/"> guide </a> and ensure that the Operator does not uses the versions that will be removed. </p>
-                               {{ end }}
-                               </div>
+                                </ul>
+                                <a href="#info-show{{ .PackageName}}">+Info</a>
+                                <div class="html" id="info-show{{ .PackageName }}">
+                                {{ if gt (len .DeprecateAPI) 0 }}
+                                  <p style="color: orange" > ATTENTION: See the <a href="https://kubernetes.io/docs/reference/using-api/deprecation-guide/https://kubernetes.io/docs/reference/using-api/deprecation-guide/"> guide </a> and ensure that the Operator does not uses the versions that will be removed. </p>
+                                {{ end }}
+                                </div>
+                             {{ end }}
                              </th>
                              <th> <p style="color: {{ .SDKUsageColor}}"> {{ .SDKUsage}}</p></th>
                              <th> <p style="color: {{ .ScorecardCustomImagesColor}}"> {{ .ScorecardCustomImages}}</p></th>
