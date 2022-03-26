@@ -15,9 +15,9 @@
 package custom
 
 import (
+	"github.com/operator-framework/audit/cmd/custom/deprecate"
 	"github.com/spf13/cobra"
 
-	"github.com/operator-framework/audit/cmd/custom/deprecate"
 	"github.com/operator-framework/audit/cmd/custom/multiarch"
 	"github.com/operator-framework/audit/cmd/custom/qa"
 	"github.com/operator-framework/audit/cmd/custom/validator"

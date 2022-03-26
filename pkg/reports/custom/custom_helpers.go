@@ -18,7 +18,7 @@ import (
 	"encoding/json"
 	"strings"
 
-	"github.com/blang/semver/v4"
+	semverv4 "github.com/blang/semver/v4"
 	"github.com/operator-framework/audit/pkg"
 	"github.com/operator-framework/audit/pkg/reports/bundles"
 )
@@ -71,8 +71,13 @@ func GetMaxOCPValue(b bundles.Column) string {
 
 // GetTheLatestBundleVersion returns the latest/upper semversion
 func GetTheLatestBundleVersion(bundlesFromChannel []BundleDeprecate) string {
-	latestVersion, _ := semver.ParseTolerant("0.0.0")
+	latestVersion, _ := semverv4.ParseTolerant("0.0.0")
 	for _, v := range bundlesFromChannel {
+
+		if v.BundleData.BundleCSV == nil {
+			continue
+		}
+
 		if v.BundleData.BundleCSV.Spec.Version.Version.GT(latestVersion) {
 			latestVersion = v.BundleData.BundleCSV.Spec.Version.Version
 		}
@@ -127,6 +132,11 @@ func GetLatestBundlesVersions(bundlesPerChannels map[string][]BundleDeprecate) [
 	for _, bundlesFromChannel := range bundlesPerChannels {
 		latest := GetTheLatestBundleVersion(bundlesFromChannel)
 		for _, bd := range bundlesFromChannel {
+
+			if bd.BundleData.BundleCSV == nil {
+				continue
+			}
+
 			if bd.BundleData.BundleCSV.Spec.Version.String() == latest {
 				latestBundlesVersionsPerChannel = append(latestBundlesVersionsPerChannel, bd)
 				continue

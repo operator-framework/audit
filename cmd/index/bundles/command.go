@@ -42,10 +42,24 @@ func NewCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "bundles",
 		Short: "audit all operator bundles of an index catalog image",
-		Long: "Provides reports with the details of all bundles operators ship in the index image informed " +
-			"according to the criteria defined via the flags.\n\n " +
-			"**When this report is useful?** \n\n" +
-			"This report is useful when you want to check the details of operator bundles.",
+		Long: `Provides reports with the details of all bundles operators ship in the index image informed. 
+
+## When should I use it?
+
+This command is used to extract the data required for audit tool be able to parse.
+By running this command audit tool will:
+
+- Extract the database from the image informed
+- Perform SQL queries to obtain the data from the index db
+- Download and extract all bundles files by using the operator bundle path which is stored in the index db  
+- Get the required data for the report from the operator bundle manifest files 
+- Use the [operator-framework/api][of-api] to execute the bundle validator checks
+- Use SDK tool to execute the Scorecard bundle checks
+- Output a report providing the information obtained and processed in JSON format.
+
+NOTE: This command is not supporting File-Base-Catalogs yet.
+`,
+
 		PreRunE: validation,
 		RunE:    run,
 	}
@@ -225,7 +239,7 @@ func getDataFromIndexDB(report index.Data) (index.Data, error) {
 
 		auditBundle = actions.GetDataFromBundleImage(auditBundle, report.Flags.DisableScorecard,
 			report.Flags.DisableValidators, report.Flags.ServerMode, report.Flags.Label,
-			report.Flags.LabelValue, flags.ContainerEngine)
+			report.Flags.LabelValue, flags.ContainerEngine, report.Flags.IndexImage)
 
 		sqlString := fmt.Sprintf("SELECT c.channel_name, c.package_name FROM channel_entry c "+
 			"where c.operatorbundle_name = '%s'", auditBundle.OperatorBundleName)

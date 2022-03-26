@@ -16,7 +16,7 @@ package actions
 
 import (
 	"encoding/json"
-	"errors"
+	"errors" //nolint: typecheck
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -25,7 +25,7 @@ import (
 
 	// "strings"
 
-	"github.com/goccy/go-yaml"
+	goyaml "github.com/goccy/go-yaml"
 	log "github.com/sirupsen/logrus"
 
 	apimanifests "github.com/operator-framework/api/pkg/manifests"
@@ -46,7 +46,8 @@ func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 	serverMode bool,
 	label,
 	labelValue string,
-	containerEngine string) *models.AuditBundle {
+	containerEngine string,
+	indexImage string) *models.AuditBundle {
 
 	if len(auditBundle.OperatorBundleImagePath) < 1 {
 		auditBundle.Errors = append(auditBundle.Errors,
@@ -97,7 +98,8 @@ func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 			auditBundle.Errors = append(auditBundle.Errors, msg.Error())
 		}
 		var bundleAnnotations BundleAnnotations
-		if err := yaml.Unmarshal(annFile, &bundleAnnotations); err != nil {
+
+		if err := goyaml.Unmarshal(annFile, &bundleAnnotations); err != nil {
 			msg := fmt.Errorf("unable to Unmarshal annotations.yaml to check ocp label path: %s", err)
 			log.Error(msg)
 			auditBundle.Errors = append(auditBundle.Errors, msg.Error())
@@ -114,7 +116,7 @@ func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 
 	// Run validators
 	if !disableValidators {
-		auditBundle = RunValidators(filepath.Join(bundleDir, "bundle"), auditBundle)
+		auditBundle = RunValidators(filepath.Join(bundleDir, "bundle"), auditBundle, indexImage)
 
 	}
 

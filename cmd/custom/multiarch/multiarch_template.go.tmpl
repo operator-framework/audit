@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Multiple Architectures Dashboard</title>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.24/datatables.min.css"/>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+
+    <style>
+        div.dataTables_wrapper {
+            width: 99%;
+            margin: 0 auto;
+        }
+
+        table.minimalistBlack {
+            border: 1px solid #000000;
+        }
+        table.minimalistBlack td, table.minimalistBlack th {
+            border: 1px solid #000000;
+            font-size: 10px;
+            text-align: left;
+        }
+        table.minimalistBlack tbody td {
+            font-size: 10px;
+        }
+        table.minimalistBlack thead {
+            border-bottom: 1px solid #000000;
+            text-align: center;
+        }
+        table.minimalistBlack thead th {
+            font-size: 12px;
+            color: white;
+            text-align: center;
+        }
+
+        .themed-container {
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            background-color: #F0F0F0;
+            border: 1px solid #0D0C0C;
+        }
+    </style>
+
+
+</head>
+<body class="py-4">
+
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.24/datatables.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+<script >
+
+    $(document).ready(function() {
+        $('#list').DataTable( {
+            "scrollX": true
+        } );
+    } );
+
+   $(document).ready(function() {
+        $('#list2').DataTable( {
+            "scrollX": true
+        } );
+    } );
+
+   $(document).ready(function() {
+        $('#list3').DataTable( {
+            "scrollX": true
+        } );
+    } );
+
+</script>
+
+<main>
+
+        <h1>Multiple Architectures Dashboard</h1>
+        <p>The audit tool output for the following packages were obtained by checking the image and the bundle manifests distributed. </p>
+        <p>This report aims to try to identify the package distributions that validates the bundle against criteria to support Multiple Architectures.</p>
+        <p>For further information check: https://olm.operatorframework.io/docs/advanced-tasks/ship-operator-supporting-multiarch/ </p>
+                                                                                                                                                                                                         // information check: https://olm.operatorframework.io/docs/advanced-tasks/ship-operator-supporting-multiarch/.</p>
+        <div class="container-fluid themed-container">
+            <h5 class="display-12 fw-bold">Data from the image used</h5>
+            <ul>
+                <li>Image name: {{ .ImageName }} </li>
+                <li>Image ID: {{ .ImageID }} </li>
+                <li>Image Created at: {{ .ImageBuild }} </li>
+                <li>From JSON report generated at: {{ .GeneratedAt }} </li>
+            </ul>
+        </div>
+
+        <div class="container-fluid themed-container">
+            <h5 class="display-12 fw-bold">FAQ</h5>
+            <h5 class="display-12 fw-bold">1. How it works?</h5>
+            <p> The images are inspect ($docker manifest inspect) and then: </p>
+            <li> raise a warning when the respective labels were not found</li>
+            <li> raise a warning when images defined in the CSV does not support 1 or more of the architecture types found </li>
+            <li> raise a warning when images defined in the CSV does not support 1 or more of the OS found </li>
+            <li> raise a warning when is possible to confirm that images does not provide the support defined on to the labels </li>
+
+            <h5 class="display-12 fw-bold">2. What is checked?</h5>
+            <p>Note: On this check, we aggregate the archetype(s) and OS(s) provided via the labels and those which are found by checking the images so that, we can check:</p>
+            <li> If your CSV is missing labels</li>
+            <li> If your Operator bundle specifies images which does not supports all archetypes found (probably supported by your project) </li>
+        </div>
+
+        <div class="container-fluid themed-container" style="background-color: #e6b800">
+        <h5 class="display-12 fw-bold">Multiple Architectures Unsupported</h5>
+        <p> Following the packages which the only supports the SO linux and the architecture amd64l.</p>
+        <h8 class="display-12 fw-bold"> Actions Required: </h8>
+        <li> Look to support the architectures: arm64, ppc64le, s390x </li>
+        <table id="list" class="minimalistBlack" style="background-color: dimgrey; width: 98%">
+            <thead>
+                <tr>
+                    <th>Package Name</th>
+                    <th>Bundles Details</th>
+                </tr>
+            </thead>
+            <tbody style="background-color: white;">
+            {{ with .Unsupported }}
+                {{ range . }}
+                <tr>
+                    <th>{{ .Name }}</th>
+                    <th>
+                    <div class="container-fluid themed-container">
+                    <table id="Unsupported-{{ .Name }}" class="minimalistBlack" style="width: 100%">
+                        <thead>
+                        <tr style="background-color: #004C99;">
+                            <th align="center">Bundle Name</th>
+                            <th align="center">Images Inspected</th>
+                        </tr>
+                        </thead>
+                      <tbody>
+                      {{ with .Bundles }}
+                            {{ range . }}
+                            <tr>
+                                <th>{{ .BundleData.BundleCSV.Name }} </th>
+                                <th>
+                                   {{ range .Images }}
+                                        <li>{{ . }}</li>
+                                   {{ end }}
+                                </th>
+                            </tr>
+                            {{ end }}
+                        {{ end }}
+                        </tbody>
+                    </table>
+                    </div>
+                    </th>
+                </tr>
+                {{ end }}
+            {{ end }}
+            </tbody>
+         </table>
+        </div>
+
+        <div class="container-fluid themed-container" style="background-color: #e68a00">
+        <h5 class="display-12 fw-bold">Multiple Architectures Supported with Errors</h5>
+        <p> Following the packages which might supports multiple architectures and errors were found </p>
+        <h8 class="display-12 fw-bold"> Actions Required: </h8>
+        <li> Check the errors messages</li>
+        <li> Look to support the architectures: amd64, arm64, ppc64le, s390x </li>
+        <li> Ensure that all images used on the bundle supports these architectures </li>
+        <li> Ensure that you are adding all required labels on the CSV </li>
+        <table id="list2" class="minimalistBlack" style="background-color: dimgrey; width: 98%">
+            <thead>
+                <tr>
+                    <th>Package Name</th>
+                    <th>Bundles Details</th>
+                </tr>
+            </thead>
+            <tbody style="background-color: white;">
+            {{ with .SupportedWithErrors }}
+                {{ range . }}
+                <tr>
+                    <th>{{ .Name }}</th>
+                    <th>
+
+                    <div class="container-fluid themed-container">
+                    <table id="Supported-{{ .Name }}" class="minimalistBlack" style="width: 100%">
+                        <thead>
+                            <tr style="background-color: #004C99;">
+                            <th align="center">Bundle Name</th>
+                            <th align="center">Arch(s) found by inspecting the images </th>
+                            <th align="center">OS found by inspecting the images </th>
+                            <th align="center">Labels (CSV)</th>
+                            <th align="center">Images Inspected</th>
+                            <th align="center">Validations</th>
+                        </tr>
+                        </thead>
+                      <tbody>
+                      {{ with .Bundles }}
+                            {{ range . }}
+                            <tr>
+                                <th>{{ .BundleData.BundleCSV.Name }} </th>
+                                <th>
+                                {{ range $k, $v := .AllArchFound }}
+                                    <li>{{ $k }} </li>
+                                {{ end }}
+                                </th>
+                                <th>
+                                {{ range $k, $v := .AllOsFound }}
+                                    <li>{{ $k }} </li>
+                                {{ end }}
+                                </th>
+                                <th>
+                                {{ range .InfraLabelsUsed }}
+                                    <li>{{ . }}</li>
+                                {{ end }}
+                                </th>
+                                <th>
+                                <script>
+                                    function myFunctionShowImages(value) {
+                                      var x = document.getElementById(value);
+                                      if (x.style.display === "none") {
+                                        x.style.display = "block";
+                                      } else {
+                                        x.style.display = "none";
+                                      }
+                                    }
+                                </script>
+                                <div align="center">
+                                    <button align="center" onclick="myFunctionShowImages('show-images-{{ .ForHideButton}}')">Show Details</button>
+                                </div>
+                                <div id="show-images-{{ .ForHideButton}}" style="display: none;">
+                                   {{ range .Images }}
+                                        <li>{{ . }}</li>
+                                   {{ end }}
+                                </div>
+                                </th>
+                                <th>
+                                <script>
+                                    function myFunctionShowValidations(value) {
+                                      var x = document.getElementById(value);
+                                      if (x.style.display === "none") {
+                                        x.style.display = "block";
+                                      } else {
+                                        x.style.display = "none";
+                                      }
+                                    }
+                                </script>
+                                <div align="center">
+                                    <button align="center" onclick="myFunctionShowValidations('show-validations-{{ .ForHideButton}}')">Show Details</button>
+                                </div>
+                                <div id="show-validations-{{ .ForHideButton}}" style="display: none;">
+                                   {{ range .Validations }}
+                                        <li>{{ . }}</li>
+                                   {{ end }}
+                                </div>
+                                </th>
+                            </tr>
+                            {{ end }}
+                        {{ end }}
+                        </tbody>
+                    </table>
+                    </div>
+                    </th>
+                </tr>
+                {{ end }}
+            {{ end }}
+            </tbody>
+         </table>
+        </div>
+
+
+        <div class="container-fluid themed-container" style="background-color: #00cc66">
+        <h5 class="display-12 fw-bold">Multiple Architectures Supported and OK</h5>
+        <p> Following the packages which supports multiple architectures and no errors were found </p>
+        <h8 class="display-12 fw-bold"> Actions Required: </h8>
+        <li> - Ensure that you support all architectures if not yet (amd64, arm64, ppc64le, s390x) </li>
+        <table id="list3" class="minimalistBlack" style="background-color: dimgrey; width: 98%">
+            <thead>
+                <tr>
+                    <th>Package Name</th>
+                    <th>Bundles Details</th>
+                </tr>
+            </thead>
+            <tbody style="background-color: white;">
+            {{ with .Supported }}
+                {{ range . }}
+                <tr>
+                    <th>{{ .Name }}</th>
+                    <th>
+
+                    <div class="container-fluid themed-container">
+                    <table id="Supported-{{ .Name }}" class="minimalistBlack" style="width: 100%">
+                        <thead>
+                            <tr style="background-color: #004C99;">
+                            <th align="center">Bundle Name</th>
+                            <th align="center">Arch(s) found by inspecting the images </th>
+                            <th align="center">OS found by inspecting the images </th>
+                            <th align="center">Labels (CSV)</th>
+                            <th align="center">Images Inspected</th>
+                        </tr>
+                        </thead>
+                      <tbody>
+                      {{ with .Bundles }}
+                            {{ range . }}
+                            <tr>
+                                <th>{{ .BundleData.BundleCSV.Name }} </th>
+                                <th>
+                                {{ range $k, $v := .AllArchFound }}
+                                    <li>{{ $k }} </li>
+                                {{ end }}
+                                </th>
+                                <th>
+                                {{ range $k, $v := .AllOsFound }}
+                                    <li>{{ $k }} </li>
+                                {{ end }}
+                                </th>
+                                <th>
+                                {{ range .InfraLabelsUsed }}
+                                    <li>{{ . }}</li>
+                                {{ end }}
+                                </th>
+                                <th>
+                                <script>
+                                    function myFunctionShowImagesOK(value) {
+                                      var x = document.getElementById(value);
+                                      if (x.style.display === "none") {
+                                        x.style.display = "block";
+                                      } else {
+                                        x.style.display = "none";
+                                      }
+                                    }
+                                </script>
+                                <div align="center">
+                                    <button align="center" onclick="myFunctionShowImagesOK('show-images-ok-{{ .ForHideButton}}')">Show Details</button>
+                                </div>
+                                <div id="show-images-ok-{{ .ForHideButton}}" style="display: none;">
+                                   {{ range .Images }}
+                                        <li>{{ . }}</li>
+                                   {{ end }}
+                                </div>
+                                </th>
+                            </tr>
+                            {{ end }}
+                        {{ end }}
+                        </tbody>
+                    </table>
+                    </div>
+                    </th>
+                </tr>
+                {{ end }}
+            {{ end }}
+            </tbody>
+         </table>
+        </div>
+
+</main>
+</body>
+</html>

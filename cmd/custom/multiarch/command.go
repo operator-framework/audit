@@ -15,23 +15,34 @@
 package multiarch
 
 import (
+	"embed"
+	"fmt"
 	"html/template"
 	"os"
 	"path/filepath"
 
-	log "github.com/sirupsen/logrus"
-	"github.com/spf13/cobra"
-
 	"github.com/operator-framework/audit/pkg"
 	"github.com/operator-framework/audit/pkg/reports/custom"
+	log "github.com/sirupsen/logrus"
+	"github.com/spf13/cobra"
 )
+
+//go:embed *.tmpl
+var multiarchTemplate embed.FS
 
 func NewCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "multiarch",
-		Short: "generates a custom report based on defined criteria over multiarch",
-		Long: "use this command with the result of `audit index bundles [OPTIONS]` to check a dashboard in HTML format " +
-			"with the packages data",
+		Short: "generates a custom report based on defined criteria over Multiple Architectures",
+		Long: `use this command with the result of $audit index bundles [OPTIONS].
+## When should I use this command?
+
+If you are looking for:
+- verify what are the packages which has head of channels that are not providing
+support for Multiple Architectures.
+- verify what are the packages which has head of channels that probably are not
+providing a valid configuration for this criteria
+`,
 		PreRunE: validation,
 		RunE:    run,
 	}
@@ -43,16 +54,20 @@ func NewCmd() *cobra.Command {
 	}
 
 	cmd.Flags().StringVar(&custom.Flags.File, "file", "",
-		"path of the JSON File result of the command audit-tool index bundles --index-image=<image> [OPTIONS]")
+		"path of the JSON File result of the command audit-tool index bundles --index-image=<image>"+
+			" [OPTIONS]")
 	if err := cmd.MarkFlagRequired("file"); err != nil {
 		log.Fatalf("Failed to mark `file` flag for `index` sub-command as required")
 	}
 	cmd.Flags().StringVar(&custom.Flags.OutputPath, "output-path", currentPath,
 		"inform the path of the directory to output the report. (Default: current directory)")
-	cmd.Flags().StringVar(&custom.Flags.Template, "template", "",
-		"inform the path of the template that should be used. If not informed the default will be used")
 	cmd.Flags().StringVar(&custom.Flags.Filter, "filter", "",
 		"filter by the packages names which are like *filter*")
+	cmd.Flags().StringVar(&custom.Flags.ContainerEngine, "container-engine", pkg.Docker,
+		fmt.Sprintf("specifies the container tool to use. If not set, the default value is docker. "+
+			"Note that you can use the environment variable CONTAINER_ENGINE to inform this option. "+
+			"[Options: %s and %s]", pkg.Docker, pkg.Podman))
+
 	return cmd
 }
 
@@ -62,16 +77,20 @@ func validation(cmd *cobra.Command, args []string) error {
 			return err
 		}
 	}
+
+	if len(custom.Flags.ContainerEngine) == 0 {
+		custom.Flags.ContainerEngine = pkg.GetContainerToolFromEnvVar()
+	}
+	if custom.Flags.ContainerEngine != pkg.Docker && custom.Flags.ContainerEngine != pkg.Podman {
+		return fmt.Errorf("invalid value for the flag --container-engine (%s)."+
+			" The valid options are %s and %s", custom.Flags.ContainerEngine, pkg.Docker, pkg.Podman)
+	}
+
 	return nil
 }
 
 func run(cmd *cobra.Command, args []string) error {
 	log.Info("Starting ...")
-
-	currentPath, err := os.Getwd()
-	if err != nil {
-		return err
-	}
 
 	bundlesReport, err := custom.ParseBundlesJSONReport()
 	if err != nil {
@@ -79,7 +98,9 @@ func run(cmd *cobra.Command, args []string) error {
 	}
 
 	log.Info("Generating data...")
-	multiarchReport := custom.NewMultiArchReport(bundlesReport, custom.Flags.Filter)
+
+	multiarchReport := custom.NewMultipleArchitecturesReport(bundlesReport, custom.Flags.Filter,
+		custom.Flags.ContainerEngine)
 
 	log.Info("Generating output...")
 	dashOutputPath := filepath.Join(custom.Flags.OutputPath,
@@ -90,11 +111,7 @@ func run(cmd *cobra.Command, args []string) error {
 		log.Fatal(err)
 	}
 
-	if len(custom.Flags.Template) == 0 {
-		custom.Flags.Template = getTemplatePath(currentPath)
-	}
-
-	t := template.Must(template.ParseFiles(custom.Flags.Template))
+	t := template.Must(template.ParseFS(multiarchTemplate, "multiarch_template.go.tmpl"))
 	err = t.Execute(f, multiarchReport)
 	if err != nil {
 		panic(err)
@@ -104,9 +121,4 @@ func run(cmd *cobra.Command, args []string) error {
 	log.Infof("Operation completed.")
 
 	return nil
-}
-
-//todo: this template requires to be embed
-func getTemplatePath(currentPath string) string {
-	return filepath.Join(currentPath, "/cmd/custom/multiarch/template.go.tmpl")
 }

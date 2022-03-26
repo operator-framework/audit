@@ -15,6 +15,7 @@
 package maxocp
 
 import (
+	"embed"
 	"html/template"
 	"os"
 	"path/filepath"
@@ -28,13 +29,20 @@ import (
 	"github.com/operator-framework/audit/pkg/reports/custom"
 )
 
+//go:embed *.tmpl
+var maxocpTemplate embed.FS
+
 func NewCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use: "maxocp",
 		Short: "generates a custom report based on defined criteria over the max ocp version and the removed apis " +
-			"for 1.22 and OCP < 4.9",
-		Long: "use this command with the result of `audit index bundles [OPTIONS]` to check a dashboard in HTML format " +
-			"with the packages data",
+			"for 1.22 and OCP < 4.9.",
+		Long: `use this command with the result of $audit index bundles [OPTIONS].
+## When should I use this command?
+
+The propose of this report is only to monitor the max ocp versions that ought to be set in the indexes
+when the usage of the APIs removed with 1.22 is found. You probably should not be using it.
+`,
 		PreRunE: validation,
 		RunE:    run,
 	}
@@ -52,8 +60,6 @@ func NewCmd() *cobra.Command {
 	}
 	cmd.Flags().StringVar(&custom.Flags.OutputPath, "output-path", currentPath,
 		"inform the path of the directory to output the report. (Default: current directory)")
-	cmd.Flags().StringVar(&custom.Flags.Template, "template", "",
-		"inform the path of the template that should be used. If not informed the default will be used")
 	return cmd
 }
 
@@ -68,11 +74,6 @@ func validation(cmd *cobra.Command, args []string) error {
 
 func run(cmd *cobra.Command, args []string) error {
 	log.Info("Starting ...")
-
-	currentPath, err := os.Getwd()
-	if err != nil {
-		return err
-	}
 
 	bundlesReport, err := custom.ParseBundlesJSONReport()
 	if err != nil {
@@ -89,11 +90,7 @@ func run(cmd *cobra.Command, args []string) error {
 		log.Fatal(err)
 	}
 
-	if len(custom.Flags.Template) == 0 {
-		custom.Flags.Template = getTemplatePath(currentPath)
-	}
-
-	t := template.Must(template.ParseFiles(custom.Flags.Template))
+	t := template.Must(template.ParseFS(maxocpTemplate, "maxocp_template.go.tmpl"))
 	err = t.Execute(f, maxDashReport)
 	if err != nil {
 		panic(err)
@@ -103,9 +100,4 @@ func run(cmd *cobra.Command, args []string) error {
 	log.Infof("Operation completed.")
 
 	return nil
-}
-
-//todo: this template requires to be embed
-func getTemplatePath(currentPath string) string {
-	return filepath.Join(currentPath, "/cmd/alpha/maxocp/template.go.tmpl")
 }

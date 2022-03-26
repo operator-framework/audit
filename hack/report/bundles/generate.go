@@ -79,10 +79,7 @@ func main() {
 				fmt.Sprintf("--index-image=%s", image),
 				fmt.Sprintf("--output-path=%s", reportPathName),
 			)
-			_, err = pkg.RunCommand(command)
-			if err != nil {
-				log.Errorf("running command :%s", err)
-			}
+			hack.RunCommandCapturingOutput(command)
 		}
 	}
 
@@ -124,10 +121,8 @@ func main() {
 				"--disable-scorecard",
 				fmt.Sprintf("--output-path=%s", reportPathName),
 			)
-			_, err = pkg.RunCommand(command)
-			if err != nil {
-				log.Errorf("running command :%s", err)
-			}
+
+			hack.RunCommandCapturingOutput(command)
 		}
 	}
 }

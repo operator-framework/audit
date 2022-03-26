@@ -15,9 +15,11 @@
 package deprecate
 
 import (
+	"embed"
 	"fmt"
-	"html/template"
 	"os"
+
+	"html/template"
 	"path/filepath"
 
 	log "github.com/sirupsen/logrus"
@@ -27,14 +29,50 @@ import (
 	"github.com/operator-framework/audit/pkg/reports/custom"
 )
 
+//go:embed *.tmpl
+var deprecateTemplate embed.FS
+
 func NewCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use: "deprecate-apis",
-		Short: "generates a custom report based on defined criteria over the " +
-			"deprecated apis scenario for 1.22 by default or the version informed",
-		Long: "use this command with the result of `audit index bundles [OPTIONS]` " +
-			"to check a dashboard in HTML format " +
-			"with the packages data",
+		Use:   "deprecate-apis",
+		Short: "generates a custom report to check packages impact by k8s apis removal.",
+		Long: `use this command with the result of $audit index bundles [OPTIONS].
+
+## When should I use this command?
+
+if you are looking for check what are the packages and head of channels which uses the api removed 
+in the k8s 1.22 
+
+OR 
+
+which requests permissions in the API which will be removed in the k8s version 1.25 and 1.26.
+
+**IMPORTANT** Note that for the k8s versions 1.25 and 1.26 we are unable to check what bundles 
+can or not work on these release. It is very unlike author add manifests with the APIs affected 
+and in many cases the Kinds are indeed not supported. 
+
+## How the check is done for 1.25 and 1.26?
+
+For these versions audit tool will check the cases where the bundles are asking permissions 
+to the APIs affected by looking at the rules (RBCA). However, by looking at the rules we 
+are unable to know if the Operator requires the versions which will be removed or not since
+the version is not present. 
+
+**For example:** The RBAC to create, patch, delete a CronJob can be checked but it does not
+have the versions so that, we are unable to know if the Operator still using v1beta1 
+which will be removed or v1 which will work on these versions. 
+
+However, it allows us to check what are the packages which are more likely to be impacted.
+
+## How to inform the version? 
+
+Use the --optional-values flag and the key k8s-version to inform the version which should 
+be used to generate the report, see: 
+
+- For 1.22 : --optional-values=k8s-version=1.22
+- For 1.25 : --optional-values=k8s-version=1.25
+- For 1.26 : --optional-values=k8s-version=1.26
+`,
 		PreRunE: validation,
 		RunE:    run,
 	}
@@ -52,8 +90,6 @@ func NewCmd() *cobra.Command {
 	}
 	cmd.Flags().StringVar(&custom.Flags.OutputPath, "output-path", currentPath,
 		"inform the path of the directory to output the report. (Default: current directory)")
-	cmd.Flags().StringVar(&custom.Flags.Template, "template", "",
-		"inform the path of the template that should be used. If not informed the default will be used")
 	optionalValueEmpty := map[string]string{}
 	cmd.Flags().StringToStringVarP(&custom.Flags.OptionalValues, "optional-values", "", optionalValueEmpty,
 		"Inform a []string map of key=values which can be used by the report. e.g. to check the usage of deprecated APIs "+
@@ -75,11 +111,6 @@ func validation(cmd *cobra.Command, args []string) error {
 func run(cmd *cobra.Command, args []string) error {
 	log.Info("Starting ...")
 
-	currentPath, err := os.Getwd()
-	if err != nil {
-		return err
-	}
-
 	bundlesReport, err := custom.ParseBundlesJSONReport()
 	if err != nil {
 		return err
@@ -95,11 +126,7 @@ func run(cmd *cobra.Command, args []string) error {
 		log.Fatal(err)
 	}
 
-	if len(custom.Flags.Template) == 0 {
-		custom.Flags.Template = getTemplatePath(currentPath)
-	}
-
-	t := template.Must(template.ParseFiles(custom.Flags.Template))
+	t := template.Must(template.ParseFS(deprecateTemplate, "deprecate_template.go.tmpl"))
 	err = t.Execute(f, apiDashReport)
 	if err != nil {
 		panic(err)
@@ -109,9 +136,4 @@ func run(cmd *cobra.Command, args []string) error {
 	log.Infof("Operation completed.")
 
 	return nil
-}
-
-//todo: this template requires to be embed
-func getTemplatePath(currentPath string) string {
-	return filepath.Join(currentPath, "/cmd/custom/deprecate/template.go.tmpl")
 }

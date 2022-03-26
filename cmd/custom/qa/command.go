@@ -15,6 +15,7 @@
 package qa
 
 import (
+	"embed"
 	"html/template"
 	"os"
 	"path/filepath"
@@ -26,13 +27,19 @@ import (
 	"github.com/operator-framework/audit/pkg/reports/custom"
 )
 
+//go:embed *.tmpl
+var qaTemplate embed.FS
+
 func NewCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use: "qa",
 		Short: "it is an custom dashboard which generates a custom report based on defined " +
 			"criteria over some specific defined criteria over the quality of the packages",
-		Long: "use this command with the result of `audit index bundles [OPTIONS]` to check a dashboard in HTML format " +
-			"with the packages data",
+		Long: `use this command with the result of $audit index bundles [OPTIONS].
+## When should I use this command?
+
+If you are looking for to check the quality of the head of channels according to specific criteria.
+`,
 		PreRunE: validation,
 		RunE:    run,
 	}
@@ -50,8 +57,6 @@ func NewCmd() *cobra.Command {
 	}
 	cmd.Flags().StringVar(&custom.Flags.OutputPath, "output-path", currentPath,
 		"inform the path of the directory to output the report. (Default: current directory)")
-	cmd.Flags().StringVar(&custom.Flags.Template, "template", "",
-		"inform the path of the template that should be used. If not informed the default will be used")
 	cmd.Flags().StringVar(&custom.Flags.Filter, "filter", "",
 		"filter by the packages names which are like *filter*")
 	return cmd
@@ -69,11 +74,6 @@ func validation(cmd *cobra.Command, args []string) error {
 func run(cmd *cobra.Command, args []string) error {
 	log.Info("Starting ...")
 
-	currentPath, err := os.Getwd()
-	if err != nil {
-		return err
-	}
-
 	bundlesReport, err := custom.ParseBundlesJSONReport()
 	if err != nil {
 		return err
@@ -89,11 +89,7 @@ func run(cmd *cobra.Command, args []string) error {
 		log.Fatal(err)
 	}
 
-	if len(custom.Flags.Template) == 0 {
-		custom.Flags.Template = getTemplatePath(currentPath)
-	}
-
-	t := template.Must(template.ParseFiles(custom.Flags.Template))
+	t := template.Must(template.ParseFS(qaTemplate, "qa_template.go.tmpl"))
 	err = t.Execute(f, apiDashReport)
 	if err != nil {
 		panic(err)
@@ -103,8 +99,4 @@ func run(cmd *cobra.Command, args []string) error {
 	log.Infof("Operation completed.")
 
 	return nil
-}
-
-func getTemplatePath(currentPath string) string {
-	return filepath.Join(currentPath, "/cmd/custom/qa/template.go.tmpl")
 }

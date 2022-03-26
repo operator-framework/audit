@@ -153,6 +153,9 @@ func NewQAReport(bundlesReport bundles.Report, filter string) *QAReport {
 		if len(key) == 0 {
 			continue
 		}
+		if len(bds) == 0 {
+			continue
+		}
 		pkgGrade := NewPkg(key, bds, isRedHatIndex)
 		gradeReport.PackageGrade = append(gradeReport.PackageGrade, pkgGrade)
 	}

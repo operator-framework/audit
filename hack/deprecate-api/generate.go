@@ -52,13 +52,7 @@ func main() {
 		pathToWalk := filepath.Join(fullReportsPath, dir)
 		dashboardPath := filepath.Join(fullReportsPath, dir, "dashboards")
 
-		command := exec.Command("rm", "-rf", dashboardPath)
-		_, err = pkg.RunCommand(command)
-		if err != nil {
-			log.Errorf("running command :%s", err)
-		}
-
-		command = exec.Command("mkdir", dashboardPath)
+		command := exec.Command("mkdir", dashboardPath)
 		_, err = pkg.RunCommand(command)
 		if err != nil {
 			log.Errorf("running command :%s", err)
@@ -82,9 +76,8 @@ func main() {
 					log.Errorf("running command :%s", errC)
 				}
 
-				// Ignore the tag images 4.9 and OperatorHub
-				if strings.Contains(info.Name(), "v4.9") ||
-					strings.Contains(info.Name(), "v4.10") ||
+				// Ignore the tag images which are not 4.10 and OperatorHub
+				if strings.Contains(info.Name(), "v4.10") ||
 					strings.Contains(info.Name(), "operatorhubio") {
 
 					// run report
