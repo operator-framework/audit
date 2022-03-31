@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// This module generate the bundles reports
+// This module generates the bundles reports
 package main
 
 import (
