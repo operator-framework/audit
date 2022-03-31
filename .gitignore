@@ -20,3 +20,8 @@
 
 # skip files used locally that cannot be commited
 **/testdata/reports/**/validator/**
+
+# The following directory is ignored since it is used
+# to genertae reports for specifc needs
+# More info : /hack/specific-needs/rbac/generate.go
+**/testdata/reports/rbac/**
