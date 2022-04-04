@@ -24,9 +24,8 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
-	"time"
 
-	"github.com/blang/semver/v4"
+	semverv4 "github.com/blang/semver/v4"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -128,14 +127,13 @@ func WriteJSON(data []byte, imageName, outputPath, typeName string) error {
 }
 
 func GetReportName(imageName, typeName, typeFile string) string {
-	dt := time.Now().Format("2006-01-02")
 
 	//prepare image name to use as name of the file
 	name := strings.ReplaceAll(imageName, "/", "_")
 	name = strings.ReplaceAll(name, ":", "_")
 	name = strings.ReplaceAll(name, "-", "_")
 
-	return fmt.Sprintf("%s_%s_%s.%s", typeName, name, dt, typeFile)
+	return fmt.Sprintf("%s_%s.%s", typeName, name, typeFile)
 }
 
 func GenerateTemporaryDirs() {
@@ -183,7 +181,7 @@ type ManifestData struct {
 
 type Platform struct {
 	Architecture string `json:"architecture"`
-	SO           string `json:"so"`
+	OS           string `json:"os"`
 }
 
 type DockerConfig struct {
@@ -285,11 +283,11 @@ func RangeContainsVersion(r string, v string, tolerantParse bool) (bool, error) 
 	}
 
 	v = strings.TrimPrefix(v, "v")
-	compV, err := semver.Parse(v + ".0")
+	compV, err := semverv4.Parse(v + ".0")
 	if err != nil {
 		splitTarget := strings.Split(v, ".")
 		if tolerantParse {
-			compV, err = semver.Parse(splitTarget[0] + "." + splitTarget[1] + ".0")
+			compV, err = semverv4.Parse(splitTarget[0] + "." + splitTarget[1] + ".0")
 			if err != nil {
 				return false, fmt.Errorf("invalid truncated version %q: %t", compV, err)
 			}
@@ -300,22 +298,22 @@ func RangeContainsVersion(r string, v string, tolerantParse bool) (bool, error) 
 
 	// special legacy cases
 	if r == "v4.5,v4.6" || r == "v4.6,v4.5" {
-		semverRange := semver.MustParseRange(">=4.5.0")
+		semverRange := semverv4.MustParseRange(">=4.5.0")
 		return semverRange(compV), nil
 	}
 
-	var semverRange semver.Range
+	var semverRange semverv4.Range
 	rs := strings.SplitN(r, "-", 2)
 	switch len(rs) {
 	case 1:
 		// Range specify exact version
 		if strings.HasPrefix(r, "=") {
 			trimmed := strings.TrimPrefix(r, "=v")
-			semverRange, err = semver.ParseRange(fmt.Sprintf("%s.0", trimmed))
+			semverRange, err = semverv4.ParseRange(fmt.Sprintf("%s.0", trimmed))
 		} else {
 			trimmed := strings.TrimPrefix(r, "v")
 			// Range specifies minimum version
-			semverRange, err = semver.ParseRange(fmt.Sprintf(">=%s.0", trimmed))
+			semverRange, err = semverv4.ParseRange(fmt.Sprintf(">=%s.0", trimmed))
 		}
 		if err != nil {
 			return false, fmt.Errorf("invalid range %q: %v", r, err)
@@ -329,7 +327,7 @@ func RangeContainsVersion(r string, v string, tolerantParse bool) (bool, error) 
 		min = strings.TrimPrefix(min, "v")
 		max = strings.TrimPrefix(max, "v")
 		semverRangeStr := fmt.Sprintf(">=%s.0 <=%s.0", min, max)
-		semverRange, err = semver.ParseRange(semverRangeStr)
+		semverRange, err = semverv4.ParseRange(semverRangeStr)
 		if err != nil {
 			return false, fmt.Errorf("invalid range %q: %v", r, err)
 		}

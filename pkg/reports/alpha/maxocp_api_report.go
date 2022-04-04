@@ -19,7 +19,7 @@ import (
 
 	"github.com/operator-framework/audit/pkg/reports/custom"
 
-	"github.com/blang/semver/v4"
+	semverv4 "github.com/blang/semver/v4"
 	"github.com/operator-framework/audit/pkg"
 	"github.com/operator-framework/audit/pkg/reports/bundles"
 )
@@ -139,13 +139,13 @@ func isMaxOCPVersionLowerThan49(maxOCPVersion string) bool {
 	}
 
 	maxOCPVersion = strings.ReplaceAll(maxOCPVersion, "\"", "")
-	semVerVersionMaxOcp, err := semver.ParseTolerant(maxOCPVersion)
+	semVerVersionMaxOcp, err := semverv4.ParseTolerant(maxOCPVersion)
 	if err != nil {
 		return false
 	}
 
 	// OCP version where the apis v1beta1 is no longer supported
 	const ocpVerV1beta1Unsupported = "4.9"
-	semVerOCPV1beta1Unsupported, _ := semver.ParseTolerant(ocpVerV1beta1Unsupported)
+	semVerOCPV1beta1Unsupported, _ := semverv4.ParseTolerant(ocpVerV1beta1Unsupported)
 	return !semVerVersionMaxOcp.GE(semVerOCPV1beta1Unsupported)
 }

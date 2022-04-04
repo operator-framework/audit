@@ -146,11 +146,7 @@ func generateReportFor() error {
 		log.Fatal(err)
 	}
 
-	if len(custom.Flags.Template) == 0 {
-		custom.Flags.Template = getTemplatePath()
-	}
-
-	t := template.Must(template.ParseFiles(custom.Flags.Template))
+	t := template.Must(template.ParseFiles(getTemplatePath()))
 	err = t.Execute(f, report)
 	if err != nil {
 		panic(err)
@@ -159,7 +155,6 @@ func generateReportFor() error {
 	return f.Close()
 }
 
-// todo: this template requires to be embed
 func getTemplatePath() string {
 	currentPath, err := os.Getwd()
 	if err != nil {

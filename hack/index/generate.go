@@ -98,6 +98,8 @@ func main() {
 					tagValue = strings.Split(tagS, "_")[0]
 				}
 
+				tagValue = strings.Replace(tagValue, ".html", "", -1)
+
 				name := fmt.Sprintf("[%s] - Tag: %s", kind, tagValue)
 				//nolint scopelint
 				dash.Reports = append(dash.Reports,
@@ -120,31 +122,6 @@ func main() {
 	}
 
 	index.DashboardPerCatalog = all
-
-	pathToWalk := filepath.Join(fullReportsPath, "catalogs")
-	if _, err := os.Stat(pathToWalk); err == nil && !os.IsNotExist(err) {
-		dash := DashboardPerCatalog{Name: "Catalogs (RedHat vs Community)"}
-		err = filepath.Walk(pathToWalk, func(path string, info os.FileInfo, err error) error {
-			if info != nil && !info.IsDir() && strings.HasSuffix(info.Name(), "html") {
-				tagValue := "latest"
-				if strings.Contains(info.Name(), "v") {
-					tagS := strings.Split(info.Name(), "v")[1]
-					tagValue = strings.Split(tagS, "_")[0]
-				}
-
-				name := fmt.Sprintf("[%s] - Tag: %s", "OCP", tagValue)
-				dash.Reports = append(dash.Reports,
-					Reports{Path: filepath.Join(hack.ReportsPath, "catalogs", info.Name()),
-						Name: name, Kind: "OCP"})
-			}
-			return nil
-		})
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		index.DashboardPerCatalog = append(index.DashboardPerCatalog, dash)
-	}
 
 	indexPath := filepath.Join(currentPath, "index.html")
 	command := exec.Command("rm", "-rf", indexPath)

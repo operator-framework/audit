@@ -84,9 +84,7 @@ func main() {
 					fmt.Sprintf("--filter-validation=%s", validation),
 					fmt.Sprintf("--output-path=%s", dashboardPath),
 				)
-				if _, errC := pkg.RunCommand(command); errC != nil {
-					log.Errorf("running command :%s", errC)
-				}
+				hack.RunCommandCapturingOutput(command)
 			}
 			return nil
 		})

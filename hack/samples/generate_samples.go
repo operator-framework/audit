@@ -98,7 +98,7 @@ func main() {
 		pkg.GetReportName(indexImage, "bundles", "json"))
 
 	// run report
-	command = exec.Command(binPath, "dashboard", "deprecate-apis",
+	command = exec.Command(binPath, "alpha", "deprecate-apis",
 		fmt.Sprintf("--file=%s", jsonBundlesReport),
 		fmt.Sprintf("--output-path=%s", customPath),
 	)

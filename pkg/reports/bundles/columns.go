@@ -58,7 +58,7 @@ func NewColumn(v models.AuditBundle) *Column {
 	col.PackageName = v.PackageName
 	col.BundleImagePath = v.OperatorBundleImagePath
 	col.DefaultChannel = v.DefaultChannel
-	col.Channels = v.Channels
+	col.Channels = pkg.GetUniqueValues(v.Channels)
 	col.AuditErrors = v.Errors
 	col.HasCustomScorecardTests = v.HasCustomScorecardTests
 	col.IsHeadOfChannel = v.IsHeadOfChannel

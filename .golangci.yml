@@ -19,7 +19,6 @@ linters:
     - scopelint
     - staticcheck
     - structcheck
-    - typecheck
     - unconvert
     - unparam
     - unused

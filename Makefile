@@ -63,7 +63,7 @@ GOLANGCI_LINT = $(shell pwd)/bin/golangci-lint
 golangci-lint:
 	@[ -f $(GOLANGCI_LINT) ] || { \
 	set -e ;\
-	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(shell dirname $(GOLANGCI_LINT)) v1.37.1 ;\
+	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(shell dirname $(GOLANGCI_LINT)) v1.41.1 ;\
 	}
 
 ##@ Tests
@@ -99,7 +99,6 @@ generate-dashboards:
 	go run ./hack/deprecate-api/generate.go
 	go run ./hack/maxocpversion/generate.go
 	go run ./hack/qa/generate.go
-	go run ./hack/catalogs/generate.go
 	go run ./hack/muiltarch/generate.go
 	go run ./hack/index/generate.go
 

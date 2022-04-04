@@ -16,6 +16,9 @@ package actions
 
 import (
 	"path/filepath"
+	"strings"
+
+	"github.com/operator-framework/audit/pkg/validation"
 
 	apivalidation "github.com/operator-framework/api/pkg/validation"
 	"github.com/operator-framework/api/pkg/validation/errors"
@@ -23,9 +26,17 @@ import (
 	ocp "github.com/redhat-openshift-ecosystem/ocp-olm-catalog-validator/pkg/validation"
 )
 
-func RunValidators(bundlePath string, auditBundle *models.AuditBundle) *models.AuditBundle {
+func RunValidators(bundlePath string, auditBundle *models.AuditBundle, indexImage string) *models.AuditBundle {
 	checkBundleAgainstCommonCriteria(auditBundle)
 	fromOCPValidator(auditBundle, bundlePath)
+
+	// If the index is < 4.9 then do thw following check
+	if strings.Contains(indexImage, "4.6") ||
+		strings.Contains(indexImage, "4.7") ||
+		strings.Contains(indexImage, "4.8") {
+		fromAuditValidatorsBundleSize(auditBundle)
+	}
+
 	return auditBundle
 }
 
@@ -68,6 +79,22 @@ func fromOCPValidator(auditBundle *models.AuditBundle, bundlePath string) {
 		"file": annotationsPath,
 	}
 	objs = append(objs, optionalValues)
+	results := validators.Validate(objs...)
+
+	for _, result := range results {
+		if result.HasError() || result.HasWarn() {
+			nonEmptyResults = append(nonEmptyResults, result)
+		}
+	}
+
+	auditBundle.ValidatorsResults = append(auditBundle.ValidatorsResults, nonEmptyResults...)
+}
+
+func fromAuditValidatorsBundleSize(auditBundle *models.AuditBundle) {
+	validators := validation.BundleSizeValidator
+	objs := auditBundle.Bundle.ObjectsToValidate()
+
+	nonEmptyResults := []errors.ManifestResult{}
 	results := validators.Validate(objs...)
 
 	for _, result := range results {

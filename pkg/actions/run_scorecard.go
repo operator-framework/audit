@@ -16,7 +16,7 @@ package actions
 
 import (
 	"encoding/json"
-	"errors"
+	"errors" //nolint: typecheck
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -24,7 +24,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/goccy/go-yaml"
+	goyaml "github.com/goccy/go-yaml"
 	"github.com/operator-framework/api/pkg/apis/scorecard/v1alpha3"
 	"github.com/operator-framework/audit/pkg"
 	"github.com/operator-framework/audit/pkg/models"
@@ -51,7 +51,7 @@ func RunScorecard(bundleDir string, auditBundle *models.AuditBundle) *models.Aud
 			auditBundle.Errors = append(auditBundle.Errors, msg.Error())
 		}
 		var bundleAnnotations BundleAnnotations
-		if err := yaml.Unmarshal(annFile, &bundleAnnotations); err != nil {
+		if err := goyaml.Unmarshal(annFile, &bundleAnnotations); err != nil {
 			msg := fmt.Errorf("unable to Unmarshal annotations.yaml to check scorecard path: %s", err)
 			log.Error(msg)
 			auditBundle.Errors = append(auditBundle.Errors, msg.Error())
@@ -83,7 +83,7 @@ func RunScorecard(bundleDir string, auditBundle *models.AuditBundle) *models.Aud
 				scorecardFilePath := filepath.Join(scorecardTestsPath, info.Name())
 				if existingFile, err := ioutil.ReadFile(scorecardFilePath); err == nil {
 					var scorecardConfig v1alpha3.Configuration
-					if err := yaml.Unmarshal(existingFile, &scorecardConfig); err != nil {
+					if err := goyaml.Unmarshal(existingFile, &scorecardConfig); err != nil {
 						msg := fmt.Errorf("unable to Unmarshal scorecard file %s: %s", info.Name(), err)
 						log.Error(msg)
 						auditBundle.Errors = append(auditBundle.Errors, msg.Error())

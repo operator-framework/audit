@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// This module generate the bundles reports
+// This module generates the bundles reports
 package main
 
 import (
@@ -79,10 +79,7 @@ func main() {
 				fmt.Sprintf("--index-image=%s", image),
 				fmt.Sprintf("--output-path=%s", reportPathName),
 			)
-			_, err = pkg.RunCommand(command)
-			if err != nil {
-				log.Errorf("running command :%s", err)
-			}
+			hack.RunCommandCapturingOutput(command)
 		}
 	}
 
@@ -124,10 +121,8 @@ func main() {
 				"--disable-scorecard",
 				fmt.Sprintf("--output-path=%s", reportPathName),
 			)
-			_, err = pkg.RunCommand(command)
-			if err != nil {
-				log.Errorf("running command :%s", err)
-			}
+
+			hack.RunCommandCapturingOutput(command)
 		}
 	}
 }

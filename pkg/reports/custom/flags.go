@@ -14,14 +14,14 @@
 
 package custom
 
-// BindFlags define the Flags used to generate the bundle report
+// BindFlags define the Flags used to generate the bundleCSV report
 type BindFlags struct {
-	Files          string            `json:"files,omitempty"`
-	File           string            `json:"file,omitempty"`
-	Template       string            `json:"template,omitempty"`
-	OutputPath     string            `json:"outputPath,omitempty"`
-	Filter         string            `json:"filter,omitempty"`
-	OptionalValues map[string]string `json:"optionalValues,omitempty"`
+	Files           string            `json:"files,omitempty"`
+	File            string            `json:"file,omitempty"`
+	OutputPath      string            `json:"outputPath,omitempty"`
+	Filter          string            `json:"filter,omitempty"`
+	ContainerEngine string            `json:"containerEngine,omitempty"`
+	OptionalValues  map[string]string `json:"optionalValues,omitempty"`
 }
 
 var Flags = BindFlags{}

@@ -142,8 +142,10 @@ func NewAPIDashReport(bundlesReport bundles.Report, optionalValues map[string]st
 	}
 
 	// Calculate the potential impacted by
-	if apiDash.OCPVersion == ocp412 || apiDash.OCPVersion == ocp413 {
+	impactedPkgs := map[string]string{}
 
+	//todo: we need clean up this code
+	if apiDash.OCPVersion == ocp412 || apiDash.OCPVersion == ocp413 {
 		for k, bundles := range mapPackagesWithBundles {
 			var apis []string
 			var foundBundles []string
@@ -206,6 +208,7 @@ func NewAPIDashReport(bundlesReport bundles.Report, optionalValues map[string]st
 					return foundBundles[i] < foundBundles[j]
 				})
 
+				impactedPkgs[k] = "found"
 				apiDash.PotentialImpacted = append(apiDash.PotentialImpacted, PotentialImpacted{
 					Name:    k,
 					Founds:  pkg.GetUniqueValues(apis),

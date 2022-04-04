@@ -17,7 +17,6 @@ package alpha
 import (
 	"strings"
 
-	"github.com/operator-framework/audit/cmd/alpha/catalogs"
 	"github.com/operator-framework/audit/cmd/alpha/maxocp"
 	"github.com/spf13/cobra"
 )
@@ -28,14 +27,14 @@ func NewCmd() *cobra.Command {
 		SuggestFor: []string{"experimental"},
 		Short:      "Alpha-stage subcommands",
 		Long: strings.TrimSpace(`
-Alpha subcommands are for unstable features.
+Alpha subcommands are for unstable features and commands to produce experimental reports.
 - Alpha subcommands are exploratory and may be removed without warning.
 - No backwards compatibility is provided for any alpha subcommands.
+
 `),
 	}
 
 	indexCmd.AddCommand(
-		catalogs.NewCmd(),
 		maxocp.NewCmd(),
 	)
 

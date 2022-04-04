@@ -15,6 +15,7 @@
 package validator
 
 import (
+	"embed"
 	"html/template"
 	"os"
 	"path/filepath"
@@ -28,12 +29,18 @@ import (
 
 var FilterValidation string
 
+//go:embed *.tmpl
+var validatorTemplate embed.FS
+
 func NewCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "validator",
-		Short: "generates a custom report based on the results filter by this validatation infored",
-		Long: "use this command with the result of `audit index bundles [OPTIONS]` to check a dashboard in HTML format " +
-			"with the packages data",
+		Short: "generates a custom report based on the results filter by this validation informed",
+		Long: `use this command with the result of $audit index bundles [OPTIONS].
+## When should I use this command?
+
+If you are looking for to check all scenarios which fails with some specific warning or error message.
+`,
 		PreRunE: validation,
 		RunE:    run,
 	}
@@ -51,8 +58,6 @@ func NewCmd() *cobra.Command {
 	}
 	cmd.Flags().StringVar(&custom.Flags.OutputPath, "output-path", currentPath,
 		"inform the path of the directory to output the report. (Default: current directory)")
-	cmd.Flags().StringVar(&custom.Flags.Template, "template", "",
-		"inform the path of the template that should be used. If not informed the default will be used")
 	cmd.Flags().StringVar(&custom.Flags.Filter, "filter", "",
 		"filter by the packages names which are like *filter*")
 	cmd.Flags().StringVar(&FilterValidation, "filter-validation", "",
@@ -75,11 +80,6 @@ func validation(cmd *cobra.Command, args []string) error {
 func run(cmd *cobra.Command, args []string) error {
 	log.Info("Starting ...")
 
-	currentPath, err := os.Getwd()
-	if err != nil {
-		return err
-	}
-
 	bundlesReport, err := custom.ParseBundlesJSONReport()
 	if err != nil {
 		return err
@@ -97,11 +97,7 @@ func run(cmd *cobra.Command, args []string) error {
 		log.Fatal(err)
 	}
 
-	if len(custom.Flags.Template) == 0 {
-		custom.Flags.Template = getTemplatePath(currentPath)
-	}
-
-	t := template.Must(template.ParseFiles(custom.Flags.Template))
+	t := template.Must(template.ParseFS(validatorTemplate, "validator_template.go.tmpl"))
 	err = t.Execute(f, validatorReport)
 	if err != nil {
 		panic(err)
@@ -111,9 +107,4 @@ func run(cmd *cobra.Command, args []string) error {
 	log.Infof("Operation completed.")
 
 	return nil
-}
-
-//todo: this template requires to be embed
-func getTemplatePath(currentPath string) string {
-	return filepath.Join(currentPath, "/cmd/custom/validator/template.go.tmpl")
 }
