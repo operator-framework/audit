@@ -111,6 +111,7 @@ type PackageQA struct {
 	BundlesWithoutDisconnect    []string
 	HeadOfChannels              []BundleDeprecate
 	Capabilities                []string
+	Subscriptions               []string
 }
 
 type QAReport struct {
@@ -185,6 +186,7 @@ func NewPkg(pkgName string, bundlesOfPkg []BundleDeprecate, isRedHatIndex bool) 
 	pkg.checkSDKUsage()
 	pkg.checkScorecardCustom()
 	pkg.checkRemovalAPIs1_25_26()
+	pkg.checkSubscriptions()
 
 	return pkg
 }
@@ -386,4 +388,42 @@ func (p *PackageQA) checkDisconnectAnnotation(isRedHatIndex bool) {
 			}
 		}
 	}
+}
+
+func (p *PackageQA) checkSubscriptions() {
+	const subscription = "operators.openshift.io/valid-subscription"
+
+	// Check if found subscription on the CSV
+	for _, bundle := range p.HeadOfChannels {
+		if bundle.BundleData.BundleCSV != nil && len(bundle.BundleData.BundleCSV.Annotations) > 0 &&
+			len(bundle.BundleData.BundleCSV.Annotations[subscription]) > 0 {
+
+			value := bundle.BundleData.BundleCSV.Annotations[subscription]
+			list := strings.Split(value, ",")
+			for _, v := range list {
+				v = strings.ReplaceAll(v, "[", "")
+				v = strings.ReplaceAll(v, "]", "")
+				p.Subscriptions = append(p.Subscriptions, v)
+			}
+		}
+	}
+
+	//Check if found subscription on the annotations file (metadata/annotations.yaml)
+	for _, bundle := range p.HeadOfChannels {
+		if bundle.BundleData.BundleAnnotations != nil && len(bundle.BundleData.BundleAnnotations) > 0 &&
+			len(bundle.BundleData.BundleAnnotations[subscription]) > 0 {
+
+			value := bundle.BundleData.BundleAnnotations[subscription]
+			list := strings.Split(value, ",")
+
+			for _, v := range list {
+				v = strings.ReplaceAll(v, "[", "")
+				v = strings.ReplaceAll(v, "]", "")
+				p.Subscriptions = append(p.Subscriptions, v)
+			}
+		}
+	}
+
+	// Some teams adds in both so it is to ensure that we have not duplicated results
+	p.Subscriptions = pkg.GetUniqueValues(p.Subscriptions)
 }

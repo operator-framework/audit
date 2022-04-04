@@ -98,9 +98,10 @@
                          <th>Scorecard </th>
                          <th>Validators</th>
                          <th>Capability level</th>
+                         <th>Subscriptions</th>
                          <th>Potently impacted by removals on K8S 1.25/1.26</th>
                          <th>SDK</th>
-                         <th>Custom Scorecard Images</th>
+                         <th>Custom Scorecard</th>
                      </tr>
                 </thead>
                 <tbody>
@@ -112,27 +113,23 @@
                                 <p style="color: {{ .ChannelNamingColor}}"> {{ .ChannelNaming}} </p>
                                 {{if ne .ChannelNaming "PROBABLY COMPLY"}}
                                  <div class="html" id="channel-name-show{{ .PackageName}}">
-                                    <p>Following the channels names which does not comply. For further information see <a href="https://olm.operatorframework.io/docs/best-practices/channel-naming/"> Channel Naming </a> doc. </p>
-                                    <ul>
+                                    <p>Following those does NOT complies: <a href="https://olm.operatorframework.io/docs/best-practices/channel-naming/"> (+) </a>. </p>
                                     {{ range .ChannelNamesNotComply }}
                                         <li>{{ . }}</li>
                                     {{ end }}
-                                    </ul>
                                  </div>
                                  {{ end }}
                                  {{if gt (len .ChannelNamesComply) 0}}
                                   <div class="html" id="channel-name-show{{ .PackageName}}">
-                                     <p>Following the channels which probably complies: </p>
-                                     <ul>
+                                     <p>Following those complies: </p>
                                      {{ range .ChannelNamesComply }}
                                          <li>{{ . }}</li>
                                      {{ end }}
-                                     </ul>
                                   </div>
                                   {{ end }}
                              </th>
                              <th>
-                                <p style="color: {{ .DisconnectedAnnotationColor}}"> {{ .DisconnectedAnnotation }} </p>
+                                <p style="color: {{ .DisconnectedAnnotationColor}}" align="center"> {{ .DisconnectedAnnotation }} </p>
                                  <style>
                                      #disco-show{{ .PackageName}} {
                                          display: none;
@@ -143,20 +140,18 @@
                                      }
                                  </style>
                                  {{if eq .DisconnectedAnnotation "REQUIRED"}}
-                                 <a href="#disco-show{{ .PackageName}}">+Info</a>
+                                 <a href="#disco-show{{ .PackageName}}" align="center">(+)</a>
                                  <div class="html" id="disco-show{{ .PackageName}}">
                                      <p>If the package is in <a href="https://access.redhat.com/articles/4740011"> Red Hat Operators Supported in Disconnected Mode </a> then must have the <a href="https://docs.openshift.com/container-platform/4.7/operators/operator_sdk/osdk-generating-csvs.html#osdk-csv-manual-annotations_osdk-generating-csvs">annotation</a>. Following the head of the channels without the annotation.</p>
-                                     <ul>
                                      {{ range .BundlesWithoutDisconnect }}
                                          <li>{{ . }}</li>
                                      {{ end }}
-                                     </ul>
                                  </div>
                                  {{end}}
                              </th>
 
                              <th>
-                                <p style="color: {{ .ScorecardDefaultImagesColor}}"> {{ .ScorecardDefaultImages}}</p>
+                                <p style="color: {{ .ScorecardDefaultImagesColor}}" align="center"> {{ .ScorecardDefaultImages}}</p>
                                  <style>
                                      #scorecard-show{{ .PackageName}} {
                                          display: none;
@@ -167,7 +162,7 @@
                                      }
                                  </style>
                                  {{if ne .ScorecardDefaultImages "PASSED IN ALL CHECKS"}}
-                                 <a href="#scorecard-show{{ .PackageName}}">+Info</a>
+                                 <p align="center"><a href="#scorecard-show{{ .PackageName}}" >(+)</a></p>
                                  <div class="html" id="scorecard-show{{ .PackageName}}">
                                      <ul>
                                       {{ with .HeadOfChannels }}
@@ -187,7 +182,7 @@
                                  {{end}}
                              </th>
                              <th>
-                                <p style="color: {{ .ValidatorsColor}}"> {{ .Validators}}</p>
+                                <p style="color: {{ .ValidatorsColor}}" align="center"> {{ .Validators}}</p>
                                  <style>
                                      #validators-show{{ .PackageName}} {
                                          display: none;
@@ -198,7 +193,7 @@
                                      }
                                  </style>
                                  {{if ne .Validators "PASSED IN ALL CHECKS"}}
-                                 <a href="#validators-show{{ .PackageName}}">+Info</a>
+                                <p align="center"> <a href="#validators-show{{ .PackageName}}">(+)</a></p>
                                  <div class="html" id="validators-show{{ .PackageName}}">
                                       <ul>
                                       {{ with .HeadOfChannels }}
@@ -227,19 +222,29 @@
                                          display: block;
                                      }
                                  </style>
-                                 <ul>
+                                 {{ if gt (len .Capabilities) 1 }}
                                  {{ range .Capabilities}}
                                      <li> {{ . }} </li>
                                  {{ end }}
-                                 </ul>
-
+                                 {{ end }}
+                                 {{ if gt (len .Capabilities) 0 }}
+                                    {{ .Capabilities }}
+                                 {{ end }}
                                  {{if ne .CapabilityColor "green"}}
-                                 <a style="color: {{ .CapabilityColor}}" href="#level-show{{ .PackageName }}">+info to improve</a>
+                                 <p align="center"><a href="#level-show{{ .PackageName }}">(+)</a></p>
                                  <div class="html" id="level-show{{ .PackageName }}">
                                     <p> Check the <a href="https://sdk.operatorframework.io/docs/overview/operator-capabilities/"> capabilities doc </a> to know how to improve it. </p>
                                  </div>
                                  {{ end }}
 
+                             </th>
+                             <th>
+                                {{ if eq (len .Subscriptions) 0 }}
+                                    <p  style="color:orange" align="center"> NOT ADDED </p>
+                                {{ end }}
+                                {{ range .Subscriptions}}
+                                  <li> {{ . }} </li>
+                                {{ end }}
                              </th>
                              <th>
                              <style>
@@ -253,12 +258,10 @@
                               </style>
                              {{ if gt (len .DeprecateAPI) 0 }}
                                 RBAC requested for the API(s):
-                                <ul>
                                   {{ range .DeprecateAPI }}
                                      <li> {{ . }}</li>
                                   {{ end }}
-                                </ul>
-                                <a href="#info-show{{ .PackageName}}">+Info</a>
+                                <p align="center"><a href="#info-show{{ .PackageName}}" align="center">(+)</a></p>
                                 <div class="html" id="info-show{{ .PackageName }}">
                                 {{ if gt (len .DeprecateAPI) 0 }}
                                   <p style="color: orange" > ATTENTION: See the <a href="https://kubernetes.io/docs/reference/using-api/deprecation-guide/https://kubernetes.io/docs/reference/using-api/deprecation-guide/"> guide </a> and ensure that the Operator does not uses the versions that will be removed. </p>
