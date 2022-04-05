@@ -398,6 +398,11 @@ func (p *PackageQA) checkSubscriptions() {
 		if bundle.BundleData.BundleCSV != nil && len(bundle.BundleData.BundleCSV.Annotations) > 0 &&
 			len(bundle.BundleData.BundleCSV.Annotations[subscription]) > 0 {
 
+			// If is not the default channel then, ignore the scenario
+			if !p.isDefaultChannel(bundle) {
+				continue
+			}
+
 			value := bundle.BundleData.BundleCSV.Annotations[subscription]
 			list := strings.Split(value, ",")
 			for _, v := range list {
@@ -413,6 +418,11 @@ func (p *PackageQA) checkSubscriptions() {
 		if bundle.BundleData.BundleAnnotations != nil && len(bundle.BundleData.BundleAnnotations) > 0 &&
 			len(bundle.BundleData.BundleAnnotations[subscription]) > 0 {
 
+			// If is not the default channel then, ignore the scenario
+			if !p.isDefaultChannel(bundle) {
+				continue
+			}
+
 			value := bundle.BundleData.BundleAnnotations[subscription]
 			list := strings.Split(value, ",")
 
@@ -426,4 +436,13 @@ func (p *PackageQA) checkSubscriptions() {
 
 	// Some teams adds in both so it is to ensure that we have not duplicated results
 	p.Subscriptions = pkg.GetUniqueValues(p.Subscriptions)
+}
+
+func (p *PackageQA) isDefaultChannel(bundle BundleDeprecate) bool {
+	for _, channel := range bundle.BundleData.Channels {
+		if bundle.BundleData.DefaultChannel == channel {
+			return true
+		}
+	}
+	return false
 }
