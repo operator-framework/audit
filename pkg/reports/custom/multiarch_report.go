@@ -311,16 +311,19 @@ func (data *multiArchValidator) inspectAllImages() {
 	for k := range data.images {
 		manifest, err := runManifestInspect(k, data.containerTool)
 		if err != nil {
-			data.warns = append(data.warns, fmt.Errorf("unable to inspect the image (%s) : %s", k, err))
+			// try once more
+			manifest, err = runManifestInspect(k, data.containerTool)
+			if err != nil {
+				data.warns = append(data.warns, fmt.Errorf("unable to inspect the image (%s) : %s", k, err))
 
-			// We set the Arch and SO as error for we are able to deal witth these cases further
-			// Se that make no sense we raise a warning to notify the user that the image
-			// does not provide some kind of support only because we were unable to inspect it.
-			// Be aware that the validator raise warnings for all cases scenarios to let
-			// the author knows that those were not checked at all and why.
-			data.images[k] = append(data.images[k], platform{"error", "error"})
-			continue
-
+				// We set the Arch and SO as error for we are able to deal witth these cases further
+				// Se that make no sense we raise a warning to notify the user that the image
+				// does not provide some kind of support only because we were unable to inspect it.
+				// Be aware that the validator raise warnings for all cases scenarios to let
+				// the author knows that those were not checked at all and why.
+				data.images[k] = append(data.images[k], platform{"error", "error"})
+				continue
+			}
 		}
 
 		if manifest.ManifestData != nil {
