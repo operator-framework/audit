@@ -75,6 +75,7 @@ func fromOCPValidator(auditBundle *models.AuditBundle, bundlePath string) {
 
 	// Pass the --optional-values. e.g. --optional-values="k8s-version=1.22"
 	// or --optional-values="image-path=bundle.Dockerfile"
+	//nolint: typecheck
 	var optionalValues = map[string]string{
 		"file": annotationsPath,
 	}

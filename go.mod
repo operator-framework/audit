@@ -7,7 +7,7 @@ require (
 	github.com/blang/semver/v4 v4.0.0
 	github.com/goccy/go-yaml v1.9.5
 	github.com/mattn/go-sqlite3 v1.14.6
-	github.com/operator-framework/api v0.14.0
+	github.com/operator-framework/api v0.14.1-0.20220413143725-33310d6154f3
 	github.com/redhat-openshift-ecosystem/ocp-olm-catalog-validator v0.1.0
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/cobra v1.3.0

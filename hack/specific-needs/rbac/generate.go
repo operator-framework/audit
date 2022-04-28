@@ -32,6 +32,7 @@ import (
 	"sort"
 	"strings"
 
+	//nolint: typecheck
 	"github.com/goccy/go-yaml"
 	"github.com/operator-framework/audit/hack"
 
@@ -200,6 +201,7 @@ func getReportValues(bundlesColum []bundles.Column) []Bundle {
 	for _, bundle := range bundlesColum {
 
 		perm := ""
+		//nolint: typecheck
 		if bundle.BundleCSV.Spec.InstallStrategy.StrategySpec.Permissions != nil {
 			permYAML, err := yaml.Marshal(bundle.BundleCSV.Spec.InstallStrategy.StrategySpec.Permissions)
 			if err != nil {
@@ -209,6 +211,7 @@ func getReportValues(bundlesColum []bundles.Column) []Bundle {
 		}
 
 		clusterPerm := ""
+		//nolint: typecheck
 		if bundle.BundleCSV.Spec.InstallStrategy.StrategySpec.ClusterPermissions != nil {
 			permYAML, err := yaml.Marshal(bundle.BundleCSV.Spec.InstallStrategy.StrategySpec.ClusterPermissions)
 			if err != nil {

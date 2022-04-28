@@ -186,7 +186,7 @@ func (bd *BundleDeprecate) addFromRules(perm v1alpha1.StrategyDeploymentPermissi
 }
 
 func (bd *BundleDeprecate) setDeprecateMsg(result string) {
-	if strings.Contains(result, "this bundleCSV is using APIs which were deprecated") {
+	if strings.Contains(result, "this bundle is using APIs which were deprecated") {
 		bd.DeprecateAPIsMsgs = append(bd.DeprecateAPIsMsgs, result)
 		if strings.Contains(result, "1.22") {
 			bd.ApisRemoved1_22 = append(bd.ApisRemoved1_22, result)
