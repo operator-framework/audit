@@ -121,17 +121,18 @@ func (bd *BundleDeprecate) AddPotentialWarning() {
 
 	// We need looking for clusterPermissions and permissions
 	apis125 := map[string][]string{
-		"batch":            {"CronJob"},
-		"discovery.k8s.io": {"EndpointSlice"},
+		"":                 {"cronjobs"}, // from core
+		"batch":            {"cronjobs"},
+		"discovery.k8s.io": {"endpointslices"},
 		"events.k8s.io":    {"events"},
-		"autoscaling":      {"HorizontalPodAutoscaler"},
-		"policy":           {"PodDisruptionBudget", "PodSecurityPolicy"},
-		"node.k8s.io":      {"RuntimeClass"},
+		"autoscaling":      {"horizontalpodautoscalers"},
+		"policy":           {"poddisruptionbudgets", "podsecuritypolicies"},
+		"node.k8s.io":      {"runtimeclasses"},
 	}
 
 	apis126 := map[string][]string{
-		"flowcontrol.apiserver.k8s.io": {"FlowSchema", "PriorityLevelConfiguration"},
-		"autoscaling":                  {"HorizontalPodAutoscaler"},
+		"flowcontrol.apiserver.k8s.io": {"flowschemas", "prioritylevelconfigurations"},
+		"autoscaling":                  {"horizontalpodautoscalers"},
 	}
 
 	for _, perm := range bd.BundleData.BundleCSV.Spec.InstallStrategy.StrategySpec.Permissions {
@@ -150,34 +151,34 @@ func (bd *BundleDeprecate) addFromRules(perm v1alpha1.StrategyDeploymentPermissi
 	}
 	for _, rule := range perm.Rules {
 		for _, api := range rule.APIGroups {
-			if api == "" || api == "*" {
-				for _, res := range rule.Resources {
-					for _, resources := range apis125 {
-						for _, value := range resources {
-							if strings.Contains(strings.ToLower(res), strings.ToLower(value)) {
-								bd.Permissions1_25 = append(bd.Permissions1_25, value)
-							}
+			for _, res := range rule.Resources {
+				for apiFromMap, resourcesFromMap := range apis125 {
+					for _, resFromMap := range resourcesFromMap {
+						if strings.Contains(strings.ToLower(res), strings.ToLower(resFromMap)) &&
+							strings.Contains(strings.ToLower(api), strings.ToLower(apiFromMap)) {
+							bd.Permissions1_25 = append(bd.Permissions1_25, resFromMap)
 						}
 					}
+				}
 
-					for _, resources := range apis126 {
-						for _, value := range resources {
-							if strings.Contains(strings.ToLower(res), strings.ToLower(value)) {
-								bd.Permissions1_26 = append(bd.Permissions1_26, value)
-							}
+				for apiFromMap, resourcesFromMap := range apis126 {
+					for _, resFromMap := range resourcesFromMap {
+						if strings.Contains(strings.ToLower(res), strings.ToLower(resFromMap)) &&
+							strings.Contains(strings.ToLower(api), strings.ToLower(apiFromMap)) {
+							bd.Permissions1_26 = append(bd.Permissions1_26, resFromMap)
 						}
 					}
 				}
 			}
 
 			for apiMap := range apis125 {
-				if strings.Contains(strings.ToLower(api), strings.ToLower(apiMap)) {
+				if len(apiMap) != 0 && strings.Contains(strings.ToLower(api), strings.ToLower(apiMap)) {
 					bd.Permissions1_25 = append(bd.Permissions1_25, apiMap)
 				}
 			}
 
 			for apiMap := range apis126 {
-				if strings.Contains(strings.ToLower(api), strings.ToLower(apiMap)) {
+				if len(apiMap) != 0 && strings.Contains(strings.ToLower(api), strings.ToLower(apiMap)) {
 					bd.Permissions1_26 = append(bd.Permissions1_26, apiMap)
 				}
 			}
