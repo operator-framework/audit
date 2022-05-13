@@ -130,66 +130,6 @@
                         
                             
                                 <tr>
-                                    <th>ako-operator</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups/resources): policy/podsecuritypolicies</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>ako-operator.v1.6.2-alpha - (label=v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:NO, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/podsecuritypolicies&#34;])</li>
-                                         
-                                             <li>ako-operator.v1.6.2-beta - (label=v4.6,max=not set,channels=[beta],head:YES,defaultChannel:NO, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/podsecuritypolicies&#34;])</li>
-                                         
-                                             <li>ako-operator.v1.6.3-stable - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/podsecuritypolicies&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>hpe-csi-operator</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups Only): batch</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>hpe-csi-operator.v2.0.0 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups Only): batch&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>vfunction-server-operator</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups Only): batch</li>
-                                        
-                                            <li>(apiGroups/resources): autoscaling/horizontalpodautoscalers</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>vfunction-server-operator.v2.2.469 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups Only): batch&#34; &#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
                                     <th>anzounstructured-operator</th>
                                     <th>
                                         <ul>
@@ -208,27 +148,25 @@
                                 </tr>
                             
                                 <tr>
-                                    <th>open-liberty-certified</th>
+                                    <th>dynatrace-operator</th>
                                     <th>
                                         <ul>
                                         
-                                            <li>(apiGroups/resources): autoscaling/horizontalpodautoscalers</li>
+                                            <li>(apiGroups/resources): batch/cronjobs</li>
                                         
                                         </ul>
                                     </th>
                                     <th>
                                       <ul>
                                          
-                                             <li>open-liberty-operator.v0.8.0 - (label=v4.6,max=not set,channels=[beta2],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
-                                         
-                                             <li>open-liberty-operator.v0.8.1 - (label=v4.6,max=not set,channels=[beta2],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                             <li>dynatrace-operator.v0.2.2 - (label=v4.5,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
                                          
                                       </ul>
                                     </th>
                                 </tr>
                             
                                 <tr>
-                                    <th>openshiftartifactoryha-operator</th>
+                                    <th>openshiftxray-operator</th>
                                     <th>
                                         <ul>
                                         
@@ -239,9 +177,45 @@
                                     <th>
                                       <ul>
                                          
-                                             <li>artifactory-ha-operator.v1.1.15 - (label=v4.5,v4.6,max=not set,channels=[alpha],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups Only): policy&#34;])</li>
+                                             <li>xray-operator.v2.0.9 - (label=v4.5,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups Only): policy&#34;])</li>
                                          
-                                             <li>artifactory-ha-operator.v1.1.18 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:NO, deprecated:NO, RBAC: [&#34;(apiGroups Only): policy&#34;])</li>
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>kubeturbo-certified</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups Only): policy</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>kubeturbo-operator.v8.5.1 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups Only): policy&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>runtime-component-operator-certified</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups/resources): autoscaling/horizontalpodautoscalers</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>runtime-component.v0.8.0 - (label=v4.6,max=not set,channels=[beta2],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                             <li>runtime-component.v0.8.1 - (label=v4.6,max=not set,channels=[beta2],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
                                       </ul>
                                     </th>
@@ -286,276 +260,6 @@
                                 </tr>
                             
                                 <tr>
-                                    <th>fep-ansible-operator</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups/resources): policy/poddisruptionbudgets</li>
-                                        
-                                            <li>(apiGroups/resources): batch/cronjobs</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>fep-ansible-operator.v2.2.5 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/poddisruptionbudgets&#34; &#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>kubeturbo-certified</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups Only): policy</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>kubeturbo-operator.v8.5.1 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups Only): policy&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>dynatrace-operator</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups/resources): /cronjobs</li>
-                                        
-                                            <li>(apiGroups/resources): batch/cronjobs</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>dynatrace-operator.v0.2.2 - (label=v4.5,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): /cronjobs&#34; &#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>instana-agent-operator</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups/resources): batch/cronjobs</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>instana-agent-operator.v2.0.4 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>seldon-operator-certified</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups/resources): autoscaling/horizontalpodautoscalers</li>
-                                        
-                                            <li>(apiGroups/resources): policy/poddisruptionbudgets</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>seldon-operator.v1.12.0 - (label=v4.8,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34; &#34;(apiGroups/resources): policy/poddisruptionbudgets&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>sysdig-certified</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups/resources): policy/podsecuritypolicies</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>sysdig-certified.v1.12.44 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/podsecuritypolicies&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>fujitsu-enterprise-operator</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups/resources): policy/poddisruptionbudgets</li>
-                                        
-                                            <li>(apiGroups/resources): batch/cronjobs</li>
-                                        
-                                            <li>(apiGroups/resources): autoscaling/horizontalpodautoscalers</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>fujitsu-enterprise-operator.v3.1.2 - (label=v4.6,max=not set,channels=[stable-13],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/poddisruptionbudgets&#34; &#34;(apiGroups/resources): batch/cronjobs&#34; &#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>fujitsu-enterprise-postgres-operator</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups/resources): policy/poddisruptionbudgets</li>
-                                        
-                                            <li>(apiGroups/resources): batch/cronjobs</li>
-                                        
-                                            <li>(apiGroups/resources): autoscaling/horizontalpodautoscalers</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>fujitsu-enterprise-postgres-operator.v4.1.1 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/poddisruptionbudgets&#34; &#34;(apiGroups/resources): batch/cronjobs&#34; &#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>anzo-operator</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups/resources): policy/podsecuritypolicies</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>anzo-operator.v2.0.101 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/podsecuritypolicies&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>crunchy-postgres-operator</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups/resources): batch/cronjobs</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>postgresoperator.v5.0.2 - (label=v4.6,max=not set,channels=[v5],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
-                                         
-                                             <li>postgresoperator.v5.0.3 - (label=v4.6,max=not set,channels=[v5],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>minio-operator</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups Only): batch</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>minio-operator.v4.0.2 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups Only): batch&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>runtime-component-operator-certified</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups/resources): autoscaling/horizontalpodautoscalers</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>runtime-component.v0.8.0 - (label=v4.6,max=not set,channels=[beta2],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
-                                         
-                                             <li>runtime-component.v0.8.1 - (label=v4.6,max=not set,channels=[beta2],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>citrix-adc-istio-ingress-gateway-operator</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups/resources): autoscaling/horizontalpodautoscalers</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>citrix-adc-istio-ingress-gateway-operator.v0.9.9 - (label=v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>pachyderm-operator</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups Only): batch</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>pachyderm-operator.v0.1.0 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups Only): batch&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
                                     <th>anzograph-operator</th>
                                     <th>
                                         <ul>
@@ -568,46 +272,6 @@
                                       <ul>
                                          
                                              <li>anzograph-operator.v2.0.102 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/podsecuritypolicies&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>k8s-triliovault</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups/resources): batch/cronjobs</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>k8s-triliovault-stable.2.8.0 - (label=v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
-                                         
-                                             <li>k8s-triliovault-stable.2.8.1 - (label=v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
-                                         
-                                             <li>k8s-triliovault-stable.2.8.2 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>k8s-triliovault-ibm</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups/resources): batch/cronjobs</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>k8s-triliovault-ibm-stable.2.7.0 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
                                          
                                       </ul>
                                     </th>
@@ -634,38 +298,20 @@
                                 </tr>
                             
                                 <tr>
-                                    <th>cilium</th>
+                                    <th>crunchy-postgres-operator</th>
                                     <th>
                                         <ul>
                                         
-                                            <li>(apiGroups/resources): discovery.k8s.io/endpointslices</li>
+                                            <li>(apiGroups/resources): batch/cronjobs</li>
                                         
                                         </ul>
                                     </th>
                                     <th>
                                       <ul>
                                          
-                                             <li>cilium.v1.10.4-x5bfd7b3 - (label=v4.5,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): discovery.k8s.io/endpointslices&#34;])</li>
+                                             <li>postgresoperator.v5.0.2 - (label=v4.6,max=not set,channels=[v5],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
                                          
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>elasticsearch-eck-operator-certified</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups/resources): policy/poddisruptionbudgets</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>elasticsearch-eck-operator-certified.v2.0.0 - (label=v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/poddisruptionbudgets&#34;])</li>
-                                         
-                                             <li>elasticsearch-eck-operator-certified.v2.1.0 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/poddisruptionbudgets&#34;])</li>
+                                             <li>postgresoperator.v5.0.3 - (label=v4.6,max=not set,channels=[v5],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
                                          
                                       </ul>
                                     </th>
@@ -696,7 +342,7 @@
                                 </tr>
                             
                                 <tr>
-                                    <th>openshiftxray-operator</th>
+                                    <th>openshiftartifactoryha-operator</th>
                                     <th>
                                         <ul>
                                         
@@ -707,7 +353,359 @@
                                     <th>
                                       <ul>
                                          
-                                             <li>xray-operator.v2.0.9 - (label=v4.5,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups Only): policy&#34;])</li>
+                                             <li>artifactory-ha-operator.v1.1.15 - (label=v4.5,v4.6,max=not set,channels=[alpha],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups Only): policy&#34;])</li>
+                                         
+                                             <li>artifactory-ha-operator.v1.1.18 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:NO, deprecated:NO, RBAC: [&#34;(apiGroups Only): policy&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>pachyderm-operator</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups Only): batch</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>pachyderm-operator.v0.1.0 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups Only): batch&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>hpe-csi-operator</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups Only): batch</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>hpe-csi-operator.v2.0.0 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups Only): batch&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>open-liberty-certified</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups/resources): autoscaling/horizontalpodautoscalers</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>open-liberty-operator.v0.8.0 - (label=v4.6,max=not set,channels=[beta2],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                             <li>open-liberty-operator.v0.8.1 - (label=v4.6,max=not set,channels=[beta2],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>instana-agent-operator</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups/resources): batch/cronjobs</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>instana-agent-operator.v2.0.4 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>minio-operator</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups Only): batch</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>minio-operator.v4.0.2 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups Only): batch&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>elasticsearch-eck-operator-certified</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups/resources): policy/poddisruptionbudgets</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>elasticsearch-eck-operator-certified.v2.0.0 - (label=v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/poddisruptionbudgets&#34;])</li>
+                                         
+                                             <li>elasticsearch-eck-operator-certified.v2.1.0 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/poddisruptionbudgets&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>ako-operator</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups/resources): policy/podsecuritypolicies</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>ako-operator.v1.6.2-alpha - (label=v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:NO, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/podsecuritypolicies&#34;])</li>
+                                         
+                                             <li>ako-operator.v1.6.2-beta - (label=v4.6,max=not set,channels=[beta],head:YES,defaultChannel:NO, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/podsecuritypolicies&#34;])</li>
+                                         
+                                             <li>ako-operator.v1.6.3-stable - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/podsecuritypolicies&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>cilium</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups/resources): discovery.k8s.io/endpointslices</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>cilium.v1.10.4-x5bfd7b3 - (label=v4.5,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): discovery.k8s.io/endpointslices&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>vfunction-server-operator</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups Only): batch</li>
+                                        
+                                            <li>(apiGroups/resources): autoscaling/horizontalpodautoscalers</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>vfunction-server-operator.v2.2.469 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups Only): batch&#34; &#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>anzo-operator</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups/resources): policy/podsecuritypolicies</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>anzo-operator.v2.0.101 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/podsecuritypolicies&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>fep-ansible-operator</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups/resources): policy/poddisruptionbudgets</li>
+                                        
+                                            <li>(apiGroups/resources): batch/cronjobs</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>fep-ansible-operator.v2.2.5 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/poddisruptionbudgets&#34; &#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>sysdig-certified</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups/resources): policy/podsecuritypolicies</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>sysdig-certified.v1.12.44 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/podsecuritypolicies&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>fujitsu-enterprise-postgres-operator</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups/resources): policy/poddisruptionbudgets</li>
+                                        
+                                            <li>(apiGroups/resources): batch/cronjobs</li>
+                                        
+                                            <li>(apiGroups/resources): autoscaling/horizontalpodautoscalers</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>fujitsu-enterprise-postgres-operator.v4.1.1 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/poddisruptionbudgets&#34; &#34;(apiGroups/resources): batch/cronjobs&#34; &#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>k8s-triliovault-ibm</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups/resources): batch/cronjobs</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>k8s-triliovault-ibm-stable.2.7.0 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>seldon-operator-certified</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups/resources): autoscaling/horizontalpodautoscalers</li>
+                                        
+                                            <li>(apiGroups/resources): policy/poddisruptionbudgets</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>seldon-operator.v1.12.0 - (label=v4.8,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34; &#34;(apiGroups/resources): policy/poddisruptionbudgets&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>citrix-adc-istio-ingress-gateway-operator</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups/resources): autoscaling/horizontalpodautoscalers</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>citrix-adc-istio-ingress-gateway-operator.v0.9.9 - (label=v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>fujitsu-enterprise-operator</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups/resources): policy/poddisruptionbudgets</li>
+                                        
+                                            <li>(apiGroups/resources): batch/cronjobs</li>
+                                        
+                                            <li>(apiGroups/resources): autoscaling/horizontalpodautoscalers</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>fujitsu-enterprise-operator.v3.1.2 - (label=v4.6,max=not set,channels=[stable-13],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/poddisruptionbudgets&#34; &#34;(apiGroups/resources): batch/cronjobs&#34; &#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>k8s-triliovault</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups/resources): batch/cronjobs</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>k8s-triliovault-stable.2.8.0 - (label=v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
+                                         
+                                             <li>k8s-triliovault-stable.2.8.1 - (label=v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
+                                         
+                                             <li>k8s-triliovault-stable.2.8.2 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
                                          
                                       </ul>
                                     </th>
