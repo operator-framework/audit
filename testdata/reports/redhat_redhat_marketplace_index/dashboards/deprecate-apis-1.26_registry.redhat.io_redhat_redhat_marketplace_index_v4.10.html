@@ -107,7 +107,7 @@
                 <li> <b>(Amber) Not complying:</b> these are the packages that we cannot found any versions which is not using the removed APIs in in k8s 1.26/OCP 4.13</li>
                 
                 
-                <li> <b>(Blue) Potentially Impacted By:</b> these are the packages that we could find RBAC permissions requested for these removed API versions on k8s 1.26/OCP 4.13. Note that we are technically unable to check the versions used to of these APIs/resources by looking at the bundle manifests and permissions to let you know if these packages/bundles will or not fail because of those APIs usage. </li>
+                <li> <b>(Blue) Potentially Impacted By:</b> these are the packages that we could find RBAC permissions requested for these the apiGroups OR apiGroups and resources that matches with these APIs which will be removed on K8s 1.26/OCP 4.13. Note that we are technically unable to check the versions used to of these APIGroup/resources by looking at the bundle manifests and permissions to let you know if these packages/bundles will or not fail because of those APIs usage. </li>
                 
             </ul>
         </div>
@@ -134,16 +134,14 @@
                                     <th>
                                         <ul>
                                         
-                                            <li>horizontalpodautoscalers</li>
-                                        
-                                            <li>autoscaling</li>
+                                            <li>(apiGroups/resources): autoscaling/horizontalpodautoscalers</li>
                                         
                                         </ul>
                                     </th>
                                     <th>
                                       <ul>
                                          
-                                             <li>starburst-enterprise-helm-operator.v370.1.1 - (label=4.8,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
+                                             <li>starburst-enterprise-helm-operator.v370.1.1 - (label=4.8,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
                                       </ul>
                                     </th>
@@ -154,16 +152,14 @@
                                     <th>
                                         <ul>
                                         
-                                            <li>horizontalpodautoscalers</li>
-                                        
-                                            <li>autoscaling</li>
+                                            <li>(apiGroups/resources): autoscaling/horizontalpodautoscalers</li>
                                         
                                         </ul>
                                     </th>
                                     <th>
                                       <ul>
                                          
-                                             <li>vfunction-server-operator.v2.2.469 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
+                                             <li>vfunction-server-operator.v2.2.469 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
                                       </ul>
                                     </th>
