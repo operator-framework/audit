@@ -122,7 +122,6 @@ func (bd *BundleDeprecate) AddPotentialWarning() {
 
 	// We need looking for clusterPermissions and permissions
 	apis125 := map[string][]string{
-		"":                 {"cronjobs"}, // from core
 		"batch":            {"cronjobs"},
 		"discovery.k8s.io": {"endpointslices"},
 		"events.k8s.io":    {"events"},
