@@ -107,7 +107,7 @@
                 <li> <b>(Amber) Not complying:</b> these are the packages that we cannot found any versions which is not using the removed APIs in in k8s {{.K8SVersion}}/OCP {{.OCPVersion}}</li>
                 {{end}}
                 {{if ne .OCPVersion "4.9"}}
-                <li> <b>(Blue) Potentially Impacted By:</b> these are the packages that we could find RBAC permissions requested for these removed API versions on k8s {{.K8SVersion}}/OCP {{.OCPVersion}}. Note that we are technically unable to check the versions used to of these APIs/resources by looking at the bundle manifests and permissions to let you know if these packages/bundles will or not fail because of those APIs usage. </li>
+                <li> <b>(Blue) Potentially Impacted By:</b> these are the packages that we could find RBAC permissions requested for these the apiGroups OR apiGroups and resources that matches with these APIs which will be removed on K8s {{.K8SVersion}}/OCP {{.OCPVersion}}. Note that we are technically unable to check the versions used to of these APIGroup/resources by looking at the bundle manifests and permissions to let you know if these packages/bundles will or not fail because of those APIs usage. </li>
                 {{end}}
             </ul>
         </div>

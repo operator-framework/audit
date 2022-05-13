@@ -107,7 +107,7 @@
                 <li> <b>(Amber) Not complying:</b> these are the packages that we cannot found any versions which is not using the removed APIs in in k8s 1.26/OCP 4.13</li>
                 
                 
-                <li> <b>(Blue) Potentially Impacted By:</b> these are the packages that we could find RBAC permissions requested for these removed API versions on k8s 1.26/OCP 4.13. Note that we are technically unable to check the versions used to of these APIs/resources by looking at the bundle manifests and permissions to let you know if these packages/bundles will or not fail because of those APIs usage. </li>
+                <li> <b>(Blue) Potentially Impacted By:</b> these are the packages that we could find RBAC permissions requested for these the apiGroups OR apiGroups and resources that matches with these APIs which will be removed on K8s 1.26/OCP 4.13. Note that we are technically unable to check the versions used to of these APIGroup/resources by looking at the bundle manifests and permissions to let you know if these packages/bundles will or not fail because of those APIs usage. </li>
                 
             </ul>
         </div>
@@ -130,112 +130,24 @@
                         
                             
                                 <tr>
-                                    <th>serverless-operator</th>
+                                    <th>compliance-operator</th>
                                     <th>
                                         <ul>
                                         
-                                            <li>horizontalpodautoscalers</li>
+                                            <li>(apiGroups Only): autoscaling</li>
                                         
-                                            <li>autoscaling</li>
+                                            <li>(apiGroups/resources): autoscaling/horizontalpodautoscalers</li>
+                                        
+                                            <li>(apiGroups/resources): flowcontrol.apiserver.k8s.io/flowschemas</li>
                                         
                                         </ul>
                                     </th>
                                     <th>
                                       <ul>
                                          
-                                             <li>serverless-operator.v1.20.0 - (label=v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
+                                             <li>compliance-operator.v0.1.32 - (label=v4.7,max=not set,channels=[4.7],head:YES,defaultChannel:NO, deprecated:NO, RBAC: [&#34;(apiGroups Only): autoscaling&#34; &#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34; &#34;(apiGroups/resources): flowcontrol.apiserver.k8s.io/flowschemas&#34;])</li>
                                          
-                                             <li>serverless-operator.v1.21.0 - (label=v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
-                                         
-                                             <li>serverless-operator.v1.21.1 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>openshift-pipelines-operator-rh</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>horizontalpodautoscalers</li>
-                                        
-                                            <li>autoscaling</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>openshift-pipelines-operator-rh.v1.6.2 - (label=v4.9,max=not set,channels=[latest pipelines-1.7 preview stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
-                                         
-                                             <li>redhat-openshift-pipelines.v1.3.0 - (label=v4.7,max=not set,channels=[latest pipelines-1.7 preview stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
-                                         
-                                             <li>redhat-openshift-pipelines.v1.3.1 - (label=v4.7,max=not set,channels=[latest pipelines-1.7 preview stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
-                                         
-                                             <li>redhat-openshift-pipelines.v1.4.0 - (label=v4.7,max=not set,channels=[latest pipelines-1.7 preview stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
-                                         
-                                             <li>redhat-openshift-pipelines.v1.5.2 - (label=v4.8,max=not set,channels=[latest pipelines-1.7 preview stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>servicemeshoperator</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>horizontalpodautoscalers</li>
-                                        
-                                            <li>autoscaling</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>servicemeshoperator.v2.0.8 - (label=v4.5,v4.6,max=not set,channels=[1.0 stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
-                                         
-                                             <li>servicemeshoperator.v2.1.0 - (label=v4.6,max=not set,channels=[1.0 stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
-                                         
-                                             <li>servicemeshoperator.v2.1.1 - (label=v4.6,max=not set,channels=[1.0 stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
-                                         
-                                             <li>servicemeshoperator.v2.1.2 - (label=v4.6,max=not set,channels=[1.0 stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>quay-operator</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>horizontalpodautoscalers</li>
-                                        
-                                            <li>autoscaling</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>quay-operator.v3.4.7 - (label=v4.5,max=not set,channels=[quay-v3.4],head:YES,defaultChannel:NO, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
-                                         
-                                             <li>quay-operator.v3.5.7 - (label=v4.5,max=not set,channels=[quay-v3.5],head:YES,defaultChannel:NO, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
-                                         
-                                             <li>quay-operator.v3.6.0 - (label=v4.5,max=not set,channels=[stable-3.6],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
-                                         
-                                             <li>quay-operator.v3.6.1 - (label=v4.5,max=not set,channels=[stable-3.6],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
-                                         
-                                             <li>quay-operator.v3.6.2 - (label=v4.5,max=not set,channels=[stable-3.6],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
-                                         
-                                             <li>quay-operator.v3.6.4 - (label=v4.5,max=not set,channels=[stable-3.6],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
-                                         
-                                             <li>quay-operator.v3.6.5 - (label=v4.5,max=not set,channels=[stable-3.6],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
-                                         
-                                             <li>quay-operator.v3.6.6 - (label=v4.5,max=not set,channels=[stable-3.6],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
+                                             <li>compliance-operator.v0.1.49 - (label=v4.6,max=not set,channels=[release-0.1],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups Only): autoscaling&#34; &#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34; &#34;(apiGroups/resources): flowcontrol.apiserver.k8s.io/flowschemas&#34;])</li>
                                          
                                       </ul>
                                     </th>
@@ -246,16 +158,118 @@
                                     <th>
                                         <ul>
                                         
-                                            <li>horizontalpodautoscalers</li>
-                                        
-                                            <li>autoscaling</li>
+                                            <li>(apiGroups/resources): autoscaling/horizontalpodautoscalers</li>
                                         
                                         </ul>
                                     </th>
                                     <th>
                                       <ul>
                                          
-                                             <li>jaeger-operator.v1.30.2 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
+                                             <li>jaeger-operator.v1.30.2 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>servicemeshoperator</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups/resources): autoscaling/horizontalpodautoscalers</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>servicemeshoperator.v2.0.8 - (label=v4.5,v4.6,max=not set,channels=[1.0 stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                             <li>servicemeshoperator.v2.1.0 - (label=v4.6,max=not set,channels=[1.0 stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                             <li>servicemeshoperator.v2.1.1 - (label=v4.6,max=not set,channels=[1.0 stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                             <li>servicemeshoperator.v2.1.2 - (label=v4.6,max=not set,channels=[1.0 stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>quay-operator</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups/resources): autoscaling/horizontalpodautoscalers</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>quay-operator.v3.4.7 - (label=v4.5,max=not set,channels=[quay-v3.4],head:YES,defaultChannel:NO, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                             <li>quay-operator.v3.5.7 - (label=v4.5,max=not set,channels=[quay-v3.5],head:YES,defaultChannel:NO, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                             <li>quay-operator.v3.6.0 - (label=v4.5,max=not set,channels=[stable-3.6],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                             <li>quay-operator.v3.6.1 - (label=v4.5,max=not set,channels=[stable-3.6],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                             <li>quay-operator.v3.6.2 - (label=v4.5,max=not set,channels=[stable-3.6],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                             <li>quay-operator.v3.6.4 - (label=v4.5,max=not set,channels=[stable-3.6],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                             <li>quay-operator.v3.6.5 - (label=v4.5,max=not set,channels=[stable-3.6],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                             <li>quay-operator.v3.6.6 - (label=v4.5,max=not set,channels=[stable-3.6],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>openshift-pipelines-operator-rh</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups/resources): autoscaling/horizontalpodautoscalers</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>openshift-pipelines-operator-rh.v1.6.2 - (label=v4.9,max=not set,channels=[latest pipelines-1.7 preview stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                             <li>redhat-openshift-pipelines.v1.3.0 - (label=v4.7,max=not set,channels=[latest pipelines-1.7 preview stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                             <li>redhat-openshift-pipelines.v1.3.1 - (label=v4.7,max=not set,channels=[latest pipelines-1.7 preview stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                             <li>redhat-openshift-pipelines.v1.4.0 - (label=v4.7,max=not set,channels=[latest pipelines-1.7 preview stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                             <li>redhat-openshift-pipelines.v1.5.2 - (label=v4.8,max=not set,channels=[latest pipelines-1.7 preview stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>serverless-operator</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups/resources): autoscaling/horizontalpodautoscalers</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>serverless-operator.v1.20.0 - (label=v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                             <li>serverless-operator.v1.21.0 - (label=v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                             <li>serverless-operator.v1.21.1 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
                                       </ul>
                                     </th>
@@ -266,50 +280,22 @@
                                     <th>
                                         <ul>
                                         
-                                            <li>horizontalpodautoscalers</li>
-                                        
-                                            <li>autoscaling</li>
+                                            <li>(apiGroups/resources): autoscaling/horizontalpodautoscalers</li>
                                         
                                         </ul>
                                     </th>
                                     <th>
                                       <ul>
                                          
-                                             <li>kiali-operator.v1.24.10 - (label=v4.5,v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
+                                             <li>kiali-operator.v1.24.10 - (label=v4.5,v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
-                                             <li>kiali-operator.v1.36.5 - (label=v4.5,v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
+                                             <li>kiali-operator.v1.36.5 - (label=v4.5,v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
-                                             <li>kiali-operator.v1.36.6 - (label=v4.5,v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
+                                             <li>kiali-operator.v1.36.6 - (label=v4.5,v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
-                                             <li>kiali-operator.v1.36.7 - (label=v4.5,v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
+                                             <li>kiali-operator.v1.36.7 - (label=v4.5,v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
-                                             <li>kiali-operator.v1.36.8 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>compliance-operator</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>horizontalpodautoscalers</li>
-                                        
-                                            <li>autoscaling</li>
-                                        
-                                            <li>flowschemas</li>
-                                        
-                                            <li>flowcontrol.apiserver.k8s.io</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>compliance-operator.v0.1.32 - (label=v4.7,max=not set,channels=[4.7],head:YES,defaultChannel:NO, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34; &#34;flowschemas&#34; &#34;flowcontrol.apiserver.k8s.io&#34;])</li>
-                                         
-                                             <li>compliance-operator.v0.1.49 - (label=v4.6,max=not set,channels=[release-0.1],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34; &#34;flowschemas&#34; &#34;flowcontrol.apiserver.k8s.io&#34;])</li>
+                                             <li>kiali-operator.v1.36.8 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
                                       </ul>
                                     </th>
@@ -320,38 +306,36 @@
                                     <th>
                                         <ul>
                                         
-                                            <li>horizontalpodautoscalers</li>
-                                        
-                                            <li>autoscaling</li>
+                                            <li>(apiGroups/resources): autoscaling/horizontalpodautoscalers</li>
                                         
                                         </ul>
                                     </th>
                                     <th>
                                       <ul>
                                          
-                                             <li>openshift-gitops-operator.v1.3.0 - (label=v4.9,max=not set,channels=[preview latest gitops-1.5 stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
+                                             <li>openshift-gitops-operator.v1.3.0 - (label=v4.9,max=not set,channels=[preview latest gitops-1.5 stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
-                                             <li>openshift-gitops-operator.v1.3.1 - (label=v4.7,max=not set,channels=[preview latest gitops-1.5 stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
+                                             <li>openshift-gitops-operator.v1.3.1 - (label=v4.7,max=not set,channels=[preview latest gitops-1.5 stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
-                                             <li>openshift-gitops-operator.v1.3.2 - (label=v4.6,max=not set,channels=[preview latest gitops-1.5 stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
+                                             <li>openshift-gitops-operator.v1.3.2 - (label=v4.6,max=not set,channels=[preview latest gitops-1.5 stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
-                                             <li>openshift-gitops-operator.v1.3.4 - (label=v4.7,max=not set,channels=[preview latest gitops-1.5 stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
+                                             <li>openshift-gitops-operator.v1.3.4 - (label=v4.7,max=not set,channels=[preview latest gitops-1.5 stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
-                                             <li>openshift-gitops-operator.v1.3.6 - (label=v4.7,max=not set,channels=[preview latest gitops-1.5 stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
+                                             <li>openshift-gitops-operator.v1.3.6 - (label=v4.7,max=not set,channels=[preview latest gitops-1.5 stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
-                                             <li>openshift-gitops-operator.v1.4.0 - (label=v4.7,max=not set,channels=[preview latest gitops-1.5 stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
+                                             <li>openshift-gitops-operator.v1.4.0 - (label=v4.7,max=not set,channels=[preview latest gitops-1.5 stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
-                                             <li>openshift-gitops-operator.v1.4.1 - (label=v4.7,max=not set,channels=[preview latest gitops-1.5 stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
+                                             <li>openshift-gitops-operator.v1.4.1 - (label=v4.7,max=not set,channels=[preview latest gitops-1.5 stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
-                                             <li>openshift-gitops-operator.v1.4.2 - (label=v4.7,max=not set,channels=[preview latest gitops-1.5 stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
+                                             <li>openshift-gitops-operator.v1.4.2 - (label=v4.7,max=not set,channels=[preview latest gitops-1.5 stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
-                                             <li>openshift-gitops-operator.v1.4.3 - (label=v4.7,max=not set,channels=[preview latest gitops-1.5 stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
+                                             <li>openshift-gitops-operator.v1.4.3 - (label=v4.7,max=not set,channels=[preview latest gitops-1.5 stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
-                                             <li>openshift-gitops-operator.v1.4.4 - (label=v4.7,max=not set,channels=[preview latest gitops-1.5 stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
+                                             <li>openshift-gitops-operator.v1.4.4 - (label=v4.7,max=not set,channels=[preview latest gitops-1.5 stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
-                                             <li>openshift-gitops-operator.v1.4.5 - (label=v4.7,max=not set,channels=[preview latest gitops-1.5 stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
+                                             <li>openshift-gitops-operator.v1.4.5 - (label=v4.7,max=not set,channels=[preview latest gitops-1.5 stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
-                                             <li>openshift-gitops-operator.v1.5.0 - (label=v4.8,max=not set,channels=[latest gitops-1.5 stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;horizontalpodautoscalers&#34; &#34;autoscaling&#34;])</li>
+                                             <li>openshift-gitops-operator.v1.5.0 - (label=v4.8,max=not set,channels=[latest gitops-1.5 stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
                                       </ul>
                                     </th>
