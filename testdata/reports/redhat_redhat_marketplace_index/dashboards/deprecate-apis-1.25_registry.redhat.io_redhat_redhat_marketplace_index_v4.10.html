@@ -97,7 +97,7 @@
             <h5 class="display-12 fw-bold">2. What action(s) should I take?</h5>
             <ul>
                 <li>Check <a href="https://kubernetes.io/docs/reference/using-api/deprecation-guide"> Deprecated API Migration Guide (1.25)</a> and ensure that your projects have been migrated and are not using any deprecated/removed API(s)</li>
-                <li>Ensure that any distribution which requires any deprecated API(s) in the OCP catalogs are configured with the Max OpenShift Version compatible (`olm.openShiftMaxVersion`)   so it will only be distributed on OCP version(s) &lt;= 4.8. Also, control which version the bundle is deployed to from OLM via the annotation/label `com.redhat.openshift.versions`. More info see: <a href="https://github.com/operator-framework/community-operators/blob/master/docs/packaging-required-criteria-ocp.md"> OKD/OpenShift Catalogs criteria and options </a></li>
+                <li>Ensure that any distribution which requires any deprecated API(s) in the OCP catalogs are configured with the Max OpenShift Version compatible (`olm.openShiftMaxVersion`) so it will only be distributed on OCP version(s) &lt;= 4.8. Also, control which version the bundle is deployed to from OLM via the annotation/label `com.redhat.openshift.versions`. More info see: <a href="https://github.com/operator-framework/community-operators/blob/master/docs/packaging-required-criteria-ocp.md"> OKD/OpenShift Catalogs criteria and options </a></li>
                 <li>OpenShift 4.12 introduces two new alerts that fire when an API that will be removed in the next release is in use. Check the event alerts of your Operators running on 4.8 and ensure that you do not find any warning about these API(s) still being used by it</li>
             </ul>
             <h5 class="display-12 fw-bold">3. What does it mean for a package to be in amber or green?</h5>
@@ -107,7 +107,7 @@
                 <li> <b>(Amber) Not complying:</b> these are the packages that we cannot found any versions which is not using the removed APIs in in k8s 1.25/OCP 4.12</li>
                 
                 
-                <li> <b>(Blue) Potentially Impacted By:</b> these are the packages that we could find RBAC permissions requested for these the apiGroups OR apiGroups and resources that matches with these APIs which will be removed on K8s 1.25/OCP 4.12. Note that we are technically unable to check the versions used to of these APIGroup/resources by looking at the bundle manifests and permissions to let you know if these packages/bundles will or not fail because of those APIs usage. </li>
+                <li> <b>(Blue) Potentially Impacted By:</b> these are the packages that we could find RBAC permissions requested for these the apiGroups and resorces specifically which matches with what will be removed on K8s 1.25/OCP 4.12. This check will only returns the Operators bundles where the API group is informed with the specific resources OR contains "*" to ask permissions for all. Note that we are technically unable to check the versions used to of these APIGroup/resources by looking at the bundle manifests and permissions to let you know if these packages/bundles will or not fail because of those APIs usage. </li>
                 
             </ul>
         </div>
@@ -130,44 +130,6 @@
                         
                             
                                 <tr>
-                                    <th>anzograph-operator-rhmp</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups/resources): policy/podsecuritypolicies</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>anzograph-operator.v2.0.102 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/podsecuritypolicies&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>couchbase-enterprise-certified-rhmp</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups/resources): batch/cronjobs</li>
-                                        
-                                            <li>(apiGroups/resources): policy/poddisruptionbudgets</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>couchbase-operator.v2.2.0-1 - (label=v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34; &#34;(apiGroups/resources): policy/poddisruptionbudgets&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
                                     <th>anzo-operator-rhmp</th>
                                     <th>
                                         <ul>
@@ -180,66 +142,6 @@
                                       <ul>
                                          
                                              <li>anzo-operator.v2.0.101 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/podsecuritypolicies&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>minio-operator-rhmp</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups Only): batch</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>minio-operator.v4.1.2 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups Only): batch&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>t8c-certified-rhmp</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups/resources): policy/podsecuritypolicies</li>
-                                        
-                                            <li>(apiGroups/resources): policy/poddisruptionbudgets</li>
-                                        
-                                            <li>(apiGroups Only): batch</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>t8c-operator.v42.2.0 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/podsecuritypolicies&#34; &#34;(apiGroups/resources): policy/poddisruptionbudgets&#34; &#34;(apiGroups Only): batch&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>cockroachdb-certified-rhmp</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups Only): batch</li>
-                                        
-                                            <li>(apiGroups/resources): policy/poddisruptionbudgets</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>cockroach-operator.v2.3.0 - (label=v4.6,max=not set,channels=[beta stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups Only): batch&#34; &#34;(apiGroups/resources): policy/poddisruptionbudgets&#34;])</li>
                                          
                                       </ul>
                                     </th>
@@ -264,36 +166,40 @@
                                 </tr>
                             
                                 <tr>
-                                    <th>kubeturbo-certified-rhmp</th>
+                                    <th>t8c-certified-rhmp</th>
                                     <th>
                                         <ul>
                                         
-                                            <li>(apiGroups Only): policy</li>
+                                            <li>(apiGroups/resources): policy/podsecuritypolicies</li>
+                                        
+                                            <li>(apiGroups/resources): policy/poddisruptionbudgets</li>
                                         
                                         </ul>
                                     </th>
                                     <th>
                                       <ul>
                                          
-                                             <li>kubeturbo-operator.v8.3.3 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups Only): policy&#34;])</li>
+                                             <li>t8c-operator.v42.2.0 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/podsecuritypolicies&#34; &#34;(apiGroups/resources): policy/poddisruptionbudgets&#34;])</li>
                                          
                                       </ul>
                                     </th>
                                 </tr>
                             
                                 <tr>
-                                    <th>pachyderm-operator-rhmp</th>
+                                    <th>crunchy-postgres-operator-rhmp</th>
                                     <th>
                                         <ul>
                                         
-                                            <li>(apiGroups Only): batch</li>
+                                            <li>(apiGroups/resources): batch/cronjobs</li>
                                         
                                         </ul>
                                     </th>
                                     <th>
                                       <ul>
                                          
-                                             <li>pachyderm-operator.v0.1.0 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups Only): batch&#34;])</li>
+                                             <li>postgresoperator.v5.0.2 - (label=v4.6,max=not set,channels=[v5],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
+                                         
+                                             <li>postgresoperator.v5.0.3 - (label=v4.6,max=not set,channels=[v5],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
                                          
                                       </ul>
                                     </th>
@@ -318,6 +224,80 @@
                                 </tr>
                             
                                 <tr>
+                                    <th>couchbase-enterprise-certified-rhmp</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups/resources): policy/poddisruptionbudgets</li>
+                                        
+                                            <li>(apiGroups/resources): batch/cronjobs</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>couchbase-operator.v2.2.0-1 - (label=v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/poddisruptionbudgets&#34; &#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>dynatrace-operator-rhmp</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups/resources): batch/cronjobs</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>dynatrace-operator.v0.2.2 - (label=v4.5,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>anzograph-operator-rhmp</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups/resources): policy/podsecuritypolicies</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>anzograph-operator.v2.0.102 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/podsecuritypolicies&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>vfunction-server-operator-rhmp</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups/resources): autoscaling/horizontalpodautoscalers</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>vfunction-server-operator.v2.2.469 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
                                     <th>anzounstructured-operator-rhmp</th>
                                     <th>
                                         <ul>
@@ -330,26 +310,6 @@
                                       <ul>
                                          
                                              <li>anzounstructured-operator.v2.0.101 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/podsecuritypolicies&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>vfunction-server-operator-rhmp</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups Only): batch</li>
-                                        
-                                            <li>(apiGroups/resources): autoscaling/horizontalpodautoscalers</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>vfunction-server-operator.v2.2.469 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups Only): batch&#34; &#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
                                       </ul>
                                     </th>
@@ -378,42 +338,6 @@
                                 </tr>
                             
                                 <tr>
-                                    <th>sysdig-certified-rhmp</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups/resources): policy/podsecuritypolicies</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>sysdig-certified-rhmp.v1.12.44 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/podsecuritypolicies&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>hpe-csi-operator-rhmp</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups Only): batch</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>hpe-csi-operator.v2.0.0 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups Only): batch&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
                                     <th>yugabyte-platform-operator-bundle-rhmp</th>
                                     <th>
                                         <ul>
@@ -432,60 +356,36 @@
                                 </tr>
                             
                                 <tr>
-                                    <th>crunchy-postgres-operator-rhmp</th>
+                                    <th>cockroachdb-certified-rhmp</th>
                                     <th>
                                         <ul>
                                         
-                                            <li>(apiGroups/resources): batch/cronjobs</li>
+                                            <li>(apiGroups/resources): policy/poddisruptionbudgets</li>
                                         
                                         </ul>
                                     </th>
                                     <th>
                                       <ul>
                                          
-                                             <li>postgresoperator.v5.0.2 - (label=v4.6,max=not set,channels=[v5],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
-                                         
-                                             <li>postgresoperator.v5.0.3 - (label=v4.6,max=not set,channels=[v5],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
+                                             <li>cockroach-operator.v2.3.0 - (label=v4.6,max=not set,channels=[beta stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/poddisruptionbudgets&#34;])</li>
                                          
                                       </ul>
                                     </th>
                                 </tr>
                             
                                 <tr>
-                                    <th>dynatrace-operator-rhmp</th>
+                                    <th>sysdig-certified-rhmp</th>
                                     <th>
                                         <ul>
                                         
-                                            <li>(apiGroups/resources): batch/cronjobs</li>
+                                            <li>(apiGroups/resources): policy/podsecuritypolicies</li>
                                         
                                         </ul>
                                     </th>
                                     <th>
                                       <ul>
                                          
-                                             <li>dynatrace-operator.v0.2.2 - (label=v4.5,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>seldon-deploy-operator-rhmp</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups Only): batch</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>seldon-deploy-operator.v1.0.0 - (label=v4.6,max=not set,channels=[stable alpha],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups Only): batch&#34;])</li>
-                                         
-                                             <li>seldon-deploy-operator.v1.2.0 - (label=v4.7,max=not set,channels=[stable alpha],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups Only): batch&#34;])</li>
-                                         
-                                             <li>seldon-deploy-operator.v1.2.1 - (label=v4.7,max=not set,channels=[stable alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups Only): batch&#34;])</li>
+                                             <li>sysdig-certified-rhmp.v1.12.44 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/podsecuritypolicies&#34;])</li>
                                          
                                       </ul>
                                     </th>

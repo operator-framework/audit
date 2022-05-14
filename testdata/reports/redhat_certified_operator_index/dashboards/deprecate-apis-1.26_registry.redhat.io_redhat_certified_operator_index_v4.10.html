@@ -97,7 +97,7 @@
             <h5 class="display-12 fw-bold">2. What action(s) should I take?</h5>
             <ul>
                 <li>Check <a href="https://kubernetes.io/docs/reference/using-api/deprecation-guide"> Deprecated API Migration Guide (1.26)</a> and ensure that your projects have been migrated and are not using any deprecated/removed API(s)</li>
-                <li>Ensure that any distribution which requires any deprecated API(s) in the OCP catalogs are configured with the Max OpenShift Version compatible (`olm.openShiftMaxVersion`)   so it will only be distributed on OCP version(s) &lt;= 4.8. Also, control which version the bundle is deployed to from OLM via the annotation/label `com.redhat.openshift.versions`. More info see: <a href="https://github.com/operator-framework/community-operators/blob/master/docs/packaging-required-criteria-ocp.md"> OKD/OpenShift Catalogs criteria and options </a></li>
+                <li>Ensure that any distribution which requires any deprecated API(s) in the OCP catalogs are configured with the Max OpenShift Version compatible (`olm.openShiftMaxVersion`) so it will only be distributed on OCP version(s) &lt;= 4.8. Also, control which version the bundle is deployed to from OLM via the annotation/label `com.redhat.openshift.versions`. More info see: <a href="https://github.com/operator-framework/community-operators/blob/master/docs/packaging-required-criteria-ocp.md"> OKD/OpenShift Catalogs criteria and options </a></li>
                 <li>OpenShift 4.13 introduces two new alerts that fire when an API that will be removed in the next release is in use. Check the event alerts of your Operators running on 4.8 and ensure that you do not find any warning about these API(s) still being used by it</li>
             </ul>
             <h5 class="display-12 fw-bold">3. What does it mean for a package to be in amber or green?</h5>
@@ -107,7 +107,7 @@
                 <li> <b>(Amber) Not complying:</b> these are the packages that we cannot found any versions which is not using the removed APIs in in k8s 1.26/OCP 4.13</li>
                 
                 
-                <li> <b>(Blue) Potentially Impacted By:</b> these are the packages that we could find RBAC permissions requested for these the apiGroups OR apiGroups and resources that matches with these APIs which will be removed on K8s 1.26/OCP 4.13. Note that we are technically unable to check the versions used to of these APIGroup/resources by looking at the bundle manifests and permissions to let you know if these packages/bundles will or not fail because of those APIs usage. </li>
+                <li> <b>(Blue) Potentially Impacted By:</b> these are the packages that we could find RBAC permissions requested for these the apiGroups and resorces specifically which matches with what will be removed on K8s 1.26/OCP 4.13. This check will only returns the Operators bundles where the API group is informed with the specific resources OR contains "*" to ask permissions for all. Note that we are technically unable to check the versions used to of these APIGroup/resources by looking at the bundle manifests and permissions to let you know if these packages/bundles will or not fail because of those APIs usage. </li>
                 
             </ul>
         </div>
@@ -148,7 +148,7 @@
                                 </tr>
                             
                                 <tr>
-                                    <th>fujitsu-enterprise-postgres-operator</th>
+                                    <th>citrix-adc-istio-ingress-gateway-operator</th>
                                     <th>
                                         <ul>
                                         
@@ -159,7 +159,7 @@
                                     <th>
                                       <ul>
                                          
-                                             <li>fujitsu-enterprise-postgres-operator.v4.1.1 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                             <li>citrix-adc-istio-ingress-gateway-operator.v0.9.9 - (label=v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
                                       </ul>
                                     </th>
@@ -184,7 +184,7 @@
                                 </tr>
                             
                                 <tr>
-                                    <th>open-liberty-certified</th>
+                                    <th>federatorai-certified</th>
                                     <th>
                                         <ul>
                                         
@@ -195,9 +195,9 @@
                                     <th>
                                       <ul>
                                          
-                                             <li>open-liberty-operator.v0.8.0 - (label=v4.6,max=not set,channels=[beta2],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                             <li>federatorai.v4.6.1-4 - (label=v4.5,v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
-                                             <li>open-liberty-operator.v0.8.1 - (label=v4.6,max=not set,channels=[beta2],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                             <li>federatorai.v4.7.1-1 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
                                       </ul>
                                     </th>
@@ -242,7 +242,7 @@
                                 </tr>
                             
                                 <tr>
-                                    <th>federatorai-certified</th>
+                                    <th>fujitsu-enterprise-postgres-operator</th>
                                     <th>
                                         <ul>
                                         
@@ -253,16 +253,14 @@
                                     <th>
                                       <ul>
                                          
-                                             <li>federatorai.v4.6.1-4 - (label=v4.5,v4.6,max=not set,channels=[stable],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
-                                         
-                                             <li>federatorai.v4.7.1-1 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                             <li>fujitsu-enterprise-postgres-operator.v4.1.1 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
                                       </ul>
                                     </th>
                                 </tr>
                             
                                 <tr>
-                                    <th>citrix-adc-istio-ingress-gateway-operator</th>
+                                    <th>open-liberty-certified</th>
                                     <th>
                                         <ul>
                                         
@@ -273,7 +271,9 @@
                                     <th>
                                       <ul>
                                          
-                                             <li>citrix-adc-istio-ingress-gateway-operator.v0.9.9 - (label=v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                             <li>open-liberty-operator.v0.8.0 - (label=v4.6,max=not set,channels=[beta2],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                             <li>open-liberty-operator.v0.8.1 - (label=v4.6,max=not set,channels=[beta2],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
                                       </ul>
                                     </th>
