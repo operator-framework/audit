@@ -120,7 +120,7 @@ func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 
 	}
 
-	cleanupBundleDir(auditBundle, bundleDir, serverMode)
+	cleanupBundleDir(auditBundle, bundleDir, serverMode, containerEngine)
 
 	return auditBundle
 }
@@ -219,12 +219,12 @@ func extractBundleFromImage(auditBundle *models.AuditBundle, bundleDir string, c
 	_, _ = pkg.RunCommand(cmd)
 }
 
-func cleanupBundleDir(auditBundle *models.AuditBundle, dir string, serverMode bool) {
+func cleanupBundleDir(auditBundle *models.AuditBundle, dir string, serverMode bool, containerEngine string) {
 	cmd := exec.Command("rm", "-rf", dir)
 	_, _ = pkg.RunCommand(cmd)
 
 	if !serverMode {
-		cmd = exec.Command("podman", "rmi", auditBundle.OperatorBundleImagePath)
+		cmd = exec.Command(containerEngine, "rmi", auditBundle.OperatorBundleImagePath)
 		_, _ = pkg.RunCommand(cmd)
 	}
 }

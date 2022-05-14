@@ -78,6 +78,7 @@ func main() {
 			command := exec.Command(binPath, "index", report,
 				fmt.Sprintf("--index-image=%s", image),
 				fmt.Sprintf("--output-path=%s", reportPathName),
+				"--server-mode", // for not remove bundles images
 			)
 			hack.RunCommandCapturingOutput(command)
 		}
@@ -119,6 +120,7 @@ func main() {
 				fmt.Sprintf("--index-image=%s", image),
 				"--output=json",
 				"--disable-scorecard",
+				"--server-mode", // for not remove bundles images
 				fmt.Sprintf("--output-path=%s", reportPathName),
 			)
 
