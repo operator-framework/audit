@@ -38,9 +38,10 @@ func main() {
 	fullReportsPath := filepath.Join(currentPath, hack.ReportsPath)
 
 	dirs := map[string]string{
-		"redhat_certified_operator_index": "registry.redhat.io/redhat/certified-operator-index",
-		"redhat_community_operator_index": "registry.redhat.io/redhat/community-operator-index",
-		"redhat_redhat_marketplace_index": "registry.redhat.io/redhat/redhat-marketplace-index",
+		// todo: uncomment after we perform the multi-arch validator improvements suggested
+		//"redhat_certified_operator_index": "registry.redhat.io/redhat/certified-operator-index",
+		//"redhat_community_operator_index": "registry.redhat.io/redhat/community-operator-index",
+		//"redhat_redhat_marketplace_index": "registry.redhat.io/redhat/redhat-marketplace-index",
 		"redhat_redhat_operator_index":    "registry.redhat.io/redhat/redhat-operator-index",
 	}
 

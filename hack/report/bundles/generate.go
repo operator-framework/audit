@@ -98,7 +98,8 @@ func main() {
 		"registry.redhat.io/redhat/redhat-operator-index:v4.8":    "https://registry.redhat.io",
 		"registry.redhat.io/redhat/certified-operator-index:v4.8": "https://registry.redhat.io",
 		"registry.redhat.io/redhat/community-operator-index:v4.8": "https://registry.redhat.io",
-		"quay.io/operatorhubio/catalog:tmp_latest_sql":            "https://registry.connect.redhat.com",
+	// todo: uncomment when we support FBC
+	//	"quay.io/operatorhubio/catalog:latest":            "https://registry.connect.redhat.com",
 	}
 
 	indexReportKinds = []string{"bundles"}
