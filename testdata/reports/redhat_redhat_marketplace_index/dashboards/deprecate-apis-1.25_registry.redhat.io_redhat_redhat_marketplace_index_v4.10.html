@@ -84,9 +84,9 @@
             <h5 class="display-12 fw-bold">Data from the image used</h5>
             <ul>
                 <li>Image name: registry.redhat.io/redhat/redhat-marketplace-index:v4.10 </li>
-                <li>Image ID: sha256:fb16ebfffef59ba1ea594324e29689e798c06ae72d110118b91b3949a1874156 </li>
-                <li>Image Created at: 2022-04-26T17:25:26.538610846Z </li>
-                <li>From JSON report generated at: 2022-04-26 </li>
+                <li>Image ID: sha256:1ec788acf18272b9b10e95cb231e46030df0b981ea1f47062d1d48ce90043e33 </li>
+                <li>Image Created at: 2022-05-12T15:14:59.360591133Z </li>
+                <li>From JSON report generated at: 2022-05-15 </li>
             </ul>
         </div>
 
@@ -130,9 +130,11 @@
                         
                             
                                 <tr>
-                                    <th>anzo-operator-rhmp</th>
+                                    <th>redis-enterprise-operator-cert-rhmp</th>
                                     <th>
                                         <ul>
+                                        
+                                            <li>(apiGroups/resources): policy/poddisruptionbudgets</li>
                                         
                                             <li>(apiGroups/resources): policy/podsecuritypolicies</li>
                                         
@@ -141,14 +143,14 @@
                                     <th>
                                       <ul>
                                          
-                                             <li>anzo-operator.v2.0.101 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/podsecuritypolicies&#34;])</li>
+                                             <li>redis-enterprise-operator.v6.2.10-34 - (label=v4.6,max=not set,channels=[6.2.10 production],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/poddisruptionbudgets&#34; &#34;(apiGroups/resources): policy/podsecuritypolicies&#34;])</li>
                                          
                                       </ul>
                                     </th>
                                 </tr>
                             
                                 <tr>
-                                    <th>instana-agent-operator-rhmp</th>
+                                    <th>dynatrace-operator-rhmp</th>
                                     <th>
                                         <ul>
                                         
@@ -159,7 +161,25 @@
                                     <th>
                                       <ul>
                                          
-                                             <li>instana-agent-operator.v2.0.4 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
+                                             <li>dynatrace-operator.v0.2.2 - (label=v4.5,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>cockroachdb-certified-rhmp</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups/resources): policy/poddisruptionbudgets</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>cockroach-operator.v2.3.0 - (label=v4.6,max=not set,channels=[beta stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/poddisruptionbudgets&#34;])</li>
                                          
                                       </ul>
                                     </th>
@@ -186,27 +206,7 @@
                                 </tr>
                             
                                 <tr>
-                                    <th>crunchy-postgres-operator-rhmp</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups/resources): batch/cronjobs</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>postgresoperator.v5.0.2 - (label=v4.6,max=not set,channels=[v5],head:NO,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
-                                         
-                                             <li>postgresoperator.v5.0.3 - (label=v4.6,max=not set,channels=[v5],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>starburst-enterprise-helm-operator-rhmp</th>
+                                    <th>vfunction-server-operator-rhmp</th>
                                     <th>
                                         <ul>
                                         
@@ -217,7 +217,25 @@
                                     <th>
                                       <ul>
                                          
-                                             <li>starburst-enterprise-helm-operator.v370.1.1 - (label=4.8,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                             <li>vfunction-server-operator.v2.2.469 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>anzo-operator-rhmp</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups/resources): policy/podsecuritypolicies</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>anzo-operator.v2.0.101 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/podsecuritypolicies&#34;])</li>
                                          
                                       </ul>
                                     </th>
@@ -244,24 +262,6 @@
                                 </tr>
                             
                                 <tr>
-                                    <th>dynatrace-operator-rhmp</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups/resources): batch/cronjobs</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>dynatrace-operator.v0.2.2 - (label=v4.5,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
                                     <th>anzograph-operator-rhmp</th>
                                     <th>
                                         <ul>
@@ -274,24 +274,6 @@
                                       <ul>
                                          
                                              <li>anzograph-operator.v2.0.102 - (label=v4.5,v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/podsecuritypolicies&#34;])</li>
-                                         
-                                      </ul>
-                                    </th>
-                                </tr>
-                            
-                                <tr>
-                                    <th>vfunction-server-operator-rhmp</th>
-                                    <th>
-                                        <ul>
-                                        
-                                            <li>(apiGroups/resources): autoscaling/horizontalpodautoscalers</li>
-                                        
-                                        </ul>
-                                    </th>
-                                    <th>
-                                      <ul>
-                                         
-                                             <li>vfunction-server-operator.v2.2.469 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
                                       </ul>
                                     </th>
@@ -338,27 +320,29 @@
                                 </tr>
                             
                                 <tr>
-                                    <th>yugabyte-platform-operator-bundle-rhmp</th>
+                                    <th>starburst-enterprise-helm-operator-rhmp</th>
                                     <th>
                                         <ul>
                                         
-                                            <li>(apiGroups/resources): policy/poddisruptionbudgets</li>
+                                            <li>(apiGroups/resources): autoscaling/horizontalpodautoscalers</li>
                                         
                                         </ul>
                                     </th>
                                     <th>
                                       <ul>
                                          
-                                             <li>yugabyte-platform-operator.v0.0.6 - (label=v4.5,v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/poddisruptionbudgets&#34;])</li>
+                                             <li>starburst-enterprise-helm-operator.v370.1.1-1 - (label=4.8,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): autoscaling/horizontalpodautoscalers&#34;])</li>
                                          
                                       </ul>
                                     </th>
                                 </tr>
                             
                                 <tr>
-                                    <th>cockroachdb-certified-rhmp</th>
+                                    <th>crunchy-postgres-operator-rhmp</th>
                                     <th>
                                         <ul>
+                                        
+                                            <li>(apiGroups/resources): batch/cronjobs</li>
                                         
                                             <li>(apiGroups/resources): policy/poddisruptionbudgets</li>
                                         
@@ -367,7 +351,25 @@
                                     <th>
                                       <ul>
                                          
-                                             <li>cockroach-operator.v2.3.0 - (label=v4.6,max=not set,channels=[beta stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/poddisruptionbudgets&#34;])</li>
+                                             <li>postgresoperator.v5.1.0 - (label=v4.6,max=not set,channels=[v5],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34; &#34;(apiGroups/resources): policy/poddisruptionbudgets&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>instana-agent-operator-rhmp</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups/resources): batch/cronjobs</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>instana-agent-operator.v2.0.4 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): batch/cronjobs&#34;])</li>
                                          
                                       </ul>
                                     </th>
@@ -386,6 +388,24 @@
                                       <ul>
                                          
                                              <li>sysdig-certified-rhmp.v1.12.44 - (label=v4.6,max=not set,channels=[stable],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/podsecuritypolicies&#34;])</li>
+                                         
+                                      </ul>
+                                    </th>
+                                </tr>
+                            
+                                <tr>
+                                    <th>yugabyte-platform-operator-bundle-rhmp</th>
+                                    <th>
+                                        <ul>
+                                        
+                                            <li>(apiGroups/resources): policy/poddisruptionbudgets</li>
+                                        
+                                        </ul>
+                                    </th>
+                                    <th>
+                                      <ul>
+                                         
+                                             <li>yugabyte-platform-operator.v0.0.6 - (label=v4.5,v4.6,max=not set,channels=[alpha],head:YES,defaultChannel:YES, deprecated:NO, RBAC: [&#34;(apiGroups/resources): policy/poddisruptionbudgets&#34;])</li>
                                          
                                       </ul>
                                     </th>
