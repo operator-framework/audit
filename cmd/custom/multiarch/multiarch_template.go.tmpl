@@ -62,19 +62,25 @@
 <script >
 
     $(document).ready(function() {
-        $('#list').DataTable( {
+        $('#unsupported').DataTable( {
             "scrollX": true
         } );
     } );
 
    $(document).ready(function() {
-        $('#list2').DataTable( {
+        $('#supportedWithErrors').DataTable( {
             "scrollX": true
         } );
     } );
 
    $(document).ready(function() {
-        $('#list3').DataTable( {
+        $('#supportedOK').DataTable( {
+            "scrollX": true
+        } );
+    } );
+
+     $(document).ready(function() {
+        $('#supportedWithWarnings').DataTable( {
             "scrollX": true
         } );
     } );
@@ -84,10 +90,10 @@
 <main>
 
         <h1>Multiple Architectures Dashboard</h1>
-        <p>The audit tool output for the following packages were obtained by checking the image and the bundle manifests distributed. </p>
-        <p>This report aims to try to identify the package distributions that validates the bundle against criteria to support Multiple Architectures.</p>
-        <p>For further information check: https://olm.operatorframework.io/docs/advanced-tasks/ship-operator-supporting-multiarch/ </p>
-                                                                                                                                                                                                         // information check: https://olm.operatorframework.io/docs/advanced-tasks/ship-operator-supporting-multiarch/.</p>
+        <p>The audit tool output for the following packages were obtained by checking the image and the bundle manifests
+        distributed. This report aims to try to identify the package distributions that validates the bundle against
+        criteria to support Multiple Architectures. For further information check:
+        <a href="https://olm.operatorframework.io/docs/advanced-tasks/ship-operator-supporting-multiarch/">here</a>.</p>
         <div class="container-fluid themed-container">
             <h5 class="display-12 fw-bold">Data from the image used</h5>
             <ul>
@@ -102,23 +108,26 @@
             <h5 class="display-12 fw-bold">FAQ</h5>
             <h5 class="display-12 fw-bold">1. How it works?</h5>
             <p> The images are inspect ($docker manifest inspect) and then: </p>
-            <li> raise a warning when the respective labels were not found</li>
-            <li> raise a warning when images defined in the CSV does not support 1 or more of the architecture types found </li>
-            <li> raise a warning when images defined in the CSV does not support 1 or more of the OS found </li>
-            <li> raise a warning when is possible to confirm that images does not provide the support defined on to the labels </li>
+            <li> raise a error(s) when is possible to confirm that images does not provide the support defined via to the labels on the CSV </li>
+            <li> raise a warning when it is possible to check that the Operator manager image(s) supports architecture(s) not defined via labels. Therefore, it shows like the labels are missing.</li>
+            <li> raise warnings when is possible to verify that the images defined in the CSV does not provide the same architecture(s) supported by the Operator manager image(s) or defined via the labels </li>
 
             <h5 class="display-12 fw-bold">2. What is checked?</h5>
             <p>Note: On this check, we aggregate the archetype(s) and OS(s) provided via the labels and those which are found by checking the images so that, we can check:</p>
             <li> If your CSV is missing labels</li>
-            <li> If your Operator bundle specifies images which does not supports all archetypes found (probably supported by your project) </li>
+            <li> If your Operator bundle specifies images which does not supports all archetypes found for your Operator image(s) (probably supported by your project) </li>
+            <p>Note: To better guess the case scenarios where authors might missed the labels the following check will
+            verify all architectures support for the Operator image(s). However, by looking at the CSV we are not able to ensure what is
+            the Operator image because this info is not provided. Therefore, we know by SDK the Operator image container will be called manager. </p>
+            <h5 class="display-12 fw-bold"> How the Operator image(s) are identified? </h5>
+            <li> The container named as manager under the CSV Deployment InstallStrategy (`Spec.InstallStrategy.StrategySpec.DeploymentSpecs`)</li>
+            <li> And if the above not found, all images under the InstallStrategy excluding the a container named as ` kube-rbac-proxy` since it is also scaffolded by default </li>
         </div>
 
-        <div class="container-fluid themed-container" style="background-color: #e6b800">
-        <h5 class="display-12 fw-bold">Multiple Architectures Unsupported</h5>
-        <p> Following the packages which the only supports the SO linux and the architecture amd64l.</p>
-        <h8 class="display-12 fw-bold"> Actions Required: </h8>
-        <li> Look to support the architectures: arm64, ppc64le, s390x </li>
-        <table id="list" class="minimalistBlack" style="background-color: dimgrey; width: 98%">
+        <div class="container-fluid themed-container" style="background-color: #00b3b3">
+        <h5 class="display-12 fw-bold">Multiple Architectures Unsupported </h5>
+        <p> Following the packages which the only supports the SO linux and the architecture amd64. This solutions are not available for heterogeneous support. </p>
+        <table id="unsupported" class="minimalistBlack" style="background-color: dimgrey; width: 98%">
             <thead>
                 <tr>
                     <th>Package Name</th>
@@ -145,9 +154,135 @@
                             <tr>
                                 <th>{{ .BundleData.BundleCSV.Name }} </th>
                                 <th>
+                                <script>
+                                    function myFunctionShowImages(value) {
+                                      var x = document.getElementById(value);
+                                      if (x.style.display === "none") {
+                                        x.style.display = "block";
+                                      } else {
+                                        x.style.display = "none";
+                                      }
+                                    }
+                                </script>
+                                <div align="center">
+                                    <button align="center" onclick="myFunctionShowImages('show-unsupported-{{ .ForHideButton}}')">Show Details</button>
+                                </div>
+                                <div id="show-unsupported-{{ .ForHideButton}}" style="display: none;">
+                                   {{ range .MangerImage }}
+                                        <li style="color: orange">{{ . }}</li>
+                                   {{ end }}
                                    {{ range .Images }}
                                         <li>{{ . }}</li>
                                    {{ end }}
+                                </div>
+                                </th>
+                            </tr>
+                            {{ end }}
+                        {{ end }}
+                        </tbody>
+                    </table>
+                    </div>
+                    </th>
+                </tr>
+                {{ end }}
+            {{ end }}
+            </tbody>
+         </table>
+        </div>
+
+        <div class="container-fluid themed-container" style="background-color: #E1E100">
+        <h5 class="display-12 fw-bold">Multiple Architectures Supported with Warnings</h5>
+        <p> Following the packages which might supports multiple architectures and warnings were found </p>
+        <h8 class="display-12 fw-bold"> Actions Required: </h8>
+        <li> Check if your bundle CSV is not missing the labels </li>
+        <table id="supportedWithWarnings" class="minimalistBlack" style="background-color: dimgrey; width: 98%">
+            <thead>
+                <tr>
+                    <th>Package Name</th>
+                    <th>Bundles Details</th>
+                </tr>
+            </thead>
+            <tbody style="background-color: white;">
+            {{ with .SupportedWithWarnings }}
+                {{ range . }}
+                <tr>
+                    <th>{{ .Name }}</th>
+                    <th>
+
+                    <div class="container-fluid themed-container">
+                    <table id="Supported-{{ .Name }}" class="minimalistBlack" style="width: 100%">
+                        <thead>
+                            <tr style="background-color: #004C99;">
+                            <th align="center">Bundle Name</th>
+                            <th align="center">Arch(s) found</th>
+                            <th align="center">OS found</th>
+                            <th align="center">Labels (CSV)</th>
+                            <th align="center">Images Inspected</th>
+                            <th align="center">Warnings</th>
+                        </tr>
+                        </thead>
+                      <tbody>
+                      {{ with .Bundles }}
+                            {{ range . }}
+                            <tr>
+                                <th>{{ .BundleData.BundleCSV.Name }} </th>
+                                <th>
+                                {{ range $k, $v := .AllArchFound }}
+                                    <li>{{ $k }} </li>
+                                {{ end }}
+                                </th>
+                                <th>
+                                {{ range $k, $v := .AllOsFound }}
+                                    <li>{{ $k }} </li>
+                                {{ end }}
+                                </th>
+                                <th>
+                                {{ range .InfraLabelsUsed }}
+                                    <li>{{ . }}</li>
+                                {{ end }}
+                                </th>
+                                <th>
+                                <script>
+                                    function myFunctionShowImages(value) {
+                                      var x = document.getElementById(value);
+                                      if (x.style.display === "none") {
+                                        x.style.display = "block";
+                                      } else {
+                                        x.style.display = "none";
+                                      }
+                                    }
+                                </script>
+                                <div align="center">
+                                    <button align="center" onclick="myFunctionShowImages('show-images-warn-{{ .ForHideButton}}')">Show Details</button>
+                                </div>
+                                <div id="show-images-warn-{{ .ForHideButton}}" style="display: none;">
+                                   {{ range .MangerImage }}
+                                        <li style="color: orange">{{ . }}</li>
+                                   {{ end }}
+                                   {{ range .Images }}
+                                        <li>{{ . }}</li>
+                                   {{ end }}
+                                </div>
+                                </th>
+                                <th>
+                                <script>
+                                    function myFunctionShowValidations(value) {
+                                      var x = document.getElementById(value);
+                                      if (x.style.display === "none") {
+                                        x.style.display = "block";
+                                      } else {
+                                        x.style.display = "none";
+                                      }
+                                    }
+                                </script>
+                                <div align="center">
+                                    <button align="center" onclick="myFunctionShowValidations('show-warn-{{ .ForHideButton}}')">Show Details</button>
+                                </div>
+                                <div id="show-warn-{{ .ForHideButton}}" style="display: none;">
+                                   {{ range .Warnings }}
+                                        <li>{{ . }}</li>
+                                   {{ end }}
+                                </div>
                                 </th>
                             </tr>
                             {{ end }}
@@ -167,11 +302,9 @@
         <h5 class="display-12 fw-bold">Multiple Architectures Supported with Errors</h5>
         <p> Following the packages which might supports multiple architectures and errors were found </p>
         <h8 class="display-12 fw-bold"> Actions Required: </h8>
-        <li> Check the errors messages</li>
-        <li> Look to support the architectures: amd64, arm64, ppc64le, s390x </li>
-        <li> Ensure that all images used on the bundle supports these architectures </li>
-        <li> Ensure that you are adding all required labels on the CSV </li>
-        <table id="list2" class="minimalistBlack" style="background-color: dimgrey; width: 98%">
+        <li> Ensure that you provide all images specified in the CSV supports all architecture defined via the labels </li>
+        <li> Check the Warnings to know if you are not or could not supporting architectures supported by the Operator manager image(s)</li>
+        <table id="supportedWithErrors" class="minimalistBlack" style="background-color: dimgrey; width: 98%">
             <thead>
                 <tr>
                     <th>Package Name</th>
@@ -190,11 +323,12 @@
                         <thead>
                             <tr style="background-color: #004C99;">
                             <th align="center">Bundle Name</th>
-                            <th align="center">Arch(s) found by inspecting the images </th>
-                            <th align="center">OS found by inspecting the images </th>
+                            <th align="center">Arch(s) found</th>
+                            <th align="center">OS found</th>
                             <th align="center">Labels (CSV)</th>
                             <th align="center">Images Inspected</th>
-                            <th align="center">Validations</th>
+                            <th align="center">Errors</th>
+                            <th align="center">Warnings</th>
                         </tr>
                         </thead>
                       <tbody>
@@ -232,6 +366,9 @@
                                     <button align="center" onclick="myFunctionShowImages('show-images-{{ .ForHideButton}}')">Show Details</button>
                                 </div>
                                 <div id="show-images-{{ .ForHideButton}}" style="display: none;">
+                                   {{ range .MangerImage }}
+                                        <li style="color: orange">{{ . }}</li>
+                                   {{ end }}
                                    {{ range .Images }}
                                         <li>{{ . }}</li>
                                    {{ end }}
@@ -249,10 +386,30 @@
                                     }
                                 </script>
                                 <div align="center">
-                                    <button align="center" onclick="myFunctionShowValidations('show-validations-{{ .ForHideButton}}')">Show Details</button>
+                                    <button align="center" onclick="myFunctionShowValidations('show-with-errors-{{ .ForHideButton}}')">Show Details</button>
                                 </div>
-                                <div id="show-validations-{{ .ForHideButton}}" style="display: none;">
-                                   {{ range .Validations }}
+                                <div id="show-with-errors-{{ .ForHideButton}}" style="display: none;">
+                                   {{ range .Errors }}
+                                        <li>{{ . }}</li>
+                                   {{ end }}
+                                </div>
+                                </th>
+                                <th>
+                                <script>
+                                    function myFunctionShowValidations(value) {
+                                      var x = document.getElementById(value);
+                                      if (x.style.display === "none") {
+                                        x.style.display = "block";
+                                      } else {
+                                        x.style.display = "none";
+                                      }
+                                    }
+                                </script>
+                                <div align="center">
+                                    <button align="center" onclick="myFunctionShowValidations('show-with-errors-warnings-{{ .ForHideButton}}')">Show Details</button>
+                                </div>
+                                <div id="show-with-errors-warnings-{{ .ForHideButton}}" style="display: none;">
+                                   {{ range .Warnings }}
                                         <li>{{ . }}</li>
                                    {{ end }}
                                 </div>
@@ -271,13 +428,12 @@
          </table>
         </div>
 
-
         <div class="container-fluid themed-container" style="background-color: #00cc66">
         <h5 class="display-12 fw-bold">Multiple Architectures Supported and OK</h5>
         <p> Following the packages which supports multiple architectures and no errors were found </p>
         <h8 class="display-12 fw-bold"> Actions Required: </h8>
         <li> - Ensure that you support all architectures if not yet (amd64, arm64, ppc64le, s390x) </li>
-        <table id="list3" class="minimalistBlack" style="background-color: dimgrey; width: 98%">
+        <table id="supportedOK" class="minimalistBlack" style="background-color: dimgrey; width: 98%">
             <thead>
                 <tr>
                     <th>Package Name</th>
@@ -296,8 +452,8 @@
                         <thead>
                             <tr style="background-color: #004C99;">
                             <th align="center">Bundle Name</th>
-                            <th align="center">Arch(s) found by inspecting the images </th>
-                            <th align="center">OS found by inspecting the images </th>
+                            <th align="center">Arch(s) found</th>
+                            <th align="center">OS found</th>
                             <th align="center">Labels (CSV)</th>
                             <th align="center">Images Inspected</th>
                         </tr>
@@ -337,6 +493,9 @@
                                     <button align="center" onclick="myFunctionShowImagesOK('show-images-ok-{{ .ForHideButton}}')">Show Details</button>
                                 </div>
                                 <div id="show-images-ok-{{ .ForHideButton}}" style="display: none;">
+                                   {{ range .MangerImage }}
+                                        <li style="color: orange">{{ . }}</li>
+                                   {{ end }}
                                    {{ range .Images }}
                                         <li>{{ . }}</li>
                                    {{ end }}
@@ -355,7 +514,6 @@
             </tbody>
          </table>
         </div>
-
 </main>
 </body>
 </html>
