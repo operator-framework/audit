@@ -42,7 +42,7 @@ func main() {
 		//"redhat_certified_operator_index": "registry.redhat.io/redhat/certified-operator-index",
 		//"redhat_community_operator_index": "registry.redhat.io/redhat/community-operator-index",
 		//"redhat_redhat_marketplace_index": "registry.redhat.io/redhat/redhat-marketplace-index",
-		"redhat_redhat_operator_index":    "registry.redhat.io/redhat/redhat-operator-index",
+		"redhat_redhat_operator_index": "registry.redhat.io/redhat/redhat-operator-index",
 	}
 
 	binPath := filepath.Join(currentPath, hack.BinPath)

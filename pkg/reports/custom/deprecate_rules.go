@@ -155,11 +155,11 @@ func (bd *BundleDeprecate) addFromRules(perm v1alpha1.StrategyDeploymentPermissi
 				if strings.ToLower(api) == strings.ToLower(apiFromMap) {
 					for _, res := range rule.Resources {
 						for _, resFromMap := range resourcesFromMap {
-							if strings.ToLower(resFromMap) == strings.ToLower(res)  {
+							if strings.ToLower(resFromMap) == strings.ToLower(res) {
 								bd.Permissions1_25 = append(bd.Permissions1_25,
 									fmt.Sprintf("(apiGroups/resources): %s/%s", api, res))
 							}
-							if strings.ToLower(res) == "*" ||  strings.ToLower(res) == "[*]" {
+							if strings.ToLower(res) == "*" || strings.ToLower(res) == "[*]" {
 								bd.Permissions1_25 = append(bd.Permissions1_25,
 									fmt.Sprintf("(All from apiGroups): %s/%s", api, res))
 							}
@@ -176,11 +176,11 @@ func (bd *BundleDeprecate) addFromRules(perm v1alpha1.StrategyDeploymentPermissi
 				if strings.ToLower(api) == strings.ToLower(apiFromMap) {
 					for _, res := range rule.Resources {
 						for _, resFromMap := range resourcesFromMap {
-							if strings.ToLower(resFromMap) == strings.ToLower(res)  {
+							if strings.ToLower(resFromMap) == strings.ToLower(res) {
 								bd.Permissions1_26 = append(bd.Permissions1_26,
 									fmt.Sprintf("(apiGroups/resources): %s/%s", api, res))
 							}
-							if strings.ToLower(res) == "*" ||  strings.ToLower(res) == "[*]" {
+							if strings.ToLower(res) == "*" || strings.ToLower(res) == "[*]" {
 								bd.Permissions1_26 = append(bd.Permissions1_26,
 									fmt.Sprintf("(All from apiGroups): %s/%s", api, res))
 							}

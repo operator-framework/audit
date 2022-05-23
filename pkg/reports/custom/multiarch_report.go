@@ -28,31 +28,34 @@ import (
 	"github.com/operator-framework/audit/pkg/reports/bundles"
 )
 
-type MultipleArchitecturesBundle struct {
+type MultipleArchitecturesBundleReport struct {
 	BundleData          bundles.Column
 	InfraLabelsUsed     []string
 	AllArchFound        map[string]string
 	AllOsFound          map[string]string
-	Validations         []string
+	Errors              []string
+	Warnings            []string
+	MangerImage         []string
 	Images              []string
 	HasMultiArchSupport bool
 	ForHideButton       string
 }
 
-type MultipleArchitecturesPackage struct {
+type MultipleArchitecturesPackageReport struct {
 	Name    string
-	Bundles []MultipleArchitecturesBundle
+	Bundles []MultipleArchitecturesBundleReport
 }
 
 type MultipleArchitecturesReport struct {
-	ImageName           string
-	ImageID             string
-	ImageHash           string
-	ImageBuild          string
-	GeneratedAt         string
-	Unsupported         []MultipleArchitecturesPackage
-	Supported           []MultipleArchitecturesPackage
-	SupportedWithErrors []MultipleArchitecturesPackage
+	ImageName             string
+	ImageID               string
+	ImageHash             string
+	ImageBuild            string
+	GeneratedAt           string
+	Unsupported           []MultipleArchitecturesPackageReport
+	Supported             []MultipleArchitecturesPackageReport
+	SupportedWithErrors   []MultipleArchitecturesPackageReport
+	SupportedWithWarnings []MultipleArchitecturesPackageReport
 }
 
 // nolint:dupl
@@ -65,90 +68,39 @@ func NewMultipleArchitecturesReport(bundlesReport bundles.Report, filter,
 	multiArch.GeneratedAt = bundlesReport.GenerateAt
 
 	log.Info("checking the head of channels...")
-	mapPerPkgHeadsOnly := mapHeadBundlesPerPackageWith(bundlesReport.Columns)
-	mapPackagesWithMultData := make(map[string][]MultipleArchitecturesBundle)
+	headOfChannelPerPackage := mapHeadOfChannelsPerPackage(bundlesReport.Columns)
+	mapPackagesWithMultiArchData := make(map[string][]MultipleArchitecturesBundleReport)
 
-	for pkg, bundles := range mapPerPkgHeadsOnly {
-		for _, bundle := range bundles {
-			// filter by the name
-			if len(filter) > 0 {
-				if !strings.Contains(bundle.PackageName, filter) {
-					continue
-				}
+	for _, bundle := range headOfChannelPerPackage {
+
+		// filter by the name
+		if len(filter) > 0 {
+			if !strings.Contains(bundle.PackageName, filter) {
+				continue
 			}
-			log.Infof("auditing for bundle %s", bundle.BundleCSV.Name)
-			mb := MultipleArchitecturesBundle{BundleData: bundle}
-
-			multiArchValidator := multiArchValidator{bundle: bundle.BundleCSV, containerTool: containerTool}
-			multiArchValidator.validate()
-
-			mb.AllArchFound = multiArchValidator.allArchFound
-			mb.AllOsFound = multiArchValidator.allOsFound
-
-			mb.InfraLabelsUsed = append(mb.InfraLabelsUsed, multiArchValidator.infraOSLabels...)
-			mb.InfraLabelsUsed = append(mb.InfraLabelsUsed, multiArchValidator.infraArchLabels...)
-
-			res := []string{}
-			if multiArchValidator.images != nil {
-				for image, arrayData := range multiArchValidator.images {
-					allValues := []string{}
-					for _, values := range arrayData {
-						if len(values.OS) == 0 && len(values.Architecture) == 0 {
-							continue
-						}
-						allValues = append(allValues, fmt.Sprintf("%s:%s", values.OS, values.Architecture))
-					}
-					res = append(res, fmt.Sprintf("%s:%q", image, allValues))
-				}
-			}
-
-			mb.Images = res
-			mb.checkIfHasMultiArch()
-
-			for _, w := range multiArchValidator.warns {
-				mb.Validations = append(mb.Validations, w.Error())
-			}
-
-			namehidden := bundle.BundleCSV.Name
-			namehidden = strings.Replace(namehidden, "_", "", -1)
-			namehidden = strings.Replace(namehidden, ".", "", -1)
-			namehidden = strings.Replace(namehidden, "-", "", -1)
-			mb.ForHideButton = namehidden
-
-			mapPackagesWithMultData[pkg] = append(mapPackagesWithMultData[pkg], mb)
 		}
+
+		log.Infof("auditing for bundle %s", bundle.BundleCSV.Name)
+		mb := MultipleArchitecturesBundleReport{BundleData: bundle}
+
+		log.Infof("gathering data per bundle and performing the checks")
+		multiArchValidator := multiArchValidator{bundle: bundle.BundleCSV, containerTool: containerTool}
+		multiArchValidator.validate()
+
+		log.Infof("processing the results to render the data in the report")
+		mb.prepareDataPerBundle(multiArchValidator)
+
+		// Add to the map the result per bundle to generate the report
+		mapPackagesWithMultiArchData[mb.BundleData.PackageName] =
+			append(mapPackagesWithMultiArchData[mb.BundleData.PackageName], mb)
 	}
 
-	for pkg, bundles := range mapPackagesWithMultData {
+	multiArch.categorize(mapPackagesWithMultiArchData)
+	multiArch.sort()
+	return &multiArch
+}
 
-		//nolint: scopelint
-		sort.Slice(bundles[:], func(i, j int) bool {
-			return bundles[i].BundleData.BundleCSV.Name < bundles[j].BundleData.BundleCSV.Name
-		})
-
-		hasSupportOK := false
-		hasSupportErrors := false
-		for _, bundle := range bundles {
-			if bundle.HasMultiArchSupport && len(bundle.Validations) == 0 {
-				hasSupportOK = true
-			}
-			if bundle.HasMultiArchSupport && len(bundle.Validations) > 0 {
-				hasSupportErrors = true
-			}
-		}
-
-		if hasSupportErrors {
-			multiArch.SupportedWithErrors = append(multiArch.SupportedWithErrors,
-				MultipleArchitecturesPackage{Name: pkg, Bundles: bundles})
-		} else if hasSupportOK {
-			multiArch.Supported = append(multiArch.Supported,
-				MultipleArchitecturesPackage{Name: pkg, Bundles: bundles})
-		} else {
-			multiArch.Unsupported = append(multiArch.Unsupported,
-				MultipleArchitecturesPackage{Name: pkg, Bundles: bundles})
-		}
-	}
-
+func (multiArch *MultipleArchitecturesReport) sort() {
 	sort.Slice(multiArch.Unsupported[:], func(i, j int) bool {
 		return multiArch.Unsupported[i].Name < multiArch.Unsupported[j].Name
 	})
@@ -157,14 +109,107 @@ func NewMultipleArchitecturesReport(bundlesReport bundles.Report, filter,
 		return multiArch.Supported[i].Name < multiArch.Supported[j].Name
 	})
 
+	sort.Slice(multiArch.SupportedWithWarnings[:], func(i, j int) bool {
+		return multiArch.SupportedWithWarnings[i].Name < multiArch.SupportedWithWarnings[j].Name
+	})
+
 	sort.Slice(multiArch.SupportedWithErrors[:], func(i, j int) bool {
 		return multiArch.SupportedWithErrors[i].Name < multiArch.SupportedWithErrors[j].Name
 	})
-
-	return &multiArch
 }
 
-func (mb *MultipleArchitecturesBundle) checkIfHasMultiArch() {
+func (multiArch *MultipleArchitecturesReport) categorize(
+	mapPackagesWithMultData map[string][]MultipleArchitecturesBundleReport) {
+	for pkg, bundles := range mapPackagesWithMultData {
+		//nolint: scopelint
+		sort.Slice(bundles[:], func(i, j int) bool {
+			return bundles[i].BundleData.BundleCSV.Name < bundles[j].BundleData.BundleCSV.Name
+		})
+
+		hasSupportOK := false
+		hasSupportWarnings := false
+		hasSupportErrors := false
+		for _, bundle := range bundles {
+			if bundle.HasMultiArchSupport && len(bundle.Errors) == 0 && len(bundle.Warnings) == 0 {
+				hasSupportOK = true
+			}
+			if bundle.HasMultiArchSupport && len(bundle.Errors) == 0 && len(bundle.Warnings) > 0 {
+				hasSupportWarnings = true
+			}
+			if bundle.HasMultiArchSupport && len(bundle.Errors) > 0 {
+				hasSupportErrors = true
+			}
+		}
+
+		if hasSupportWarnings {
+			multiArch.SupportedWithWarnings = append(multiArch.SupportedWithWarnings,
+				MultipleArchitecturesPackageReport{Name: pkg, Bundles: bundles})
+		} else if hasSupportErrors {
+			multiArch.SupportedWithErrors = append(multiArch.SupportedWithErrors,
+				MultipleArchitecturesPackageReport{Name: pkg, Bundles: bundles})
+		} else if hasSupportOK {
+			multiArch.Supported = append(multiArch.Supported,
+				MultipleArchitecturesPackageReport{Name: pkg, Bundles: bundles})
+		} else {
+			multiArch.Unsupported = append(multiArch.Unsupported,
+				MultipleArchitecturesPackageReport{Name: pkg, Bundles: bundles})
+		}
+	}
+}
+
+func (mb *MultipleArchitecturesBundleReport) prepareDataPerBundle(multiArchValidator multiArchValidator) {
+	mb.AllArchFound = multiArchValidator.managerArchs
+	mb.AllOsFound = multiArchValidator.managerOs
+
+	mb.InfraLabelsUsed = append(mb.InfraLabelsUsed, multiArchValidator.infraCSVOSLabels...)
+	mb.InfraLabelsUsed = append(mb.InfraLabelsUsed, multiArchValidator.infraCSVArchLabels...)
+	mb.prepareImagesForReport(multiArchValidator)
+
+	mb.checkIfHasMultiArch()
+	for _, w := range multiArchValidator.warns {
+		mb.Warnings = append(mb.Warnings, w.Error())
+	}
+
+	for _, w := range multiArchValidator.errors {
+		mb.Errors = append(mb.Errors, w.Error())
+	}
+
+	// It is used to create the functions to show/hide the errors, warnings and images
+	namehidden := mb.BundleData.BundleCSV.Name
+	namehidden = strings.Replace(namehidden, "_", "", -1)
+	namehidden = strings.Replace(namehidden, ".", "", -1)
+	namehidden = strings.Replace(namehidden, "-", "", -1)
+	mb.ForHideButton = namehidden
+}
+
+// prepareImagesForReport will ensure that
+// manager Operator images(s) can be rendered in orange
+// Images are format with the Platform found
+func (mb *MultipleArchitecturesBundleReport) prepareImagesForReport(multiArchValidator multiArchValidator) {
+	for image, arrayData := range multiArchValidator.managerImages {
+		allValues := []string{}
+		for _, values := range arrayData {
+			if len(values.OS) == 0 && len(values.Architecture) == 0 {
+				continue
+			}
+			allValues = append(allValues, fmt.Sprintf("%s:%s", values.OS, values.Architecture))
+		}
+		mb.MangerImage = append(mb.MangerImage, fmt.Sprintf("(Operator Manager Image) %s:%q", image, allValues))
+	}
+
+	for image, arrayData := range multiArchValidator.allOtherImages {
+		allValues := []string{}
+		for _, values := range arrayData {
+			if len(values.OS) == 0 && len(values.Architecture) == 0 {
+				continue
+			}
+			allValues = append(allValues, fmt.Sprintf("%s:%s", values.OS, values.Architecture))
+		}
+		mb.Images = append(mb.Images, fmt.Sprintf("%s:%q", image, allValues))
+	}
+}
+
+func (mb *MultipleArchitecturesBundleReport) checkIfHasMultiArch() {
 	foundAnotherArch := false
 	foundAnotherSO := false
 	for k, v := range mb.AllArchFound {
@@ -195,24 +240,30 @@ const operatorFrameworkOSLabel = "operatorframework.io/os."
 
 // multiArchValidator store the data to perform the tests
 type multiArchValidator struct {
-	// infraArchLabels store the arch labels (i.e amd64, ppc64le) from
+	// infraCSVArchLabels store the arch labels (i.e amd64, ppc64le) from
 	// operatorframework.io/arch.<GOARCH>: supported
-	infraArchLabels []string
+	infraCSVArchLabels []string
 	// InfraSOLabel store the OS labels from
 	// operatorframework.io/os.<GOARCH>: supported
-	infraOSLabels []string
-	// images stores the images defined in the bundle with the platform.arch supported
-	images map[string][]platform
-	// allArchFound contains a map of the arch types found
-	allArchFound map[string]string
-	// allOsFound contains a map of the so(s) found
-	allOsFound map[string]string
+	infraCSVOSLabels []string
+	// allOtherImages stores the allOtherImages defined in the bundle with the platform.arch supported
+	allOtherImages map[string][]platform
+	// managerImages stores the images that we could consider as from the manager
+	managerImages map[string][]platform
+	// managerImagesString stores the images only
+	managerImagesString []string
+	// managerArchs contains a map of the arch types found
+	managerArchs map[string]string
+	// managerOs contains a map of the so(s) found
+	managerOs map[string]string
 	// Store the bundle load
 	bundle *v1alpha1.ClusterServiceVersion
-	// containerTool defines the container tool which will be used to inspect the images
+	// containerTool defines the container tool which will be used to inspect the allOtherImages
 	containerTool string
 	// warns stores the errors faced by the validator to return the warnings
 	warns []error
+	// warns stores the errors faced by the validator to return the warnings
+	errors []error
 }
 
 // manifestInspect store the data obtained by running container-tool manifest inspect <IMAGE>
@@ -233,15 +284,13 @@ type platform struct {
 
 // validate performs all required checks to validate the bundle against the Multiple Architecture
 // configuration to guess the missing labels and/or highlight what are the missing Architectures
-// for the images (for what is configured to be supported AND for what we guess that is supported
+// for the allOtherImages (for what is configured to be supported AND for what we guess that is supported
 // and just is missing a label).
 func (data *multiArchValidator) validate() {
-	data.allArchFound = make(map[string]string)
-	data.allOsFound = make(map[string]string)
-
 	data.loadInfraLabelsFromCSV()
 	data.loadImagesFromCSV()
-	data.inspectAllImages()
+	data.managerImages = data.inspectImages(data.managerImages)
+	data.allOtherImages = data.inspectImages(data.allOtherImages)
 	data.loadAllPossibleArchSupported()
 	data.loadAllPossibleSoSupported()
 	data.doChecks()
@@ -249,41 +298,83 @@ func (data *multiArchValidator) validate() {
 
 // loadInfraLabelsFromCSV will gather the respective labels from the CSV
 func (data *multiArchValidator) loadInfraLabelsFromCSV() {
+	data.managerArchs = make(map[string]string)
+	data.managerOs = make(map[string]string)
+
 	for k, v := range data.bundle.ObjectMeta.Labels {
 		if strings.Contains(k, operatorFrameworkArchLabel) && v == "supported" {
-			data.infraArchLabels = append(data.infraArchLabels, k)
+			data.infraCSVArchLabels = append(data.infraCSVArchLabels, k)
 		}
 	}
 	for k, v := range data.bundle.ObjectMeta.Labels {
 		if strings.Contains(k, operatorFrameworkOSLabel) && v == "supported" {
-			data.infraOSLabels = append(data.infraOSLabels, k)
+			data.infraCSVOSLabels = append(data.infraCSVOSLabels, k)
 		}
 	}
 }
 
-// loadImagesFromCSV will add all images found in the CSV
-// it will be looking for all containers images and what is defined
+// loadImagesFromCSV will add all allOtherImages found in the CSV
+// it will be looking for all containers allOtherImages and what is defined
 // via the spec.RELATE_IMAGE (required for disconnect support)
 func (data *multiArchValidator) loadImagesFromCSV() {
-	data.images = make(map[string][]platform)
+	// We need to try looking for the manager image so that we can
+	// be more assertive in the guess to warning the Operator
+	// authors that they might are forgot to use add the labels
+	// because we found images that provides more support
+	data.managerImages = make(map[string][]platform)
+	for _, v := range data.bundle.Spec.InstallStrategy.StrategySpec.DeploymentSpecs {
+		foundManager := false
+		// For the default scaffold we have a container called manager
+		for _, c := range v.Spec.Template.Spec.Containers {
+			if c.Name == "manager" {
+				data.managerImages[c.Image] = append(data.managerImages[c.Image], platform{})
+				data.managerImagesString = append(data.managerImagesString, c.Image)
+				foundManager = true
+				break
+			}
+		}
+		// If we do not find a container called manager then we
+		// will add all from the Deployment Specs which is not the
+		// kube-rbac-proxy image scaffold by default
+		if !foundManager {
+			for _, c := range v.Spec.Template.Spec.Containers {
+				if c.Name != "kube-rbac-proxy" {
+					data.managerImages[c.Image] = append(data.managerImages[c.Image], platform{})
+					data.managerImagesString = append(data.managerImagesString, c.Image)
+				}
+			}
+		}
+	}
+
+	data.allOtherImages = make(map[string][]platform)
 	if data.bundle.Spec.InstallStrategy.StrategySpec.DeploymentSpecs != nil {
 		for _, v := range data.bundle.Spec.InstallStrategy.StrategySpec.DeploymentSpecs {
 			for _, c := range v.Spec.Template.Spec.Containers {
-				data.images[c.Image] = append(data.images[c.Image], platform{})
+				// If not be from manager the add
+				if len(data.managerImages[c.Image]) == 0 {
+					data.allOtherImages[c.Image] = append(data.allOtherImages[c.Image], platform{})
+				}
 			}
 		}
 	}
 
 	for _, v := range data.bundle.Spec.RelatedImages {
-		data.images[v.Image] = append(data.images[v.Image], platform{})
+		data.allOtherImages[v.Image] = append(data.allOtherImages[v.Image], platform{})
 	}
 }
 
 // runManifestInspect executes the command for we are able to check what
 // are the Architecture(s) and SO(s) supported per each image found
 func runManifestInspect(image, tool string) (manifestInspect, error) {
+	log.Infof("downloading iamge %s", image)
+	cmd := exec.Command(tool, "pull", image)
+	_, err := runCommand(cmd)
+	if err != nil {
+		return manifestInspect{}, err
+	}
+
 	log.Infof("running manifest inspect %s", image)
-	cmd := exec.Command(tool, "manifest", "inspect", image)
+	cmd = exec.Command(tool, "manifest", "inspect", image)
 	output, err := runCommand(cmd)
 	if err != nil {
 		return manifestInspect{}, err
@@ -306,9 +397,9 @@ func runCommand(cmd *exec.Cmd) ([]byte, error) {
 	return output, nil
 }
 
-// inspectAllImages will perform the required steps to inspect all images found
-func (data *multiArchValidator) inspectAllImages() {
-	for k := range data.images {
+// inspectAllOtherImages will perform the required steps to inspect all allOtherImages found
+func (data *multiArchValidator) inspectImages(images map[string][]platform) map[string][]platform {
+	for k := range images {
 		manifest, err := runManifestInspect(k, data.containerTool)
 		if err != nil {
 			// try once more
@@ -321,37 +412,41 @@ func (data *multiArchValidator) inspectAllImages() {
 				// does not provide some kind of support only because we were unable to inspect it.
 				// Be aware that the validator raise warnings for all cases scenarios to let
 				// the author knows that those were not checked at all and why.
-				data.images[k] = append(data.images[k], platform{"error", "error"})
+				images[k] = append(images[k], platform{"error", "error"})
 				continue
 			}
 		}
 
 		if manifest.ManifestData != nil {
 			for _, manifest := range manifest.ManifestData {
-				data.images[k] = append(data.images[k], manifest.Platform)
+				images[k] = append(images[k], manifest.Platform)
 			}
 		}
 	}
-
+	return images
 }
 
 // doChecks centralize all checks which are done with this validator
 func (data *multiArchValidator) doChecks() {
-	data.checkMissingImagesSupport()
+	// the following check raise a error(s) when is possible to confirm that images does not provide the
+	// support defined via to the labels on the CSV
 	data.checkSupportDefined()
-	// Note that we can only check if the CSV is missing or not
-	// label after check all possible arch/so supported
-	// on the check above
+	// Note that we can only check if the CSV is missing or not label after check all possible arch/so supported
+	// on the check above. The following check raise a warning when it is possible to check that the Operator
+	// manager image(s) supports architecture(s) not defined via labels. Therefore, it shows like the labels are missing
 	data.checkMissingLabelsForArchs()
 	data.checkMissingLabelsForSO()
+	// the following check will raise warnings when is possible to verify that the images defined in the CSV
+	// does not provide the same architecture(s) supported by the Operator manager or defined via the labels
+	data.checkMissingSupportForOtherImages()
 }
 
-// checkMissingImagesSupport checks if any image is missing some arch or so found
+// checkMissingSupportForOtherImages checks if any image is missing some arch or so found
 // (probably the image should support the arch or SO )
-func (data *multiArchValidator) checkMissingImagesSupport() {
-	for image, plaformFromImage := range data.images {
+func (data *multiArchValidator) checkMissingSupportForOtherImages() {
+	for image, plaformFromImage := range data.allOtherImages {
 		listArchNotFound := []string{}
-		for archFromList := range data.allArchFound {
+		for archFromList := range data.managerArchs {
 			found := false
 			for _, imageData := range plaformFromImage {
 				// Ignore the case when the Plataform.Architecture == "error" since that means
@@ -373,14 +468,17 @@ func (data *multiArchValidator) checkMissingImagesSupport() {
 		if len(listArchNotFound) > 0 {
 			sort.Strings(listArchNotFound)
 			data.warns = append(data.warns,
-				fmt.Errorf("check if the image (%s) should not support %q. "+
-					"Note that this CSV has labels for this/those architecture(s) "+
-					"OR one or more images defined on the CSV are providing this support."+
-					"Then, it is very likely that you want to provide it", image, listArchNotFound))
+				fmt.Errorf("check if the image %s should not support %q. "+
+					"Note that this CSV has labels for this Arch(s) "+
+					"Your manager image %q are providing this support OR the CSV is configured via labels "+
+					"to support it. Then, please verify if this image should not support it",
+					image,
+					listArchNotFound,
+					data.managerImagesString))
 		}
 
 		listAllSoNotFound := []string{}
-		for archOSList := range data.allOsFound {
+		for archOSList := range data.managerOs {
 			found := false
 			for _, imageData := range plaformFromImage {
 				// Ignore the case when the Plataform.Architecture == "error" since that means
@@ -402,23 +500,24 @@ func (data *multiArchValidator) checkMissingImagesSupport() {
 		if len(listAllSoNotFound) > 0 {
 			sort.Strings(listAllSoNotFound)
 			data.warns = append(data.warns,
-				fmt.Errorf("check if the image (%s) should not support %q. "+
-					"Note that this CSV has labels for this/those SO(s) "+
-					"OR one or more images defined on the CSV are providing this support."+
-					"Then, it is very likely that you want to provide it",
-					image, listAllSoNotFound))
+				fmt.Errorf("check if the image %s should not support %q. "+
+					"Note that this CSV has labels for this SO(s) "+
+					"Your manager image %q are providing this support OR the CSV is configured via labels "+
+					"to support it. Then, please verify if this image should not support it",
+					image,
+					listAllSoNotFound,
+					data.managerImagesString))
 		}
 	}
-
 }
 
-// verify if 1 or more images has support for a SO not defined via the labels
+// verify if 1 or more allOtherImages has support for a SO not defined via the labels
 // (probably the label for this SO is missing )
 func (data *multiArchValidator) checkMissingLabelsForSO() {
 	notFoundSoLabel := []string{}
-	for supported := range data.allOsFound {
+	for supported := range data.managerOs {
 		found := false
-		for _, infra := range data.infraOSLabels {
+		for _, infra := range data.infraCSVOSLabels {
 			if strings.Contains(infra, supported) {
 				found = true
 				break
@@ -427,7 +526,7 @@ func (data *multiArchValidator) checkMissingLabelsForSO() {
 		// If the value is linux and no labels were added to the CSV then it is fine
 		if !found && supported != "error" {
 			// if the only arch supported is linux then,  we should not ask for the label
-			if !(supported == "linux" && len(data.allOsFound) == 1 && len(data.allOsFound["linux"]) > 0) {
+			if !(supported == "linux" && len(data.managerOs) == 1 && len(data.managerOs["linux"]) > 0) {
 				notFoundSoLabel = append(notFoundSoLabel, supported)
 			}
 
@@ -439,23 +538,24 @@ func (data *multiArchValidator) checkMissingLabelsForSO() {
 		// this message as result
 		sort.Strings(notFoundSoLabel)
 		data.warns = append(data.warns,
-			fmt.Errorf("check if the CSV is missing the label (%s<value>) for this/those SO(s): %q. "+
-				"Note that this CSV has one or more images declared which provides this support. "+
-				"Then, it is very likely that you want to provide it. "+
-				"So that, if you support more than linux SO you MUST "+
-				"use the required labels for all which are supported. "+
-				"Otherwise, your solution might not filtered accordingly",
-				operatorFrameworkOSLabel, notFoundSoLabel))
+			fmt.Errorf("check if the CSV is missing the label (%s<value>) for the SO(s): %q. "+
+				"Be aware that your Operator manager image %q provides this support. "+
+				"Thus, it is very likely that you want to provide it and if you support more than linux SO you MUST,"+
+				"use the required labels for all which are supported."+
+				"Otherwise, your solution cannot be listed on the cluster for these architectures",
+				operatorFrameworkOSLabel,
+				notFoundSoLabel,
+				data.managerImagesString))
 	}
 }
 
-// checkMissingLabelsForArchs verify if 1 or ore images has support for a Arch not defined via the labels
+// checkMissingLabelsForArchs verify if 1 or ore allOtherImages has support for a Arch not defined via the labels
 // (probably the label for this Arch is missing )
 func (data *multiArchValidator) checkMissingLabelsForArchs() {
 	notFoundArchLabel := []string{}
-	for supported := range data.allArchFound {
+	for supported := range data.managerArchs {
 		found := false
-		for _, infra := range data.infraArchLabels {
+		for _, infra := range data.infraCSVArchLabels {
 			if strings.Contains(infra, supported) {
 				found = true
 				break
@@ -464,7 +564,7 @@ func (data *multiArchValidator) checkMissingLabelsForArchs() {
 		// If the value is amd64 and no labels were added to the CSV then it is fine
 		if !found && supported != "error" {
 			// if the only arch supported is amd64 then we should not ask for the label
-			if !(supported == "amd64" && len(data.allArchFound) == 1 && len(data.allArchFound["amd64"]) > 0) {
+			if !(supported == "amd64" && len(data.managerArchs) == 1 && len(data.managerArchs["amd64"]) > 0) {
 				notFoundArchLabel = append(notFoundArchLabel, supported)
 			}
 		}
@@ -474,34 +574,36 @@ func (data *multiArchValidator) checkMissingLabelsForArchs() {
 		// We need to sort, otherwise it is possible verify in the tests that we have
 		// this message as result
 		sort.Strings(notFoundArchLabel)
+
 		data.warns = append(data.warns,
-			fmt.Errorf("check if the CSV is missing the label (%s<value>) for this/those Arch(s): %q. "+
-				"Note that this CSV has one or more images declared which provides this support. "+
-				"Then, it is very likely that you want to provide it. "+
-				"So that, if you support more than amd64 architectures you MUST "+
-				"use the required labels for all which are supported. "+
-				"Otherwise, your solution might not filtered accordingly",
-				operatorFrameworkArchLabel, notFoundArchLabel))
+			fmt.Errorf("check if the CSV is missing the label (%s<value>) for the Arch(s): %q. "+
+				"Be aware that your Operator manager image %q provides this support. "+
+				"Thus, it is very likely that you want to provide it and if you support more than amd64 architectures, you MUST,"+
+				"use the required labels for all which are supported."+
+				"Otherwise, your solution cannot be listed on the cluster for these architectures",
+				operatorFrameworkArchLabel,
+				notFoundArchLabel,
+				data.managerImagesString))
 	}
 }
 
 func (data *multiArchValidator) loadAllPossibleArchSupported() {
 	// Add the values provided via label
-	for _, v := range data.infraArchLabels {
+	for _, v := range data.infraCSVArchLabels {
 		label := extractValueFromOFArchLabel(v)
-		data.allArchFound[label] = label
+		data.managerArchs[label] = label
 	}
 
 	// If a CSV does not include an arch label, it is treated as if it has the following AMD64 support label by default
-	if len(data.infraArchLabels) == 0 {
-		data.allArchFound["amd64"] = "amd64"
+	if len(data.infraCSVArchLabels) == 0 {
+		data.managerArchs["amd64"] = "amd64"
 	}
 
-	// Get all ARCH from the provided images
-	for _, imageData := range data.images {
+	// Get all ARCH from the provided allOtherImages
+	for _, imageData := range data.managerImages {
 		for _, plataform := range imageData {
 			if len(plataform.Architecture) > 0 {
-				data.allArchFound[plataform.Architecture] = plataform.Architecture
+				data.managerArchs[plataform.Architecture] = plataform.Architecture
 			}
 		}
 	}
@@ -510,48 +612,48 @@ func (data *multiArchValidator) loadAllPossibleArchSupported() {
 // loadAllPossibleSoSupported will verify all SO that this bundle can support
 // for then, we aare able to check if it is missing labels.
 // Note:
-// - we check what are the SO of all images informed
+// - we check what are the SO of all allOtherImages informed
 // - we ensure that the linux SO will be added when none so labels were informed
 // - we check all labels to know what are the SO(s) to obtain the list of them which the bundle is defining
 func (data *multiArchValidator) loadAllPossibleSoSupported() {
 	// Add the values provided via label
-	for _, v := range data.infraOSLabels {
+	for _, v := range data.infraCSVOSLabels {
 		label := extractValueFromOFSoLabel(v)
-		data.allOsFound[label] = label
+		data.managerOs[label] = label
 	}
 
 	// If a ClusterServiceVersion does not include an os label, a target OS is assumed to be linux
-	if len(data.infraOSLabels) == 0 {
-		data.allOsFound["linux"] = "linux"
+	if len(data.infraCSVOSLabels) == 0 {
+		data.managerOs["linux"] = "linux"
 	}
 
-	// Get all SO from the provided images
-	for _, imageData := range data.images {
+	// Get all SO from the provided allOtherImages
+	for _, imageData := range data.managerImages {
 		for _, plataform := range imageData {
 			if len(plataform.OS) > 0 {
-				data.allOsFound[plataform.OS] = plataform.OS
+				data.managerOs[plataform.OS] = plataform.OS
 			}
 		}
 	}
 }
 
-// checkSupportDefined checks if all images supports the ARCHs and SOs defined
+// checkSupportDefined checks if all allOtherImages supports the ARCHs and SOs defined
 func (data *multiArchValidator) checkSupportDefined() {
 	configuredS0 := []string{}
-	if len(data.infraOSLabels) == 0 {
+	if len(data.infraCSVOSLabels) == 0 {
 		configuredS0 = []string{"linux"}
 	}
 
-	for _, label := range data.infraOSLabels {
+	for _, label := range data.infraCSVOSLabels {
 		configuredS0 = append(configuredS0, extractValueFromOFSoLabel(label))
 	}
 
 	configuredArch := []string{}
-	if len(data.infraArchLabels) == 0 {
+	if len(data.infraCSVArchLabels) == 0 {
 		configuredArch = []string{"amd64"}
 	}
 
-	for _, label := range data.infraArchLabels {
+	for _, label := range data.infraCSVArchLabels {
 		configuredArch = append(configuredArch, extractValueFromOFArchLabel(label))
 	}
 
@@ -564,7 +666,7 @@ func (data *multiArchValidator) checkSupportDefined() {
 
 	notFoundImgPlat := map[string][]string{}
 	for _, config := range allSupportedConfiguration {
-		for image, allPlataformFromImage := range data.images {
+		for image, allPlataformFromImage := range data.allOtherImages {
 			found := false
 			for _, imgPlat := range allPlataformFromImage {
 				// Ignore the errors since they mean that was not possible to inspect
@@ -588,11 +690,11 @@ func (data *multiArchValidator) checkSupportDefined() {
 
 	if len(notFoundImgPlat) > 0 {
 		for platform, images := range notFoundImgPlat {
-			// If we not sort the images we cannot check its result in the tests
+			// If we not sort the allOtherImages we cannot check its result in the tests
 			sort.Strings(images)
-			data.warns = append(data.warns,
-				fmt.Errorf("**ATTENTION**: The support for (SO.architecture): (%s) was not found for the image(s) %s. "+
-					"However, this CSV is configured to provided these support",
+			data.errors = append(data.errors,
+				fmt.Errorf("not all images specified are providing the support described via the CSV labels. "+
+					"Note that (SO.architecture): (%s) was not found for the image(s) %s. ",
 					platform, images))
 		}
 	}
@@ -611,11 +713,11 @@ func extractValueFromOFArchLabel(v string) string {
 }
 
 // MapBundlesPerPackage returns map with all bundles found per pkg name
-func mapHeadBundlesPerPackageWith(bundlesReport []bundles.Column) map[string][]bundles.Column {
-	mapPackagesWithBundles := make(map[string][]bundles.Column)
+func mapHeadOfChannelsPerPackage(bundlesReport []bundles.Column) map[string]bundles.Column {
+	mapPackagesWithBundles := make(map[string]bundles.Column)
 	for _, v := range bundlesReport {
-		if v.IsHeadOfChannel && !v.IsDeprecated && len(v.PackageName) > 0 {
-			mapPackagesWithBundles[v.PackageName] = append(mapPackagesWithBundles[v.PackageName], v)
+		if v.IsHeadOfChannel && !v.IsDeprecated && len(v.PackageName) > 0 && v.IsFromDefaultChannel {
+			mapPackagesWithBundles[v.PackageName] = v
 		}
 	}
 	return mapPackagesWithBundles
