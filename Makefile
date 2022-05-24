@@ -112,3 +112,8 @@ generate-test: install
 	$(CONTAINER_ENGINE) login https://registry.redhat.io
 	go run ./hack/report/bundles/generate.go
 	go run ./hack/deprecate-api/generate.go
+
+# todo: remove it sooner. It is only valid fpr specific case scenario on 4.11
+.PHONY: special-needs
+special-needs:
+	go run ./hack/specific-needs/openshift-ns/generate.go

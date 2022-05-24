@@ -91,6 +91,10 @@ func main() {
 					kind = "Max OCP Version - Monitor"
 				} else if strings.Contains(info.Name(), "multiarch") {
 					kind = "Multi-Arch"
+					//todo: remove the following asap as possible
+					//it only address specific need for 4.11
+				} else if strings.Contains(info.Name(), "openshift-ns") {
+					kind = "Suggested NS prefixed with openshift"
 				}
 				tagValue := "latest"
 				if strings.Contains(info.Name(), "v") {
