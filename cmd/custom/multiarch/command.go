@@ -114,7 +114,7 @@ func run(cmd *cobra.Command, args []string) error {
 	t := template.Must(template.ParseFS(multiarchTemplate, "multiarch_template.go.tmpl"))
 	err = t.Execute(f, multiarchReport)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	f.Close()

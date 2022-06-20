@@ -326,7 +326,7 @@ func (data *multiArchValidator) loadImagesFromCSV() {
 		foundManager := false
 		// For the default scaffold we have a container called manager
 		for _, c := range v.Spec.Template.Spec.Containers {
-			if c.Name == "manager" {
+			if c.Name == "manager" && len(data.managerImages[c.Image]) == 0{
 				data.managerImages[c.Image] = append(data.managerImages[c.Image], platform{})
 				data.managerImagesString = append(data.managerImagesString, c.Image)
 				foundManager = true
@@ -338,7 +338,7 @@ func (data *multiArchValidator) loadImagesFromCSV() {
 		// kube-rbac-proxy image scaffold by default
 		if !foundManager {
 			for _, c := range v.Spec.Template.Spec.Containers {
-				if c.Name != "kube-rbac-proxy" {
+				if c.Name != "kube-rbac-proxy" && len(data.managerImages[c.Image]) == 0 {
 					data.managerImages[c.Image] = append(data.managerImages[c.Image], platform{})
 					data.managerImagesString = append(data.managerImagesString, c.Image)
 				}
@@ -412,7 +412,7 @@ func (data *multiArchValidator) inspectImages(images map[string][]platform) map[
 				// does not provide some kind of support only because we were unable to inspect it.
 				// Be aware that the validator raise warnings for all cases scenarios to let
 				// the author knows that those were not checked at all and why.
-				images[k] = append(images[k], platform{"error", "error"})
+				images[k][0] = platform{"error", "error"}
 				continue
 			}
 		}
@@ -666,6 +666,26 @@ func (data *multiArchValidator) checkSupportDefined() {
 
 	notFoundImgPlat := map[string][]string{}
 	for _, config := range allSupportedConfiguration {
+		for image, allPlataformFromImage := range data.managerImages {
+			found := false
+			for _, imgPlat := range allPlataformFromImage {
+				// Ignore the errors since they mean that was not possible to inspect
+				// the image
+				if imgPlat.OS == "error" {
+					found = true
+					break
+				}
+
+				if config == fmt.Sprintf("%s.%s", imgPlat.OS, imgPlat.Architecture) {
+					found = true
+					break
+				}
+			}
+
+			if !found {
+				notFoundImgPlat[config] = append(notFoundImgPlat[config], image)
+			}
+		}
 		for image, allPlataformFromImage := range data.allOtherImages {
 			found := false
 			for _, imgPlat := range allPlataformFromImage {
@@ -694,7 +714,7 @@ func (data *multiArchValidator) checkSupportDefined() {
 			sort.Strings(images)
 			data.errors = append(data.errors,
 				fmt.Errorf("not all images specified are providing the support described via the CSV labels. "+
-					"Note that (SO.architecture): (%s) was not found for the image(s) %s. ",
+					"Note that (SO.architecture): (%s) was not found for the image(s) %s",
 					platform, images))
 		}
 	}

@@ -131,7 +131,7 @@ func generateReportFor(name string, filespath string) error {
 	t := template.Must(template.ParseFiles(getTemplatePath()))
 	err = t.Execute(f, catalogReport)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	f.Close()

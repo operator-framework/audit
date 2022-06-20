@@ -50,10 +50,9 @@ func main() {
 
 	// Gen all Kinds for the latest
 	images := map[string]string{
-		"registry.redhat.io/redhat/redhat-marketplace-index:v4.10": "https://registry.redhat.io",
-		"registry.redhat.io/redhat/certified-operator-index:v4.10": "https://registry.redhat.io",
-		"registry.redhat.io/redhat/community-operator-index:v4.10": "https://registry.redhat.io",
-		"registry.redhat.io/redhat/redhat-operator-index:v4.10":    "https://registry.redhat.io",
+		"registry.redhat.io/redhat/redhat-marketplace-index:v4.11": "https://registry.redhat.io",
+		"registry.redhat.io/redhat/certified-operator-index:v4.11": "https://registry.redhat.io",
+		"registry.redhat.io/redhat/redhat-operator-index:v4.11":    "https://registry.redhat.io",
 	}
 
 	ce := pkg.GetContainerToolFromEnvVar()
@@ -86,6 +85,10 @@ func main() {
 
 	// Generate without run scorecard to be faster
 	images = map[string]string{
+		"registry.redhat.io/redhat/redhat-marketplace-index:v4.10": "https://registry.redhat.io",
+		"registry.redhat.io/redhat/certified-operator-index:v4.10": "https://registry.redhat.io",
+		"registry.redhat.io/redhat/community-operator-index:v4.10": "https://registry.redhat.io",
+		"registry.redhat.io/redhat/redhat-operator-index:v4.10":    "https://registry.redhat.io",
 		"registry.redhat.io/redhat/certified-operator-index:v4.7": "https://registry.redhat.io",
 		"registry.redhat.io/redhat/community-operator-index:v4.7": "https://registry.redhat.io",
 		"registry.redhat.io/redhat/redhat-marketplace-index:v4.7": "https://registry.redhat.io",

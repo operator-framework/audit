@@ -42,7 +42,19 @@ func ExtractIndexDB(image string, containerEngine string) error {
 	command = exec.Command(containerEngine, "cp", fmt.Sprintf("%s:/database/index.db", catalogIndex), "./output/")
 	_, err = pkg.RunCommand(command)
 	if err != nil {
-		return fmt.Errorf("unable to extract the image for index.db %s : %s", image, err)
+
+		command = exec.Command(containerEngine, "cp", fmt.Sprintf("%s:/var/lib/iib/_hidden/do.not.edit.db", catalogIndex), "./output/")
+		_, err = pkg.RunCommand(command)
+		if err != nil {
+			return fmt.Errorf("unable to extract the image for index.db %s : %s", image, err)
+		}
+
+		command = exec.Command("cp", "./output/do.not.edit.db", "./output/index.db")
+		_, err = pkg.RunCommand(command)
+		if err != nil {
+			return fmt.Errorf("renaming do.not.edit.db to index.db %s : %s", image, err)
+		}
+
 	}
 	return nil
 }
