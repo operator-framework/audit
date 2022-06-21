@@ -73,6 +73,7 @@ func main() {
 					strings.Contains(info.Name(), "v4.6") ||
 					strings.Contains(info.Name(), "v4.8") ||
 					strings.Contains(info.Name(), "v4.9") ||
+					strings.Contains(info.Name(), "v4.10") ||
 					strings.Contains(info.Name(), "operatorhubio") {
 					return nil
 				}

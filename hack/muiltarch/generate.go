@@ -72,6 +72,7 @@ func main() {
 				if strings.Contains(info.Name(), "v4.7") ||
 					strings.Contains(info.Name(), "v4.6") ||
 					strings.Contains(info.Name(), "v4.8") ||
+					strings.Contains(info.Name(), "v4.10") ||
 					strings.Contains(info.Name(), "v4.9") {
 					return nil
 				}

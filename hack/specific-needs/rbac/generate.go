@@ -150,7 +150,7 @@ func generateReportFor() error {
 	t := template.Must(template.ParseFiles(getTemplatePath()))
 	err = t.Execute(f, report)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	return f.Close()

@@ -95,7 +95,7 @@ func RunCommandCapturingOutput(command *exec.Cmd) {
 	stderr := NewCapturingPassThroughWriter(os.Stderr)
 	err := command.Start()
 	if err != nil {
-		log.Fatalf("cmd.Start() failed with '%s'\n", err)
+		log.Errorf("cmd.Start() failed with '%s'\n", err)
 	}
 
 	var wg sync.WaitGroup
