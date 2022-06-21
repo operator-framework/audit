@@ -99,8 +99,18 @@ generate-dashboards:
 	go run ./hack/deprecate-api/generate.go
 	go run ./hack/maxocpversion/generate.go
 	go run ./hack/qa/generate.go
+	go run ./hack/index/generate.go
+	generate-muiltach
+
+.PHONY: generate-muiltach ## Generate the testdata custom dashboards
+generate-muiltach:
+	# we need to prune the images before and after multiarch
+	$(CONTAINER_ENGINE) image prune --all --force
+	make install
+	$(CONTAINER_ENGINE) login https://registry.redhat.io
 	go run ./hack/muiltarch/generate.go
 	go run ./hack/index/generate.go
+	$(CONTAINER_ENGINE) image prune --all --force
 
 .PHONY: generate-all ## Generate all testdata with the helpers which are only valid to address special needs to 4.9-GA
 generate-all:

@@ -50,6 +50,7 @@ func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 	indexImage string) *models.AuditBundle {
 
 	if len(auditBundle.OperatorBundleImagePath) < 1 {
+		log.Errorf("not found bundle path stored in the index.db")
 		auditBundle.Errors = append(auditBundle.Errors,
 			errors.New("not found bundle path stored in the index.db").Error())
 		return auditBundle
@@ -57,6 +58,7 @@ func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 
 	err := DownloadImage(auditBundle.OperatorBundleImagePath, containerEngine)
 	if err != nil {
+		log.Errorf("unable to download container image (%s): %s", auditBundle.OperatorBundleImagePath, err)
 		auditBundle.Errors = append(auditBundle.Errors,
 			fmt.Errorf("unable to download container image (%s): %s", auditBundle.OperatorBundleImagePath, err).Error())
 		return auditBundle
@@ -67,6 +69,7 @@ func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 
 	inspectManifest, err := pkg.RunDockerInspect(auditBundle.OperatorBundleImagePath, containerEngine)
 	if err != nil {
+		log.Errorf("unable to inspace: %s", err)
 		auditBundle.Errors = append(auditBundle.Errors, err.Error())
 	} else {
 		// Gathering data by inspecting the operator bundle image
@@ -83,6 +86,7 @@ func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 	// Read the bundle
 	auditBundle.Bundle, err = apimanifests.GetBundleFromDir(filepath.Join(bundleDir, "bundle"))
 	if err != nil {
+		log.Errorf("unable to load bundle: %s", err)
 		auditBundle.Errors = append(auditBundle.Errors, fmt.Errorf("unable to get the bundle: %s", err).Error())
 		return auditBundle
 	}
@@ -136,6 +140,7 @@ func createBundleDir(auditBundle *models.AuditBundle) string {
 	cmd := exec.Command("mkdir", dir)
 	_, err = pkg.RunCommand(cmd)
 	if err != nil {
+		log.Error(err)
 		auditBundle.Errors = append(auditBundle.Errors,
 			fmt.Errorf("unable to create the dir for the bundle: %s", err).Error())
 	}

@@ -366,10 +366,11 @@ func (data *multiArchValidator) loadImagesFromCSV() {
 // runManifestInspect executes the command for we are able to check what
 // are the Architecture(s) and SO(s) supported per each image found
 func runManifestInspect(image, tool string) (manifestInspect, error) {
-	log.Infof("downloading iamge %s", image)
+	log.Infof("downloading image %s", image)
 	cmd := exec.Command(tool, "pull", image)
 	_, err := runCommand(cmd)
 	if err != nil {
+		log.Error(err)
 		return manifestInspect{}, err
 	}
 
@@ -377,11 +378,13 @@ func runManifestInspect(image, tool string) (manifestInspect, error) {
 	cmd = exec.Command(tool, "manifest", "inspect", image)
 	output, err := runCommand(cmd)
 	if err != nil {
+		log.Error(err)
 		return manifestInspect{}, err
 	}
 
 	var inspect manifestInspect
 	if err := json.Unmarshal(output, &inspect); err != nil {
+		log.Error(err)
 		return manifestInspect{}, err
 	}
 	return inspect, nil
@@ -392,6 +395,7 @@ func runCommand(cmd *exec.Cmd) ([]byte, error) {
 	command := strings.Join(cmd.Args, " ")
 	output, err := cmd.CombinedOutput()
 	if err != nil {
+		log.Error(err)
 		return output, fmt.Errorf("%s failed with error: (%v) %s", command, err, string(output))
 	}
 	return output, nil
@@ -405,6 +409,7 @@ func (data *multiArchValidator) inspectImages(images map[string][]platform) map[
 			// try once more
 			manifest, err = runManifestInspect(k, data.containerTool)
 			if err != nil {
+				log.Error("unable to inspect the image (%s) : %s", k, err)
 				data.warns = append(data.warns, fmt.Errorf("unable to inspect the image (%s) : %s", k, err))
 
 				// We set the Arch and SO as error for we are able to deal witth these cases further
@@ -686,9 +691,9 @@ func (data *multiArchValidator) checkSupportDefined() {
 				notFoundImgPlat[config] = append(notFoundImgPlat[config], image)
 			}
 		}
-		for image, allPlataformFromImage := range data.allOtherImages {
+		for image, allPlatformFromImage := range data.allOtherImages {
 			found := false
-			for _, imgPlat := range allPlataformFromImage {
+			for _, imgPlat := range allPlatformFromImage {
 				// Ignore the errors since they mean that was not possible to inspect
 				// the image
 				if imgPlat.OS == "error" {
