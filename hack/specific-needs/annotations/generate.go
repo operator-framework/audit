@@ -31,31 +31,23 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/goccy/go-yaml"
-	log "github.com/sirupsen/logrus"
-	corev1 "k8s.io/api/core/v1"
-
-	"github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/operator-framework/audit/hack"
+
+	log "github.com/sirupsen/logrus"
+
 	"github.com/operator-framework/audit/pkg"
 	"github.com/operator-framework/audit/pkg/reports/bundles"
 	"github.com/operator-framework/audit/pkg/reports/custom"
 )
 
-type SecurityContextInfo struct {
+type BundlesAnnotation struct {
 	Name   string
-	ContainersPretty []string
-	DeploymentsPretty []string
-	Containers []corev1.SecurityContext
-	Deployments []corev1.PodSecurityContext
-	DeploymentsLabels []string
-	BundleLabels []string
-	HaveAccessToSCCV2 string
+	Values []string
 }
 
 type Package struct {
 	PackageName string
-	Bundles     []SecurityContextInfo
+	Bundles     []BundlesAnnotation
 }
 
 type OpenshiftNSReport struct {
@@ -77,6 +69,7 @@ func main() {
 
 	dirs := map[string]string{
 		"redhat_certified_operator_index": "registry.redhat.io/redhat/certified-operator-index",
+		"redhat_community_operator_index": "registry.redhat.io/redhat/community-operator-index",
 		"redhat_redhat_marketplace_index": "registry.redhat.io/redhat/redhat-marketplace-index",
 		"redhat_redhat_operator_index":    "registry.redhat.io/redhat/redhat-operator-index",
 	}
@@ -90,17 +83,12 @@ func main() {
 
 		// Walk in the testdata dir and generates the deprecated-api custom dashboard for
 		// all bundles JSON reports available there
-
+		// nolint:staticcheck
 		err := filepath.Walk(pathToWalk, func(path string, info os.FileInfo, err error) error {
 			if info != nil && !info.IsDir() && strings.HasPrefix(info.Name(), "bundles") &&
 				strings.HasSuffix(info.Name(), "json") {
 
-				// ignore all tags and only generate for 4.10
-				if !strings.Contains(info.Name(), "v4.11") {
-					return nil
-				}
-
-				custom.Flags.OutputPath = filepath.Join(hack.ReportsPath, dir, "dashboards")
+				custom.Flags.OutputPath = filepath.Join(hack.ReportsPath, "annotations")
 				custom.Flags.File = path
 				err = generateReportFor()
 				if err != nil {
@@ -125,8 +113,13 @@ func generateReportFor() error {
 
 	report := generateOpenshiftNSReport(bundles)
 
+	if len(report.Packages) == 0 {
+		log.Warnf("not found any continue...")
+		return nil
+	}
+
 	dashOutputPath := filepath.Join(custom.Flags.OutputPath,
-		pkg.GetReportName(report.ImageName, "security_context", "html"))
+		pkg.GetReportName(report.ImageName, "annotations", "html"))
 
 	f, err := os.Create(dashOutputPath)
 	if err != nil {
@@ -147,7 +140,7 @@ func getTemplatePath() string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return filepath.Join(currentPath, "/hack/specific-needs/securityContext/template.go.tmpl")
+	return filepath.Join(currentPath, "/hack/specific-needs/annotations/template.go.tmpl")
 }
 
 func generateOpenshiftNSReport(bundlesReport bundles.Report) *OpenshiftNSReport {
@@ -157,9 +150,9 @@ func generateOpenshiftNSReport(bundlesReport bundles.Report) *OpenshiftNSReport 
 	report.ImageBuild = bundlesReport.IndexImageInspect.Created
 	report.GeneratedAt = bundlesReport.GenerateAt
 
-	allBundlesWithInfo := getMapWithRestrictedInfo(bundlesReport)
+	allBundlesWithAnnotations := getMapWithAnnotations(bundlesReport)
 
-	for pkgName, bundles := range allBundlesWithInfo {
+	for pkgName, bundles := range allBundlesWithAnnotations {
 		report.Packages = append(report.Packages, Package{
 			PackageName: pkgName,
 			Bundles:     bundles,
@@ -173,113 +166,49 @@ func generateOpenshiftNSReport(bundlesReport bundles.Report) *OpenshiftNSReport 
 	return report
 }
 
-func getMapWithRestrictedInfo(bundlesReport bundles.Report) map[string][]SecurityContextInfo {
-	mapPackageBundles := make(map[string][]SecurityContextInfo)
+func getMapWithAnnotations(bundlesReport bundles.Report) map[string][]BundlesAnnotation {
+	mapPackageBundles := make(map[string][]BundlesAnnotation)
 
 	for _, bundle := range bundlesReport.Columns {
+		var bundleAnnotationsFoundValues []string
 		if bundle.IsDeprecated ||
 			len(bundle.PackageName) == 0 ||
 			bundle.BundleCSV == nil ||
 			bundle.BundleCSV.Annotations == nil {
 			continue
 		}
-		var bundleRestricted SecurityContextInfo
-		bundleRestricted.Name = bundle.BundleCSV.Name
-		bundleRestricted.HaveAccessToSCCV2 = "LOW"
-
-		// get pod-security labels (let's see if people is doing things wrong)
-		for _, label := range bundle.BundleCSV.Labels {
-			if strings.HasPrefix(label,"pod-security") {
-				bundleRestricted.BundleLabels = append(bundleRestricted.BundleLabels, label)
+		const keyAnnotationCertSecretName = "service.beta.openshift.io/serving-cert-secret-name"
+		const keyAnnotationInjectCABundle = "service.beta.openshift.io/inject-cabundle"
+		for key, value := range bundle.BundleCSV.Annotations {
+			if key == keyAnnotationCertSecretName {
+				bundleAnnotationsFoundValues = append(bundleAnnotationsFoundValues, fmt.Sprintf("%s:%s", key, value))
+			}
+			if key == keyAnnotationInjectCABundle {
+				bundleAnnotationsFoundValues = append(bundleAnnotationsFoundValues, fmt.Sprintf("%s:%s", key, value))
 			}
 		}
-
-		dep := bundle.BundleCSV.Spec.InstallStrategy.StrategySpec.DeploymentSpecs
-		if dep != nil {
-			for _, value := range dep {
-				if value.Spec.Template.Spec.SecurityContext != nil {
-					// get the securityContext info
-					bundleRestricted.Deployments = append(bundleRestricted.Deployments,
-						*value.Spec.Template.Spec.SecurityContext)
-
-					// store the securityContext as pretty info
-					pretty, err := yaml.Marshal(value.Spec.Template.Spec.SecurityContext)
-					if err != nil {
-						log.Warnf(err.Error())
-					}
-					bundleRestricted.DeploymentsPretty = append(bundleRestricted.DeploymentsPretty,
-						fmt.Sprintf("\n%s\n\n", string(pretty)))
-
-					// get pod-security labels
-					for _, label := range value.Spec.Template.Labels {
-						if strings.HasPrefix(label,"pod-security") {
-							bundleRestricted.DeploymentsLabels = append(bundleRestricted.DeploymentsLabels, label)
-						}
-					}
-
-					if !hasAccessPod(value) {
-						bundleRestricted.HaveAccessToSCCV2 = "HIGH"
-					}
-				}
-
-				if value.Spec.Template.Spec.Containers != nil {
-					for _, value := range value.Spec.Template.Spec.Containers {
-						if value.SecurityContext != nil {
-							bundleRestricted.Containers = append(bundleRestricted.Containers,
-								*value.SecurityContext)
-
-							pretty, err := yaml.Marshal(value.SecurityContext)
-							if err != nil {
-								log.Warnf(err.Error())
-							}
-							bundleRestricted.ContainersPretty = append(bundleRestricted.ContainersPretty,
-								fmt.Sprintf("%s", pretty))
-
-							if !hasAccessContainers(*value.SecurityContext) {
-								bundleRestricted.HaveAccessToSCCV2 = "NO (NOT RUN)"
-							}
-						}
-					}
-				}
+		for key, value := range bundle.BundleCSV.Spec.Annotations {
+			if key == keyAnnotationCertSecretName {
+				bundleAnnotationsFoundValues = append(bundleAnnotationsFoundValues, fmt.Sprintf("%s:%s", key, value))
+			}
+			if key == keyAnnotationInjectCABundle {
+				bundleAnnotationsFoundValues = append(bundleAnnotationsFoundValues, fmt.Sprintf("%s:%s", key, value))
 			}
 		}
-		mapPackageBundles[bundle.PackageName] = append(mapPackageBundles[bundle.PackageName], bundleRestricted)
+		for key, value := range bundle.BundleAnnotations {
+			if key == keyAnnotationCertSecretName {
+				bundleAnnotationsFoundValues = append(bundleAnnotationsFoundValues, fmt.Sprintf("%s:%s", key, value))
+			}
+			if key == keyAnnotationInjectCABundle {
+				bundleAnnotationsFoundValues = append(bundleAnnotationsFoundValues, fmt.Sprintf("%s:%s", key, value))
+			}
+		}
+		if len(bundleAnnotationsFoundValues) > 0 {
+			mapPackageBundles[bundle.PackageName] = append(mapPackageBundles[bundle.PackageName], BundlesAnnotation{
+				bundle.BundleCSV.Name,
+				bundleAnnotationsFoundValues,
+			})
+		}
 	}
 	return mapPackageBundles
-}
-
-func hasAccessPod(value v1alpha1.StrategyDeploymentSpec) bool {
-	if value.Spec.Template.Spec.SecurityContext.RunAsNonRoot != nil && !*value.Spec.Template.Spec.SecurityContext.RunAsNonRoot {
-		return false
-	}
-	return true
-}
-
-func hasAccessContainers(value corev1.SecurityContext) bool{
-	if value.RunAsNonRoot != nil && !*value.RunAsNonRoot{
-		return false
-	}
-
-	if value.AllowPrivilegeEscalation != nil && *value.AllowPrivilegeEscalation {
-		return false
-	}
-
-	if value.Privileged != nil && *value.Privileged {
-		return false
-	}
-
-	if value.Capabilities != nil {
-		if len(value.Capabilities.Add) > 0 {
-			return false
-		}
-		var allCapabilty corev1.Capability
-		var allCapabilty2 corev1.Capability
-		allCapabilty = "all"
-		allCapabilty2 = "ALL"
-		if value.Capabilities.Drop != nil &&
-			(value.Capabilities.Drop[0] != allCapabilty && value.Capabilities.Drop[0] != allCapabilty2){
-			return false
-		}
-	}
-	return true
 }

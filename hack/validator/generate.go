@@ -66,17 +66,10 @@ func main() {
 
 		// Walk in the testdata dir and generates the deprecated-api custom dashboard for
 		// all bundles JSON reports available there
+		// nolint:staticcheck
 		err := filepath.Walk(pathToWalk, func(path string, info os.FileInfo, err error) error {
 			if info != nil && !info.IsDir() && strings.HasPrefix(info.Name(), "bundles") &&
 				strings.HasSuffix(info.Name(), "json") {
-
-				//// Ignore the tag images 4.6 and 4.7
-				//if strings.Contains(info.Name(), "v4.7") ||
-				//	strings.Contains(info.Name(), "v4.6") ||
-				//	strings.Contains(info.Name(), "v4.8") ||
-				//	strings.Contains(info.Name(), "v4.10") {
-				//	return nil
-				//}
 
 				// run report
 				command := exec.Command(binPath, "dashboard", "validator",

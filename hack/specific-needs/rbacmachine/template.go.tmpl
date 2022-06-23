@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>RBAC permissions (machineconfigs and machineconfigpools)</title>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.24/datatables.min.css"/>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+
+    <style>
+        div.dataTables_wrapper {
+            width: 98%;
+            margin: 0 auto;
+        }
+
+        table.minimalistBlack {
+            border: 3px solid #000000;
+        }
+        table.minimalistBlack td, table.minimalistBlack th {
+            border: 1px solid #000000;
+            font-size: 12px;
+            text-align: left;
+        }
+        table.minimalistBlack tbody td {
+            font-size: 12px;
+        }
+        table.minimalistBlack thead {
+            border-bottom: 3px solid #000000;
+            text-align: center;
+        }
+        table.minimalistBlack thead th {
+            font-size: 15px;
+            color: white;
+            text-align: center;
+        }
+
+        .themed-container {
+            padding: .75rem;
+            margin-bottom: 1.5rem;
+            background-color: #F0F0F0;
+            border: 1px solid #0D0C0C;
+        }
+    </style>
+
+
+</head>
+<body class="py-4">
+
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.24/datatables.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+<script >
+
+    $(document).ready(function() {
+        $('#grade').DataTable( {
+            "scrollX": true
+        } );
+    } );
+
+</script>
+
+<main>
+
+        <h1>RBAC permissions (machineconfigs and machineconfigpools)</h1>
+        <p>The following packages were obtained by checking the image and the bundle manifests distributed. This report aims to try to identify the package distributions that are asking permissions to machineconfigs and machineconfigpools resources specifically.</p>
+
+        <div class="container-fluid themed-container">
+            <h5 class="display-12 fw-bold">Data from the image used</h5>
+            <ul>
+                <li>Image name: {{ .ImageName }} </li>
+                <li>Image ID: {{ .ImageID }} </li>
+                <li>Image Created at: {{ .ImageBuild }} </li>
+                <li>From JSON report generated at: {{ .GeneratedAt }} </li>
+            </ul>
+        </div>
+
+        <div class="container-fluid themed-container">
+            <h5 class="display-12 fw-bold">FAQ</h5>
+            <li> <b>Cluster Permissions:</b> Contains all clusters permissions configured on the Operator (e.g. see <a href="https://github.com/operator-framework/operator-sdk/blob/v1.18.1/testdata/go/v3/memcached-operator/bundle/manifests/memcached-operator.clusterserviceversion.yaml#L37-L97">here</a> an example). These permissions will be used to install Cluster Roles and Cluster Roles Binding</li>
+            <li> <b>Role Permissions:</b> Contains all permissions configured on the Operator (e.g. see <a href="https://github.com/operator-framework/operator-sdk/blob/v1.18.1/testdata/go/v3/memcached-operator/bundle/manifests/memcached-operator.clusterserviceversion.yaml#L169-L202">here</a> an example). These permissions will be used to install Roles and Roles Binding</li>
+        </div>
+
+           <div class="container-fluid themed-container">
+                  <h5 class="display-12 fw-bold">Bundles asking permissions to machineconfigs and/or machineconfigpools</h5>
+                  <p> If the verbs are CREATE or UPDATE or PATCH or [all with (*)], then you will see the column **Permissions To** has WRITE. If these verbs are not found, you will see the value of the column **Permissions To** as ONLY READ.</p>
+                  <table id="list" class="minimalistBlack" style="background-color: dimgrey; width: 98%">
+                      <thead>
+                          <tr>
+                             <th>Package Name</th>
+                             <th>Bundles Details</th>
+                         </tr>
+                    </thead>
+                    <tbody style="background-color: white;">
+                    {{ with .BundlesWithResources }}
+                        {{ range . }}
+                             <tr>
+                             <th>{{ .PackageName }}</th>
+                             <th>
+                              <div class="container-fluid themed-container">
+                             <table id="nodes-{{ .PackageName }}" class="minimalistBlack" style="width: 100%">
+                                 <thead>
+                                  <tr style="background-color: #004C99;">
+                                       <th align="center"> Name </th>
+                                       <th align="center">Permissions To</th>
+                                       <th align="center">Cluster Permissions</th>
+                                       <th align="center">Role Permissions</th>
+                                  </tr>
+                                 </thead>
+                                 <tbody>
+                                 {{ with .Bundles }}
+                                      {{ range . }}
+                                      <tr>
+                                          <th>{{ .BundleName}} </th>
+                                          <th align="center">{{ .PermissionsTo}} </th>
+                                          <th align="center">
+                                          {{ if eq (len .ClusterPermissions) 0 }}
+                                               <div align="center">
+                                                <p> - </p>
+                                                </div>
+                                          {{ end }}
+                                          {{ if gt (len .ClusterPermissions) 0 }}
+                                            <script>
+                                              function myFunctionShowNodeCluster(value) {
+                                                  var x = document.getElementById(value);
+                                                  if (x.style.display === "none") {
+                                                    x.style.display = "block";
+                                                  } else {
+                                                    x.style.display = "none";
+                                                  }
+                                                }
+                                            </script>
+                                            <div align="center">
+                                                <button align="center" onclick="myFunctionShowNodeCluster('show-node-cluster-{{ .ForHideButton}}')">Show Details</button>
+                                            </div>
+                                            <div id="show-node-cluster-{{ .ForHideButton}}" style="display: none;">
+                                                <pre>
+                                                <code> {{ .ClusterPermissions}} </code>
+                                                </pre>
+                                            </div>
+                                            {{ end }}
+                                          </th>
+                                          <th align="center">
+                                           {{ if eq (len .Permissions) 0 }}
+                                                 <div align="center">
+                                                 <p> - </p>
+                                                 </div>
+                                           {{ end }}
+                                          {{ if gt (len .Permissions) 0 }}
+                                            <script>
+                                              function myFunctionShowNodePermissions(value) {
+                                                  var x = document.getElementById(value);
+                                                  if (x.style.display === "none") {
+                                                    x.style.display = "block";
+                                                  } else {
+                                                    x.style.display = "none";
+                                                  }
+                                                }
+                                            </script>
+                                            <div align="center">
+                                                <button align="center" onclick="myFunctionShowNodePermissions('node-show-node-perm-{{ .ForHideButton}}')">Show Details</button>
+                                            </div>
+                                            <div id="node-show-node-perm-{{ .ForHideButton}}" style="display: none;">
+                                                <pre>
+                                                <code> {{ .Permissions}} </code>
+                                                </pre>
+                                            </div>
+                                            {{ end }}
+                                      </tr>
+                                 {{ end }}
+                             {{ end }}
+                             </tbody>
+                             </table>
+                             </div>
+                             </th>
+                         </tr>
+                            {{ end }}
+                        {{ end }}
+                        </tbody>
+                    </table>
+                </div>
+</main>
+
+</body>
+</html>

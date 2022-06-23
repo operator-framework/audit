@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <title>SecurityContext Info</title>
+    <title>Annotations</title>
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.24/datatables.min.css"/>
 
@@ -71,8 +71,8 @@
 
 <main>
 
-        <h1>SecurityContext Info</h1>
-        <p>Shows the SecurityContext Information for the Bundle Pod(s)/Container(s)</p>
+        <h1>Annotations</h1>
+        <p>The following packages were obtained by checking the image and the bundle manifests distributed. This report aims to try to identify the package distributions that are using the annotations; service.beta.openshift.io/serving-cert-secret-name and service.beta.openshift.io/inject-cabundle=true.</p>
 
         <div class="container-fluid themed-container">
             <h5 class="display-12 fw-bold">Data from the image used</h5>
@@ -85,75 +85,51 @@
         </div>
 
         <div class="container-fluid themed-container">
-        <h5 class="display-12 fw-bold">Writing Nodes</h5>
-        <table id="list" class="minimalistBlack" style="background-color: dimgrey; width: 98%">
-            <thead>
-                <tr>
-                    <th>Package Name</th>
-                    <th>Bundles Details</th>
-                </tr>
-            </thead>
-           <tbody style="background-color: white;">
-           {{ with .Packages }}
-                {{ range . }}
-                <tr>
-                    <th>{{ .PackageName }}</th>
-                    <th>
-                    <div class="container-fluid themed-container">
-                    <table id="package-{{ .PackageName }}" class="minimalistBlack" style="width: 100%">
-                    <thead>
-                        <tr style="background-color: #004C99;">
-                            <th align="center">Name</th>
-                            <th align="center">SecurityContext Pod</th>
-                            <th align="center">SecurityContext Containers</th>
-                            <th align="center">Use pod-security labels on the Pod</th>
-                            <th align="center">Risk to not have access to scc-v2</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {{ with .Bundles }}
-                        {{ range . }}
-                        <tr>
-                        <th>{{ .Name}} </th>
-                        <th>
-                            {{ range .DeploymentsPretty }}
-
-                            <pre>
-                            <code> {{ . }} </code>
-                            </pre>
-
-                            {{ end }}
-                        </th>
-                        <th>
-                            {{ range .ContainersPretty }}
-
-                            <pre>
-                            <code> {{ . }} </code>
-                            </pre>
-
-                            {{ end }}
-                        </th>
-                        <th>
-                            {{ range .DeploymentsLabels }}
-                            <li>{{ . }}</li>
-                            {{ end }}
-                        </th>
-                        <th>
-                            {{ .HaveAccessToSCCV2 }}
-                        </th>
-                        </tr>
-                        {{ end }}
-                    {{ end }}
-                    </tbody>
-                    </table>
-                    </div>
-                    </th>
+        <h5 class="display-12 fw-bold">Operator packages and bundles</h5>
+            <table id="list" class="minimalistBlack" style="background-color: dimgrey; width: 98%">
+                <thead>
+                  <tr>
+                     <th>Package Name</th>
+                     <th>Bundles Details</th>
+                 </tr>
+                </thead>
+                <tbody style="background-color: white;">
+                {{ with .Packages }}
+                    {{ range . }}
+                         <tr>
+                         <th>{{ .PackageName }}</th>
+                         <th>
+                          <div class="container-fluid themed-container">
+                         <table id="nodes-{{ .PackageName }}" class="minimalistBlack" style="width: 100%">
+                             <thead>
+                              <tr style="background-color: #004C99;">
+                                   <th align="center">Name</th>
+                                   <th align="center">Annotations</th>
+                              </tr>
+                             </thead>
+                             <tbody>
+                             {{ with .Bundles }}
+                                  {{ range . }}
+                                  <tr>
+                                      <th>{{ .Name}} </th>
+                                      <th>
+                                       {{ range .Values }}
+                                        <li>{{ . }}</li>
+                                        {{ end }}
+                                      </th>
+                                  </tr>
+                             {{ end }}
+                         {{ end }}
+                         </tbody>
+                         </table>
+                         </div>
+                         </th>
                      </tr>
                         {{ end }}
                     {{ end }}
                     </tbody>
                     </table>
-                    </div>
-                </main>
-           </body>
-    </html>
+                </div>
+</main>
+</body>
+</html>

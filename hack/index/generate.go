@@ -142,7 +142,7 @@ func main() {
 	t := template.Must(template.ParseFiles(filepath.Join(currentPath, "hack/index/template.go.tmpl")))
 	err = t.Execute(f, index)
 	if err != nil {
-		log.Errorf("error to exec %v",err)
+		log.Errorf("error to exec %v", err)
 	}
 
 	f.Close()

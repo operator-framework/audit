@@ -152,10 +152,10 @@ func (bd *BundleDeprecate) addFromRules(perm v1alpha1.StrategyDeploymentPermissi
 	for apiFromMap, resourcesFromMap := range apis125 {
 		for _, rule := range perm.Rules {
 			for _, api := range rule.APIGroups {
-				if strings.ToLower(api) == strings.ToLower(apiFromMap) {
+				if strings.EqualFold(api, apiFromMap) {
 					for _, res := range rule.Resources {
 						for _, resFromMap := range resourcesFromMap {
-							if strings.ToLower(resFromMap) == strings.ToLower(res) {
+							if strings.EqualFold(resFromMap, res) {
 								bd.Permissions1_25 = append(bd.Permissions1_25,
 									fmt.Sprintf("(apiGroups/resources): %s/%s", api, res))
 							}
@@ -173,10 +173,10 @@ func (bd *BundleDeprecate) addFromRules(perm v1alpha1.StrategyDeploymentPermissi
 	for apiFromMap, resourcesFromMap := range apis126 {
 		for _, rule := range perm.Rules {
 			for _, api := range rule.APIGroups {
-				if strings.ToLower(api) == strings.ToLower(apiFromMap) {
+				if strings.EqualFold(api, apiFromMap) {
 					for _, res := range rule.Resources {
 						for _, resFromMap := range resourcesFromMap {
-							if strings.ToLower(resFromMap) == strings.ToLower(res) {
+							if strings.EqualFold(resFromMap, res) {
 								bd.Permissions1_26 = append(bd.Permissions1_26,
 									fmt.Sprintf("(apiGroups/resources): %s/%s", api, res))
 							}

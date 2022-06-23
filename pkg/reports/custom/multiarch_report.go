@@ -326,7 +326,7 @@ func (data *multiArchValidator) loadImagesFromCSV() {
 		foundManager := false
 		// For the default scaffold we have a container called manager
 		for _, c := range v.Spec.Template.Spec.Containers {
-			if c.Name == "manager" && len(data.managerImages[c.Image]) == 0{
+			if c.Name == "manager" && len(data.managerImages[c.Image]) == 0 {
 				data.managerImages[c.Image] = append(data.managerImages[c.Image], platform{})
 				data.managerImagesString = append(data.managerImagesString, c.Image)
 				foundManager = true
@@ -409,7 +409,7 @@ func (data *multiArchValidator) inspectImages(images map[string][]platform) map[
 			// try once more
 			manifest, err = runManifestInspect(k, data.containerTool)
 			if err != nil {
-				log.Error("unable to inspect the image (%s) : %s", k, err)
+				log.Errorf("unable to inspect the image (%s) : %s", k, err)
 				data.warns = append(data.warns, fmt.Errorf("unable to inspect the image (%s) : %s", k, err))
 
 				// We set the Arch and SO as error for we are able to deal witth these cases further

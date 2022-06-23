@@ -64,6 +64,7 @@ func main() {
 
 		// Walk in the testdata dir and generates the deprecated-api custom dashboard for
 		// all bundles JSON reports available there
+		// nolint:staticcheck
 		err := filepath.Walk(pathToWalk, func(path string, info os.FileInfo, err error) error {
 			if info != nil && !info.IsDir() && strings.HasPrefix(info.Name(), "bundles") &&
 				strings.HasSuffix(info.Name(), "json") {
