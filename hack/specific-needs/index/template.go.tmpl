@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Deprecated API(s) Dashboard</title>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.24/datatables.min.css"/>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+
+    <style>
+        div.dataTables_wrapper {
+            width: 98%;
+            margin: 0 auto;
+        }
+
+        .themed-container {
+            padding: .75rem;
+            margin-bottom: 1.5rem;
+            background-color: #F0F0F0;
+            border: 1px solid #0D0C0C;
+        }
+    </style>
+
+
+</head>
+<body class="py-4">
+
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.24/datatables.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+
+<main>
+        <h1>Available Dashboards</h1>
+        </br>
+        {{ with .DashboardPerCatalog }}
+            {{ range . }}
+            <div class="container-fluid themed-container">
+                <h4 class="display-12 fw-bold">{{ .Name }}</h4>
+                <ul>
+                    {{ range .Reports }}
+                          <li><a href="{{ .Path }}">{{ .Name }}</a></li>
+                     {{ end }}
+                </ul>
+            </div>
+            {{ end }}
+        {{ end }}
+</main>
+
+</body>
+</html>

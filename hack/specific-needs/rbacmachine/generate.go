@@ -45,6 +45,7 @@ import (
 )
 
 type Bundle struct {
+	PermissionsTo      string
 	BundleName         string
 	ForHideButton      string
 	Permissions        string
@@ -57,13 +58,12 @@ type Package struct {
 }
 
 type RBACReport struct {
-	ImageName   string
-	ImageID     string
-	ImageHash   string
-	ImageBuild  string
-	GeneratedAt string
-	Nodes       []Package
-	Daemonset   []Package
+	ImageName            string
+	ImageID              string
+	ImageHash            string
+	ImageBuild           string
+	GeneratedAt          string
+	BundlesWithResources []Package
 }
 
 func main() {
@@ -140,7 +140,7 @@ func generateReportFor() error {
 	report := generateRBACReport(bundles)
 
 	dashOutputPath := filepath.Join(custom.Flags.OutputPath,
-		pkg.GetReportName(report.ImageName, "rbac", "html"))
+		pkg.GetReportName(report.ImageName, "rbac_machine", "html"))
 
 	f, err := os.Create(dashOutputPath)
 	if err != nil {
@@ -161,7 +161,7 @@ func getTemplatePath() string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return filepath.Join(currentPath, "/hack/specific-needs/rbac/template.go.tmpl")
+	return filepath.Join(currentPath, "/hack/specific-needs/rbacmachine/template.go.tmpl")
 }
 
 func generateRBACReport(bundlesReport bundles.Report) *RBACReport {
@@ -171,25 +171,14 @@ func generateRBACReport(bundlesReport bundles.Report) *RBACReport {
 	rbacReport.ImageBuild = bundlesReport.IndexImageInspect.Created
 	rbacReport.GeneratedAt = bundlesReport.GenerateAt
 
-	allBundlesWithNode := getAllWithRBACForNodes(bundlesReport)
-	allBundlesWithDeamonset := getAllBundlesWithRBACForDeamonset(bundlesReport)
+	allBundlesWithRBAC := getAllWithRBACForResource(bundlesReport)
+	pkgWithMachine := mapBundlesPerPackage(allBundlesWithRBAC)
 
-	pkgWithNodes := mapBundlesPerPackage(allBundlesWithNode)
-	pkgsWithDeamonset := mapBundlesPerPackage(allBundlesWithDeamonset)
-
-	for pkgName, bundles := range pkgWithNodes {
-		nodeBundles := getReportValues(bundles)
-		rbacReport.Nodes = append(rbacReport.Nodes, Package{
+	for pkgName, bundles := range pkgWithMachine {
+		machineBundles := getReportValues(bundles)
+		rbacReport.BundlesWithResources = append(rbacReport.BundlesWithResources, Package{
 			PackageName: pkgName,
-			Bundles:     nodeBundles,
-		})
-	}
-
-	for pkgName, bundles := range pkgsWithDeamonset {
-		deamonsetBundles := getReportValues(bundles)
-		rbacReport.Daemonset = append(rbacReport.Nodes, Package{
-			PackageName: pkgName,
-			Bundles:     deamonsetBundles,
+			Bundles:     machineBundles,
 		})
 	}
 
@@ -199,8 +188,8 @@ func generateRBACReport(bundlesReport bundles.Report) *RBACReport {
 func getReportValues(bundlesColum []bundles.Column) []Bundle {
 	var bundlesResult []Bundle
 	for _, bundle := range bundlesColum {
-
 		perm := ""
+		permissionTo := "ONLY READ"
 		//nolint: typecheck
 		if bundle.BundleCSV.Spec.InstallStrategy.StrategySpec.Permissions != nil {
 			permYAML, err := yaml.Marshal(bundle.BundleCSV.Spec.InstallStrategy.StrategySpec.Permissions)
@@ -208,6 +197,12 @@ func getReportValues(bundlesColum []bundles.Column) []Bundle {
 				log.Fatalf(err.Error())
 			}
 			perm = fmt.Sprintf("\n%s\n\n", string(permYAML))
+
+			for _, perms := range bundle.BundleCSV.Spec.InstallStrategy.StrategySpec.Permissions {
+				if hasBundleResourceCriteriaWithWritePermissions(perms) {
+					permissionTo = "WRITE"
+				}
+			}
 		}
 
 		clusterPerm := ""
@@ -217,8 +212,13 @@ func getReportValues(bundlesColum []bundles.Column) []Bundle {
 			if err != nil {
 				log.Fatalf(err.Error())
 			}
-
 			clusterPerm = fmt.Sprintf("\n%s\n\n", string(permYAML))
+
+			for _, perms := range bundle.BundleCSV.Spec.InstallStrategy.StrategySpec.ClusterPermissions {
+				if hasBundleResourceCriteriaWithWritePermissions(perms) {
+					permissionTo = "WRITE"
+				}
+			}
 		}
 
 		namehidden := bundle.BundleCSV.Name
@@ -229,6 +229,7 @@ func getReportValues(bundlesColum []bundles.Column) []Bundle {
 			Permissions:        perm,
 			ClusterPermissions: clusterPerm,
 			ForHideButton:      namehidden,
+			PermissionsTo:      permissionTo,
 		})
 	}
 
@@ -250,9 +251,10 @@ func mapBundlesPerPackage(bundlesReport []bundles.Column) map[string][]bundles.C
 	return mapPackagesWithBundles
 }
 
-//nolint: dupl
-func getAllBundlesWithRBACForDeamonset(bundlesReport bundles.Report) []bundles.Column {
-	var allBundlesWithDeamonsets []bundles.Column
+//nolint:dupl
+func getAllWithRBACForResource(bundlesReport bundles.Report) []bundles.Column {
+	var allBundlesWithResource []bundles.Column
+
 	for _, bundle := range bundlesReport.Columns {
 		found := false
 		if bundle.BundleCSV == nil {
@@ -266,8 +268,8 @@ func getAllBundlesWithRBACForDeamonset(bundlesReport bundles.Report) []bundles.C
 		}
 		if bundle.BundleCSV.Spec.InstallStrategy.StrategySpec.Permissions != nil {
 			for _, perms := range bundle.BundleCSV.Spec.InstallStrategy.StrategySpec.Permissions {
-				if hasBundleDaemonsetsCriteria(perms) {
-					allBundlesWithDeamonsets = append(allBundlesWithDeamonsets, bundle)
+				if hasBundleResourceCriteria(perms) {
+					allBundlesWithResource = append(allBundlesWithResource, bundle)
 					found = true
 					break
 				}
@@ -278,68 +280,33 @@ func getAllBundlesWithRBACForDeamonset(bundlesReport bundles.Report) []bundles.C
 		}
 		if bundle.BundleCSV.Spec.InstallStrategy.StrategySpec.ClusterPermissions != nil {
 			for _, perms := range bundle.BundleCSV.Spec.InstallStrategy.StrategySpec.ClusterPermissions {
-				if hasBundleDaemonsetsCriteria(perms) {
-					allBundlesWithDeamonsets = append(allBundlesWithDeamonsets, bundle)
+				if hasBundleResourceCriteria(perms) {
+					allBundlesWithResource = append(allBundlesWithResource, bundle)
 					break
 				}
 			}
 		}
 	}
-	return allBundlesWithDeamonsets
+	return allBundlesWithResource
 }
 
-//nolint:dupl
-func getAllWithRBACForNodes(bundlesReport bundles.Report) []bundles.Column {
-	var allBundlesWithNode []bundles.Column
-
-	for _, bundle := range bundlesReport.Columns {
-		foundNode := false
-		if bundle.BundleCSV == nil {
-			continue
-		}
-		if bundle.IsDeprecated {
-			continue
-		}
-		if len(bundle.PackageName) == 0 {
-			continue
-		}
-		if bundle.BundleCSV.Spec.InstallStrategy.StrategySpec.Permissions != nil {
-			for _, perms := range bundle.BundleCSV.Spec.InstallStrategy.StrategySpec.Permissions {
-				if hasBundleNodeCriteria(perms) {
-					allBundlesWithNode = append(allBundlesWithNode, bundle)
-					foundNode = true
-					break
-				}
-			}
-		}
-		if foundNode {
-			continue
-		}
-		if bundle.BundleCSV.Spec.InstallStrategy.StrategySpec.ClusterPermissions != nil {
-			for _, perms := range bundle.BundleCSV.Spec.InstallStrategy.StrategySpec.ClusterPermissions {
-				if hasBundleNodeCriteria(perms) {
-					allBundlesWithNode = append(allBundlesWithNode, bundle)
-					break
-				}
-			}
-		}
-	}
-	return allBundlesWithNode
-}
-
-func hasBundleDaemonsetsCriteria(perms v1alpha1.StrategyDeploymentPermissions) bool {
+func hasBundleResourceCriteria(perms v1alpha1.StrategyDeploymentPermissions) bool {
 	if perms.Rules != nil {
 		for _, rule := range perms.Rules {
+			foundAPIGroup := false
+			for _, apiGroupFound := range rule.APIGroups {
+				if apiGroupFound == "machineconfiguration.openshift.io" {
+					foundAPIGroup = true
+					break
+				}
+			}
+
+			if !foundAPIGroup {
+				continue
+			}
 			for _, names := range rule.Resources {
-				if names == "daemonsets" {
-					if rule.Verbs == nil {
-						continue
-					}
-					for _, verb := range rule.Verbs {
-						if checkForWritingPermissions(verb) {
-							return true
-						}
-					}
+				if names == "machineconfigs" || names == "machineconfigpools" {
+					return true
 				}
 			}
 		}
@@ -347,11 +314,22 @@ func hasBundleDaemonsetsCriteria(perms v1alpha1.StrategyDeploymentPermissions) b
 	return false
 }
 
-func hasBundleNodeCriteria(perms v1alpha1.StrategyDeploymentPermissions) bool {
+func hasBundleResourceCriteriaWithWritePermissions(perms v1alpha1.StrategyDeploymentPermissions) bool {
 	if perms.Rules != nil {
 		for _, rule := range perms.Rules {
+			foundAPIGroup := false
+			for _, apiGroupFound := range rule.APIGroups {
+				if apiGroupFound == "machineconfiguration.openshift.io" {
+					foundAPIGroup = true
+					break
+				}
+			}
+
+			if !foundAPIGroup {
+				continue
+			}
 			for _, names := range rule.Resources {
-				if names == "nodes" || names == "nodes/status" {
+				if names == "machineconfigs" || names == "machineconfigpools" {
 					if rule.Verbs == nil {
 						continue
 					}

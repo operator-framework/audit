@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Annotations</title>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.24/datatables.min.css"/>
+
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+
+    <style>
+        div.dataTables_wrapper {
+            width: 98%;
+            margin: 0 auto;
+        }
+
+        table.minimalistBlack {
+            border: 3px solid #000000;
+        }
+        table.minimalistBlack td, table.minimalistBlack th {
+            border: 1px solid #000000;
+            font-size: 12px;
+            text-align: left;
+        }
+        table.minimalistBlack tbody td {
+            font-size: 12px;
+        }
+        table.minimalistBlack thead {
+            border-bottom: 3px solid #000000;
+            text-align: center;
+        }
+        table.minimalistBlack thead th {
+            font-size: 15px;
+            color: white;
+            text-align: center;
+        }
+
+        .themed-container {
+            padding: .75rem;
+            margin-bottom: 1.5rem;
+            background-color: #F0F0F0;
+            border: 1px solid #0D0C0C;
+        }
+    </style>
+
+
+</head>
+<body class="py-4">
+
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.24/datatables.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+<script >
+
+    $(document).ready(function() {
+        $('#list').DataTable( {
+            "scrollX": true
+        } );
+    } );
+
+</script>
+
+<main>
+
+        <h1>Annotations</h1>
+        <p>The following packages were obtained by checking the image and the bundle manifests distributed. This report aims to try to identify the package distributions that are using the annotations; service.beta.openshift.io/serving-cert-secret-name and service.beta.openshift.io/inject-cabundle=true.</p>
+
+        <div class="container-fluid themed-container">
+            <h5 class="display-12 fw-bold">Data from the image used</h5>
+            <ul>
+                <li>Image name: registry.redhat.io/redhat/redhat-marketplace-index:v4.11 </li>
+                <li>Image ID: sha256:b8e2ffc66a069116a91da09098b2caefc854a40c73ca7ed366e0e0203ca655f9 </li>
+                <li>Image Created at: 2022-06-17T18:34:55.314966275Z </li>
+                <li>From JSON report generated at: 2022-06-20 </li>
+            </ul>
+        </div>
+
+        <div class="container-fluid themed-container">
+        <h5 class="display-12 fw-bold">Operator packages and bundles</h5>
+            <table id="list" class="minimalistBlack" style="background-color: dimgrey; width: 98%">
+                <thead>
+                  <tr>
+                     <th>Package Name</th>
+                     <th>Bundles Details</th>
+                 </tr>
+                </thead>
+                <tbody style="background-color: white;">
+                
+                    </tbody>
+                    </table>
+                </div>
+</main>
+</body>
+</html>

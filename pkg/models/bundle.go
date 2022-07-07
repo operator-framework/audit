@@ -46,5 +46,6 @@ func NewAuditBundle(operatorBundleName, operatorBundleImagePath string) *AuditBu
 	auditBundle := AuditBundle{}
 	auditBundle.OperatorBundleName = operatorBundleName
 	auditBundle.OperatorBundleImagePath = operatorBundleImagePath
+
 	return &auditBundle
 }

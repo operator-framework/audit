@@ -123,7 +123,7 @@ func validation(cmd *cobra.Command, args []string) error {
 		}
 	}
 
-	if len(flags.LabelValue) > 0 && len(flags.Label) < 0 {
+	if len(flags.LabelValue) > 0 && len(flags.Label) == 0 {
 		return fmt.Errorf("inform the label via the --label flag")
 	}
 
