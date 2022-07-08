@@ -4,7 +4,7 @@
 ---
 # Audit
 
-**IMPORTANT** This project is a POC. Before running the reports, ensure that you have its latest version by running `git pull` and `git status` if your installing from the source.
+**IMPORTANT** This project is a POC. Before running the reports, ensure that you have its latest version by running `git pull` and `git status` if you're installing from the source.
 
 ## Overview
 
