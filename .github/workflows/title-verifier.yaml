@@ -1,0 +1,17 @@
+name: title-verifier
+
+on:
+  pull_request_target:
+    types: [push, opened, edited, reopened]
+
+
+jobs:
+  runs-on: ubuntu-latest
+  verify:
+    name: Verify PR Title
+    steps:
+    - name: Verify Title
+      id: verifier
+      uses: kubernetes-sigs/kubebuilder-release-tools@v0.2.0
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
