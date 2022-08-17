@@ -33,14 +33,18 @@ import (
 
 const defaultSDKScorecardImageName = "quay.io/operator-framework/scorecard-test"
 const scorecardAnnotation = "operators.operatorframework.io.test.config.v1"
+const scorecardDefaultConfigFragment = "github.com/operator-framework/audit/pkg/actions"
 
 type BundleAnnotations struct {
 	Annotations map[string]string `yaml:"annotations,omitempty"`
 }
 
 func RunScorecard(bundleDir string, auditBundle *models.AuditBundle) *models.AuditBundle {
+	log.Info("\n----bundleDir----\n", bundleDir)
 	scorecardTestsPath := filepath.Join(bundleDir, "tests", "scorecard")
+	log.Info("\n----scorecardTestsPath----\n", scorecardTestsPath)
 	annotationsPath := filepath.Join(bundleDir, "metadata", "annotations.yaml")
+	log.Info("\n----annotationsPath----\n", annotationsPath)
 
 	// If find the annotations file then, check for the scorecard path on it.
 	if _, err := os.Stat(annotationsPath); err == nil && !os.IsNotExist(err) {
@@ -116,8 +120,11 @@ func RunScorecard(bundleDir string, auditBundle *models.AuditBundle) *models.Aud
 		return auditBundle
 	}
 
+	scorecardConfig := false
+	// Add Logic to update scorecardConfig
+
 	// run scorecard against bundle
-	cmd := exec.Command("operator-sdk", "scorecard", bundleDir, "--wait-time=120s", "--output=json")
+	cmd := exec.Command("operator-sdk", "scorecard", bundleDir, "--wait-time=120s", "--output=json", "--scorecard-config", scorecardDefaultConfigFragment, "--scorecard-config", scorecardConfig)
 	output, _ := pkg.RunCommand(cmd)
 	if len(output) < 1 {
 		log.Errorf("unable to get scorecard output: %s", output)
@@ -158,52 +165,52 @@ func writeScorecardConfig(scorecardConfigPath string) error {
 	return nil
 }
 
-const scorecardDefaultConfigFragment = `apiVersion: scorecard.operatorframework.io/v1alpha3
-kind: Configuration
-metadata:
-  name: config
-stages:
-- parallel: true
-  tests:
-  - entrypoint:
-    - scorecard-test
-    - basic-check-spec
-    image: quay.io/operator-framework/scorecard-test:v1.22.0
-    labels:
-      suite: basic
-      test: basic-check-spec-test
-  - entrypoint:
-    - scorecard-test
-    - olm-bundle-validation
-    image: quay.io/operator-framework/scorecard-test:v1.22.0
-    labels:
-      suite: olm
-      test: olm-bundle-validation-test
-  - entrypoint:
-    - scorecard-test
-    - olm-crds-have-validation
-    image: quay.io/operator-framework/scorecard-test:v1.22.0
-    labels:
-      suite: olm
-      test: olm-crds-have-validation-test
-  - entrypoint:
-    - scorecard-test
-    - olm-crds-have-resources
-    image: quay.io/operator-framework/scorecard-test:v1.22.0
-    labels:
-      suite: olm
-      test: olm-crds-have-resources-test
-  - entrypoint:
-    - scorecard-test
-    - olm-spec-descriptors
-    image: quay.io/operator-framework/scorecard-test:v1.22.0
-    labels:
-      suite: olm
-      test: olm-spec-descriptors-test
-  - entrypoint:
-    - scorecard-test
-    - olm-status-descriptors
-    image: quay.io/operator-framework/scorecard-test:v1.22.0
-    labels:
-      suite: olm
-      test: olm-status-descriptors-test`
+// const scorecardDefaultConfigFragment = `apiVersion: scorecard.operatorframework.io/v1alpha3
+// kind: Configuration
+// metadata:
+//   name: config
+// stages:
+// - parallel: true
+//   tests:
+//   - entrypoint:
+//     - scorecard-test
+//     - basic-check-spec
+//     image: quay.io/operator-framework/scorecard-test:v1.22.0
+//     labels:
+//       suite: basic
+//       test: basic-check-spec-test
+//   - entrypoint:
+//     - scorecard-test
+//     - olm-bundle-validation
+//     image: quay.io/operator-framework/scorecard-test:v1.22.0
+//     labels:
+//       suite: olm
+//       test: olm-bundle-validation-test
+//   - entrypoint:
+//     - scorecard-test
+//     - olm-crds-have-validation
+//     image: quay.io/operator-framework/scorecard-test:v1.22.0
+//     labels:
+//       suite: olm
+//       test: olm-crds-have-validation-test
+//   - entrypoint:
+//     - scorecard-test
+//     - olm-crds-have-resources
+//     image: quay.io/operator-framework/scorecard-test:v1.22.0
+//     labels:
+//       suite: olm
+//       test: olm-crds-have-resources-test
+//   - entrypoint:
+//     - scorecard-test
+//     - olm-spec-descriptors
+//     image: quay.io/operator-framework/scorecard-test:v1.22.0
+//     labels:
+//       suite: olm
+//       test: olm-spec-descriptors-test
+//   - entrypoint:
+//     - scorecard-test
+//     - olm-status-descriptors
+//     image: quay.io/operator-framework/scorecard-test:v1.22.0
+//     labels:
+//       suite: olm
+//       test: olm-status-descriptors-test`
