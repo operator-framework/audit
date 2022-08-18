@@ -119,12 +119,12 @@ func RunScorecard(bundleDir string, auditBundle *models.AuditBundle) *models.Aud
 		return auditBundle
 	}
 
-	scorecardConfig := false
+	scorecardConfig := "false"
 	scorecardFilePath := "github.com/operator-framework/audit/pkg/actions/scorecardDefaultConfigFragment.yaml"
 	// Add Logic to update scorecardConfig
 
 	// run scorecard against bundle
-	cmd := exec.Command("operator-sdk", "scorecard", bundleDir, "--wait-time=120s", "--output=json", "--scorecard-config", scorecardFilePath, "--scorecard-config", scorecardConfig)
+	cmd := exec.Command("operator-sdk", "scorecard", bundleDir, "--wait-time=120s", "--output=json", "--scorecard-config", scorecardFilePath, "--scorecard-custom-tests", scorecardConfig)
 	output, _ := pkg.RunCommand(cmd)
 	if len(output) < 1 {
 		log.Errorf("unable to get scorecard output: %s", output)
@@ -165,52 +165,52 @@ func writeScorecardConfig(scorecardConfigPath string) error {
 	return nil
 }
 
-// const scorecardDefaultConfigFragment = `apiVersion: scorecard.operatorframework.io/v1alpha3
-// kind: Configuration
-// metadata:
-//   name: config
-// stages:
-// - parallel: true
-//   tests:
-//   - entrypoint:
-//     - scorecard-test
-//     - basic-check-spec
-//     image: quay.io/operator-framework/scorecard-test:v1.22.0
-//     labels:
-//       suite: basic
-//       test: basic-check-spec-test
-//   - entrypoint:
-//     - scorecard-test
-//     - olm-bundle-validation
-//     image: quay.io/operator-framework/scorecard-test:v1.22.0
-//     labels:
-//       suite: olm
-//       test: olm-bundle-validation-test
-//   - entrypoint:
-//     - scorecard-test
-//     - olm-crds-have-validation
-//     image: quay.io/operator-framework/scorecard-test:v1.22.0
-//     labels:
-//       suite: olm
-//       test: olm-crds-have-validation-test
-//   - entrypoint:
-//     - scorecard-test
-//     - olm-crds-have-resources
-//     image: quay.io/operator-framework/scorecard-test:v1.22.0
-//     labels:
-//       suite: olm
-//       test: olm-crds-have-resources-test
-//   - entrypoint:
-//     - scorecard-test
-//     - olm-spec-descriptors
-//     image: quay.io/operator-framework/scorecard-test:v1.22.0
-//     labels:
-//       suite: olm
-//       test: olm-spec-descriptors-test
-//   - entrypoint:
-//     - scorecard-test
-//     - olm-status-descriptors
-//     image: quay.io/operator-framework/scorecard-test:v1.22.0
-//     labels:
-//       suite: olm
-//       test: olm-status-descriptors-test`
+const scorecardDefaultConfigFragment = `apiVersion: scorecard.operatorframework.io/v1alpha3
+kind: Configuration
+metadata:
+  name: config
+stages:
+- parallel: true
+  tests:
+  - entrypoint:
+    - scorecard-test
+    - basic-check-spec
+    image: quay.io/operator-framework/scorecard-test:v1.22.0
+    labels:
+      suite: basic
+      test: basic-check-spec-test
+  - entrypoint:
+    - scorecard-test
+    - olm-bundle-validation
+    image: quay.io/operator-framework/scorecard-test:v1.22.0
+    labels:
+      suite: olm
+      test: olm-bundle-validation-test
+  - entrypoint:
+    - scorecard-test
+    - olm-crds-have-validation
+    image: quay.io/operator-framework/scorecard-test:v1.22.0
+    labels:
+      suite: olm
+      test: olm-crds-have-validation-test
+  - entrypoint:
+    - scorecard-test
+    - olm-crds-have-resources
+    image: quay.io/operator-framework/scorecard-test:v1.22.0
+    labels:
+      suite: olm
+      test: olm-crds-have-resources-test
+  - entrypoint:
+    - scorecard-test
+    - olm-spec-descriptors
+    image: quay.io/operator-framework/scorecard-test:v1.22.0
+    labels:
+      suite: olm
+      test: olm-spec-descriptors-test
+  - entrypoint:
+    - scorecard-test
+    - olm-status-descriptors
+    image: quay.io/operator-framework/scorecard-test:v1.22.0
+    labels:
+      suite: olm
+      test: olm-status-descriptors-test`
