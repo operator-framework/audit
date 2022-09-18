@@ -100,7 +100,7 @@ generate-dashboards:
 	go run ./hack/maxocpversion/generate.go
 	go run ./hack/qa/generate.go
 	go run ./hack/index/generate.go
-	generate-muiltach
+	make generate-muiltach
 
 .PHONY: generate-muiltach ## Generate the testdata custom dashboards
 generate-muiltach:
