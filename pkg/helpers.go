@@ -19,7 +19,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -118,12 +118,12 @@ func WriteJSON(data []byte, imageName, outputPath, typeName string) error {
 
 	path := filepath.Join(outputPath, GetReportName(imageName, typeName, "json"))
 
-	_, err = ioutil.ReadFile(path)
+	_, err = os.ReadFile(path)
 	if err != nil && !errors.Is(err, os.ErrNotExist) {
 		return err
 	}
 
-	return ioutil.WriteFile(path, prettyJSON.Bytes(), 0644)
+	return os.WriteFile(path, prettyJSON.Bytes(), 0644)
 }
 
 func GetReportName(imageName, typeName, typeFile string) string {
@@ -239,10 +239,8 @@ func ReadFile(file string) ([]byte, error) {
 	if err != nil {
 		return []byte{}, err
 	}
-	defer jsonFile.Close()
-
 	var byteValue []byte
-	byteValue, err = ioutil.ReadAll(jsonFile)
+	byteValue, err = io.ReadAll(jsonFile)
 	if err != nil {
 		return []byte{}, err
 	}

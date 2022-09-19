@@ -31,7 +31,7 @@ func main() {
 		Short: "An analytic tool to audit operator bundles and index catalogs",
 		Long: "The audit is an analytic tool which uses the Operator Framework solutions. " +
 			"Its purpose is to obtain and report and aggregate data provided by checks and analyses done in " +
-			"the operator bundles, packages and channels from an index catalog image.\n\n" ,
+			"the operator bundles, packages and channels from an index catalog image.\n\n",
 	}
 
 	rootCmd.AddCommand(alpha.NewCmd())

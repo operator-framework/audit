@@ -19,7 +19,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"strings"
@@ -48,7 +47,7 @@ func ReplaceInFile(path, old, new string) error {
 	if err != nil {
 		return err
 	}
-	b, err := ioutil.ReadFile(path)
+	b, err := os.ReadFile(path)
 	if err != nil {
 		return err
 	}
@@ -56,7 +55,7 @@ func ReplaceInFile(path, old, new string) error {
 		return errors.New("unable to find the content to be replaced")
 	}
 	s := strings.Replace(string(b), old, new, -1)
-	err = ioutil.WriteFile(path, []byte(s), info.Mode())
+	err = os.WriteFile(path, []byte(s), info.Mode())
 	if err != nil {
 		return err
 	}

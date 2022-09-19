@@ -250,7 +250,7 @@ func mapBundlesPerPackage(bundlesReport []bundles.Column) map[string][]bundles.C
 	return mapPackagesWithBundles
 }
 
-//nolint: dupl
+// nolint: dupl
 func getAllBundlesWithRBACForDeamonset(bundlesReport bundles.Report) []bundles.Column {
 	var allBundlesWithDeamonsets []bundles.Column
 	for _, bundle := range bundlesReport.Columns {
