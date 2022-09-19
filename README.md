@@ -65,7 +65,7 @@ audit-tool index bundles --index-image=registry.redhat.io/redhat/redhat-operator
 
 Then, this report will result in a JSON file with all data exctract from the index and the bundles. Note that audit
 will download each bundle and extracted the info from them. Therefore, the reports available in the page [https://operator-framework.github.io/audit/](https://operator-framework.github.io/audit/)
-are done using the sub-commands `dashboard` and `alpha`. All custom reports requires the bundles report in jSON format
+are done using the sub-command `dashboard`. All custom reports requires the bundles report in jSON format
 so that they can are able to gathering the data and process it accordingly.
 
 ### Options
@@ -80,7 +80,6 @@ Usage:
   audit-tool [command]
 
 Available Commands:
-  alpha       Alpha-stage subcommands
   completion  Generate the autocompletion script for the specified shell
   dashboard   generate specific custom reports based on the audit JSONs output
   help        Help about any command
