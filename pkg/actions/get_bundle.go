@@ -18,7 +18,6 @@ import (
 	"encoding/json"
 	"errors" //nolint: typecheck
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -176,7 +175,7 @@ func extractBundleFromImage(auditBundle *models.AuditBundle, bundleDir string, c
 	}
 
 	bundleConfigFilePath := filepath.Join(bundleDir, "manifest.json")
-	existingFile, err := ioutil.ReadFile(bundleConfigFilePath)
+	existingFile, err := os.ReadFile(bundleConfigFilePath)
 	if err == nil {
 		var bundleLayerConfig []Manifest
 		if err := json.Unmarshal(existingFile, &bundleLayerConfig); err != nil {

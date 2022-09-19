@@ -1,7 +1,6 @@
 linters:
   disable-all: true
   enable:
-    - deadcode
     - dupl
     - errcheck
     - goconst
@@ -18,11 +17,9 @@ linters:
     - nakedret
     - scopelint
     - staticcheck
-    - structcheck
     - unconvert
     - unparam
     - unused
-    - varcheck
 
 run:
   deadline: 5m

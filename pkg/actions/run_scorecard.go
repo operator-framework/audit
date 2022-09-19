@@ -18,7 +18,6 @@ import (
 	"encoding/json"
 	"errors" //nolint: typecheck
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -81,7 +80,7 @@ func RunScorecard(bundleDir string, auditBundle *models.AuditBundle) *models.Aud
 		err := filepath.Walk(scorecardTestsPath, func(path string, info os.FileInfo, err error) error {
 			if info != nil && !info.IsDir() && strings.HasSuffix(info.Name(), "yaml") {
 				scorecardFilePath := filepath.Join(scorecardTestsPath, info.Name())
-				if existingFile, err := ioutil.ReadFile(scorecardFilePath); err == nil {
+				if existingFile, err := os.ReadFile(scorecardFilePath); err == nil {
 					var scorecardConfig v1alpha3.Configuration
 					if err := goyaml.Unmarshal(existingFile, &scorecardConfig); err != nil {
 						msg := fmt.Errorf("unable to Unmarshal scorecard file %s: %s", info.Name(), err)
@@ -149,8 +148,6 @@ func writeScorecardConfig(scorecardConfigPath string) error {
 		return err
 	}
 
-	defer f.Close()
-
 	_, err = f.WriteString(scorecardDefaultConfigFragment)
 	if err != nil {
 		return err
@@ -168,42 +165,42 @@ stages:
   - entrypoint:
     - scorecard-test
     - basic-check-spec
-    image: quay.io/operator-framework/scorecard-test:v1.22.0
+    image: quay.io/operator-framework/scorecard-test:v1.23.0
     labels:
       suite: basic
       test: basic-check-spec-test
   - entrypoint:
     - scorecard-test
     - olm-bundle-validation
-    image: quay.io/operator-framework/scorecard-test:v1.22.0
+    image: quay.io/operator-framework/scorecard-test:v1.23.0
     labels:
       suite: olm
       test: olm-bundle-validation-test
   - entrypoint:
     - scorecard-test
     - olm-crds-have-validation
-    image: quay.io/operator-framework/scorecard-test:v1.22.0
+    image: quay.io/operator-framework/scorecard-test:v1.23.0
     labels:
       suite: olm
       test: olm-crds-have-validation-test
   - entrypoint:
     - scorecard-test
     - olm-crds-have-resources
-    image: quay.io/operator-framework/scorecard-test:v1.22.0
+    image: quay.io/operator-framework/scorecard-test:v1.23.0
     labels:
       suite: olm
       test: olm-crds-have-resources-test
   - entrypoint:
     - scorecard-test
     - olm-spec-descriptors
-    image: quay.io/operator-framework/scorecard-test:v1.22.0
+    image: quay.io/operator-framework/scorecard-test:v1.23.0
     labels:
       suite: olm
       test: olm-spec-descriptors-test
   - entrypoint:
     - scorecard-test
     - olm-status-descriptors
-    image: quay.io/operator-framework/scorecard-test:v1.22.0
+    image: quay.io/operator-framework/scorecard-test:v1.23.0
     labels:
       suite: olm
       test: olm-status-descriptors-test`

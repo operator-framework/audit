@@ -56,7 +56,7 @@ const GREEN = "green"
 const ORANGE = "orange"
 const BLACK = "black"
 
-//the following data came from: https://access.redhat.com/articles/4740011
+// the following data came from: https://access.redhat.com/articles/4740011
 var pkgsThatSupportsDisconnectedMode = []string{
 	"3scale apicast-operator",
 	"3scale-operator",
