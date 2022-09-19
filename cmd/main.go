@@ -17,7 +17,6 @@ package main
 import (
 	"log"
 
-	"github.com/operator-framework/audit/cmd/alpha"
 	"github.com/operator-framework/audit/cmd/custom"
 	"github.com/operator-framework/audit/cmd/index"
 
@@ -34,7 +33,6 @@ func main() {
 			"the operator bundles, packages and channels from an index catalog image.\n\n",
 	}
 
-	rootCmd.AddCommand(alpha.NewCmd())
 	rootCmd.AddCommand(index.NewCmd())
 	rootCmd.AddCommand(custom.NewCmd())
 
