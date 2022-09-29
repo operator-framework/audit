@@ -47,6 +47,7 @@ build: ## Build the project locally
 .PHONY: install
 install: ## Build the project locally
 	make build
+	mkdir $(GOBIN)
 	cp ./bin/audit-tool $(GOBIN)/audit-tool
 
 ##@ Development
