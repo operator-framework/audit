@@ -16,16 +16,14 @@ package actions
 
 import (
 	"fmt"
-	"os/exec"
-
-	log "github.com/sirupsen/logrus"
-
 	"github.com/operator-framework/audit/pkg"
+	log "github.com/sirupsen/logrus"
+	"os/exec"
 )
 
 const catalogIndex = "audit-catalog-index"
 
-func ExtractIndexDB(image string, containerEngine string) error {
+func ExtractIndexDBorCatalogs(image string, containerEngine string) error {
 	log.Info("Extracting database...")
 	// Remove image if exists already
 	command := exec.Command(containerEngine, "rm", catalogIndex)
@@ -55,7 +53,12 @@ func ExtractIndexDB(image string, containerEngine string) error {
 		if err != nil {
 			return fmt.Errorf("renaming do.not.edit.db to index.db %s : %s", image, err)
 		}
-
+		// For FBC extract they are on the image, in /configs/<package_name>/catalog.json
+		command = exec.Command(containerEngine, "cp", fmt.Sprintf("%s:/configs/", catalogIndex), "./output/")
+		_, errFbc := pkg.RunCommand(command)
+		if errFbc != nil {
+			return fmt.Errorf("copying file-based configs %s : %s", image, err)
+		}
 	}
 	return nil
 }
