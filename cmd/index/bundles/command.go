@@ -19,10 +19,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/operator-framework/operator-registry/alpha/declcfg"
 	"io"
 	"os"
 	"strings"
+
+	"github.com/operator-framework/operator-registry/alpha/declcfg"
 
 	"github.com/operator-framework/audit/pkg/actions"
 

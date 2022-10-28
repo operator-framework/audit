@@ -16,9 +16,10 @@ package actions
 
 import (
 	"fmt"
+	"os/exec"
+
 	"github.com/operator-framework/audit/pkg"
 	log "github.com/sirupsen/logrus"
-	"os/exec"
 )
 
 const catalogIndex = "audit-catalog-index"
