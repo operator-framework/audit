@@ -19,8 +19,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"os"
 	"strings"
+
+	"github.com/operator-framework/operator-registry/alpha/declcfg"
 
 	"github.com/operator-framework/audit/pkg/actions"
 
@@ -57,7 +60,6 @@ By running this command audit tool will:
 - Use SDK tool to execute the Scorecard bundle checks
 - Output a report providing the information obtained and processed in JSON format.
 
-NOTE: This command is not supporting File-Base-Catalogs yet.
 `,
 
 		PreRunE: validation,
@@ -172,12 +174,18 @@ func run(cmd *cobra.Command, args []string) error {
 		log.Errorf("unable to inspect the index image: %s", err)
 	}
 
-	if err := actions.ExtractIndexDB(flags.IndexImage, flags.ContainerEngine); err != nil {
+	if err := actions.ExtractIndexDBorCatalogs(flags.IndexImage, flags.ContainerEngine); err != nil {
 		return err
 	}
 
 	log.Info("Gathering data...")
-	reportData, err = getDataFromIndexDB(reportData)
+
+	// check here to see if it's index.db or file-based catalogs
+	if isFBC() {
+		reportData, err = getDataFromFBC(reportData)
+	} else {
+		reportData, err = getDataFromIndexDB(reportData)
+	}
 	if err != nil {
 		return err
 	}
@@ -191,6 +199,76 @@ func run(cmd *cobra.Command, args []string) error {
 	log.Info("Operation completed.")
 
 	return nil
+}
+
+func isFBC() bool {
+	//check if /output/configs is populated to determine if the catalog is file-based
+	root := "./output/configs"
+	f, err := os.Open(root)
+	if err != nil {
+		return false
+	}
+	defer f.Close()
+	_, err = f.Readdir(1)
+	if err == io.EOF {
+		return false
+	}
+	log.Infof("./output/configs is present & populated so this must be a file-based config catalog")
+	return true
+}
+
+func getDataFromFBC(report index.Data) (index.Data, error) {
+	root := "./output/configs"
+	fileSystem := os.DirFS(root)
+	fbc, err := declcfg.LoadFS(fileSystem)
+
+	if err != nil {
+		return report, fmt.Errorf("unable to load the file based config : %s", err)
+	}
+	model, err := declcfg.ConvertToModel(*fbc)
+	var auditBundle *models.AuditBundle
+	if err != nil {
+		return report, fmt.Errorf("unable to file based config to internal model: %s", err)
+	}
+	// iterate the model by bundle to match up with how code in getDataFromIndexDB() does it
+	for packageName, Package := range model {
+		for _, Channel := range Package.Channels {
+			for _, Bundle := range Channel.Bundles {
+				log.Infof("Generating data from the bundle (%s)", Bundle.Name)
+				auditBundle = models.NewAuditBundle(Bundle.Name, Bundle.Image)
+				var csvStruct *v1alpha1.ClusterServiceVersion
+				err := json.Unmarshal([]byte(Bundle.CsvJSON), &csvStruct)
+				if err == nil {
+					auditBundle.CSVFromIndexDB = csvStruct
+				} else {
+					auditBundle.Errors = append(auditBundle.Errors,
+						fmt.Errorf("unable to parse the csv from the index.db: %s", err).Error())
+				}
+				auditBundle = actions.GetDataFromBundleImage(auditBundle, report.Flags.DisableScorecard,
+					report.Flags.DisableValidators, report.Flags.ServerMode, report.Flags.Label,
+					report.Flags.LabelValue, flags.ContainerEngine, report.Flags.IndexImage)
+				// an extra inner loop is needed because of the way the model is set up vs. how the report is generated
+				for _, Channel := range Package.Channels {
+					auditBundle.Channels = append(auditBundle.Channels, Channel.Name)
+				}
+				auditBundle.PackageName = packageName
+				auditBundle.DefaultChannel = Package.DefaultChannel.Name
+				// this collects olm.bundle.objects not found in the index version and this seems correct
+				for _, property := range Bundle.Properties {
+					auditBundle.PropertiesDB = append(auditBundle.PropertiesDB,
+						pkg.PropertiesAnnotation{Type: property.Type, Value: string(property.Value)})
+				}
+				headBundle, err := Channel.Head()
+				if err == nil {
+					if headBundle == Bundle {
+						auditBundle.IsHeadOfChannel = true
+					}
+				}
+				report.AuditBundle = append(report.AuditBundle, *auditBundle)
+			}
+		}
+	}
+	return report, nil
 }
 
 func getDataFromIndexDB(report index.Data) (index.Data, error) {
@@ -274,6 +352,13 @@ func getDataFromIndexDB(report index.Data) (index.Data, error) {
 			auditBundle.DefaultChannel = defaultChannelName
 		}
 
+		//TODO Think this should actually be:
+		// SELECT DISTINCT type, value FROM properties
+		// WHERE operatorbundle_name=?
+		// AND (operatorbundle_version=? OR operatorbundle_version is NULL)
+		// AND (operatorbundle_path=? OR operatorbundle_path is NULL)
+		// but leaving this as-is because this is the baseline for index-based audit reports.
+		// The redundant entries caused w/out DISTINCT seem okay?
 		sqlString = fmt.Sprintf("SELECT type, value FROM properties WHERE operatorbundle_name = '%s'",
 			auditBundle.OperatorBundleName)
 		row, err = db.Query(sqlString)

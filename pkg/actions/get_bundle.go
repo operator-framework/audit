@@ -240,7 +240,7 @@ func DownloadImage(image string, containerEngine string) error {
 	// if found an error try again
 	// Sometimes it faces issues to download the image
 	if err != nil {
-		log.Warnf("error %s faced to downlad the image. Let's try more one time.", err)
+		log.Warnf("%s failed to downlad the image. Let's try more one time.", err)
 		cmd := exec.Command(containerEngine, "pull", image)
 		_, err = pkg.RunCommand(cmd)
 	}
