@@ -89,36 +89,33 @@ func run(cmd *cobra.Command, args []string) error {
 
 	pkg.GenerateTemporaryDirs()
 
-	//TODO needs to change to working w/ already existing local indexes (registry login & download handled out of band)
 	for _, index := range flags.Indexes {
 		if err := actions.ExtractIndexDBorCatalogs(index, flags.ContainerEngine); err != nil {
 			return err
 		}
-	}
-	log.Info("Preparing Data for EUS Report...")
-	var err error
+		log.Infof("Preparing Data for EUS Report for index %s...", index)
+		var err error
 
-	// check here to see if it's index.db or file-based catalogs
-	if bundles.IsFBC() {
-		root := "./output/configs"
-		fileSystem := os.DirFS(root)
-		fbc, err := declcfg.LoadFS(fileSystem)
+		// check here to see if it's index.db or file-based catalogs
+		if bundles.IsFBC(index) {
+			root := "./output/" + actions.GetVersionTagFromImage(index) + "/configs"
+			fileSystem := os.DirFS(root)
+			fbc, err := declcfg.LoadFS(fileSystem)
 
-		if err != nil {
-			return fmt.Errorf("unable to load the file based config : %s", err)
+			if err != nil {
+				return fmt.Errorf("unable to load the file based config : %s", err)
+			}
+			model, err := declcfg.ConvertToModel(*fbc)
+			deprecates := getDeprecatedFBC(model)
+			print(deprecates)
 		}
-		model, err := declcfg.ConvertToModel(*fbc)
-		//getMaxOcpFBC(model, "cluster-logging")
-		deprecates := getDeprecatedFBC(model)
-		print(deprecates)
-	}
-	if err != nil {
-		return err
-	}
+		if err != nil {
+			return err
+		}
 
-	pkg.CleanupTemporaryDirs()
-	log.Info("Operation completed.")
-
+		pkg.CleanupTemporaryDirs()
+		log.Info("Operation completed.")
+	}
 	return nil
 }
 

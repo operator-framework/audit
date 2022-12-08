@@ -180,7 +180,7 @@ func run(cmd *cobra.Command, args []string) error {
 	log.Info("Gathering data...")
 
 	// check here to see if it's index.db or file-based catalogs
-	if IsFBC() {
+	if IsFBC(flags.IndexImage) {
 		reportData, err = GetDataFromFBC(reportData)
 	} else {
 		reportData, err = GetDataFromIndexDB(reportData)
@@ -200,9 +200,9 @@ func run(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func IsFBC() bool {
-	//check if /output/configs is populated to determine if the catalog is file-based
-	root := "./output/configs"
+func IsFBC(indexImage string) bool {
+	//check if /output/versiontag/configs is populated to determine if the catalog is file-based
+	root := "./output/" + actions.GetVersionTagFromImage(indexImage) + "/configs"
 	f, err := os.Open(root)
 	if err != nil {
 		return false
@@ -212,12 +212,13 @@ func IsFBC() bool {
 	if err == io.EOF {
 		return false
 	}
-	log.Infof("./output/configs is present & populated so this must be a file-based config catalog")
+	log.Infof("./output/%s/configs is present & populated so this must be a file-based config catalog",
+		actions.GetVersionTagFromImage(indexImage))
 	return true
 }
 
 func GetDataFromFBC(report index.Data) (index.Data, error) {
-	root := "./output/configs"
+	root := "./output/" + actions.GetVersionTagFromImage(report.Flags.IndexImage) + "/configs"
 	fileSystem := os.DirFS(root)
 	fbc, err := declcfg.LoadFS(fileSystem)
 
@@ -272,7 +273,8 @@ func GetDataFromFBC(report index.Data) (index.Data, error) {
 
 func GetDataFromIndexDB(report index.Data) (index.Data, error) {
 	// Connect to the database
-	db, err := sql.Open("sqlite3", "./output/index.db")
+	db, err := sql.Open("sqlite3", "./output/"+
+		actions.GetVersionTagFromImage(report.Flags.IndexImage)+"/index.db")
 	if err != nil {
 		return report, fmt.Errorf("unable to connect in to the database : %s", err)
 	}
