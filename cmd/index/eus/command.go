@@ -17,6 +17,7 @@ package eus
 import (
 	"database/sql"
 	"fmt"
+	"github.com/mpvl/unique"
 	"github.com/operator-framework/audit/cmd/index/bundles"
 	"github.com/operator-framework/audit/pkg/actions"
 	"github.com/operator-framework/operator-registry/alpha/declcfg"
@@ -24,6 +25,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"os"
+	"sort"
 
 	"github.com/operator-framework/audit/pkg"
 	index "github.com/operator-framework/audit/pkg/reports/eus"
@@ -89,224 +91,295 @@ func run(cmd *cobra.Command, args []string) error {
 
 	pkg.GenerateTemporaryDirs()
 
-	for _, index := range flags.Indexes {
+	// sorted list of operators, each once, that appear in any of the indexes:
+	var allOperators []string
+	var EUSReportTable [][]channelGrouping
+	modelOrDBs := getModelsOrDB(flags.Indexes)
+
+	// get all the operators in all the indexes in the range
+	for _, modelOrDB := range modelOrDBs {
+		allOperatorsPerIndex, err := getPackageNames(modelOrDB)
+		if err == nil {
+			allOperators = append(allOperators, allOperatorsPerIndex...)
+		}
+	}
+	sort.Strings(allOperators)
+	unique.Strings(&allOperators)
+
+	for _, modelOrDB := range modelOrDBs {
+		var EUSReportColumn []channelGrouping
+		for _, operator := range allOperators {
+			channelGrouping := channelsAcrossIndexes(modelOrDB, operator)
+			channelGrouping.maxOCPPerHead = getMaxOcp(modelOrDB, operator)
+
+			EUSReportColumn = append(EUSReportColumn, channelGrouping)
+		}
+		EUSReportTable = append(EUSReportTable, EUSReportColumn)
+	}
+
+	pkg.CleanupTemporaryDirs()
+	log.Info("Operation completed.")
+	return nil
+}
+
+func getModelsOrDB(indexes []string) []any {
+	var modelsOrDBs []any
+	for _, index := range indexes {
 		if err := actions.ExtractIndexDBorCatalogs(index, flags.ContainerEngine); err != nil {
-			return err
+			log.Errorf("error on passed indexes: %s", err)
+			return modelsOrDBs
 		}
 		log.Infof("Preparing Data for EUS Report for index %s...", index)
+
+		var model model.Model
+		var db *sql.DB
+		var modelOrDB any
 		var err error
 
-		// check here to see if it's index.db or file-based catalogs
 		if bundles.IsFBC(index) {
+			// newer file-based catalogs
 			root := "./output/" + actions.GetVersionTagFromImage(index) + "/configs"
 			fileSystem := os.DirFS(root)
 			fbc, err := declcfg.LoadFS(fileSystem)
 
 			if err != nil {
-				return fmt.Errorf("unable to load the file based config : %s", err)
+				log.Errorf("unable to load the file based config : %s", err)
+				return modelsOrDBs
 			}
-			model, err := declcfg.ConvertToModel(*fbc)
-			deprecates := getDeprecatedFBC(model)
-			print(deprecates)
-		}
-		if err != nil {
-			return err
-		}
-
-		pkg.CleanupTemporaryDirs()
-		log.Info("Operation completed.")
-	}
-	return nil
-}
-
-type Package = *model.Package
-
-// pass db from something like: sql.Open("sqlite3", "./output/"+index+"/index.db")
-func getPackageNames(db *sql.DB) ([]string, error) {
-	var packageNames []string
-	sql := "SELECT p.name FROM package p;"
-
-	row, err := db.Query(sql)
-	if err != nil {
-		return nil, fmt.Errorf("unable to query the index db : %s", err)
-	}
-	defer row.Close()
-	for row.Next() {
-		var packageName string
-		err = row.Scan(&packageName)
-		if err != nil {
-			log.Errorf("unable to scan data from index %s\n", err.Error())
+			model, err = declcfg.ConvertToModel(*fbc)
 		} else {
-			packageNames = append(packageNames, packageName)
+			// older sqlite index
+			db, err = sql.Open("sqlite3", "./output/"+
+				actions.GetVersionTagFromImage(index)+"/index.db")
+			if err != nil {
+				return modelsOrDBs
+			}
 		}
-	}
-	return packageNames, nil
-}
-
-func getPackageNamesFBC(model model.Model) ([]string, error) {
-	var packageNames []string
-	for _, Package := range model {
-		packageNames = append(packageNames, Package.Name)
-	}
-	return packageNames, nil
-}
-
-func isOperatorInIndex(db *sql.DB, operatorName string) bool {
-	var packageNames []string
-	sql := "SELECT p.name FROM package p WHERE name = ?;"
-
-	row, err := db.Query(sql, operatorName)
-	if err != nil {
-		log.Errorf("unable to query the index db : %s", err)
-		return false
-	}
-	defer row.Close()
-	for row.Next() {
-		var packageName string
-		err = row.Scan(&packageName)
-		if err != nil {
-			log.Errorf("unable to scan data from index %s\n", err.Error())
+		if model != nil {
+			modelOrDB = model
 		} else {
-			packageNames = append(packageNames, packageName)
+			modelOrDB = db
 		}
+		modelsOrDBs = append(modelsOrDBs, modelOrDB)
 	}
-	return len(packageNames) != 0
+	return modelsOrDBs
 }
 
-func isOperatorInIndexFBC(model model.Model, operatorName string) bool {
-	packagesNames, err := getPackageNamesFBC(model)
-	if err == nil {
-		if Contains(packagesNames, operatorName) {
-			return true
-		}
+//// builds a list of operators that exist in all the indexes
+//func allOperatorsExist(modelOrDb interface{}, allOperators []string) []string {
+//	var existingOperators []string
+//	for _, operator := range allOperators {
+//		if isOperatorInIndex(modelOrDb, operator) {
+//			existingOperators = append(existingOperators, operator)
+//		}
+//	}
+//	return existingOperators
+//}
+
+// Determine common channels that exist across all indexes
+func channelsAcrossIndexes(modelOrDb interface{}, operator string) channelGrouping {
+	var channelGrouping channelGrouping
+	channelGrouping, err := getChannelsDefaultChannelHeadBundle(modelOrDb, operator)
+	if err != nil {
+		log.Errorf("error finding channel info for %s in index %s: %v", operator, modelOrDb, err)
 	}
-	return false
+	return channelGrouping
 }
+
+func getPackageNames(modelOrDb interface{}) ([]string, error) {
+	var packageNames []string
+	switch modelOrDb := modelOrDb.(type) {
+	case *sql.DB:
+		sql := "SELECT p.name FROM package p;"
+
+		row, err := modelOrDb.Query(sql)
+		if err != nil {
+			return nil, fmt.Errorf("unable to query the index db : %s", err)
+		}
+		defer row.Close()
+		for row.Next() {
+			var packageName string
+			err = row.Scan(&packageName)
+			if err != nil {
+				log.Errorf("unable to scan data from index %s\n", err.Error())
+			} else {
+				packageNames = append(packageNames, packageName)
+			}
+		}
+		return packageNames, nil
+	case model.Model:
+		for _, Package := range modelOrDb {
+			packageNames = append(packageNames, Package.Name)
+		}
+		return packageNames, nil
+	}
+	return nil, nil
+}
+
+//func isOperatorInIndex(modelOrDb interface{}, operatorName string) bool {
+//	switch modelOrDb := modelOrDb.(type) {
+//	case *sql.DB:
+//		var packageNames []string
+//		sql := "SELECT p.name FROM package p WHERE name = ?;"
+//
+//		row, err := modelOrDb.Query(sql, operatorName)
+//		if err != nil {
+//			log.Errorf("unable to query the index db : %s", err)
+//			return false
+//		}
+//		defer row.Close()
+//		for row.Next() {
+//			var packageName string
+//			err = row.Scan(&packageName)
+//			if err != nil {
+//				log.Errorf("unable to scan data from index %s\n", err.Error())
+//			} else {
+//				packageNames = append(packageNames, packageName)
+//			}
+//		}
+//		return len(packageNames) != 0
+//	case model.Model:
+//		packagesNames, err := getPackageNames(modelOrDb)
+//		if err == nil {
+//			if Contains(packagesNames, operatorName) {
+//				return true
+//			}
+//		}
+//		return false
+//	}
+//	return false
+//}
 
 // for a given operator package in an index store:
 // [the channels], [the head bundles for those channels],
 // and the default channel
 type channelGrouping struct {
 	channels           []*model.Channel // not really meant to be used, just a helper for the FBC ones
+	operatorName       string
 	channelNames       []string
 	defaultChannelName string
 	headBundleNames    []string
+	maxOCPPerHead      []string
 }
 
-func getChannelsDefaultChannelHeadBundle(db *sql.DB, operatorName string) (channelGrouping, error) {
+func getChannelsDefaultChannelHeadBundle(modelOrDb interface{}, operatorName string) (channelGrouping, error) {
 	var channelGrouping = channelGrouping{}
-	sql := "SELECT c.name, p.default_channel, c.head_operatorbundle_name" +
-		"    FROM package p, channel c " +
-		"    JOIN package on p.name = c.package_name" +
-		"    WHERE package_name = ? " +
-		"    GROUP BY c.name;"
+	switch modelOrDb := modelOrDb.(type) {
+	case *sql.DB:
+		sql := "SELECT c.name, p.default_channel, c.head_operatorbundle_name" +
+			"    FROM package p, channel c " +
+			"    JOIN package on p.name = c.package_name" +
+			"    WHERE package_name = ? " +
+			"    GROUP BY c.name;"
 
-	row, err := db.Query(sql, operatorName)
-	if err != nil {
-		return channelGrouping, fmt.Errorf("unable to query the index db : %s", err)
-	}
-	defer row.Close()
-	for row.Next() {
-		var channelName string
-		var defaultChannelName string
-		var headBundleName string
-		err = row.Scan(&channelName, &defaultChannelName, &headBundleName)
-		if err == nil {
-			channelGrouping.channelNames = append(channelGrouping.channelNames, channelName)
-			channelGrouping.defaultChannelName = defaultChannelName
-			channelGrouping.headBundleNames = append(channelGrouping.headBundleNames, headBundleName)
+		row, err := modelOrDb.Query(sql, operatorName)
+		if err != nil {
+			return channelGrouping, fmt.Errorf("unable to query the index db : %s", err)
 		}
+		defer row.Close()
+		for row.Next() {
+			var channelName string
+			var defaultChannelName string
+			var headBundleName string
+			err = row.Scan(&channelName, &defaultChannelName, &headBundleName)
+			if err == nil {
+				channelGrouping.operatorName = operatorName
+				channelGrouping.channelNames = append(channelGrouping.channelNames, channelName)
+				channelGrouping.defaultChannelName = defaultChannelName
+				channelGrouping.headBundleNames = append(channelGrouping.headBundleNames, headBundleName)
+			}
+		}
+		return channelGrouping, nil
+	case model.Model:
+		for packageName, Package := range modelOrDb {
+			if packageName == operatorName {
+				for _, Channel := range Package.Channels {
+					channelGrouping.channels = append(channelGrouping.channels, Channel)
+					channelGrouping.channelNames = append(channelGrouping.channelNames, Channel.Name)
+				}
+				channelGrouping.defaultChannelName = Package.DefaultChannel.Name
+				for _, channelInPackage := range channelGrouping.channels {
+					headBundle, _ := channelInPackage.Head()
+					channelGrouping.headBundleNames = append(channelGrouping.headBundleNames, headBundle.Name)
+				}
+			}
+		}
+		return channelGrouping, fmt.Errorf("operator named %q not found in the index", operatorName)
 	}
 	return channelGrouping, nil
 }
 
-func getChannelsDefaultChannelHeadBundleFBC(model model.Model, operatorName string) (channelGrouping, error) {
-	var channelGrouping = channelGrouping{}
-	for packageName, Package := range model {
-		if packageName == operatorName {
-			for _, Channel := range Package.Channels {
-				channelGrouping.channels = append(channelGrouping.channels, Channel)
-				channelGrouping.channelNames = append(channelGrouping.channelNames, Channel.Name)
-			}
-			channelGrouping.defaultChannelName = Package.DefaultChannel.Name
-			for _, channelInPackage := range channelGrouping.channels {
-				headBundle, _ := channelInPackage.Head()
-				channelGrouping.headBundleNames = append(channelGrouping.headBundleNames, headBundle.Name)
+func getMaxOcp(modelOrDb interface{}, operatorName string) []string {
+	var maxOcpPerChannel []string
+	switch modelOrDb := modelOrDb.(type) {
+	case *sql.DB:
+		sql := "SELECT p.value FROM properties p WHERE p.operatorbundle_name = ? AND type = \"olm.maxOpenShiftVersion\""
+		row, err := modelOrDb.Query(sql, operatorName)
+		if err != nil {
+			log.Errorf("unable to query the index db : %s", err)
+			return nil
+		}
+		defer row.Close()
+		for row.Next() {
+			var maxOpenShiftVersion string
+			err = row.Scan(&maxOpenShiftVersion)
+			if err == nil {
+				maxOcpPerChannel = append(maxOcpPerChannel, maxOpenShiftVersion)
 			}
 		}
-	}
-	return channelGrouping, fmt.Errorf("operator named %q not found in the index", operatorName)
-}
-
-func getMaxOcp(db *sql.DB, operatorName string) []string {
-	var maxOcpPerChannel []string
-	sql := "SELECT p.value FROM properties p WHERE p.operatorbundle_name = ? AND type = \"olm.maxOpenShiftVersion\""
-	row, err := db.Query(sql, operatorName)
-	if err != nil {
-		log.Errorf("unable to query the index db : %s", err)
-		return nil
-	}
-	defer row.Close()
-	for row.Next() {
-		var maxOpenShiftVersion string
-		err = row.Scan(&maxOpenShiftVersion)
-		if err == nil {
-			maxOcpPerChannel = append(maxOcpPerChannel, maxOpenShiftVersion)
-		}
-	}
-	return maxOcpPerChannel
-}
-
-func getMaxOcpFBC(model model.Model, operatorName string) []string {
-	var maxOcpPerChannel []string
-	for _, Package := range model {
-		if Package.Name == operatorName {
-			for _, Channel := range Package.Channels {
-				headBundle, _ := Channel.Head()
-				for _, Bundle := range Channel.Bundles {
-					for _, property := range Bundle.Properties {
-						if property.Type == "olm.maxOpenShiftVersion" && Bundle.Name == headBundle.Name {
-							maxOcpPerChannel = append(maxOcpPerChannel, stripQuotes(property.Value))
+		return maxOcpPerChannel
+	case model.Model:
+		for _, Package := range modelOrDb {
+			if Package.Name == operatorName {
+				for _, Channel := range Package.Channels {
+					headBundle, _ := Channel.Head()
+					for _, Bundle := range Channel.Bundles {
+						for _, property := range Bundle.Properties {
+							if property.Type == "olm.maxOpenShiftVersion" && Bundle.Name == headBundle.Name {
+								maxOcpPerChannel = append(maxOcpPerChannel, stripQuotes(property.Value))
+							}
 						}
 					}
 				}
 			}
 		}
+		return maxOcpPerChannel
 	}
 	return maxOcpPerChannel
 }
 
-func getDeprecated(db *sql.DB, operatorName string) []string {
+func getDeprecated(modelOrDb interface{}, operatorName string) []string {
 	var deprecates []string
-	sql := "SELECT d.operatorbundle_name FROM deprecated d WHERE d.operatorbundle_name = ?;"
-	row, err := db.Query(sql, operatorName)
-	if err != nil {
-		log.Errorf("unable to query the index db : %s", err)
-		return nil
-	}
-	defer row.Close()
-	for row.Next() {
-		var deprecated string
-		err = row.Scan(&deprecated)
-		if err == nil {
-			deprecates = append(deprecates, deprecated)
+	switch modelOrDb := modelOrDb.(type) {
+	case *sql.DB:
+		sql := "SELECT d.operatorbundle_name FROM deprecated d WHERE d.operatorbundle_name = ?;"
+		row, err := modelOrDb.Query(sql, operatorName)
+		if err != nil {
+			log.Errorf("unable to query the index db : %s", err)
+			return nil
 		}
-	}
-	return deprecates
-}
-
-func getDeprecatedFBC(model model.Model) []string {
-	var deprecates []string
-	for _, Package := range model {
-		for _, Channel := range Package.Channels {
-			for _, Bundle := range Channel.Bundles {
-				for _, property := range Bundle.Properties {
-					if property.Type == "olm.deprecated" {
-						deprecates = append(deprecates, Bundle.Name)
+		defer row.Close()
+		for row.Next() {
+			var deprecated string
+			err = row.Scan(&deprecated)
+			if err == nil {
+				deprecates = append(deprecates, deprecated)
+			}
+		}
+		return deprecates
+	case model.Model:
+		for _, Package := range modelOrDb {
+			for _, Channel := range Package.Channels {
+				for _, Bundle := range Channel.Bundles {
+					for _, property := range Bundle.Properties {
+						if property.Type == "olm.deprecated" {
+							deprecates = append(deprecates, Bundle.Name)
+						}
 					}
 				}
 			}
 		}
+		return deprecates
 	}
 	return deprecates
 }
