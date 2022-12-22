@@ -16,19 +16,24 @@ package eus
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
+	"github.com/ghetzel/go-stockutil/sliceutil"
+	"github.com/iancoleman/orderedmap"
 	"github.com/mpvl/unique"
 	"github.com/operator-framework/audit/cmd/index/bundles"
+	"github.com/operator-framework/audit/pkg"
 	"github.com/operator-framework/audit/pkg/actions"
+	index "github.com/operator-framework/audit/pkg/reports/eus"
 	"github.com/operator-framework/operator-registry/alpha/declcfg"
 	"github.com/operator-framework/operator-registry/alpha/model"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"os"
+	"path"
 	"sort"
-
-	"github.com/operator-framework/audit/pkg"
-	index "github.com/operator-framework/audit/pkg/reports/eus"
+	"strconv"
+	"strings"
 )
 
 var flags = index.BindFlags{}
@@ -110,16 +115,104 @@ func run(cmd *cobra.Command, args []string) error {
 		var EUSReportColumn []channelGrouping
 		for _, operator := range allOperators {
 			channelGrouping := channelsAcrossIndexes(modelOrDB, operator)
-			channelGrouping.maxOCPPerHead = getMaxOcp(modelOrDB, operator)
-
+			channelGrouping.MaxOCPPerHead = getMaxOcp(modelOrDB, channelGrouping)
+			channelGrouping.Deprecated = getDeprecated(modelOrDB, operator)
+			channelGrouping.NonHeadBundles = getNonHeadBundles(modelOrDB, channelGrouping)
 			EUSReportColumn = append(EUSReportColumn, channelGrouping)
 		}
 		EUSReportTable = append(EUSReportTable, EUSReportColumn)
 	}
+	EUSReportTable = addCommonChannels(EUSReportTable)
 
+	generateJSON(flags.Indexes, EUSReportTable)
 	pkg.CleanupTemporaryDirs()
 	log.Info("Operation completed.")
 	return nil
+}
+
+// find intersection of channelGroupings in each row and store to commonChannels field
+func addCommonChannels(table [][]channelGrouping) [][]channelGrouping {
+	channelGroupingsByOperatorAcrossIndexes := transpose(table)
+	var commonChannels []string
+
+	for _, cgs := range channelGroupingsByOperatorAcrossIndexes {
+		for idx, cg := range cgs {
+			if idx == 0 {
+				commonChannels = cg.ChannelNames
+			}
+			if idx < len(cgs)-1 {
+				commonChannels = sliceutil.IntersectStrings(commonChannels, cgs[idx+1].ChannelNames)
+			}
+			// when done, update all the channelGrouping.commonChannels for the operator
+			if idx == len(cgs)-1 {
+				for i := 0; i < len(cgs); i++ {
+					cgs[i].CommonChannels = commonChannels
+				}
+			}
+		}
+	}
+	return transpose(channelGroupingsByOperatorAcrossIndexes)
+}
+
+func generateJSON(indexInfo []string, EUSTableData [][]channelGrouping) {
+	var reportVersionsSuffix string
+	for idx, index := range indexInfo {
+		reportVersionsSuffix = reportVersionsSuffix + actions.GetVersionTagFromImage(index)
+		if idx < len(indexInfo)-1 {
+			reportVersionsSuffix = reportVersionsSuffix + "_"
+		} else {
+			reportVersionsSuffix = reportVersionsSuffix + ".json"
+		}
+	}
+	JSONReportFile := path.Join("EUS_report_" + reportVersionsSuffix)
+
+	data := make(map[string][]orderedmap.OrderedMap)
+	var DataItems []orderedmap.OrderedMap
+	//todo see if we can debug hit on Deprecated != nil
+	for index, EUSTableColumn := range EUSTableData {
+		for _, channelGrouping := range EUSTableColumn {
+			for idx, channelName := range channelGrouping.ChannelNames {
+				maxOCPVersion := ""
+				DataItem := orderedmap.New()
+				DataItem.Set("name", channelGrouping.OperatorName)
+				DataItem.Set("ocpVersion", actions.GetVersionTagFromImage(indexInfo[index]))
+				defaultPostfix := isDefaultChannel(channelName, channelGrouping.DefaultChannelName)
+				DataItem.Set("channel", channelName+defaultPostfix)
+				if channelGrouping.MaxOCPPerHead[idx] != "" {
+					maxOCPVersion = " (" + channelGrouping.MaxOCPPerHead[idx] + ")"
+				}
+				DataItem.Set("currentVersion", channelGrouping.HeadBundleNames[idx]+maxOCPVersion)
+				for idx2, nonHeadBundleName := range channelGrouping.NonHeadBundles[idx] {
+					DataItem.Set("otherAvailableVersion"+strconv.Itoa(idx2), nonHeadBundleName)
+				}
+				DataItem.Set("isCommon", checkCommon(channelName, channelGrouping.CommonChannels))
+				DataItems = append(DataItems, *DataItem)
+			}
+		}
+	}
+	data["data"] = DataItems
+	content, err := json.MarshalIndent(data, "", "  ")
+	if err != nil {
+		fmt.Println(err)
+	}
+	err = os.WriteFile(JSONReportFile, content, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func isDefaultChannel(channelName string, nameOfDefaultChannel string) string {
+	if channelName == nameOfDefaultChannel {
+		return " (default)"
+	}
+	return ""
+}
+
+func checkCommon(name string, commonsChannels []string) string {
+	if Contains(commonsChannels, name) {
+		return "true"
+	}
+	return "false"
 }
 
 func getModelsOrDB(indexes []string) []any {
@@ -165,17 +258,6 @@ func getModelsOrDB(indexes []string) []any {
 	return modelsOrDBs
 }
 
-//// builds a list of operators that exist in all the indexes
-//func allOperatorsExist(modelOrDb interface{}, allOperators []string) []string {
-//	var existingOperators []string
-//	for _, operator := range allOperators {
-//		if isOperatorInIndex(modelOrDb, operator) {
-//			existingOperators = append(existingOperators, operator)
-//		}
-//	}
-//	return existingOperators
-//}
-
 // Determine common channels that exist across all indexes
 func channelsAcrossIndexes(modelOrDb interface{}, operator string) channelGrouping {
 	var channelGrouping channelGrouping
@@ -216,61 +298,30 @@ func getPackageNames(modelOrDb interface{}) ([]string, error) {
 	return nil, nil
 }
 
-//func isOperatorInIndex(modelOrDb interface{}, operatorName string) bool {
-//	switch modelOrDb := modelOrDb.(type) {
-//	case *sql.DB:
-//		var packageNames []string
-//		sql := "SELECT p.name FROM package p WHERE name = ?;"
-//
-//		row, err := modelOrDb.Query(sql, operatorName)
-//		if err != nil {
-//			log.Errorf("unable to query the index db : %s", err)
-//			return false
-//		}
-//		defer row.Close()
-//		for row.Next() {
-//			var packageName string
-//			err = row.Scan(&packageName)
-//			if err != nil {
-//				log.Errorf("unable to scan data from index %s\n", err.Error())
-//			} else {
-//				packageNames = append(packageNames, packageName)
-//			}
-//		}
-//		return len(packageNames) != 0
-//	case model.Model:
-//		packagesNames, err := getPackageNames(modelOrDb)
-//		if err == nil {
-//			if Contains(packagesNames, operatorName) {
-//				return true
-//			}
-//		}
-//		return false
-//	}
-//	return false
-//}
-
 // for a given operator package in an index store:
 // [the channels], [the head bundles for those channels],
 // and the default channel
 type channelGrouping struct {
 	channels           []*model.Channel // not really meant to be used, just a helper for the FBC ones
-	operatorName       string
-	channelNames       []string
-	defaultChannelName string
-	headBundleNames    []string
-	maxOCPPerHead      []string
+	OperatorName       string           `json:"name"`
+	ChannelNames       []string         `json:"channelName"`
+	DefaultChannelName string           `json:"defaultChannelName"`
+	HeadBundleNames    []string         `json:"headBundleName"`
+	MaxOCPPerHead      []string         `json:"maxOCPPerHead"`
+	Deprecated         []string         `json:"deprecated"`
+	CommonChannels     []string         `json:"commonChannels"`
+	NonHeadBundles     [][]string       `json:"nonHeadBundles"`
 }
 
 func getChannelsDefaultChannelHeadBundle(modelOrDb interface{}, operatorName string) (channelGrouping, error) {
 	var channelGrouping = channelGrouping{}
 	switch modelOrDb := modelOrDb.(type) {
 	case *sql.DB:
-		sql := "SELECT c.name, p.default_channel, c.head_operatorbundle_name" +
-			"    FROM package p, channel c " +
-			"    JOIN package on p.name = c.package_name" +
-			"    WHERE package_name = ? " +
-			"    GROUP BY c.name;"
+		sql := `SELECT c.name, p.default_channel, c.head_operatorbundle_name  
+		FROM package p, channel c 
+    	JOIN package on p.name = c.package_name 
+		WHERE package_name = ? 
+		GROUP BY c.name;`
 
 		row, err := modelOrDb.Query(sql, operatorName)
 		if err != nil {
@@ -283,10 +334,10 @@ func getChannelsDefaultChannelHeadBundle(modelOrDb interface{}, operatorName str
 			var headBundleName string
 			err = row.Scan(&channelName, &defaultChannelName, &headBundleName)
 			if err == nil {
-				channelGrouping.operatorName = operatorName
-				channelGrouping.channelNames = append(channelGrouping.channelNames, channelName)
-				channelGrouping.defaultChannelName = defaultChannelName
-				channelGrouping.headBundleNames = append(channelGrouping.headBundleNames, headBundleName)
+				channelGrouping.OperatorName = operatorName
+				channelGrouping.ChannelNames = append(channelGrouping.ChannelNames, channelName)
+				channelGrouping.DefaultChannelName = defaultChannelName
+				channelGrouping.HeadBundleNames = append(channelGrouping.HeadBundleNames, getVersion(headBundleName))
 			}
 		}
 		return channelGrouping, nil
@@ -295,12 +346,12 @@ func getChannelsDefaultChannelHeadBundle(modelOrDb interface{}, operatorName str
 			if packageName == operatorName {
 				for _, Channel := range Package.Channels {
 					channelGrouping.channels = append(channelGrouping.channels, Channel)
-					channelGrouping.channelNames = append(channelGrouping.channelNames, Channel.Name)
+					channelGrouping.ChannelNames = append(channelGrouping.ChannelNames, Channel.Name)
 				}
-				channelGrouping.defaultChannelName = Package.DefaultChannel.Name
+				channelGrouping.DefaultChannelName = Package.DefaultChannel.Name
 				for _, channelInPackage := range channelGrouping.channels {
 					headBundle, _ := channelInPackage.Head()
-					channelGrouping.headBundleNames = append(channelGrouping.headBundleNames, headBundle.Name)
+					channelGrouping.HeadBundleNames = append(channelGrouping.HeadBundleNames, getVersion(headBundle.Name))
 				}
 			}
 		}
@@ -309,28 +360,81 @@ func getChannelsDefaultChannelHeadBundle(modelOrDb interface{}, operatorName str
 	return channelGrouping, nil
 }
 
-func getMaxOcp(modelOrDb interface{}, operatorName string) []string {
+func getVersion(bundleName string) string {
+	var version string
+	version = strings.Join(strings.Split(bundleName, ".")[1:], ".")
+	return version
+}
+
+func getNonHeadBundles(modelOrDb interface{}, grouping channelGrouping) [][]string {
+	nonHeadBundleNames := make([][]string, len(grouping.ChannelNames))
+	switch modelOrDb := modelOrDb.(type) {
+	case *sql.DB:
+		for i, channelName := range grouping.ChannelNames {
+			var nonHeadBundleNamesPerChannel []string
+			sql := `SELECT operatorbundle.name 
+				FROM operatorbundle 
+				INNER JOIN channel_entry 
+				ON operatorbundle.name=channel_entry.operatorbundle_name 
+				WHERE channel_entry.package_name = ? AND channel_entry.channel_name = ?;`
+			row, err := modelOrDb.Query(sql, grouping.OperatorName, channelName)
+			if err != nil {
+				log.Errorf("unable to query the index db for maxOCPs : %s", err)
+				return nil
+			}
+			defer row.Close()
+			for row.Next() {
+				var bundleName string
+				row.Scan(&bundleName)
+				nonHeadBundleNamesPerChannel = append(nonHeadBundleNamesPerChannel, getVersion(bundleName))
+			}
+			nonHeadBundleNames[i] = remove(nonHeadBundleNamesPerChannel, grouping.HeadBundleNames[i])
+		}
+		return nonHeadBundleNames
+	case model.Model:
+		return nonHeadBundleNames
+	}
+	return nonHeadBundleNames
+}
+
+func remove(nonHeadBundles []string, headBundle string) []string {
+	for i, v := range nonHeadBundles {
+		if v == headBundle {
+			return append(nonHeadBundles[:i], nonHeadBundles[i+1:]...)
+		}
+	}
+	return nonHeadBundles
+}
+
+func getMaxOcp(modelOrDb interface{}, channelGrouping channelGrouping) []string {
 	var maxOcpPerChannel []string
 	switch modelOrDb := modelOrDb.(type) {
 	case *sql.DB:
-		sql := "SELECT p.value FROM properties p WHERE p.operatorbundle_name = ? AND type = \"olm.maxOpenShiftVersion\""
-		row, err := modelOrDb.Query(sql, operatorName)
-		if err != nil {
-			log.Errorf("unable to query the index db : %s", err)
-			return nil
-		}
-		defer row.Close()
-		for row.Next() {
-			var maxOpenShiftVersion string
-			err = row.Scan(&maxOpenShiftVersion)
-			if err == nil {
-				maxOcpPerChannel = append(maxOcpPerChannel, maxOpenShiftVersion)
+		for _, channelHead := range channelGrouping.HeadBundleNames {
+			sql :=
+				"SELECT p.value FROM properties p WHERE p.operatorbundle_name = ? AND type = 'olm.maxOpenShiftVersion';"
+			row, err := modelOrDb.Query(sql, channelHead)
+			if err != nil {
+				log.Errorf("unable to query the index db for maxOCPs : %s", err)
+				return nil
 			}
+			if !row.Next() {
+				maxOcpPerChannel = append(maxOcpPerChannel, "")
+				continue
+			} else {
+				var maxOpenShiftVersion string
+				err = row.Scan(&maxOpenShiftVersion)
+				if err == nil {
+					maxOcpPerChannel = append(maxOcpPerChannel, maxOpenShiftVersion)
+				}
+			}
+			row.Close()
 		}
 		return maxOcpPerChannel
+	//TODO debug on 4.11 and verify FBC results are same as SQL here
 	case model.Model:
 		for _, Package := range modelOrDb {
-			if Package.Name == operatorName {
+			if Package.Name == channelGrouping.OperatorName {
 				for _, Channel := range Package.Channels {
 					headBundle, _ := Channel.Head()
 					for _, Bundle := range Channel.Bundles {
@@ -391,6 +495,21 @@ func Contains[T comparable](arr []T, x T) bool {
 		}
 	}
 	return false
+}
+
+func transpose(slice [][]channelGrouping) [][]channelGrouping {
+	xl := len(slice[0])
+	yl := len(slice)
+	result := make([][]channelGrouping, xl)
+	for i := range result {
+		result[i] = make([]channelGrouping, yl)
+	}
+	for i := 0; i < xl; i++ {
+		for j := 0; j < yl; j++ {
+			result[i][j] = slice[j][i]
+		}
+	}
+	return result
 }
 
 func stripQuotes(data []byte) string {
