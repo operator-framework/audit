@@ -172,18 +172,20 @@ func generateJSON(indexInfo []string, EUSTableData [][]channelGrouping) {
 	for index, EUSTableColumn := range EUSTableData {
 		for _, channelGrouping := range EUSTableColumn {
 			for idx, channelName := range channelGrouping.ChannelNames {
-				maxOCPVersion := ""
 				DataItem := orderedmap.New()
 				DataItem.Set("name", channelGrouping.OperatorName)
 				DataItem.Set("ocpVersion", actions.GetVersionTagFromImage(indexInfo[index]))
 				defaultPostfix := isDefaultChannel(channelName, channelGrouping.DefaultChannelName)
 				DataItem.Set("channel", channelName+defaultPostfix)
-				if channelGrouping.MaxOCPPerHead[idx] != "" {
-					maxOCPVersion = " (" + channelGrouping.MaxOCPPerHead[idx] + ")"
+				maxOCPVersion := ""
+				if channelGrouping.MaxOCPPerHead != nil {
+					if channelGrouping.MaxOCPPerHead[idx] != "" {
+						maxOCPVersion = " (maxOCP = " + channelGrouping.MaxOCPPerHead[idx] + ")"
+					}
 				}
-				DataItem.Set("currentVersion", channelGrouping.HeadBundleNames[idx]+maxOCPVersion)
+				DataItem.Set("currentVersion", getVersion(channelGrouping.HeadBundleNames[idx])+maxOCPVersion)
 				for idx2, nonHeadBundleName := range channelGrouping.NonHeadBundles[idx] {
-					DataItem.Set("otherAvailableVersion"+strconv.Itoa(idx2), nonHeadBundleName)
+					DataItem.Set("otherAvailableVersion"+strconv.Itoa(idx2), getVersion(nonHeadBundleName))
 				}
 				DataItem.Set("isCommon", checkCommon(channelName, channelGrouping.CommonChannels))
 				DataItems = append(DataItems, *DataItem)
@@ -337,13 +339,15 @@ func getChannelsDefaultChannelHeadBundle(modelOrDb interface{}, operatorName str
 				channelGrouping.OperatorName = operatorName
 				channelGrouping.ChannelNames = append(channelGrouping.ChannelNames, channelName)
 				channelGrouping.DefaultChannelName = defaultChannelName
-				channelGrouping.HeadBundleNames = append(channelGrouping.HeadBundleNames, getVersion(headBundleName))
+				channelGrouping.HeadBundleNames = append(channelGrouping.HeadBundleNames, headBundleName)
 			}
 		}
 		return channelGrouping, nil
 	case model.Model:
 		for packageName, Package := range modelOrDb {
 			if packageName == operatorName {
+				channelGrouping.OperatorName = operatorName
+				channelGrouping.DefaultChannelName = Package.DefaultChannel.Name
 				for _, Channel := range Package.Channels {
 					channelGrouping.channels = append(channelGrouping.channels, Channel)
 					channelGrouping.ChannelNames = append(channelGrouping.ChannelNames, Channel.Name)
@@ -351,7 +355,7 @@ func getChannelsDefaultChannelHeadBundle(modelOrDb interface{}, operatorName str
 				channelGrouping.DefaultChannelName = Package.DefaultChannel.Name
 				for _, channelInPackage := range channelGrouping.channels {
 					headBundle, _ := channelInPackage.Head()
-					channelGrouping.HeadBundleNames = append(channelGrouping.HeadBundleNames, getVersion(headBundle.Name))
+					channelGrouping.HeadBundleNames = append(channelGrouping.HeadBundleNames, headBundle.Name)
 				}
 			}
 		}
@@ -385,13 +389,31 @@ func getNonHeadBundles(modelOrDb interface{}, grouping channelGrouping) [][]stri
 			defer row.Close()
 			for row.Next() {
 				var bundleName string
-				row.Scan(&bundleName)
-				nonHeadBundleNamesPerChannel = append(nonHeadBundleNamesPerChannel, getVersion(bundleName))
+				err = row.Scan(&bundleName)
+				if err != nil {
+					nonHeadBundleNamesPerChannel = append(nonHeadBundleNamesPerChannel, "")
+				}
+				nonHeadBundleNamesPerChannel = append(nonHeadBundleNamesPerChannel, bundleName)
 			}
 			nonHeadBundleNames[i] = remove(nonHeadBundleNamesPerChannel, grouping.HeadBundleNames[i])
 		}
 		return nonHeadBundleNames
 	case model.Model:
+		for _, Package := range modelOrDb {
+			if Package.Name == grouping.OperatorName {
+				i := 0
+				for _, Channel := range Package.Channels {
+					var nonHeadBundleNamesPerChannel []string
+					for _, bundle := range Channel.Bundles {
+						nonHeadBundleNamesPerChannel = append(nonHeadBundleNamesPerChannel, bundle.Name)
+					}
+					headBundle, _ := Channel.Head()
+					nonHeadBundleNamesPerChannel = remove(nonHeadBundleNamesPerChannel, headBundle.Name)
+					nonHeadBundleNames[i] = nonHeadBundleNamesPerChannel
+					i++
+				}
+			}
+		}
 		return nonHeadBundleNames
 	}
 	return nonHeadBundleNames

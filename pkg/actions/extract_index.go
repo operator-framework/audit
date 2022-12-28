@@ -70,12 +70,13 @@ func ExtractIndexDBorCatalogs(image string, containerEngine string) error {
 	return nil
 }
 
-// get the tag from an image URL
+// GetVersionTagFromImage get the tag from an image URL
 func GetVersionTagFromImage(image string) string {
 	var versionTag string
 	splitImage := strings.SplitN(image, ":", 2)
 	if len(splitImage) == 2 {
 		versionTag = splitImage[1]
 	}
-	return versionTag
+	// drop the leading "v" in the tag as the old version did -- to be consistent with older EUS reports
+	return versionTag[1:]
 }
