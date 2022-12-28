@@ -151,7 +151,7 @@ func addCommonChannels(table [][]channelGrouping) [][]channelGrouping {
 			}
 		}
 	}
-	return transpose(channelGroupingsByOperatorAcrossIndexes)
+	return channelGroupingsByOperatorAcrossIndexes
 }
 
 func generateJSON(indexInfo []string, EUSTableData [][]channelGrouping) {
@@ -169,8 +169,8 @@ func generateJSON(indexInfo []string, EUSTableData [][]channelGrouping) {
 	data := make(map[string][]orderedmap.OrderedMap)
 	var DataItems []orderedmap.OrderedMap
 	//todo see if we can debug hit on Deprecated != nil
-	for index, EUSTableColumn := range EUSTableData {
-		for _, channelGrouping := range EUSTableColumn {
+	for _, EUSTableRow := range EUSTableData {
+		for index, channelGrouping := range EUSTableRow {
 			for idx, channelName := range channelGrouping.ChannelNames {
 				DataItem := orderedmap.New()
 				DataItem.Set("name", channelGrouping.OperatorName)
