@@ -151,6 +151,7 @@ func addCommonChannels(table [][]channelGrouping) [][]channelGrouping {
 			}
 		}
 	}
+	// don't reverse the transpose to leave table in row order to match JSON report from older code
 	return channelGroupingsByOperatorAcrossIndexes
 }
 
