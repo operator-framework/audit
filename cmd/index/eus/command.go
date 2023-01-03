@@ -153,13 +153,11 @@ func addCommonChannels(table [][]channelGrouping) [][]channelGrouping {
 					commonChannels = sliceutil.IntersectStrings(commonChannels, cgs[idx+last].ChannelNames)
 				}
 			}
-			// when done, update all the channelGrouping.commonChannels for the operator
-			if idx == len(cgs)-1 {
-				for i := 0; i < len(cgs); i++ {
-					if cgs[i].ChannelNames != nil {
-						cgs[i].CommonChannels = commonChannels
-					}
-				}
+		}
+		// when done, update all the channelGrouping.commonChannels for the operator
+		for i := 0; i < len(cgs); i++ {
+			if cgs[i].ChannelNames != nil {
+				cgs[i].CommonChannels = commonChannels
 			}
 		}
 	}
