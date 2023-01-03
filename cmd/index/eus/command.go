@@ -18,6 +18,12 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"os"
+	"path"
+	"sort"
+	"strconv"
+	"strings"
+
 	"github.com/ghetzel/go-stockutil/sliceutil"
 	"github.com/iancoleman/orderedmap"
 	"github.com/mpvl/unique"
@@ -29,11 +35,6 @@ import (
 	"github.com/operator-framework/operator-registry/alpha/model"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"os"
-	"path"
-	"sort"
-	"strconv"
-	"strings"
 )
 
 var flags = index.BindFlags{}
@@ -252,7 +253,7 @@ func getModelsOrDB(indexes []string) []any {
 				log.Errorf("unable to load the file based config : %s", err)
 				return modelsOrDBs
 			}
-			model, err = declcfg.ConvertToModel(*fbc)
+			model, _ = declcfg.ConvertToModel(*fbc)
 		} else {
 			// older sqlite index
 			db, err = sql.Open("sqlite3", "./output/"+
@@ -376,8 +377,7 @@ func getChannelsDefaultChannelHeadBundle(modelOrDb interface{}, operatorName str
 }
 
 func getVersion(bundleName string) string {
-	var version string
-	version = strings.Join(strings.Split(bundleName, ".")[1:], ".")
+	version := strings.Join(strings.Split(bundleName, ".")[1:], ".")
 	return version
 }
 
