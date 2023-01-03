@@ -131,22 +131,37 @@ func run(cmd *cobra.Command, args []string) error {
 }
 
 // find intersection of channelGroupings in each row and store to commonChannels field
+// needs to handle cases where operator does not exist in a given index, channelNames == nil
 func addCommonChannels(table [][]channelGrouping) [][]channelGrouping {
 	channelGroupingsByOperatorAcrossIndexes := transpose(table)
 	var commonChannels []string
-
 	for _, cgs := range channelGroupingsByOperatorAcrossIndexes {
+		foundFirstNonEmptyChannels := false
+		last := 1
 		for idx, cg := range cgs {
-			if idx == 0 {
+			if cg.ChannelNames != nil && !foundFirstNonEmptyChannels {
 				commonChannels = cg.ChannelNames
+				foundFirstNonEmptyChannels = true
 			}
-			if idx < len(cgs)-1 {
-				commonChannels = sliceutil.IntersectStrings(commonChannels, cgs[idx+1].ChannelNames)
+			if cg.ChannelNames != nil {
+				if idx < len(cgs) {
+					if idx == len(cgs)-1 {
+						last = 0
+					}
+					if cgs[idx+last].ChannelNames == nil {
+						commonChannels = cg.ChannelNames
+					} else {
+						commonChannels = sliceutil.IntersectStrings(commonChannels, cgs[idx+last].ChannelNames)
+					}
+				}
 			}
+
 			// when done, update all the channelGrouping.commonChannels for the operator
 			if idx == len(cgs)-1 {
 				for i := 0; i < len(cgs); i++ {
-					cgs[i].CommonChannels = commonChannels
+					if cgs[i].ChannelNames != nil {
+						cgs[i].CommonChannels = commonChannels
+					}
 				}
 			}
 		}
