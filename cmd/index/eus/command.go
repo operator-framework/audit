@@ -144,18 +144,15 @@ func addCommonChannels(table [][]channelGrouping) [][]channelGrouping {
 				foundFirstNonEmptyChannels = true
 			}
 			if cg.ChannelNames != nil {
-				if idx < len(cgs) {
-					if idx == len(cgs)-1 {
-						last = 0
-					}
-					if cgs[idx+last].ChannelNames == nil {
-						commonChannels = cg.ChannelNames
-					} else {
-						commonChannels = sliceutil.IntersectStrings(commonChannels, cgs[idx+last].ChannelNames)
-					}
+				if idx == len(cgs)-1 {
+					last = 0
+				}
+				if cgs[idx+last].ChannelNames == nil {
+					commonChannels = cg.ChannelNames
+				} else {
+					commonChannels = sliceutil.IntersectStrings(commonChannels, cgs[idx+last].ChannelNames)
 				}
 			}
-
 			// when done, update all the channelGrouping.commonChannels for the operator
 			if idx == len(cgs)-1 {
 				for i := 0; i < len(cgs); i++ {
