@@ -17,6 +17,7 @@ package actions
 import (
 	"fmt"
 	"os/exec"
+	"strings"
 
 	"github.com/operator-framework/audit/pkg"
 	log "github.com/sirupsen/logrus"
@@ -37,29 +38,45 @@ func ExtractIndexDBorCatalogs(image string, containerEngine string) error {
 		return fmt.Errorf("unable to create container image %s : %s", image, err)
 	}
 
+	versionTag := GetVersionTagFromImage(image)
+
 	// Extract
-	command = exec.Command(containerEngine, "cp", fmt.Sprintf("%s:/database/index.db", catalogIndex), "./output/")
+	command = exec.Command("mkdir", "./output/"+versionTag+"/")
 	_, err = pkg.RunCommand(command)
 	if err != nil {
-
-		command = exec.Command(containerEngine, "cp",
-			fmt.Sprintf("%s:/var/lib/iib/_hidden/do.not.edit.db", catalogIndex), "./output/")
-		_, err = pkg.RunCommand(command)
-		if err != nil {
-			return fmt.Errorf("unable to extract the image for index.db %s : %s", image, err)
-		}
-
-		command = exec.Command("cp", "./output/do.not.edit.db", "./output/index.db")
-		_, err = pkg.RunCommand(command)
-		if err != nil {
-			return fmt.Errorf("renaming do.not.edit.db to index.db %s : %s", image, err)
-		}
-		// For FBC extract they are on the image, in /configs/<package_name>/catalog.json
-		command = exec.Command(containerEngine, "cp", fmt.Sprintf("%s:/configs/", catalogIndex), "./output/")
-		_, errFbc := pkg.RunCommand(command)
-		if errFbc != nil {
-			return fmt.Errorf("copying file-based configs %s : %s", image, err)
-		}
+		log.Fatal(err)
+	}
+	// sqlite db
+	command = exec.Command(containerEngine, "cp", fmt.Sprintf("%s:/database/index.db", catalogIndex),
+		"./output/"+versionTag+"/")
+	_, err = pkg.RunCommand(command)
+	if err != nil {
+		log.Infof("unable to extract index.db (probably file based config index) %s : %s", image, err)
+	}
+	// transitional indexes have a hidden sqlite db, copy it, and change the name to just index.db
+	command = exec.Command(containerEngine, "cp",
+		fmt.Sprintf("%s:/var/lib/iib/_hidden/do.not.edit.db", catalogIndex), "./output/"+versionTag+"/index.db")
+	_, err = pkg.RunCommand(command)
+	if err != nil {
+		log.Infof("unable to extract the image for index.db (transition or file based config index) %s : %s", image, err)
+	}
+	// For FBC extract they are on the image, in /configs/<package_name>/catalog.json
+	command = exec.Command(containerEngine, "cp", fmt.Sprintf("%s:/configs/", catalogIndex),
+		"./output/"+versionTag+"/")
+	_, errFbc := pkg.RunCommand(command)
+	if errFbc != nil {
+		log.Infof("copying file-based configs %s : %s", image, err)
 	}
 	return nil
+}
+
+// GetVersionTagFromImage get the tag from an image URL
+func GetVersionTagFromImage(image string) string {
+	var versionTag string
+	splitImage := strings.SplitN(image, ":", 2)
+	if len(splitImage) == 2 {
+		versionTag = splitImage[1]
+	}
+	// drop the leading "v" in the tag as the old version did -- to be consistent with older EUS reports
+	return versionTag[1:]
 }

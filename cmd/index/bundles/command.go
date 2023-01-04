@@ -23,9 +23,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/operator-framework/operator-registry/alpha/declcfg"
-
 	"github.com/operator-framework/audit/pkg/actions"
+	"github.com/operator-framework/operator-registry/alpha/declcfg"
 
 	"github.com/spf13/cobra"
 
@@ -181,10 +180,10 @@ func run(cmd *cobra.Command, args []string) error {
 	log.Info("Gathering data...")
 
 	// check here to see if it's index.db or file-based catalogs
-	if isFBC() {
-		reportData, err = getDataFromFBC(reportData)
+	if IsFBC(flags.IndexImage) {
+		reportData, err = GetDataFromFBC(reportData)
 	} else {
-		reportData, err = getDataFromIndexDB(reportData)
+		reportData, err = GetDataFromIndexDB(reportData)
 	}
 	if err != nil {
 		return err
@@ -201,9 +200,9 @@ func run(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func isFBC() bool {
-	//check if /output/configs is populated to determine if the catalog is file-based
-	root := "./output/configs"
+func IsFBC(indexImage string) bool {
+	//check if /output/versiontag/configs is populated to determine if the catalog is file-based
+	root := "./output/" + actions.GetVersionTagFromImage(indexImage) + "/configs"
 	f, err := os.Open(root)
 	if err != nil {
 		return false
@@ -213,12 +212,13 @@ func isFBC() bool {
 	if err == io.EOF {
 		return false
 	}
-	log.Infof("./output/configs is present & populated so this must be a file-based config catalog")
+	log.Infof("./output/%s/configs is present & populated so this must be a file-based config catalog",
+		actions.GetVersionTagFromImage(indexImage))
 	return true
 }
 
-func getDataFromFBC(report index.Data) (index.Data, error) {
-	root := "./output/configs"
+func GetDataFromFBC(report index.Data) (index.Data, error) {
+	root := "./output/" + actions.GetVersionTagFromImage(report.Flags.IndexImage) + "/configs"
 	fileSystem := os.DirFS(root)
 	fbc, err := declcfg.LoadFS(fileSystem)
 
@@ -271,9 +271,10 @@ func getDataFromFBC(report index.Data) (index.Data, error) {
 	return report, nil
 }
 
-func getDataFromIndexDB(report index.Data) (index.Data, error) {
+func GetDataFromIndexDB(report index.Data) (index.Data, error) {
 	// Connect to the database
-	db, err := sql.Open("sqlite3", "./output/index.db")
+	db, err := sql.Open("sqlite3", "./output/"+
+		actions.GetVersionTagFromImage(report.Flags.IndexImage)+"/index.db")
 	if err != nil {
 		return report, fmt.Errorf("unable to connect in to the database : %s", err)
 	}

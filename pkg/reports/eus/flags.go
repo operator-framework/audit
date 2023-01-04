@@ -12,29 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package index
+package eus
 
-import (
-	"github.com/operator-framework/audit/cmd/index/eus"
-	"github.com/spf13/cobra"
-
-	"github.com/operator-framework/audit/cmd/index/bundles"
-)
-
-func NewCmd() *cobra.Command {
-	indexCmd := &cobra.Command{
-		Use:   "index",
-		Short: "audit index catalog image",
-		Long:  "use the set of kind of reports available as sub-command to audit the index images",
-	}
-
-	indexCmd.AddCommand(
-		bundles.NewCmd(),
-	)
-	indexCmd.AddCommand(
-		eus.NewCmd(),
-	)
-
-	return indexCmd
-
+// BindFlags define the flags used to generate the bundle report
+type BindFlags struct {
+	Indexes         []string `json:"image"`
+	OutputPath      string   `json:"outputPath"`
+	OutputFormat    string   `json:"outputFormat"`
+	ContainerEngine string   `json:"containerEngine"`
 }
