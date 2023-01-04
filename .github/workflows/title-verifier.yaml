@@ -6,12 +6,11 @@ on:
 
 
 jobs:
-  runs-on: ubuntu-latest
-  verify:
-    name: Verify PR Title
+  check:
+    runs-on: ubuntu-latest
     steps:
-    - name: Verify Title
-      id: verifier
-      uses: kubernetes-sigs/kubebuilder-release-tools@v0.2.0
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Verify Title
+        id: verifier
+        uses: kubernetes-sigs/kubebuilder-release-tools@v0.2.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
