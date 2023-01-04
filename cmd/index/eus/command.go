@@ -471,13 +471,15 @@ func getMaxOcp(modelOrDb interface{}, channelGrouping channelGrouping) []string 
 			if Package.Name == channelGrouping.OperatorName {
 				for _, Channel := range Package.Channels {
 					headBundle, _ := Channel.Head()
+					maxOpenShiftVersion := ""
 					for _, Bundle := range Channel.Bundles {
 						for _, property := range Bundle.Properties {
 							if property.Type == "olm.maxOpenShiftVersion" && Bundle.Name == headBundle.Name {
-								maxOcpPerChannel = append(maxOcpPerChannel, stripQuotes(property.Value))
+								maxOpenShiftVersion = stripQuotes(property.Value)
 							}
 						}
 					}
+					maxOcpPerChannel = append(maxOcpPerChannel, maxOpenShiftVersion)
 				}
 			}
 		}
