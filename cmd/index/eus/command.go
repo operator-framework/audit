@@ -112,10 +112,10 @@ func run(cmd *cobra.Command, args []string) error {
 	sort.Strings(allOperators)
 	unique.Strings(&allOperators)
 
-	for _, modelOrDB := range modelOrDBs {
+	for index, modelOrDB := range modelOrDBs {
 		var EUSReportColumn []channelGrouping
 		for _, operator := range allOperators {
-			channelGrouping := channelsAcrossIndexes(modelOrDB, operator)
+			channelGrouping := channelsInIndex(modelOrDB, operator, flags.Indexes[index])
 			channelGrouping.MaxOCPPerHead = getMaxOcp(modelOrDB, channelGrouping)
 			channelGrouping.Deprecated = getDeprecated(modelOrDB, operator)
 			channelGrouping.NonHeadBundles = getNonHeadBundles(modelOrDB, channelGrouping)
@@ -272,12 +272,13 @@ func getModelsOrDB(indexes []string) []any {
 	return modelsOrDBs
 }
 
-// Determine common channels that exist across all indexes
-func channelsAcrossIndexes(modelOrDb interface{}, operator string) channelGrouping {
+// Determine the channels for operator in an index
+func channelsInIndex(modelOrDb interface{}, operator string, ocpIndex string) channelGrouping {
 	var channelGrouping channelGrouping
 	channelGrouping, err := getChannelsDefaultChannelHeadBundle(modelOrDb, operator)
 	if err != nil {
-		log.Errorf("error finding channel info for %s in index %s: %v", operator, modelOrDb, err)
+		log.Infof("in index %s: %v (not published in this index?)",
+			actions.GetVersionTagFromImage(ocpIndex), err)
 	}
 	return channelGrouping
 }
