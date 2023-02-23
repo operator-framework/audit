@@ -168,7 +168,7 @@
                                     <button align="center" onclick="myFunctionShowImages('show-unsupported-{{ .ForHideButton}}')">Show Details</button>
                                 </div>
                                 <div id="show-unsupported-{{ .ForHideButton}}" style="display: none;">
-                                   {{ range .MangerImage }}
+                                   {{ range .ManagerImage }}
                                         <li style="color: orange">{{ . }}</li>
                                    {{ end }}
                                    {{ range .Images }}
@@ -256,7 +256,7 @@
                                     <button align="center" onclick="myFunctionShowImages('show-images-warn-{{ .ForHideButton}}')">Show Details</button>
                                 </div>
                                 <div id="show-images-warn-{{ .ForHideButton}}" style="display: none;">
-                                   {{ range .MangerImage }}
+                                   {{ range .ManagerImage }}
                                         <li style="color: orange">{{ . }}</li>
                                    {{ end }}
                                    {{ range .Images }}
@@ -366,7 +366,7 @@
                                     <button align="center" onclick="myFunctionShowImages('show-images-{{ .ForHideButton}}')">Show Details</button>
                                 </div>
                                 <div id="show-images-{{ .ForHideButton}}" style="display: none;">
-                                   {{ range .MangerImage }}
+                                   {{ range .ManagerImage }}
                                         <li style="color: orange">{{ . }}</li>
                                    {{ end }}
                                    {{ range .Images }}
@@ -493,7 +493,7 @@
                                     <button align="center" onclick="myFunctionShowImagesOK('show-images-ok-{{ .ForHideButton}}')">Show Details</button>
                                 </div>
                                 <div id="show-images-ok-{{ .ForHideButton}}" style="display: none;">
-                                   {{ range .MangerImage }}
+                                   {{ range .ManagerImage }}
                                         <li style="color: orange">{{ . }}</li>
                                    {{ end }}
                                    {{ range .Images }}
