@@ -19,6 +19,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"os/exec"
 	"path"
 	"sort"
 	"strconv"
@@ -61,6 +62,9 @@ By running this command audit tool will:
 
 	cmd.Flags().StringSliceVarP(&flags.Indexes, "indexes", "", []string{},
 		"Red Hat EUS index version number for report \"from\" (inclusive))")
+	if len(flags.ContainerEngine) == 0 {
+		flags.ContainerEngine = pkg.GetContainerToolFromEnvVar()
+	}
 	if err := cmd.MarkFlagRequired("indexes"); err != nil {
 		log.Fatalf("Failed to set `indexes` flag with list of indexes for `eus` sub-command as required")
 	}
@@ -122,6 +126,9 @@ func run(cmd *cobra.Command, args []string) error {
 			EUSReportColumn = append(EUSReportColumn, channelGrouping)
 		}
 		EUSReportTable = append(EUSReportTable, EUSReportColumn)
+		// always remove catalog images, so always non-"server-mode" as elsewhere
+		rmiCmd := exec.Command(flags.ContainerEngine, "rmi", flags.Indexes[index])
+		_, _ = pkg.RunCommand(rmiCmd)
 	}
 	EUSReportTable = addCommonChannels(EUSReportTable)
 
@@ -329,6 +336,7 @@ type channelGrouping struct {
 }
 
 func getChannelsDefaultChannelHeadBundle(modelOrDb interface{}, operatorName string) (channelGrouping, error) {
+	var operatorFound bool = false
 	var channelGrouping = channelGrouping{}
 	switch modelOrDb := modelOrDb.(type) {
 	case *sql.DB:
@@ -353,12 +361,14 @@ func getChannelsDefaultChannelHeadBundle(modelOrDb interface{}, operatorName str
 				channelGrouping.ChannelNames = append(channelGrouping.ChannelNames, channelName)
 				channelGrouping.DefaultChannelName = defaultChannelName
 				channelGrouping.HeadBundleNames = append(channelGrouping.HeadBundleNames, headBundleName)
+			} else {
+				return channelGrouping, fmt.Errorf("operator named %q not found in the index", operatorName)
 			}
 		}
-		return channelGrouping, nil
 	case model.Model:
 		for packageName, Package := range modelOrDb {
 			if packageName == operatorName {
+				operatorFound = true
 				channelGrouping.OperatorName = operatorName
 				channelGrouping.DefaultChannelName = Package.DefaultChannel.Name
 				for _, Channel := range Package.Channels {
@@ -372,7 +382,9 @@ func getChannelsDefaultChannelHeadBundle(modelOrDb interface{}, operatorName str
 				}
 			}
 		}
-		return channelGrouping, fmt.Errorf("operator named %q not found in the index", operatorName)
+		if !operatorFound {
+			return channelGrouping, fmt.Errorf("operator named %q not found in the index", operatorName)
+		}
 	}
 	return channelGrouping, nil
 }
