@@ -126,6 +126,10 @@ func run(cmd *cobra.Command, args []string) error {
 			EUSReportColumn = append(EUSReportColumn, channelGrouping)
 		}
 		EUSReportTable = append(EUSReportTable, EUSReportColumn)
+
+		// must rm container so all rmi succeed
+		command := exec.Command(flags.ContainerEngine, "rm", actions.CatalogIndex)
+		_, _ = pkg.RunCommand(command)
 		// always remove catalog images, so always non-"server-mode" as elsewhere
 		rmiCmd := exec.Command(flags.ContainerEngine, "rmi", flags.Indexes[index])
 		_, _ = pkg.RunCommand(rmiCmd)

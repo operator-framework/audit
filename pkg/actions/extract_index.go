@@ -23,16 +23,16 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-const catalogIndex = "audit-catalog-index"
+const CatalogIndex = "audit-catalog-index"
 
 func ExtractIndexDBorCatalogs(image string, containerEngine string) error {
 	log.Info("Extracting database...")
 	// Remove image if exists already
-	command := exec.Command(containerEngine, "rm", catalogIndex)
+	command := exec.Command(containerEngine, "rm", CatalogIndex)
 	_, _ = pkg.RunCommand(command)
 
 	// Download the image
-	command = exec.Command(containerEngine, "create", "--name", catalogIndex, image, "\"yes\"")
+	command = exec.Command(containerEngine, "create", "--name", CatalogIndex, image, "\"yes\"")
 	_, err := pkg.RunCommand(command)
 	if err != nil {
 		return fmt.Errorf("unable to create container image %s : %s", image, err)
@@ -47,7 +47,7 @@ func ExtractIndexDBorCatalogs(image string, containerEngine string) error {
 		log.Fatal(err)
 	}
 	// sqlite db
-	command = exec.Command(containerEngine, "cp", fmt.Sprintf("%s:/database/index.db", catalogIndex),
+	command = exec.Command(containerEngine, "cp", fmt.Sprintf("%s:/database/index.db", CatalogIndex),
 		"./output/"+versionTag+"/")
 	_, err = pkg.RunCommand(command)
 	if err != nil {
@@ -55,13 +55,13 @@ func ExtractIndexDBorCatalogs(image string, containerEngine string) error {
 	}
 	// transitional indexes have a hidden sqlite db, copy it, and change the name to just index.db
 	command = exec.Command(containerEngine, "cp",
-		fmt.Sprintf("%s:/var/lib/iib/_hidden/do.not.edit.db", catalogIndex), "./output/"+versionTag+"/index.db")
+		fmt.Sprintf("%s:/var/lib/iib/_hidden/do.not.edit.db", CatalogIndex), "./output/"+versionTag+"/index.db")
 	_, err = pkg.RunCommand(command)
 	if err != nil {
 		log.Infof("unable to extract the image for index.db (transition or file based config index) %s : %s", image, err)
 	}
 	// For FBC extract they are on the image, in /configs/<package_name>/catalog.json
-	command = exec.Command(containerEngine, "cp", fmt.Sprintf("%s:/configs/", catalogIndex),
+	command = exec.Command(containerEngine, "cp", fmt.Sprintf("%s:/configs/", CatalogIndex),
 		"./output/"+versionTag+"/")
 	_, errFbc := pkg.RunCommand(command)
 	if errFbc != nil {
