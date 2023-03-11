@@ -408,7 +408,8 @@ func getNonHeadBundles(modelOrDb interface{}, grouping channelGrouping) [][]stri
 				FROM operatorbundle 
 				INNER JOIN channel_entry 
 				ON operatorbundle.name=channel_entry.operatorbundle_name 
-				WHERE channel_entry.package_name = ? AND channel_entry.channel_name = ?;`
+				WHERE channel_entry.package_name = ? AND channel_entry.channel_name = ?
+				GROUP BY operatorbundle.name;`
 			row, err := modelOrDb.Query(sql, grouping.OperatorName, channelName)
 			if err != nil {
 				log.Errorf("unable to query the index db for maxOCPs : %s", err)
