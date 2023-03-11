@@ -429,7 +429,6 @@ func getNonHeadBundles(modelOrDb interface{}, grouping channelGrouping) [][]stri
 	case model.Model:
 		for _, Package := range modelOrDb {
 			if Package.Name == grouping.OperatorName {
-				i := 0
 				for _, Channel := range Package.Channels {
 					var nonHeadBundleNamesPerChannel []string
 					for _, bundle := range Channel.Bundles {
@@ -437,14 +436,22 @@ func getNonHeadBundles(modelOrDb interface{}, grouping channelGrouping) [][]stri
 					}
 					headBundle, _ := Channel.Head()
 					nonHeadBundleNamesPerChannel = remove(nonHeadBundleNamesPerChannel, headBundle.Name)
-					nonHeadBundleNames[i] = nonHeadBundleNamesPerChannel
-					i++
+					nonHeadBundleNames[indexOf(Channel.Name, grouping.ChannelNames)] = nonHeadBundleNamesPerChannel
 				}
 			}
 		}
 		return nonHeadBundleNames
 	}
 	return nonHeadBundleNames
+}
+
+func indexOf(word string, data []string) int {
+	for k, v := range data {
+		if word == v {
+			return k
+		}
+	}
+	return -1
 }
 
 func remove(nonHeadBundles []string, headBundle string) []string {
