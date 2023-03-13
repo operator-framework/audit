@@ -408,7 +408,8 @@ func getNonHeadBundles(modelOrDb interface{}, grouping channelGrouping) [][]stri
 				FROM operatorbundle 
 				INNER JOIN channel_entry 
 				ON operatorbundle.name=channel_entry.operatorbundle_name 
-				WHERE channel_entry.package_name = ? AND channel_entry.channel_name = ?;`
+				WHERE channel_entry.package_name = ? AND channel_entry.channel_name = ?
+				GROUP BY operatorbundle.name;`
 			row, err := modelOrDb.Query(sql, grouping.OperatorName, channelName)
 			if err != nil {
 				log.Errorf("unable to query the index db for maxOCPs : %s", err)
@@ -429,7 +430,6 @@ func getNonHeadBundles(modelOrDb interface{}, grouping channelGrouping) [][]stri
 	case model.Model:
 		for _, Package := range modelOrDb {
 			if Package.Name == grouping.OperatorName {
-				i := 0
 				for _, Channel := range Package.Channels {
 					var nonHeadBundleNamesPerChannel []string
 					for _, bundle := range Channel.Bundles {
@@ -437,14 +437,22 @@ func getNonHeadBundles(modelOrDb interface{}, grouping channelGrouping) [][]stri
 					}
 					headBundle, _ := Channel.Head()
 					nonHeadBundleNamesPerChannel = remove(nonHeadBundleNamesPerChannel, headBundle.Name)
-					nonHeadBundleNames[i] = nonHeadBundleNamesPerChannel
-					i++
+					nonHeadBundleNames[indexOf(Channel.Name, grouping.ChannelNames)] = nonHeadBundleNamesPerChannel
 				}
 			}
 		}
 		return nonHeadBundleNames
 	}
 	return nonHeadBundleNames
+}
+
+func indexOf(word string, data []string) int {
+	for k, v := range data {
+		if word == v {
+			return k
+		}
+	}
+	return -1
 }
 
 func remove(nonHeadBundles []string, headBundle string) []string {
