@@ -395,7 +395,7 @@ func getChannelsDefaultChannelHeadBundle(modelOrDb interface{}, operatorName str
 
 func getVersion(bundleName string) string {
 	version := strings.Join(strings.Split(bundleName, ".")[1:], ".")
-	return version
+	return removeVee(stripQuotes([]byte(version)))
 }
 
 func getNonHeadBundles(modelOrDb interface{}, grouping channelGrouping) [][]string {
@@ -465,7 +465,7 @@ func remove(nonHeadBundles []string, headBundle string) []string {
 }
 
 func getMaxOcp(modelOrDb interface{}, channelGrouping channelGrouping) []string {
-	var maxOcpPerChannel []string
+	maxOcpPerChannel := make([]string, len(channelGrouping.ChannelNames))
 	switch modelOrDb := modelOrDb.(type) {
 	case *sql.DB:
 		for _, channelHead := range channelGrouping.HeadBundleNames {
@@ -489,7 +489,6 @@ func getMaxOcp(modelOrDb interface{}, channelGrouping channelGrouping) []string 
 			row.Close()
 		}
 		return maxOcpPerChannel
-	//TODO debug on 4.11 and verify FBC results are same as SQL here
 	case model.Model:
 		for _, Package := range modelOrDb {
 			if Package.Name == channelGrouping.OperatorName {
@@ -503,7 +502,7 @@ func getMaxOcp(modelOrDb interface{}, channelGrouping channelGrouping) []string 
 							}
 						}
 					}
-					maxOcpPerChannel = append(maxOcpPerChannel, maxOpenShiftVersion)
+					maxOcpPerChannel[indexOf(Channel.Name, channelGrouping.ChannelNames)] = maxOpenShiftVersion
 				}
 			}
 		}
@@ -577,4 +576,8 @@ func stripQuotes(data []byte) string {
 		data = data[1 : len(data)-1]
 	}
 	return string(data)
+}
+
+func removeVee(s string) string {
+	return strings.Replace(s, "v", "", 1)
 }
