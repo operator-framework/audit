@@ -395,7 +395,7 @@ func getChannelsDefaultChannelHeadBundle(modelOrDb interface{}, operatorName str
 
 func getVersion(bundleName string) string {
 	version := strings.Join(strings.Split(bundleName, ".")[1:], ".")
-	return version
+	return removeVee(stripQuotes([]byte(version)))
 }
 
 func getNonHeadBundles(modelOrDb interface{}, grouping channelGrouping) [][]string {
@@ -576,4 +576,8 @@ func stripQuotes(data []byte) string {
 		data = data[1 : len(data)-1]
 	}
 	return string(data)
+}
+
+func removeVee(s string) string {
+	return strings.Replace(s, "v", "", 1)
 }
