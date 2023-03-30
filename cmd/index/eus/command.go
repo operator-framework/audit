@@ -465,6 +465,7 @@ func remove(nonHeadBundles []string, headBundle string) []string {
 }
 
 func getMaxOcp(modelOrDb interface{}, channelGrouping channelGrouping) []string {
+	var maxOcpPerChannelSQL []string // already ordered
 	maxOcpPerChannel := make([]string, len(channelGrouping.ChannelNames))
 	switch modelOrDb := modelOrDb.(type) {
 	case *sql.DB:
@@ -477,18 +478,18 @@ func getMaxOcp(modelOrDb interface{}, channelGrouping channelGrouping) []string 
 				return nil
 			}
 			if !row.Next() {
-				maxOcpPerChannel = append(maxOcpPerChannel, "")
+				maxOcpPerChannelSQL = append(maxOcpPerChannelSQL, "")
 				continue
 			} else {
 				var maxOpenShiftVersion string
 				err = row.Scan(&maxOpenShiftVersion)
 				if err == nil {
-					maxOcpPerChannel = append(maxOcpPerChannel, maxOpenShiftVersion)
+					maxOcpPerChannelSQL = append(maxOcpPerChannelSQL, stripQuotes([]byte(maxOpenShiftVersion)))
 				}
 			}
 			row.Close()
 		}
-		return maxOcpPerChannel
+		return maxOcpPerChannelSQL
 	case model.Model:
 		for _, Package := range modelOrDb {
 			if Package.Name == channelGrouping.OperatorName {
