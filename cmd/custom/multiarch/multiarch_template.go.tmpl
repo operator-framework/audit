@@ -90,43 +90,66 @@
 <main>
 
         <h1>Multiple Architectures Dashboard</h1>
-        <p>The audit tool output for the following packages were obtained by checking the image and the bundle manifests
-        distributed. This report aims to try to identify the package distributions that validates the bundle against
-        criteria to support Multiple Architectures. For further information check:
+        <p>The audit tool output for the following packages was obtained by checking the image and the bundle manifests
+        distributed. This report aims to identify the package distributions and validates the bundle against criteria to
+        support Multiple Architectures. For further information check:
         <a href="https://olm.operatorframework.io/docs/advanced-tasks/ship-operator-supporting-multiarch/">here</a>.</p>
         <div class="container-fluid themed-container">
             <h5 class="display-12 fw-bold">Data from the image used</h5>
             <ul>
-                <li>Image name: {{ .ImageName }} </li>
+                <li>Image Name: {{ .ImageName }} </li>
                 <li>Image ID: {{ .ImageID }} </li>
                 <li>Image Created at: {{ .ImageBuild }} </li>
-                <li>From JSON report generated at: {{ .GeneratedAt }} </li>
+                <li>From the JSON report generated on: {{ .GeneratedAt }} </li>
             </ul>
         </div>
 
         <div class="container-fluid themed-container">
             <h5 class="display-12 fw-bold">FAQ</h5>
-            <h5 class="display-12 fw-bold">1. How it works?</h5>
-            <p> The images are inspect ($docker manifest inspect) and then: </p>
-            <li> raise a error(s) when is possible to confirm that images does not provide the support defined via to the labels on the CSV </li>
-            <li> raise a warning when it is possible to check that the Operator manager image(s) supports architecture(s) not defined via labels. Therefore, it shows like the labels are missing.</li>
-            <li> raise warnings when is possible to verify that the images defined in the CSV does not provide the same architecture(s) supported by the Operator manager image(s) or defined via the labels </li>
+            <h5 class="display-12 fw-bold">1. How does it work?</h5>
+            <div class="mb-3">
+              The audit tool inspects ($ docker manifest inspect) the images in the CSV and then:
+              <ul>
+                <li> raises an error(s) when the images available do not match the platforms defined in the CSV labels.</li>
+                <li> raises a warning when the Operator manager image(s) supports one or more platforms not defined in the CSV labels. This suggests the labels may be missing.</li>
+                <li> raises a warning when an image defined in the CSV does not support the same platform(s) supported by the Operator manager image(s) or defined via the CSV labels.</li>
+                <li> raises a warning when an image defined in the CSV does not specify node affinity requirements for the platforms supported by the image.</li>
+              </ul>
+            </div>
 
-            <h5 class="display-12 fw-bold">2. What is checked?</h5>
-            <p>Note: On this check, we aggregate the archetype(s) and OS(s) provided via the labels and those which are found by checking the images so that, we can check:</p>
-            <li> If your CSV is missing labels</li>
-            <li> If your Operator bundle specifies images which does not supports all archetypes found for your Operator image(s) (probably supported by your project) </li>
-            <p>Note: To better guess the case scenarios where authors might missed the labels the following check will
-            verify all architectures support for the Operator image(s). However, by looking at the CSV we are not able to ensure what is
-            the Operator image because this info is not provided. Therefore, we know by SDK the Operator image container will be called manager. </p>
-            <h5 class="display-12 fw-bold"> How the Operator image(s) are identified? </h5>
-            <li> The container named as manager under the CSV Deployment InstallStrategy (`Spec.InstallStrategy.StrategySpec.DeploymentSpecs`)</li>
-            <li> And if the above not found, all images under the InstallStrategy excluding the a container named as ` kube-rbac-proxy` since it is also scaffolded by default </li>
+            <div class="mb-3">
+              <h5 class="display-12 fw-bold">2. What is checked?</h5>
+              Note: In this check, the audit tool aggregates the platforms (`OS/architecture` pairs) provided via the labels and those which are found by inspecting the images so that we can check:
+              <ul>
+                <li> if your CSV is missing labels.</li>
+                <li> if your Operator bundle declares images that do not support all platforms found for your Operator image(s) (which indicates the intended platforms supported by your project).</li>
+              </ul>
+              <p>Note: To detect when authors may have missed one or more labels, the following check will verify that all platforms declared are supported by the Operator
+            image(s). However, by looking at the CSV we are not able to automatically detect the Operator image because this information is not explicitly provided. </p>
+            </div>
+
+            <div class="mb-3">
+              <h6 class="display-12 fw-bold">How is the Operator image(s) identified? </h6>
+              <ol>
+                <li> The audit tool scans for a container named manager, the OperatorSDK default, under the CSV Deployment InstallStrategy (`Spec.InstallStrategy.StrategySpec.DeploymentSpecs`). </li>
+                <li> If the above image is not found then all images under the InstallStrategy are used, excluding a container named `kube-rbac-proxy` since it is also scaffolded by default. </li>
+              </ol>
+            </div>
+            
+            <div class="mb-3">
+              <h6 class="display-12 fw-bold">What is node affinity?</h6>
+              <ul>
+                <li> Node affinity is a PodSpec-defined scheduling requirement that can be used to ensure that pods never try to schedule images to a node of an incompatible platform type. </li>
+                <li> It is a best practice for authors to set node affinity requirements to match the platforms supported by the underlying images when possible. </li>
+                <li> You can learn more about node affinity in the <a href="https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/">Kubernetes documentation</a>.</li>
+              </ul>
+            </div>
         </div>
 
         <div class="container-fluid themed-container" style="background-color: #00b3b3">
         <h5 class="display-12 fw-bold">Multiple Architectures Unsupported </h5>
-        <p> Following the packages which the only supports the SO linux and the architecture amd64. This solutions are not available for heterogeneous support. </p>
+        <p> The following packages only support the platform `linux/amd64` (`OS/architecture`). These solutions will not be available in multi-arch compute clusters
+        if one or more nodes of a matching platform type are not available. </p>
         <table id="unsupported" class="minimalistBlack" style="background-color: dimgrey; width: 98%">
             <thead>
                 <tr>
@@ -192,9 +215,10 @@
 
         <div class="container-fluid themed-container" style="background-color: #E1E100">
         <h5 class="display-12 fw-bold">Multiple Architectures Supported with Warnings</h5>
-        <p> Following the packages which might supports multiple architectures and warnings were found </p>
+        <p> The following packages support multiple architectures but warnings were found, indicating they may not be following best practices.</p>
         <h8 class="display-12 fw-bold"> Actions Required: </h8>
-        <li> Check if your bundle CSV is not missing the labels </li>
+        <li> Check if your bundle CSV is not missing the labels. </li>
+        <li> Ensure that each image specifies node affinity for the platforms it supports. </li>
         <table id="supportedWithWarnings" class="minimalistBlack" style="background-color: dimgrey; width: 98%">
             <thead>
                 <tr>
@@ -300,10 +324,10 @@
 
         <div class="container-fluid themed-container" style="background-color: #e68a00">
         <h5 class="display-12 fw-bold">Multiple Architectures Supported with Errors</h5>
-        <p> Following the packages which might supports multiple architectures and errors were found </p>
+        <p> The following packages support multiple architectures but errors were found, indicating there may be one or more misconfigurations. </p>
         <h8 class="display-12 fw-bold"> Actions Required: </h8>
-        <li> Ensure that you provide all images specified in the CSV supports all architecture defined via the labels </li>
-        <li> Check the Warnings to know if you are not or could not supporting architectures supported by the Operator manager image(s)</li>
+        <li> Ensure that all images specified in the CSV support all of the platforms defined via the labels. </li>
+        <li> Check the Warnings to know if the platforms supported match the platforms supported by the Operator manager image(s). </li>
         <table id="supportedWithErrors" class="minimalistBlack" style="background-color: dimgrey; width: 98%">
             <thead>
                 <tr>
@@ -430,9 +454,9 @@
 
         <div class="container-fluid themed-container" style="background-color: #00cc66">
         <h5 class="display-12 fw-bold">Multiple Architectures Supported and OK</h5>
-        <p> Following the packages which supports multiple architectures and no errors were found </p>
+        <p> The following packages support multiple architectures and no errors were found.</p>
         <h8 class="display-12 fw-bold"> Actions Required: </h8>
-        <li> - Ensure that you support all architectures if not yet (amd64, arm64, ppc64le, s390x) </li>
+        <li> Ensure that the operator supports all relevant architectures (amd64, arm64, ppc64le, s390x). </li>
         <table id="supportedOK" class="minimalistBlack" style="background-color: dimgrey; width: 98%">
             <thead>
                 <tr>
