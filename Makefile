@@ -41,7 +41,7 @@ LD_FLAGS=-ldflags " \
     "
 .PHONY: build
 build: ## Build the project locally
-	go build $(GO_GCFLAGS) $(GO_ASMFLAGS) $(LD_FLAGS) -o bin/audit-tool ./cmd
+	CGO_ENABLED=1 go build $(GO_GCFLAGS) $(GO_ASMFLAGS) $(LD_FLAGS) -o bin/audit-tool ./cmd
 	cp ./bin/audit-tool $(GOBIN)/audit-tool
 
 .PHONY: install
