@@ -41,7 +41,7 @@ func RunScorecard(bundleDir string, auditBundle *models.AuditBundle) *models.Aud
 	scorecardTestsPath := filepath.Join(bundleDir, "tests", "scorecard")
 	annotationsPath := filepath.Join(bundleDir, "metadata", "annotations.yaml")
 
-	// If find the annotations file then, check for the scorecard path on it.
+	// If we find the annotations file then, check for the scorecard path on it.
 	if _, err := os.Stat(annotationsPath); err == nil && !os.IsNotExist(err) {
 		annFile, err := pkg.ReadFile(annotationsPath)
 		if err != nil {
@@ -63,7 +63,7 @@ func RunScorecard(bundleDir string, auditBundle *models.AuditBundle) *models.Aud
 		}
 	}
 
-	// Check if has scorecard manifests
+	// Check if it has scorecard manifests
 	if _, err := os.Stat(scorecardTestsPath); err != nil {
 		if os.IsNotExist(err) {
 			if err := os.MkdirAll(scorecardTestsPath, os.ModePerm); err != nil {
