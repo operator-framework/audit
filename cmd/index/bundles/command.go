@@ -154,7 +154,7 @@ func removeDuplicates(elements []string) []string {
 
 // ExecuteExternalValidator runs the external validator on the provided image reference.
 func ExecuteExternalValidator(imageRef string) (bool, []string, []string, error) {
-	extValidatorCmd := "check-payload scan operator --spec " + imageRef + " --log_file=/dev/null --output-format=csv"
+	extValidatorCmd := "sudo check-payload scan operator --spec " + imageRef + " --log_file=/dev/null --output-format=csv"
 	cmd := exec.Command("bash", "-c", extValidatorCmd)
 
 	// Log the command being executed for debugging purposes
