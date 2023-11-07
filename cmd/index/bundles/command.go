@@ -160,6 +160,11 @@ func ExecuteExternalValidator(imageRef string) (bool, []string, []string, error)
 	// Log the command being executed for debugging purposes
 	log.Infof("Executing external validator with command: %s", extValidatorCmd)
 
+	// Remove the image that check-payload has downloaded using the rmi command
+	log.Infof("Removing image with command: %s rmi %s", flags.ContainerEngine, imageRef)
+	rmiCmd := exec.Command(flags.ContainerEngine, "rmi", imageRef)
+	_, _ = pkg.RunCommand(rmiCmd)
+
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return false, nil, nil, err
