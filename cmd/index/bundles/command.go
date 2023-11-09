@@ -411,7 +411,7 @@ func GetDataFromFBC(report index.Data) (index.Data, error) {
 						auditBundle.IsHeadOfChannel = true
 					}
 				}
-				if flags.StaticCheckFIPSCompliance && auditBundle.IsHeadOfChannel {
+				if flags.StaticCheckFIPSCompliance {
 					err = handleFIPS(auditBundle.OperatorBundleImagePath, csv, report)
 					if err != nil {
 						// Check for specific error types and provide more informative messages
