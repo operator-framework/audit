@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"os/exec"
 	"strings"
 
 	"github.com/operator-framework/audit/pkg/actions"
@@ -28,7 +29,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	// To allow create connection to query the index database
+	// For connecting to query the legacy index database
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/operator-framework/api/pkg/operators/v1alpha1"
 	log "github.com/sirupsen/logrus"
@@ -76,7 +77,8 @@ By running this command audit tool will:
 	if err := cmd.MarkFlagRequired("index-image"); err != nil {
 		log.Fatalf("Failed to mark `index-image` flag for `index` sub-command as required")
 	}
-
+	cmd.Flags().BoolVar(&flags.StaticCheckFIPSCompliance, "static-check-fips-compliance", false,
+		"If set, the tool will perform a static check for FIPS compliance on all bundle images.")
 	cmd.Flags().StringVar(&flags.Filter, "filter", "",
 		"filter by the packages names which are like *filter*")
 	cmd.Flags().StringVar(&flags.OutputFormat, "output", pkg.JSON,
@@ -105,6 +107,133 @@ By running this command audit tool will:
 			"[Options: %s and %s]", pkg.Docker, pkg.Podman))
 
 	return cmd
+}
+
+// CheckFIPSAnnotations searches for variants of the FIPS annotations.
+func CheckFIPSAnnotations(csv *v1alpha1.ClusterServiceVersion) (bool, error) {
+	fipsAnnotationPatterns := []string{
+		"features.operators.openshift.io/fips-compliant",
+		"operators.openshift.io/infrastructure-features",
+	}
+
+	for _, pattern := range fipsAnnotationPatterns {
+		if value, exists := csv.Annotations[pattern]; exists &&
+			(strings.Contains(value, "fips") || strings.Contains(value, "true")) {
+			return true, nil
+		}
+	}
+	return false, nil
+}
+
+// ExtractUniqueImageReferences get a unique list of operator image and related images
+func ExtractUniqueImageReferences(operatorBundlePath string, csv *v1alpha1.ClusterServiceVersion) ([]string, error) {
+	var imageRefs []string
+	// Extract image references from RelatedImages slice
+	for _, relatedImage := range csv.Spec.RelatedImages {
+		imageRefs = append(imageRefs, relatedImage.Image)
+	}
+	imageRefs = append(imageRefs, operatorBundlePath)
+	// Remove duplicates
+	uniqueRefs := removeDuplicates(imageRefs)
+	return uniqueRefs, nil
+}
+
+func removeDuplicates(elements []string) []string {
+	encountered := map[string]bool{}
+	result := []string{}
+
+	for v := range elements {
+		if !encountered[elements[v]] {
+			encountered[elements[v]] = true
+			result = append(result, elements[v])
+		}
+	}
+
+	return result
+}
+
+// ExecuteExternalValidator runs the external validator on the provided image reference.
+func ExecuteExternalValidator(imageRef string) (bool, []string, []string, error) {
+	extValidatorCmd := "sudo check-payload scan operator --spec " + imageRef + " --log_file=/dev/null --output-format=csv"
+	cmd := exec.Command("bash", "-c", extValidatorCmd)
+
+	// Log the command being executed for debugging purposes
+	log.Infof("Executing external validator with command: %s", extValidatorCmd)
+
+	// Remove the image that check-payload has downloaded using the rmi command
+	log.Infof("Removing image with command: %s rmi %s", flags.ContainerEngine, imageRef)
+	rmiCmd := exec.Command(flags.ContainerEngine, "rmi", imageRef)
+	_, _ = pkg.RunCommand(rmiCmd)
+
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		return false, nil, nil, err
+	}
+
+	lines := strings.Split(string(output), "\n")
+	processingMode := "" // can be "warning", "error", or empty
+	hasReports := false
+
+	var warnings, errors []string
+	for _, line := range lines {
+		if line == "---- Warning Report" {
+			processingMode = "warning"
+			hasReports = true
+			continue
+		} else if line == "---- Error Report" {
+			processingMode = "error"
+			hasReports = true
+			continue
+		} else if strings.HasPrefix(line, "Operator Name,Executable Name,Status,Image") {
+			continue
+		}
+
+		if processingMode == "" {
+			continue
+		}
+
+		columns := strings.Split(line, ",")
+		if len(columns) < 4 {
+			continue
+		}
+		operatorName, executableName, status, image := columns[0], columns[1], columns[2], columns[3]
+		if processingMode == "warning" {
+			warnings = append(warnings, fmt.Sprintf("Warning for Operator '%s', Executable '%s': %s (Image: %s)",
+				operatorName, executableName, status, image))
+		} else if processingMode == "error" {
+			errors = append(errors, fmt.Sprintf("Error for Operator '%s', Executable '%s': %s (Image: %s)",
+				operatorName, executableName, status, image))
+		}
+	}
+
+	if !hasReports {
+		successMessage := fmt.Sprintf("FIPS compliance check passed successfully for image: %s", imageRef)
+		warnings = append(warnings, successMessage) // or choose a different way to report this success
+	}
+
+	return true, warnings, errors, nil
+}
+
+// ProcessValidatorResults takes the results from the external validator and appends them to the report data.
+func ProcessValidatorResults(success bool, warnings, errors []string, report *index.Data) {
+	// Create a slice to hold combined errors and warnings
+	combinedErrors := make([]string, 0)
+
+	// If the external validator fails, append the errors
+	if !success {
+		combinedErrors = append(combinedErrors, errors...)
+	}
+
+	// Prepend warnings with "WARNING:" and append to combinedErrors
+	for _, warning := range warnings {
+		combinedErrors = append(combinedErrors, "WARNING: "+warning)
+	}
+
+	// Assuming there's a mechanism to identify which bundle is being processed
+	// Here, I'm just using the last bundle in the report as an example
+	if len(report.AuditBundle) > 0 {
+		report.AuditBundle[len(report.AuditBundle)-1].Errors = combinedErrors
+	}
 }
 
 func validation(cmd *cobra.Command, args []string) error {
@@ -181,22 +310,40 @@ func run(cmd *cobra.Command, args []string) error {
 
 	// check here to see if it's index.db or file-based catalogs
 	if IsFBC(flags.IndexImage) {
-		reportData, err = GetDataFromFBC(reportData)
+		reportData, _ = GetDataFromFBC(reportData)
 	} else {
-		reportData, err = GetDataFromIndexDB(reportData)
+		reportData, _ = GetDataFromIndexDB(reportData)
 	}
+	if err := reportData.OutputReport(); err != nil {
+		return err
+	}
+	pkg.CleanupTemporaryDirs()
+	log.Info("Operation completed.")
+	return nil
+}
+
+func handleFIPS(operatorBundlePath string, csv *v1alpha1.ClusterServiceVersion, reportData index.Data) error {
+	isClaimingFIPSCompliant, err := CheckFIPSAnnotations(csv)
+	if err != nil {
+		return err
+	}
+	if !isClaimingFIPSCompliant {
+		return nil
+	}
+	uniqueImageRefs, err := ExtractUniqueImageReferences(operatorBundlePath, csv)
 	if err != nil {
 		return err
 	}
 
-	log.Info("Generating output...")
-	if err := reportData.OutputReport(); err != nil {
-		return err
+	for _, imageRef := range uniqueImageRefs {
+		success, warnings, errors, err := ExecuteExternalValidator(imageRef)
+		if err != nil {
+			log.Errorf("Error while executing FIPS compliance check on image: %s. Error: %s",
+				imageRef, err.Error())
+			return err
+		}
+		ProcessValidatorResults(success, warnings, errors, &reportData)
 	}
-
-	pkg.CleanupTemporaryDirs()
-	log.Info("Operation completed.")
-
 	return nil
 }
 
@@ -236,10 +383,10 @@ func GetDataFromFBC(report index.Data) (index.Data, error) {
 			for _, Bundle := range Channel.Bundles {
 				log.Infof("Generating data from the bundle (%s)", Bundle.Name)
 				auditBundle = models.NewAuditBundle(Bundle.Name, Bundle.Image)
-				var csvStruct *v1alpha1.ClusterServiceVersion
-				err := json.Unmarshal([]byte(Bundle.CsvJSON), &csvStruct)
+				var csv *v1alpha1.ClusterServiceVersion
+				err := json.Unmarshal([]byte(Bundle.CsvJSON), &csv)
 				if err == nil {
-					auditBundle.CSVFromIndexDB = csvStruct
+					auditBundle.CSVFromIndexDB = csv
 				} else {
 					auditBundle.Errors = append(auditBundle.Errors,
 						fmt.Errorf("unable to parse the csv from the index.db: %s", err).Error())
@@ -262,6 +409,24 @@ func GetDataFromFBC(report index.Data) (index.Data, error) {
 				if err == nil {
 					if headBundle == Bundle {
 						auditBundle.IsHeadOfChannel = true
+					}
+				}
+				if flags.StaticCheckFIPSCompliance {
+					err = handleFIPS(auditBundle.OperatorBundleImagePath, csv, report)
+					if err != nil {
+						// Check for specific error types and provide more informative messages
+						if exitError, ok := err.(*exec.ExitError); ok {
+							if exitError.ExitCode() == 127 {
+								auditBundle.Errors = append(auditBundle.Errors,
+									"Failed to run FIPS external validator: Command not found.")
+							} else {
+								auditBundle.Errors = append(auditBundle.Errors,
+									fmt.Sprintf("FIPS external validator returned with exit code %d.", exitError.ExitCode()))
+							}
+						} else {
+							auditBundle.Errors = append(auditBundle.Errors,
+								fmt.Sprintf("Difficulty running FIPS external validator: %s", err.Error()))
+						}
 					}
 				}
 				report.AuditBundle = append(report.AuditBundle, *auditBundle)
