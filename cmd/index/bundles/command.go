@@ -19,17 +19,19 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	alphamodel "github.com/operator-framework/operator-registry/alpha/model"
 	"io"
 	"os"
 	"os/exec"
 	"strings"
+	"sync"
 
 	"github.com/operator-framework/audit/pkg/actions"
 	"github.com/operator-framework/operator-registry/alpha/declcfg"
 
 	"github.com/spf13/cobra"
 
-	// For connecting to query the legacy index database
+	// To allow create connection to query the index database
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/operator-framework/api/pkg/operators/v1alpha1"
 	log "github.com/sirupsen/logrus"
@@ -152,88 +154,109 @@ func removeDuplicates(elements []string) []string {
 	return result
 }
 
+// Define structured types for warnings and errors
+type Warning struct {
+	OperatorName   string
+	ExecutableName string
+	Status         string
+	Image          string
+}
+
+type Error struct {
+	OperatorName   string
+	RPMName        string
+	ExecutableName string
+	Status         string
+	Image          string
+}
+
 // ExecuteExternalValidator runs the external validator on the provided image reference.
-func ExecuteExternalValidator(imageRef string) (bool, []string, []string, error) {
+func ExecuteExternalValidator(imageRef string) (bool, []Warning, []Error, error) {
 	extValidatorCmd := "sudo check-payload scan operator --spec " + imageRef + " --log_file=/dev/null --output-format=csv"
 	cmd := exec.Command("bash", "-c", extValidatorCmd)
-
-	// Log the command being executed for debugging purposes
 	log.Infof("Executing external validator with command: %s", extValidatorCmd)
-
-	// Remove the image that check-payload has downloaded using the rmi command
-	log.Infof("Removing image with command: %s rmi %s", flags.ContainerEngine, imageRef)
-	rmiCmd := exec.Command(flags.ContainerEngine, "rmi", imageRef)
-	_, _ = pkg.RunCommand(rmiCmd)
-
 	output, err := cmd.CombinedOutput()
+
 	if err != nil {
-		return false, nil, nil, err
+		log.Infof("command failed: %v, output: %s", err, string(output))
 	}
 
 	lines := strings.Split(string(output), "\n")
-	processingMode := "" // can be "warning", "error", or empty
-	hasReports := false
+	var warnings []Warning
+	var errors []Error
+	inFailureReport := false
+	inWarningReport := false
 
-	var warnings, errors []string
 	for _, line := range lines {
-		if line == "---- Warning Report" {
-			processingMode = "warning"
-			hasReports = true
-			continue
-		} else if line == "---- Error Report" {
-			processingMode = "error"
-			hasReports = true
-			continue
-		} else if strings.HasPrefix(line, "Operator Name,Executable Name,Status,Image") {
-			continue
-		}
+		log.Infof("External validator line: %s", line)
 
-		if processingMode == "" {
+		switch {
+		case line == "---- Failure Report":
+			inFailureReport = true
 			continue
+		case line == "---- Warning Report":
+			inWarningReport = true
+			continue
+		case line == "---- Successful run" || line == "":
+			inFailureReport = false
+			inWarningReport = false
+			continue
+		case inFailureReport:
+			parseFailureReportLine(line, &errors)
+		case inWarningReport:
+			parseWarningReportLine(line, &warnings)
 		}
+	}
 
-		columns := strings.Split(line, ",")
-		if len(columns) < 4 {
-			continue
-		}
+	success := len(errors) == 0
+	return success, warnings, errors, nil
+}
+
+func parseFailureReportLine(line string, errors *[]Error) {
+	columns := strings.Split(line, ",")
+	if len(columns) >= 5 {
+		operatorName, rpmName, executableName, status, image := columns[0], columns[1], columns[2], columns[3], columns[4]
+		*errors = append(*errors, Error{
+			OperatorName:   strings.TrimSpace(operatorName),
+			RPMName:        strings.TrimSpace(rpmName),
+			ExecutableName: strings.TrimSpace(executableName),
+			Status:         strings.TrimSpace(status),
+			Image:          strings.TrimSpace(image),
+		})
+	}
+}
+
+func parseWarningReportLine(line string, warnings *[]Warning) {
+	columns := strings.Split(line, ",")
+	if len(columns) >= 4 {
 		operatorName, executableName, status, image := columns[0], columns[1], columns[2], columns[3]
-		if processingMode == "warning" {
-			warnings = append(warnings, fmt.Sprintf("Warning for Operator '%s', Executable '%s': %s (Image: %s)",
-				operatorName, executableName, status, image))
-		} else if processingMode == "error" {
-			errors = append(errors, fmt.Sprintf("Error for Operator '%s', Executable '%s': %s (Image: %s)",
-				operatorName, executableName, status, image))
-		}
+		*warnings = append(*warnings, Warning{
+			OperatorName:   strings.TrimSpace(operatorName),
+			ExecutableName: strings.TrimSpace(executableName),
+			Status:         strings.TrimSpace(status),
+			Image:          strings.TrimSpace(image),
+		})
 	}
-
-	if !hasReports {
-		successMessage := fmt.Sprintf("FIPS compliance check passed successfully for image: %s", imageRef)
-		warnings = append(warnings, successMessage) // or choose a different way to report this success
-	}
-
-	return true, warnings, errors, nil
 }
 
 // ProcessValidatorResults takes the results from the external validator and appends them to the report data.
-func ProcessValidatorResults(success bool, warnings, errors []string, report *index.Data) {
-	// Create a slice to hold combined errors and warnings
-	combinedErrors := make([]string, 0)
+func ProcessValidatorResults(success bool, warnings []Warning, errors []Error, auditBundle *models.AuditBundle) {
+	var combinedErrors []string
 
-	// If the external validator fails, append the errors
 	if !success {
-		combinedErrors = append(combinedErrors, errors...)
+		for _, err := range errors {
+			combinedErrors = append(combinedErrors, fmt.Sprintf("ERROR for Operator '%s', Executable '%s': %s (Image: %s)",
+				err.OperatorName, err.ExecutableName, err.Status, err.Image))
+		}
 	}
 
-	// Prepend warnings with "WARNING:" and append to combinedErrors
 	for _, warning := range warnings {
-		combinedErrors = append(combinedErrors, "WARNING: "+warning)
+		combinedErrors = append(combinedErrors, fmt.Sprintf("WARNING for Operator '%s', Executable '%s': %s (Image: %s)",
+			warning.OperatorName, warning.ExecutableName, warning.Status, warning.Image))
 	}
 
-	// Assuming there's a mechanism to identify which bundle is being processed
-	// Here, I'm just using the last bundle in the report as an example
-	if len(report.AuditBundle) > 0 {
-		report.AuditBundle[len(report.AuditBundle)-1].Errors = combinedErrors
-	}
+	log.Infof("Adding FIPS check info to auditBundle with %s", combinedErrors)
+	auditBundle.Errors = append(auditBundle.Errors, combinedErrors...)
 }
 
 func validation(cmd *cobra.Command, args []string) error {
@@ -317,12 +340,13 @@ func run(cmd *cobra.Command, args []string) error {
 	if err := reportData.OutputReport(); err != nil {
 		return err
 	}
+
 	pkg.CleanupTemporaryDirs()
 	log.Info("Operation completed.")
 	return nil
 }
 
-func handleFIPS(operatorBundlePath string, csv *v1alpha1.ClusterServiceVersion, reportData index.Data) error {
+func handleFIPS(operatorBundlePath string, csv *v1alpha1.ClusterServiceVersion, auditBundle *models.AuditBundle) error {
 	isClaimingFIPSCompliant, err := CheckFIPSAnnotations(csv)
 	if err != nil {
 		return err
@@ -338,11 +362,11 @@ func handleFIPS(operatorBundlePath string, csv *v1alpha1.ClusterServiceVersion, 
 	for _, imageRef := range uniqueImageRefs {
 		success, warnings, errors, err := ExecuteExternalValidator(imageRef)
 		if err != nil {
-			log.Errorf("Error while executing FIPS compliance check on image: %s. Error: %s",
-				imageRef, err.Error())
-			return err
+			log.Errorf("Error while executing FIPS compliance check on image: %s. Error: %s", imageRef, err.Error())
+			continue
 		}
-		ProcessValidatorResults(success, warnings, errors, &reportData)
+		log.Infof("Processing FIPS check results on image: %s.", imageRef)
+		ProcessValidatorResults(success, warnings, errors, auditBundle)
 	}
 	return nil
 }
@@ -373,46 +397,102 @@ func GetDataFromFBC(report index.Data) (index.Data, error) {
 		return report, fmt.Errorf("unable to load the file based config : %s", err)
 	}
 	model, err := declcfg.ConvertToModel(*fbc)
-	var auditBundle *models.AuditBundle
 	if err != nil {
 		return report, fmt.Errorf("unable to file based config to internal model: %s", err)
 	}
-	// iterate the model by bundle to match up with how code in getDataFromIndexDB() does it
-	for packageName, Package := range model {
-		for _, Channel := range Package.Channels {
-			for _, Bundle := range Channel.Bundles {
-				log.Infof("Generating data from the bundle (%s)", Bundle.Name)
-				auditBundle = models.NewAuditBundle(Bundle.Name, Bundle.Image)
+
+	const maxConcurrency = 4
+	packageChan := make(chan *alphamodel.Package, maxConcurrency)
+	resultsChan := make(chan *index.Data, maxConcurrency)
+	var wg sync.WaitGroup
+
+	// Start worker goroutines
+	for i := 0; i < maxConcurrency; i++ {
+		wg.Add(1)
+		go packageWorker(packageChan, resultsChan, report, &wg)
+	}
+
+	// Send packages to the workers
+	go func() {
+		for _, Package := range model {
+			packageChan <- Package
+		}
+		close(packageChan)
+	}()
+
+	// Close the results channel when all workers are done
+	go func() {
+		wg.Wait()
+		close(resultsChan)
+	}()
+
+	// Collect results
+	for result := range resultsChan {
+		report.AuditBundle = append(report.AuditBundle, result.AuditBundle...)
+	}
+
+	return report, nil
+}
+
+func packageWorker(packageChan <-chan *alphamodel.Package, resultsChan chan<- *index.Data, report index.Data, wg *sync.WaitGroup) {
+	defer wg.Done()
+	for Package := range packageChan {
+		// Initialize a local variable to store results for this package
+		var result index.Data
+
+		// Iterate over the channels in the package
+		for _, channel := range Package.Channels {
+			headBundle, err := channel.Head()
+			if err != nil {
+				continue
+			}
+
+			for _, bundle := range channel.Bundles {
+				auditBundle := models.NewAuditBundle(bundle.Name, bundle.Image)
+				if headBundle == bundle {
+					auditBundle.IsHeadOfChannel = true
+				} else {
+					if flags.HeadOnly {
+						continue
+					}
+				}
+
+				log.Infof("Generating data from the bundle (%s)", bundle.Name)
 				var csv *v1alpha1.ClusterServiceVersion
-				err := json.Unmarshal([]byte(Bundle.CsvJSON), &csv)
+				err := json.Unmarshal([]byte(bundle.CsvJSON), &csv)
 				if err == nil {
 					auditBundle.CSVFromIndexDB = csv
 				} else {
 					auditBundle.Errors = append(auditBundle.Errors,
 						fmt.Errorf("unable to parse the csv from the index.db: %s", err).Error())
 				}
-				auditBundle = actions.GetDataFromBundleImage(auditBundle, report.Flags.DisableScorecard,
-					report.Flags.DisableValidators, report.Flags.ServerMode, report.Flags.Label,
-					report.Flags.LabelValue, flags.ContainerEngine, report.Flags.IndexImage)
-				// an extra inner loop is needed because of the way the model is set up vs. how the report is generated
-				for _, Channel := range Package.Channels {
-					auditBundle.Channels = append(auditBundle.Channels, Channel.Name)
+
+				// Call GetDataFromBundleImage
+				auditBundle = actions.GetDataFromBundleImage(auditBundle, flags.DisableScorecard,
+					flags.DisableValidators, flags.ServerMode, flags.Label,
+					flags.LabelValue, flags.ContainerEngine, flags.IndexImage)
+
+				// Extra inner loop for channels
+				for _, channel := range Package.Channels {
+					auditBundle.Channels = append(auditBundle.Channels, channel.Name)
 				}
-				auditBundle.PackageName = packageName
+
+				auditBundle.PackageName = Package.Name
 				auditBundle.DefaultChannel = Package.DefaultChannel.Name
-				// this collects olm.bundle.objects not found in the index version and this seems correct
-				for _, property := range Bundle.Properties {
+
+				// Collect properties not found in the index version
+				for _, property := range bundle.Properties {
 					auditBundle.PropertiesDB = append(auditBundle.PropertiesDB,
 						pkg.PropertiesAnnotation{Type: property.Type, Value: string(property.Value)})
 				}
-				headBundle, err := Channel.Head()
+				headBundle, err := channel.Head()
 				if err == nil {
-					if headBundle == Bundle {
+					if headBundle == bundle {
 						auditBundle.IsHeadOfChannel = true
 					}
 				}
 				if flags.StaticCheckFIPSCompliance {
-					err = handleFIPS(auditBundle.OperatorBundleImagePath, csv, report)
+					err = handleFIPS(auditBundle.OperatorBundleImagePath, csv, auditBundle)
 					if err != nil {
 						// Check for specific error types and provide more informative messages
 						if exitError, ok := err.(*exec.ExitError); ok {
@@ -429,11 +509,13 @@ func GetDataFromFBC(report index.Data) (index.Data, error) {
 						}
 					}
 				}
-				report.AuditBundle = append(report.AuditBundle, *auditBundle)
+				result.AuditBundle = append(result.AuditBundle, *auditBundle)
 			}
 		}
+
+		// Send the result to the results channel
+		resultsChan <- &result
 	}
-	return report, nil
 }
 
 func GetDataFromIndexDB(report index.Data) (index.Data, error) {
