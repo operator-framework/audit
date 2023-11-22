@@ -19,12 +19,13 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	alphamodel "github.com/operator-framework/operator-registry/alpha/model"
 	"io"
 	"os"
 	"os/exec"
 	"strings"
 	"sync"
+
+	alphamodel "github.com/operator-framework/operator-registry/alpha/model"
 
 	"github.com/operator-framework/audit/pkg/actions"
 	"github.com/operator-framework/operator-registry/alpha/declcfg"
@@ -409,7 +410,7 @@ func GetDataFromFBC(report index.Data) (index.Data, error) {
 	// Start worker goroutines
 	for i := 0; i < maxConcurrency; i++ {
 		wg.Add(1)
-		go packageWorker(packageChan, resultsChan, report, &wg)
+		go packageWorker(packageChan, resultsChan, &wg)
 	}
 
 	// Send packages to the workers
@@ -434,7 +435,7 @@ func GetDataFromFBC(report index.Data) (index.Data, error) {
 	return report, nil
 }
 
-func packageWorker(packageChan <-chan *alphamodel.Package, resultsChan chan<- *index.Data, report index.Data, wg *sync.WaitGroup) {
+func packageWorker(packageChan <-chan *alphamodel.Package, resultsChan chan<- *index.Data, wg *sync.WaitGroup) {
 	defer wg.Done()
 	for Package := range packageChan {
 		// Initialize a local variable to store results for this package
