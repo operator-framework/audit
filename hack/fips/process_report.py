@@ -140,6 +140,7 @@ def json_to_html_report(flags, data, generated_at, report_note):
         <table>
             {flags_rows}
         </table>
+        <p>Note: "errors" in the below report refers to static check-payload found FIPS errors. Packages with any bundle having these errors are shown with red below.</p>
         <ul id="jsonViewer"></ul>
         <script>
             function createList(container, obj) {{
