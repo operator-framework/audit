@@ -144,10 +144,22 @@ def json_to_html_report(flags, data, generated_at, report_note):
         <script>
             function createList(container, obj) {{
                 $.each(obj, function(key, value) {{
+                    if (value === null || key === 'color') {{
+                        // Skip null values and the 'color' key
+                        return true; // 'true' is used in jQuery's each to continue the loop
+                    }}
+            
                     let li = $('<li>').appendTo(container);
                     let caretSpan = $('<span>').addClass('no-caret').appendTo(li);
                     let span = $('<span>').appendTo(li);
-
+            
+                    // Apply color if present and value is not null or an object itself
+                    if (typeof value === 'object' && value !== null && value.color) {{
+                        li.css('background-color', value.color);
+                        // Remove the color property so it doesn't get displayed as a node
+                        delete value.color;
+                    }}
+            
                     if (typeof value === 'object' && value !== null && (Array.isArray(value) || Object.keys(value).length > 0)) {{
                         caretSpan.removeClass('no-caret').addClass('caret');
                         caretSpan.click(function() {{
@@ -158,6 +170,7 @@ def json_to_html_report(flags, data, generated_at, report_note):
                         let ul = $('<ul>').addClass('collapsed').appendTo(li);
                         createList(ul, value);
                     }} else {{
+                        // Handle non-object values (e.g., strings, numbers)
                         span.text(key + ': ' + value);
                     }}
                 }});
