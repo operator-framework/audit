@@ -45,48 +45,48 @@ func TestRunSkopeoLayerExtractSuite(t *testing.T) {
 				},
 			},
 		},
-		//{
-		//	name:     "Test3ScaleOperatorBundle",
-		//	imageRef: "docker://registry.redhat.io/3scale-mas/3scale-rhel7-operator@sha256:0a6673eae2f0e8d95b919b0243e44d2c0383d13e2e616ac8d3f80742d496d292",
-		//	expectedDockerfile: Dockerfile{
-		//		Commands: []DockerfileCommand{
-		//			{CommandType: "FROM", Value: "registry.redhat.io/devtools/go-toolset-rhel7:1.19.13-1.1697640714 AS builder"},
-		//			{CommandType: "ENV", Value: `PROJECT_NAME="3scale-operator"`},
-		//			{CommandType: "ENV", Value: `OUTPUT_DIR="/tmp/_output"`},
-		//			{CommandType: "ENV", Value: `BINARY_NAME="manager"`},
-		//			{CommandType: "ENV", Value: `BUILD_PATH="${REMOTE_SOURCE_DIR}/app"`},
-		//			{CommandType: "WORKDIR", Value: `${BUILD_PATH}`},
-		//			{CommandType: "COPY", Value: `$REMOTE_SOURCE $REMOTE_SOURCE_DIR`},
-		//			{CommandType: "ADD", Value: `patches /tmp/patches`},
-		//			{CommandType: "RUN", Value: `find /tmp/patches -type f -name '*.patch' -print0 | sort --zero-terminated | xargs -t -0 -n 1 patch --force -p1`},
-		//			{CommandType: "USER", Value: `root`},
-		//			{CommandType: "RUN", Value: `mkdir -p ${OUTPUT_DIR}`},
-		//			{CommandType: "RUN", Value: `echo "build path: ${BUILD_PATH}"`},
-		//			{CommandType: "RUN", Value: `echo "output path: ${OUTPUT_DIR}"`},
-		//			{CommandType: "RUN", Value: `scl enable go-toolset-1.19 "GOOS=linux GOARCH=$(scl enable go-toolset-1.19 'go env GOARCH') CGO_ENABLED=0 GO111MODULE=on go build -o ${OUTPUT_DIR}/${BINARY_NAME} main.go"`},
-		//			{CommandType: "RUN", Value: `mkdir ${OUTPUT_DIR}/licenses/`},
-		//			{CommandType: "RUN", Value: `cp "./licenses.xml" "${OUTPUT_DIR}/licenses/"`},
-		//			{CommandType: "FROM", Value: `registry.redhat.io/ubi7/ubi-minimal:7.9-1196`},
-		//			{CommandType: "LABEL", Value: `com.redhat.component="3scale-mas-operator-container" name="3scale-mas/3scale-rhel7-operator" version="1.17.0" summary="3scale Operator container image" description="Operator provides a way to install a 3scale API Management and ability to define 3scale API definitions." io.k8s.display-name="3scale Operator" io.openshift.expose-services="" io.openshift.tags="3scale, 3scale-amp, api" upstream_repo="https://github.com/3scale/3scale-operator" upstream_ref="a5d72cc78a29ce38f3c60761cd7d2afff0727feb" maintainer="eastizle@redhat.com"`},
-		//			{CommandType: "ENV", Value: `OPERATOR_BINARY_NAME="manager" USER_UID=1001 USER_NAME=3scale-operator`},
-		//			{CommandType: "USER", Value: `root`},
-		//			{CommandType: "COPY", Value: `--from=builder /tmp/_output/${OPERATOR_BINARY_NAME} /`},
-		//			{CommandType: "RUN", Value: `chown ${USER_UID} /${OPERATOR_BINARY_NAME}`},
-		//			{CommandType: "ENV", Value: `LICENSES_DIR="/root/licenses/3scale-operator/"`},
-		//			{CommandType: "RUN", Value: `mkdir -p ${LICENSES_DIR}`},
-		//			{CommandType: "COPY", Value: `--from=builder /tmp/_output/licenses/licenses.xml ${LICENSES_DIR}`},
-		//			{CommandType: "RUN", Value: `chown ${USER_UID} ${LICENSES_DIR}/licenses.xml`},
-		//			{CommandType: "ENTRYPOINT", Value: `["/manager"]`},
-		//			{CommandType: "USER", Value: `${USER_UID}`},
-		//		},
-		//	},
-		//},
+		{
+			name:     "Test3ScaleOperatorBundle",
+			imageRef: "docker://registry.redhat.io/3scale-mas/3scale-rhel7-operator@sha256:0a6673eae2f0e8d95b919b0243e44d2c0383d13e2e616ac8d3f80742d496d292",
+			expectedDockerfile: Dockerfile{
+				Commands: []DockerfileCommand{
+					{CommandType: "FROM", Value: "registry.redhat.io/devtools/go-toolset-rhel7:1.19.13-1.1697640714 AS builder"},
+					{CommandType: "ENV", Value: `PROJECT_NAME="3scale-operator"`},
+					{CommandType: "ENV", Value: `OUTPUT_DIR="/tmp/_output"`},
+					{CommandType: "ENV", Value: `BINARY_NAME="manager"`},
+					{CommandType: "ENV", Value: `BUILD_PATH="${REMOTE_SOURCE_DIR}/app"`},
+					{CommandType: "WORKDIR", Value: `${BUILD_PATH}`},
+					{CommandType: "COPY", Value: `$REMOTE_SOURCE $REMOTE_SOURCE_DIR`},
+					{CommandType: "ADD", Value: `patches /tmp/patches`},
+					{CommandType: "RUN", Value: `find /tmp/patches -type f -name '*.patch' -print0 | sort --zero-terminated | xargs -t -0 -n 1 patch --force -p1`},
+					{CommandType: "USER", Value: `root`},
+					{CommandType: "RUN", Value: `mkdir -p ${OUTPUT_DIR}`},
+					{CommandType: "RUN", Value: `echo "build path: ${BUILD_PATH}"`},
+					{CommandType: "RUN", Value: `echo "output path: ${OUTPUT_DIR}"`},
+					{CommandType: "RUN", Value: `scl enable go-toolset-1.19 "GOOS=linux GOARCH=$(scl enable go-toolset-1.19 'go env GOARCH') CGO_ENABLED=0 GO111MODULE=on go build -o ${OUTPUT_DIR}/${BINARY_NAME} main.go"`},
+					{CommandType: "RUN", Value: `mkdir ${OUTPUT_DIR}/licenses/`},
+					{CommandType: "RUN", Value: `cp "./licenses.xml" "${OUTPUT_DIR}/licenses/"`},
+					{CommandType: "FROM", Value: `registry.redhat.io/ubi7/ubi-minimal:7.9-1196`},
+					{CommandType: "LABEL", Value: `com.redhat.component="3scale-mas-operator-container" name="3scale-mas/3scale-rhel7-operator" version="1.17.0" summary="3scale Operator container image" description="Operator provides a way to install a 3scale API Management and ability to define 3scale API definitions." io.k8s.display-name="3scale Operator" io.openshift.expose-services="" io.openshift.tags="3scale, 3scale-amp, api" upstream_repo="https://github.com/3scale/3scale-operator" upstream_ref="a5d72cc78a29ce38f3c60761cd7d2afff0727feb" maintainer="eastizle@redhat.com"`},
+					{CommandType: "ENV", Value: `OPERATOR_BINARY_NAME="manager" USER_UID=1001 USER_NAME=3scale-operator`},
+					{CommandType: "USER", Value: `root`},
+					{CommandType: "COPY", Value: `--from=builder /tmp/_output/${OPERATOR_BINARY_NAME} /`},
+					{CommandType: "RUN", Value: `chown ${USER_UID} /${OPERATOR_BINARY_NAME}`},
+					{CommandType: "ENV", Value: `LICENSES_DIR="/root/licenses/3scale-operator/"`},
+					{CommandType: "RUN", Value: `mkdir -p ${LICENSES_DIR}`},
+					{CommandType: "COPY", Value: `--from=builder /tmp/_output/licenses/licenses.xml ${LICENSES_DIR}`},
+					{CommandType: "RUN", Value: `chown ${USER_UID} ${LICENSES_DIR}/licenses.xml`},
+					{CommandType: "ENTRYPOINT", Value: `["/manager"]`},
+					{CommandType: "USER", Value: `${USER_UID}`},
+				},
+			},
+		},
 		// Additional tests can be added here
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel() // Enable parallel execution of this subtest
+			//t.Parallel() // Do not enable parallel execution, these tests share skopeo and filesystem resources
 
 			result, err := RunSkopeoLayerExtract(tt.imageRef)
 			if err != nil {

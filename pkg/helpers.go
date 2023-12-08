@@ -214,8 +214,11 @@ func RunDockerInspect(image string, containerEngine string) (DockerInspect, erro
 func RunSkopeoLayerExtract(image string) (Dockerfile, error) {
 	var dockerfile Dockerfile
 
+	// Specify a base directory you have full control over
+	baseDir := "/tmp" // Update this path
+
 	// Create a temporary directory for OCI layout
-	tmpDir, err := os.MkdirTemp("", "oci-layout-")
+	tmpDir, err := os.MkdirTemp(baseDir, "oci-layout-")
 	if err != nil {
 		log.Printf("Failed to create temporary directory for OCI layout: %s", err)
 		return dockerfile, err
@@ -229,8 +232,9 @@ func RunSkopeoLayerExtract(image string) (Dockerfile, error) {
 	ociDir := filepath.Join(tmpDir, "oci")
 	log.Printf("Copying image to local OCI layout using Skopeo: %s", image)
 
-	// Copy the image to local OCI layout using Skopeo
-	copyCmd := exec.Command("skopeo", "copy", image, "oci:"+ociDir)
+	// Copy the image to local OCI layout using Skopeo with override flags
+	copyCmd := exec.Command("skopeo", "copy", "--override-arch", "amd64", "--override-os", "linux", image, "oci:"+ociDir)
+
 	copyOutput, err := copyCmd.CombinedOutput()
 	if err != nil {
 		log.Printf("Failed to copy image with Skopeo: %s", err)
@@ -238,10 +242,14 @@ func RunSkopeoLayerExtract(image string) (Dockerfile, error) {
 		return dockerfile, err
 	}
 
+	if err := adjustPermissions(ociDir); err != nil {
+		log.Printf("Failed to adjust permissions for directory %s: %s", ociDir, err)
+	}
+
 	log.Printf("Inspecting image to get layer SHAs using Skopeo")
 
-	// Inspect the image to get layer SHAs using Skopeo
-	inspectCmd := exec.Command("skopeo", "inspect", "--format", "{{json .Layers}}", "oci:"+ociDir)
+	// Inspect the image to get layer SHAs using Skopeo with override flags
+	inspectCmd := exec.Command("skopeo", "inspect", "--override-arch", "amd64", "--override-os", "linux", "--format", "{{json .Layers}}", "oci:"+ociDir)
 	inspectOut, err := inspectCmd.Output()
 	if err != nil {
 		log.Printf("Failed to inspect image with Skopeo: %s", err)
@@ -264,7 +272,7 @@ func RunSkopeoLayerExtract(image string) (Dockerfile, error) {
 		layerFile := filepath.Join(ociDir, "blobs", "sha256", layerSHA)
 
 		// Create a temporary directory for this layer
-		layerTmpDir, err := os.MkdirTemp("", "layer-")
+		layerTmpDir, err := os.MkdirTemp(baseDir, "layer-")
 		if err != nil {
 			log.Printf("Failed to create temporary directory for layer: %s", err)
 			continue
@@ -276,7 +284,7 @@ func RunSkopeoLayerExtract(image string) (Dockerfile, error) {
 		if err != nil {
 			log.Printf("Failed to extract layer with tar command: %s", err)
 			log.Printf("Tar command output: %s", string(tarOutput))
-			cleanUpTempDir(layerTmpDir)
+			adjustAndCleanDir(layerTmpDir)
 			continue
 		}
 
@@ -293,7 +301,7 @@ func RunSkopeoLayerExtract(image string) (Dockerfile, error) {
 			return nil
 		})
 		if err != nil || foundDockerfilePath == "" {
-			cleanUpTempDir(layerTmpDir)
+			adjustAndCleanDir(layerTmpDir)
 			continue
 		}
 
@@ -301,7 +309,7 @@ func RunSkopeoLayerExtract(image string) (Dockerfile, error) {
 		content, err := os.ReadFile(foundDockerfilePath)
 		if err != nil {
 			log.Printf("Failed to read Dockerfile: %s", err)
-			cleanUpTempDir(layerTmpDir)
+			adjustAndCleanDir(layerTmpDir)
 			continue
 		}
 
@@ -316,19 +324,28 @@ func RunSkopeoLayerExtract(image string) (Dockerfile, error) {
 				})
 			}
 		}
-
 		// Clean up the temporary directory for this layer
-		cleanUpTempDir(layerTmpDir)
+		adjustAndCleanDir(layerTmpDir)
 	}
 
 	return dockerfile, nil
 }
 
-// cleanUpTempDir handles the cleanup of a temporary directory and logs any errors.
-func cleanUpTempDir(dir string) {
-	if err := os.RemoveAll(dir); err != nil {
-		log.Printf("Failed to clean up temporary directory %s: %s", dir, err)
+func adjustAndCleanDir(dir string) {
+	// Adjust permissions if needed
+	if err := adjustPermissions(dir); err != nil {
+		log.Printf("Failed to adjust permissions for directory %s: %s", dir, err)
 	}
+
+	// Clean up the directory
+	if err := os.RemoveAll(dir); err != nil {
+		log.Printf("Failed to clean up directory %s: %s", dir, err)
+	}
+}
+
+func adjustPermissions(path string) error {
+	cmd := exec.Command("chmod", "-R", "ugo+rwx", path)
+	return cmd.Run()
 }
 
 func RunDockerManifestInspect(image string, containerEngine string) (DockerManifestInspect, error) {
