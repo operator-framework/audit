@@ -79,7 +79,17 @@ func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 			}
 		}
 		auditBundle.BundleImageLabels = inspectManifest.DockerConfig.Labels
+	}
 
+	dockerfile, err := pkg.RunSkopeoLayerExtract(auditBundle.OperatorBundleImagePath)
+	if err != nil {
+		log.Printf("Error extracting Dockerfile: %s", err)
+		// Handle the error, e.g., by returning or continuing with other logic
+	} else {
+		// Process the extracted Dockerfile commands
+		for _, cmd := range dockerfile.Commands {
+			log.Printf("Command: %s, Value: %s", cmd.CommandType, cmd.Value)
+		}
 	}
 
 	// Read the bundle

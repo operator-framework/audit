@@ -39,6 +39,15 @@ const Podman = "podman"
 
 const InfrastructureAnnotation = "operators.openshift.io/infrastructure-features"
 
+type DockerfileCommand struct {
+	CommandType string
+	Value       string
+}
+
+type Dockerfile struct {
+	Commands []DockerfileCommand
+}
+
 // PropertiesAnnotation used to Unmarshal the JSON in the CSV annotation
 type PropertiesAnnotation struct {
 	Type  string
@@ -200,6 +209,126 @@ func RunDockerInspect(image string, containerEngine string) (DockerInspect, erro
 		return DockerInspect{}, err
 	}
 	return dockerInspect[0], nil
+}
+
+func RunSkopeoLayerExtract(image string) (Dockerfile, error) {
+	var dockerfile Dockerfile
+
+	// Create a temporary directory for OCI layout
+	tmpDir, err := os.MkdirTemp("", "oci-layout-")
+	if err != nil {
+		log.Printf("Failed to create temporary directory for OCI layout: %s", err)
+		return dockerfile, err
+	}
+	defer func() {
+		if err := os.RemoveAll(tmpDir); err != nil {
+			log.Printf("Failed to clean up temporary directory %s: %s", tmpDir, err)
+		}
+	}()
+
+	ociDir := filepath.Join(tmpDir, "oci")
+	log.Printf("Copying image to local OCI layout using Skopeo: %s", image)
+
+	// Copy the image to local OCI layout using Skopeo
+	copyCmd := exec.Command("skopeo", "copy", image, "oci:"+ociDir)
+	copyOutput, err := copyCmd.CombinedOutput()
+	if err != nil {
+		log.Printf("Failed to copy image with Skopeo: %s", err)
+		log.Printf("Skopeo copy command output: %s", string(copyOutput))
+		return dockerfile, err
+	}
+
+	log.Printf("Inspecting image to get layer SHAs using Skopeo")
+
+	// Inspect the image to get layer SHAs using Skopeo
+	inspectCmd := exec.Command("skopeo", "inspect", "--format", "{{json .Layers}}", "oci:"+ociDir)
+	inspectOut, err := inspectCmd.Output()
+	if err != nil {
+		log.Printf("Failed to inspect image with Skopeo: %s", err)
+		return dockerfile, err
+	}
+
+	// Extract layer SHAs
+	var layerSHAs []string
+	err = json.Unmarshal(inspectOut, &layerSHAs)
+	if err != nil {
+		log.Printf("Failed to unmarshal layer SHAs: %s", err)
+		return dockerfile, err
+	}
+
+	// Process each layer
+	for _, layerSHA := range layerSHAs {
+		layerSHA = strings.TrimPrefix(layerSHA, "sha256:")
+
+		// Construct the correct layer file path
+		layerFile := filepath.Join(ociDir, "blobs", "sha256", layerSHA)
+
+		// Create a temporary directory for this layer
+		layerTmpDir, err := os.MkdirTemp("", "layer-")
+		if err != nil {
+			log.Printf("Failed to create temporary directory for layer: %s", err)
+			continue
+		}
+
+		// Extract the layer into the temporary directory
+		tarCmd := exec.Command("tar", "-xf", layerFile, "-C", layerTmpDir)
+		tarOutput, err := tarCmd.CombinedOutput()
+		if err != nil {
+			log.Printf("Failed to extract layer with tar command: %s", err)
+			log.Printf("Tar command output: %s", string(tarOutput))
+			cleanUpTempDir(layerTmpDir)
+			continue
+		}
+
+		// Search for Dockerfile in the extracted layer using Walk
+		var foundDockerfilePath string
+		err = filepath.Walk(layerTmpDir, func(path string, info os.FileInfo, err error) error {
+			if err != nil {
+				return err
+			}
+			if strings.HasPrefix(info.Name(), "Dockerfile") {
+				foundDockerfilePath = path
+				return filepath.SkipDir // Found, no need to continue walking
+			}
+			return nil
+		})
+		if err != nil || foundDockerfilePath == "" {
+			cleanUpTempDir(layerTmpDir)
+			continue
+		}
+
+		// Read Dockerfile content
+		content, err := os.ReadFile(foundDockerfilePath)
+		if err != nil {
+			log.Printf("Failed to read Dockerfile: %s", err)
+			cleanUpTempDir(layerTmpDir)
+			continue
+		}
+
+		// Parse Dockerfile content
+		lines := strings.Split(string(content), "\n")
+		for _, line := range lines {
+			parts := strings.SplitN(line, " ", 2)
+			if len(parts) == 2 {
+				dockerfile.Commands = append(dockerfile.Commands, DockerfileCommand{
+					CommandType: parts[0],
+					Value:       parts[1],
+				})
+			}
+		}
+
+		// Clean up the temporary directory for this layer
+		cleanUpTempDir(layerTmpDir)
+	}
+
+	return dockerfile, nil
+}
+
+// cleanUpTempDir handles the cleanup of a temporary directory and logs any errors.
+func cleanUpTempDir(dir string) {
+	if err := os.RemoveAll(dir); err != nil {
+		log.Printf("Failed to clean up temporary directory %s: %s", dir, err)
+	}
 }
 
 func RunDockerManifestInspect(image string, containerEngine string) (DockerManifestInspect, error) {
