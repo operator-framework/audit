@@ -15,6 +15,7 @@
 package pkg
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/json"
 	"errors"
@@ -211,8 +212,63 @@ func RunDockerInspect(image string, containerEngine string) (DockerInspect, erro
 	return dockerInspect[0], nil
 }
 
-func RunSkopeoLayerExtract(image string) (Dockerfile, error) {
-	var dockerfile Dockerfile
+func ParseDockerfile(content string) ([]DockerfileCommand, error) {
+	var commands []DockerfileCommand
+	scanner := bufio.NewScanner(strings.NewReader(content))
+	var currentCommand string
+	var isContinuation bool
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		line = strings.TrimSpace(line)
+
+		// Skip comments and empty lines
+		if strings.HasPrefix(line, "#") || line == "" {
+			continue
+		}
+
+		// Check for line continuation
+		if strings.HasSuffix(line, "\\") {
+			currentCommand += line[:len(line)-1] + " "
+			isContinuation = true
+			continue
+		} else if isContinuation {
+			currentCommand += line
+			isContinuation = false
+		} else {
+			currentCommand = line
+		}
+
+		// Special handling for ENV instructions
+		if strings.HasPrefix(currentCommand, "ENV ") {
+			envCommand := strings.TrimPrefix(currentCommand, "ENV ")
+			commands = append(commands, DockerfileCommand{
+				CommandType: "ENV",
+				Value:       envCommand,
+			})
+		} else {
+			// Split command and arguments for other instructions
+			parts := strings.SplitN(currentCommand, " ", 2)
+			if len(parts) == 2 {
+				commands = append(commands, DockerfileCommand{
+					CommandType: strings.ToUpper(parts[0]),
+					Value:       parts[1],
+				})
+			}
+		}
+
+		currentCommand = ""
+	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
+
+	return commands, nil
+}
+
+func RunSkopeoLayerExtract(image string) ([]Dockerfile, error) {
+	var dockerfiles []Dockerfile
 
 	// Specify a base directory you have full control over
 	baseDir := "/tmp" // Update this path
@@ -221,7 +277,7 @@ func RunSkopeoLayerExtract(image string) (Dockerfile, error) {
 	tmpDir, err := os.MkdirTemp(baseDir, "oci-layout-")
 	if err != nil {
 		log.Printf("Failed to create temporary directory for OCI layout: %s", err)
-		return dockerfile, err
+		return dockerfiles, err
 	}
 	defer func() {
 		if err := os.RemoveAll(tmpDir); err != nil {
@@ -239,7 +295,7 @@ func RunSkopeoLayerExtract(image string) (Dockerfile, error) {
 	if err != nil {
 		log.Printf("Failed to copy image with Skopeo: %s", err)
 		log.Printf("Skopeo copy command output: %s", string(copyOutput))
-		return dockerfile, err
+		return dockerfiles, err
 	}
 
 	if err := adjustPermissions(ociDir); err != nil {
@@ -253,7 +309,7 @@ func RunSkopeoLayerExtract(image string) (Dockerfile, error) {
 	inspectOut, err := inspectCmd.Output()
 	if err != nil {
 		log.Printf("Failed to inspect image with Skopeo: %s", err)
-		return dockerfile, err
+		return dockerfiles, err
 	}
 
 	// Extract layer SHAs
@@ -261,11 +317,13 @@ func RunSkopeoLayerExtract(image string) (Dockerfile, error) {
 	err = json.Unmarshal(inspectOut, &layerSHAs)
 	if err != nil {
 		log.Printf("Failed to unmarshal layer SHAs: %s", err)
-		return dockerfile, err
+		return dockerfiles, err
 	}
 
 	// Process each layer
 	for _, layerSHA := range layerSHAs {
+		var dockerfile Dockerfile
+
 		layerSHA = strings.TrimPrefix(layerSHA, "sha256:")
 
 		// Construct the correct layer file path
@@ -314,21 +372,17 @@ func RunSkopeoLayerExtract(image string) (Dockerfile, error) {
 		}
 
 		// Parse Dockerfile content
-		lines := strings.Split(string(content), "\n")
-		for _, line := range lines {
-			parts := strings.SplitN(line, " ", 2)
-			if len(parts) == 2 {
-				dockerfile.Commands = append(dockerfile.Commands, DockerfileCommand{
-					CommandType: parts[0],
-					Value:       parts[1],
-				})
-			}
+		parsedCommands, err := ParseDockerfile(string(content))
+		if err != nil {
+			log.Fatalf("Error parsing Dockerfile: %v", err)
 		}
+		dockerfile.Commands = parsedCommands
+		dockerfiles = append(dockerfiles, dockerfile)
 		// Clean up the temporary directory for this layer
 		adjustAndCleanDir(layerTmpDir)
 	}
 
-	return dockerfile, nil
+	return dockerfiles, nil
 }
 
 func adjustAndCleanDir(dir string) {

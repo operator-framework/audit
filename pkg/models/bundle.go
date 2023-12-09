@@ -39,7 +39,7 @@ type AuditBundle struct {
 	IsHeadOfChannel         bool
 	BundleImageLabels       map[string]string `json:"bundleImageLabels,omitempty"`
 	BundleAnnotations       map[string]string `json:"bundleAnnotations,omitempty"`
-	BundleDockerfile        pkg.Dockerfile
+	BundleDockerfiles       []pkg.Dockerfile
 	Errors                  []string
 }
 
@@ -47,7 +47,7 @@ func NewAuditBundle(operatorBundleName, operatorBundleImagePath string) *AuditBu
 	auditBundle := AuditBundle{
 		OperatorBundleName:      operatorBundleName,
 		OperatorBundleImagePath: operatorBundleImagePath,
-		BundleDockerfile:        pkg.Dockerfile{Commands: []pkg.DockerfileCommand{}},
+		BundleDockerfiles:       []pkg.Dockerfile{},
 	}
 
 	return &auditBundle
