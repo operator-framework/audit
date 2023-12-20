@@ -16,6 +16,7 @@ For further information about its motivation see the [EP Audit command operation
 
 - go 1.19 
 - docker or podman
+- tar and skopeo (to scrape Dockerfile from image layer oci dirs -- common to all Red Hat built operators)
 - access to the registry where the index catalog and operator bundle images are distributed
 - access to a Kubernetes cluster
 - [operator-sdk][operator-sdk] installed >= `1.5.0

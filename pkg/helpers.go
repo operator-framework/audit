@@ -15,6 +15,7 @@
 package pkg
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/json"
 	"errors"
@@ -38,6 +39,15 @@ const Docker = "docker"
 const Podman = "podman"
 
 const InfrastructureAnnotation = "operators.openshift.io/infrastructure-features"
+
+type DockerfileCommand struct {
+	CommandType string
+	Value       string
+}
+
+type Dockerfile struct {
+	Commands []DockerfileCommand
+}
 
 // PropertiesAnnotation used to Unmarshal the JSON in the CSV annotation
 type PropertiesAnnotation struct {
@@ -200,6 +210,196 @@ func RunDockerInspect(image string, containerEngine string) (DockerInspect, erro
 		return DockerInspect{}, err
 	}
 	return dockerInspect[0], nil
+}
+
+func ParseDockerfile(content string) ([]DockerfileCommand, error) {
+	var commands []DockerfileCommand
+	scanner := bufio.NewScanner(strings.NewReader(content))
+	var currentCommand string
+	var isContinuation bool
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		line = strings.TrimSpace(line)
+
+		// Skip comments and empty lines
+		if strings.HasPrefix(line, "#") || line == "" {
+			continue
+		}
+
+		// Check for line continuation
+		if strings.HasSuffix(line, "\\") {
+			currentCommand += line[:len(line)-1] + " "
+			isContinuation = true
+			continue
+		} else if isContinuation {
+			currentCommand += line
+			isContinuation = false
+		} else {
+			currentCommand = line
+		}
+
+		// Special handling for ENV instructions
+		if strings.HasPrefix(currentCommand, "ENV ") {
+			envCommand := strings.TrimPrefix(currentCommand, "ENV ")
+			commands = append(commands, DockerfileCommand{
+				CommandType: "ENV",
+				Value:       envCommand,
+			})
+		} else {
+			// Split command and arguments for other instructions
+			parts := strings.SplitN(currentCommand, " ", 2)
+			if len(parts) == 2 {
+				commands = append(commands, DockerfileCommand{
+					CommandType: strings.ToUpper(parts[0]),
+					Value:       parts[1],
+				})
+			}
+		}
+
+		currentCommand = ""
+	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
+
+	return commands, nil
+}
+
+func RunSkopeoLayerExtract(image string) ([]Dockerfile, error) {
+	var dockerfiles []Dockerfile
+
+	// Specify a base directory you have full control over
+	baseDir := "/tmp" // Update this path
+
+	// Create a temporary directory for OCI layout
+	tmpDir, err := os.MkdirTemp(baseDir, "oci-layout-")
+	if err != nil {
+		log.Printf("Failed to create temporary directory for OCI layout: %s", err)
+		return dockerfiles, err
+	}
+	defer func() {
+		if err := os.RemoveAll(tmpDir); err != nil {
+			log.Printf("Failed to clean up temporary directory %s: %s", tmpDir, err)
+		}
+	}()
+
+	ociDir := filepath.Join(tmpDir, "oci")
+	log.Printf("Copying image to local OCI layout using Skopeo: %s", image)
+
+	// Copy the image to local OCI layout using Skopeo with override flags
+	copyCmd := exec.Command("skopeo", "copy", "--override-arch", "amd64", "--override-os", "linux", image, "oci:"+ociDir)
+
+	copyOutput, err := copyCmd.CombinedOutput()
+	if err != nil {
+		log.Printf("Failed to copy image with Skopeo: %s", err)
+		log.Printf("Skopeo copy command output: %s", string(copyOutput))
+		return dockerfiles, err
+	}
+
+	if err := adjustPermissions(ociDir); err != nil {
+		log.Printf("Failed to adjust permissions for directory %s: %s", ociDir, err)
+	}
+
+	log.Printf("Inspecting image to get layer SHAs using Skopeo")
+
+	// Inspect the image to get layer SHAs using Skopeo with override flags
+	inspectCmd := exec.Command("skopeo", "inspect", "--override-arch", "amd64", "--override-os", "linux", "--format", "{{json .Layers}}", "oci:"+ociDir)
+	inspectOut, err := inspectCmd.Output()
+	if err != nil {
+		log.Printf("Failed to inspect image with Skopeo: %s", err)
+		return dockerfiles, err
+	}
+
+	// Extract layer SHAs
+	var layerSHAs []string
+	err = json.Unmarshal(inspectOut, &layerSHAs)
+	if err != nil {
+		log.Printf("Failed to unmarshal layer SHAs: %s", err)
+		return dockerfiles, err
+	}
+
+	// Process each layer
+	for _, layerSHA := range layerSHAs {
+		var dockerfile Dockerfile
+
+		layerSHA = strings.TrimPrefix(layerSHA, "sha256:")
+
+		// Construct the correct layer file path
+		layerFile := filepath.Join(ociDir, "blobs", "sha256", layerSHA)
+
+		// Create a temporary directory for this layer
+		layerTmpDir, err := os.MkdirTemp(baseDir, "layer-")
+		if err != nil {
+			log.Printf("Failed to create temporary directory for layer: %s", err)
+			continue
+		}
+
+		// Extract the layer into the temporary directory
+		tarCmd := exec.Command("tar", "-xf", layerFile, "-C", layerTmpDir)
+		tarOutput, err := tarCmd.CombinedOutput()
+		if err != nil {
+			log.Printf("Failed to extract layer with tar command: %s", err)
+			log.Printf("Tar command output: %s", string(tarOutput))
+			adjustAndCleanDir(layerTmpDir)
+			continue
+		}
+
+		// Search for Dockerfile in the extracted layer using Walk
+		var foundDockerfilePath string
+		err = filepath.Walk(layerTmpDir, func(path string, info os.FileInfo, err error) error {
+			if err != nil {
+				return err
+			}
+			if strings.HasPrefix(info.Name(), "Dockerfile") {
+				foundDockerfilePath = path
+				return filepath.SkipDir // Found, no need to continue walking
+			}
+			return nil
+		})
+		if err != nil || foundDockerfilePath == "" {
+			adjustAndCleanDir(layerTmpDir)
+			continue
+		}
+
+		// Read Dockerfile content
+		content, err := os.ReadFile(foundDockerfilePath)
+		if err != nil {
+			log.Printf("Failed to read Dockerfile: %s", err)
+			adjustAndCleanDir(layerTmpDir)
+			continue
+		}
+
+		// Parse Dockerfile content
+		parsedCommands, err := ParseDockerfile(string(content))
+		if err != nil {
+			log.Fatalf("Error parsing Dockerfile: %v", err)
+		}
+		dockerfile.Commands = parsedCommands
+		dockerfiles = append(dockerfiles, dockerfile)
+		// Clean up the temporary directory for this layer
+		adjustAndCleanDir(layerTmpDir)
+	}
+
+	return dockerfiles, nil
+}
+
+func adjustAndCleanDir(dir string) {
+	// Adjust permissions if needed
+	if err := adjustPermissions(dir); err != nil {
+		log.Printf("Failed to adjust permissions for directory %s: %s", dir, err)
+	}
+
+	// Clean up the directory
+	if err := os.RemoveAll(dir); err != nil {
+		log.Printf("Failed to clean up directory %s: %s", dir, err)
+	}
+}
+
+func adjustPermissions(path string) error {
+	cmd := exec.Command("chmod", "-R", "ugo+rwx", path)
+	return cmd.Run()
 }
 
 func RunDockerManifestInspect(image string, containerEngine string) (DockerManifestInspect, error) {

@@ -51,6 +51,7 @@ type Column struct {
 	BundleAnnotations        map[string]string               `json:"bundleAnnotations,omitempty"`
 	BundleCSV                *v1alpha1.ClusterServiceVersion `json:"csv,omitempty"`
 	PropertiesFromDB         []pkg.PropertiesAnnotation      `json:"propertiesFromDB,omitempty"`
+	BundleDockerfiles        []pkg.Dockerfile                `json:"bundleDockerfiles,omitempty"`
 }
 
 func NewColumn(v models.AuditBundle) *Column {
@@ -65,6 +66,7 @@ func NewColumn(v models.AuditBundle) *Column {
 	col.BundleImageLabels = v.BundleImageLabels
 	col.BundleAnnotations = v.BundleAnnotations
 	col.PropertiesFromDB = v.PropertiesDB
+	col.BundleDockerfiles = v.BundleDockerfiles
 
 	if v.Bundle != nil && v.Bundle.CSV != nil {
 		col.BundleCSV = v.Bundle.CSV
