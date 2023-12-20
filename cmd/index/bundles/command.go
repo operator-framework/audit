@@ -158,6 +158,7 @@ func removeDuplicates(elements []string) []string {
 // Define structured types for warnings and errors
 type Warning struct {
 	OperatorName   string
+	RPMName        string
 	ExecutableName string
 	Status         string
 	Image          string
@@ -185,8 +186,8 @@ func ExecuteExternalValidator(imageRef string) (bool, []Warning, []Error, error)
 	lines := strings.Split(string(output), "\n")
 	var warnings []Warning
 	var errors []Error
-	inFailureReport := false
-	inWarningReport := false
+	var currentHeader []string
+	inFailureReport, inWarningReport := false, false
 
 	for _, line := range lines {
 		log.Infof("External validator line: %s", line)
@@ -194,18 +195,27 @@ func ExecuteExternalValidator(imageRef string) (bool, []Warning, []Error, error)
 		switch {
 		case line == "---- Failure Report":
 			inFailureReport = true
-			continue
+			inWarningReport = false
 		case line == "---- Warning Report":
 			inWarningReport = true
-			continue
-		case line == "---- Successful run" || line == "":
 			inFailureReport = false
-			inWarningReport = false
-			continue
+		case strings.Contains(line, "Operator Name"):
+			// Parse header line
+			currentHeader = strings.Split(line, ",")
 		case inFailureReport:
-			parseFailureReportLine(line, &errors)
+			if currentHeader != nil {
+				parseReportLine(line, &errors, currentHeader)
+			}
 		case inWarningReport:
-			parseWarningReportLine(line, &warnings)
+			if currentHeader != nil {
+				parseReportLine(line, &warnings, currentHeader)
+			}
+		}
+
+		// Reset states and header for next section
+		if line == "---- Successful run" || line == "" {
+			inFailureReport, inWarningReport = false, false
+			currentHeader = nil
 		}
 	}
 
@@ -213,30 +223,53 @@ func ExecuteExternalValidator(imageRef string) (bool, []Warning, []Error, error)
 	return success, warnings, errors, nil
 }
 
-func parseFailureReportLine(line string, errors *[]Error) {
+func parseReportLine(line string, report interface{}, header []string) {
+	// Ignore control lines starting with "----" and blank lines
+	if strings.HasPrefix(line, "----") || strings.TrimSpace(line) == "" {
+		return
+	}
+
 	columns := strings.Split(line, ",")
-	if len(columns) >= 5 {
-		operatorName, rpmName, executableName, status, image := columns[0], columns[1], columns[2], columns[3], columns[4]
-		*errors = append(*errors, Error{
-			OperatorName:   strings.TrimSpace(operatorName),
-			RPMName:        strings.TrimSpace(rpmName),
-			ExecutableName: strings.TrimSpace(executableName),
-			Status:         strings.TrimSpace(status),
-			Image:          strings.TrimSpace(image),
-		})
+	if len(columns) < len(header) {
+		log.Printf("Warning: Line has fewer columns than expected. Skipping line: %s", line)
+		return
+	}
+
+	data := make(map[string]string)
+	for i, columnName := range header {
+		if i < len(columns) {
+			data[strings.TrimSpace(columnName)] = strings.TrimSpace(columns[i])
+		}
+	}
+
+	// Dynamically create Warning or Error based on the header
+	switch v := report.(type) {
+	case *[]Warning:
+		warning := Warning{}
+		fillReportFromData(&warning, data)
+		*v = append(*v, warning)
+	case *[]Error:
+		error := Error{}
+		fillReportFromData(&error, data)
+		*v = append(*v, error)
 	}
 }
 
-func parseWarningReportLine(line string, warnings *[]Warning) {
-	columns := strings.Split(line, ",")
-	if len(columns) >= 4 {
-		operatorName, executableName, status, image := columns[0], columns[1], columns[2], columns[3]
-		*warnings = append(*warnings, Warning{
-			OperatorName:   strings.TrimSpace(operatorName),
-			ExecutableName: strings.TrimSpace(executableName),
-			Status:         strings.TrimSpace(status),
-			Image:          strings.TrimSpace(image),
-		})
+// fillReportFromData populates a report (Warning or Error) with data from the map
+func fillReportFromData(report interface{}, data map[string]string) {
+	switch v := report.(type) {
+	case *Warning:
+		v.OperatorName = data["Operator Name"]
+		v.RPMName = data["RPM Name"]
+		v.ExecutableName = data["Executable Name"]
+		v.Status = data["Status"]
+		v.Image = data["Image"]
+	case *Error:
+		v.OperatorName = data["Operator Name"]
+		v.RPMName = data["RPM Name"]
+		v.ExecutableName = data["Executable Name"]
+		v.Status = data["Status"]
+		v.Image = data["Image"]
 	}
 }
 
