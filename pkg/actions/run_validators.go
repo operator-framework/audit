@@ -30,6 +30,9 @@ func RunValidators(bundlePath string, auditBundle *models.AuditBundle, indexImag
 	checkBundleAgainstCommonCriteria(auditBundle)
 	fromOCPValidator(auditBundle, bundlePath)
 
+	// Are there obvious "won't work with MicroShift" APIs in use?
+	fromWorksWithMicroShiftAPIsValidator(auditBundle)
+
 	// If the index is < 4.9 then do thw following check
 	if strings.Contains(indexImage, "4.6") ||
 		strings.Contains(indexImage, "4.7") ||
@@ -93,6 +96,22 @@ func fromOCPValidator(auditBundle *models.AuditBundle, bundlePath string) {
 
 func fromAuditValidatorsBundleSize(auditBundle *models.AuditBundle) {
 	validators := validation.BundleSizeValidator
+	objs := auditBundle.Bundle.ObjectsToValidate()
+
+	nonEmptyResults := []errors.ManifestResult{}
+	results := validators.Validate(objs...)
+
+	for _, result := range results {
+		if result.HasError() || result.HasWarn() {
+			nonEmptyResults = append(nonEmptyResults, result)
+		}
+	}
+
+	auditBundle.ValidatorsResults = append(auditBundle.ValidatorsResults, nonEmptyResults...)
+}
+
+func fromWorksWithMicroShiftAPIsValidator(auditBundle *models.AuditBundle) {
+	validators := validation.WorksWithMicroShiftAPIsValidator
 	objs := auditBundle.Bundle.ObjectsToValidate()
 
 	nonEmptyResults := []errors.ManifestResult{}
