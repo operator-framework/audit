@@ -15,6 +15,7 @@
 package bundles
 
 import (
+	"context"
 	"database/sql"
 	"encoding/json"
 	"errors"
@@ -425,7 +426,8 @@ func IsFBC(indexImage string) bool {
 func GetDataFromFBC(report index.Data) (index.Data, error) {
 	root := "./output/" + actions.GetVersionTagFromImage(report.Flags.IndexImage) + "/configs"
 	fileSystem := os.DirFS(root)
-	fbc, err := declcfg.LoadFS(fileSystem)
+	ctx := context.Background()
+	fbc, err := declcfg.LoadFS(ctx, fileSystem)
 
 	if err != nil {
 		return report, fmt.Errorf("unable to load the file based config : %s", err)
