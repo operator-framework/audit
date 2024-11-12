@@ -2,8 +2,6 @@ module github.com/operator-framework/audit
 
 go 1.23
 
-toolchain go1.23.2
-
 require (
 	github.com/Masterminds/squirrel v1.5.0
 	github.com/blang/semver/v4 v4.0.0
