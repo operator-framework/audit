@@ -1,6 +1,6 @@
 module github.com/operator-framework/audit
 
-go 1.22.5
+go 1.23
 
 toolchain go1.23.2
 
