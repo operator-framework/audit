@@ -15,6 +15,7 @@
 package eus
 
 import (
+	"context"
 	"database/sql"
 	"encoding/json"
 	"fmt"
@@ -258,7 +259,8 @@ func getModelsOrDB(indexes []string) []any {
 			// newer file-based catalogs
 			root := "./output/" + actions.GetVersionTagFromImage(index) + "/configs"
 			fileSystem := os.DirFS(root)
-			fbc, err := declcfg.LoadFS(fileSystem)
+			ctx := context.Background()
+			fbc, err := declcfg.LoadFS(ctx, fileSystem)
 
 			if err != nil {
 				log.Errorf("unable to load the file based config : %s", err)
