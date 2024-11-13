@@ -21,6 +21,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 
 	// "strings"
 
@@ -79,7 +80,21 @@ func GetDataFromBundleImage(auditBundle *models.AuditBundle,
 			}
 		}
 		auditBundle.BundleImageLabels = inspectManifest.DockerConfig.Labels
+	}
 
+	// Ensure the image path has the 'docker://' prefix
+	formattedImagePath := auditBundle.OperatorBundleImagePath
+	if !strings.HasPrefix(formattedImagePath, "docker://") {
+		formattedImagePath = "docker://" + formattedImagePath
+	}
+
+	dockerfiles, err := pkg.RunSkopeoLayerExtract(formattedImagePath)
+	if err != nil {
+		log.Printf("Error extracting Dockerfiles: %s", err)
+		// Handle the error, e.g., by returning or continuing with other logic
+	} else {
+		// Store the extracted Dockerfiles in the auditBundle
+		auditBundle.BundleDockerfiles = dockerfiles
 	}
 
 	// Read the bundle
