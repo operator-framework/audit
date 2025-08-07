@@ -59,8 +59,28 @@ export CONTAINER_ENGINE=podman
 
 Now, you can audit all operator bundles of an image catalog with: 
 
-```sh 
-audit-tool index bundles --index-image=registry.redhat.io/redhat/redhat-operator-index:v4.7 
+```sh
+audit-tool index bundles --index-image=registry.redhat.io/redhat/redhat-operator-index:v4.7
+```
+
+### Scanning for NetworkPolicy Resources
+
+To identify any `NetworkPolicy` resources included in bundle manifests across catalogs, use the `np` sub-command:
+
+```sh
+$ audit-tool index np --indexes=registry.redhat.io/redhat/redhat-operator-index:v4.16,registry.redhat.io/redhat/redhat-operator-index:v4.17
+```
+
+You can also filter to a specific package:
+
+```sh
+$ audit-tool index np --indexes=registry.redhat.io/redhat/redhat-operator-index:v4.17 --package=bakery-operator
+```
+
+Specify `podman` if needed:
+
+```sh
+$ audit-tool index np --indexes=registry.redhat.io/redhat/redhat-operator-index:v4.17 --container-engine=podman
 ```
 
 Then, this report will result in a JSON file with all data exctract from the index and the bundles. Note that audit
