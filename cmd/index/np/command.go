@@ -24,6 +24,7 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+	"time"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -86,12 +87,21 @@ func validation(cmd *cobra.Command, args []string) error {
 // run executes the np audit logic
 func run(cmd *cobra.Command, args []string) error {
 	log.Info("Starting NetworkPolicy audit...")
+	// create report file
+	reportName := fmt.Sprintf("np_report_%s.txt", time.Now().Format("20060102_150405"))
+	reportFile, err := os.Create(reportName)
+	if err != nil {
+		return fmt.Errorf("unable to create report file %s: %v", reportName, err)
+	}
+	defer reportFile.Close()
 	auditpkg.GenerateTemporaryDirs()
 	// load models or databases for each index
 	modelOrDBs := getModelsOrDB(flags.Indexes)
 	for idx, modelOrDB := range modelOrDBs {
 		index := flags.Indexes[idx]
 		log.Infof("Preparing Data for NetworkPolicy audit for index %s...", index)
+		// write index header
+		reportFile.WriteString(fmt.Sprintf("%s\n", index))
 		// get package names
 		pkgs, err := getPackageNames(modelOrDB)
 		if err != nil {
@@ -99,6 +109,8 @@ func run(cmd *cobra.Command, args []string) error {
 			continue
 		}
 		for _, pkgName := range pkgs {
+			// write package header
+			reportFile.WriteString(fmt.Sprintf("    %s\n", pkgName))
 			if flags.Package != "" && pkgName != flags.Package {
 				continue
 			}
@@ -161,23 +173,40 @@ func run(cmd *cobra.Command, args []string) error {
 						log.Warnf("unable to untar layer %s: %v", layer, err)
 					}
 				}
-				// scan for NetworkPolicy in YAML files
-				found := false
-				filepath.Walk(bundleRoot, func(path string, info os.FileInfo, err error) error {
+				// scan for NetworkPolicy across all text files
+				filesScanned := 0
+				foundPaths := []string{}
+				filepath.Walk(bundleRoot, func(filePath string, info os.FileInfo, err error) error {
 					if err != nil || info.IsDir() {
 						return nil
 					}
-					if strings.HasSuffix(info.Name(), ".yaml") || strings.HasSuffix(info.Name(), ".yml") {
-						data, err := os.ReadFile(path)
-						if err == nil && strings.Contains(string(data), "kind: NetworkPolicy") {
-							if !found {
-								log.Infof("Found NetworkPolicy resource in bundle %s of package %s", bundleName, pkgName)
-								found = true
-							}
-						}
+					// read first chunk to detect binary
+					f, err := os.Open(filePath)
+					if err != nil {
+						return nil
+					}
+					defer f.Close()
+					buf := make([]byte, 8000)
+					n, _ := f.Read(buf)
+					data := buf[:n]
+					// skip binary files
+					if isBinary(data) {
+						return nil
+					}
+					filesScanned++
+					// search for keyword
+					if strings.Contains(string(data), "NetworkPolicy") {
+						rel, _ := filepath.Rel(bundleRoot, filePath)
+						foundPaths = append(foundPaths, rel)
+						log.Infof("Found NetworkPolicy resource in bundle %s of package %s", bundleName, pkgName)
 					}
 					return nil
 				})
+				// write report entries
+				reportFile.WriteString(fmt.Sprintf("        %s: %d files scanned\n", bundleName, filesScanned))
+				for _, rel := range foundPaths {
+					reportFile.WriteString(fmt.Sprintf("            Found NetworkPolicy resource in bundle %s of package %s: %s\n", bundleName, pkgName, rel))
+				}
 				// cleanup extracted bundle and remove image
 				cleanupBundle(bundleDir, img)
 			}
@@ -312,6 +341,16 @@ func getBundleImagePath(modelOrDB interface{}, pkgName, bundleName string) (stri
 	default:
 		return "", fmt.Errorf("unsupported model type %T", modelOrDB)
 	}
+}
+
+// isBinary reports whether data contains a null byte, indicating a binary file
+func isBinary(data []byte) bool {
+	for _, b := range data {
+		if b == 0 {
+			return true
+		}
+	}
+	return false
 }
 
 // cleanupBundle removes the extracted bundle dir and the image
