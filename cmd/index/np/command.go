@@ -175,6 +175,7 @@ func run(cmd *cobra.Command, args []string) error {
 				}
 				// scan for NetworkPolicy across all text files
 				filesScanned := 0
+				binarySkipped := 0
 				foundPaths := []string{}
 				filepath.Walk(bundleRoot, func(filePath string, info os.FileInfo, err error) error {
 					if err != nil || info.IsDir() {
@@ -191,9 +192,15 @@ func run(cmd *cobra.Command, args []string) error {
 					data := buf[:n]
 					// skip binary files
 					if isBinary(data) {
+						binarySkipped++
 						return nil
 					}
 					filesScanned++
+					// list each file when filtering by package
+					relPath, _ := filepath.Rel(bundleRoot, filePath)
+					if flags.Package != "" {
+						reportFile.WriteString(fmt.Sprintf("            %s\n", relPath))
+					}
 					// search for keyword
 					if strings.Contains(string(data), "NetworkPolicy") {
 						rel, _ := filepath.Rel(bundleRoot, filePath)
@@ -202,8 +209,8 @@ func run(cmd *cobra.Command, args []string) error {
 					}
 					return nil
 				})
-				// write report entries
-				reportFile.WriteString(fmt.Sprintf("        %s: %d files scanned\n", bundleName, filesScanned))
+				// write report entries, including skipped binary count
+				reportFile.WriteString(fmt.Sprintf("        %s: %d files scanned, skipped %d binary files\n", bundleName, filesScanned, binarySkipped))
 				for _, rel := range foundPaths {
 					reportFile.WriteString(fmt.Sprintf("            Found NetworkPolicy resource in bundle %s of package %s: %s\n", bundleName, pkgName, rel))
 				}
