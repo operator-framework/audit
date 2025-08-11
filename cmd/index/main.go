@@ -15,10 +15,10 @@
 package index
 
 import (
-	"github.com/operator-framework/audit/cmd/index/eus"
-	"github.com/spf13/cobra"
-
 	"github.com/operator-framework/audit/cmd/index/bundles"
+	"github.com/operator-framework/audit/cmd/index/eus"
+	"github.com/operator-framework/audit/cmd/index/np"
+	"github.com/spf13/cobra"
 )
 
 func NewCmd() *cobra.Command {
@@ -33,6 +33,9 @@ func NewCmd() *cobra.Command {
 	)
 	indexCmd.AddCommand(
 		eus.NewCmd(),
+	)
+	indexCmd.AddCommand(
+		np.NewCmd(),
 	)
 
 	return indexCmd
