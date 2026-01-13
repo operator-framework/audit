@@ -38,8 +38,11 @@ type BundleAnnotations struct {
 }
 
 func RunScorecard(bundleDir string, auditBundle *models.AuditBundle) *models.AuditBundle {
+	log.Info("\n----bundleDir----\n", bundleDir)
 	scorecardTestsPath := filepath.Join(bundleDir, "tests", "scorecard")
+	log.Info("\n----scorecardTestsPath----\n", scorecardTestsPath)
 	annotationsPath := filepath.Join(bundleDir, "metadata", "annotations.yaml")
+	log.Info("\n----annotationsPath----\n", annotationsPath)
 
 	// If we find the annotations file then, check for the scorecard path on it.
 	if _, err := os.Stat(annotationsPath); err == nil && !os.IsNotExist(err) {
@@ -115,8 +118,12 @@ func RunScorecard(bundleDir string, auditBundle *models.AuditBundle) *models.Aud
 		return auditBundle
 	}
 
+	scorecardConfig := "false"
+	scorecardFilePath := "github.com/operator-framework/audit/pkg/actions/scorecardDefaultConfigFragment.yaml"
+	// Add Logic to update scorecardConfig
+
 	// run scorecard against bundle
-	cmd := exec.Command("operator-sdk", "scorecard", bundleDir, "--wait-time=120s", "--output=json")
+	cmd := exec.Command("operator-sdk", "scorecard", bundleDir, "--wait-time=120s", "--output=json", "--scorecard-config", scorecardFilePath, "--scorecard-custom-tests", scorecardConfig)
 	output, _ := pkg.RunCommand(cmd)
 	if len(output) < 1 {
 		log.Errorf("unable to get scorecard output: %s", output)
